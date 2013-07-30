@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pong_Revisited", "Pong_Revisited\Pong_Revisited.vcproj", "{4C56E6EF-5668-41C1-9FF8-35289AB3DFFE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4C56E6EF-5668-41C1-9FF8-35289AB3DFFE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4C56E6EF-5668-41C1-9FF8-35289AB3DFFE}.Debug|Win32.Build.0 = Debug|Win32
+		{4C56E6EF-5668-41C1-9FF8-35289AB3DFFE}.Release|Win32.ActiveCfg = Release|Win32
+		{4C56E6EF-5668-41C1-9FF8-35289AB3DFFE}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
