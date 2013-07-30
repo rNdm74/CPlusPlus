@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pButtonGrow", "pButtonGrow\pButtonGrow.vcproj", "{2157D32A-43CE-427B-9F2C-349C663656BF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2157D32A-43CE-427B-9F2C-349C663656BF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2157D32A-43CE-427B-9F2C-349C663656BF}.Debug|Win32.Build.0 = Debug|Win32
+		{2157D32A-43CE-427B-9F2C-349C663656BF}.Release|Win32.ActiveCfg = Release|Win32
+		{2157D32A-43CE-427B-9F2C-349C663656BF}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
