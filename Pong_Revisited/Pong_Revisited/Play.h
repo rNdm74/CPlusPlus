@@ -1,8 +1,8 @@
 #pragma once
 
-#include "gameobject.h"
-#include "physics.h"
-#include "ball.h"
+#include "GameObject.h"
+#include "Physics.h"
+#include "Ball.h"
 
 ref class Play :
 public GameObject

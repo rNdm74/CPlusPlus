@@ -1,6 +1,6 @@
 #pragma once
 
-#include "gameobject.h";
+#include "GameObject.h";
 
 using namespace System;
 using namespace System::ComponentModel;

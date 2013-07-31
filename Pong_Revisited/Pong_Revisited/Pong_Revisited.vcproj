@@ -42,9 +42,10 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="E:\Desktop\boost_1_54_0"
 				PreprocessorDefinitions="WIN32;_DEBUG"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -256,6 +257,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\Time.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Wall.cpp"
 				>
 			</File>
@@ -313,6 +318,10 @@
 			</File>
 			<File
 				RelativePath=".\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Time.h"
 				>
 			</File>
 			<File

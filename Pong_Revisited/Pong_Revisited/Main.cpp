@@ -13,5 +13,7 @@ void Main::update()
 
 void Main::render(Graphics^ g)
 {
+	g->Clear(Color::Black);
 	game->render(g);
+
 }

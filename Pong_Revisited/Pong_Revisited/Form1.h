@@ -1,8 +1,9 @@
 #pragma once
 
-#include "main.h"
+#include "Main.h"
 #include <time.h>
-
+#include <ctime>
+#include <Windows.h>
 
 namespace Pong_Revisited {
 
@@ -28,6 +29,7 @@ namespace Pong_Revisited {
 		Form1(void)
 		{
 			InitializeComponent();
+
 			dbBitmap = nullptr;
 			dbGraphics = nullptr;
 		}
@@ -68,7 +70,7 @@ namespace Pong_Revisited {
 			// 
 			// update
 			// 
-			this->update->Interval = 1;
+			this->update->Interval = 10;
 			this->update->Tick += gcnew System::EventHandler(this, &Form1::update_Tick);
 			// 
 			// Form1
@@ -89,11 +91,42 @@ namespace Pong_Revisited {
 			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &Form1::Form1_KeyUp);
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Form1::Form1_KeyDown);
 			this->ResumeLayout(false);
-
+gameLoop();
 		}
 #pragma endregion
-	private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e) {
-				main = gcnew Main();
+	private: Form1::Void gameLoop(){
+				 //while(true){
+				 //}
+				
+        /*Time.init();
+
+        int frames = 0;
+        long lastTime = System.nanoTime();
+        long totalTime = 0;
+
+        while (!Display.isCloseRequested()){
+            long now = System.nanoTime();
+            long passed = now - lastTime;
+            lastTime = now;
+            totalTime += passed;
+
+            if(totalTime >= 1000000000){
+                Display.setTitle("FPS: " + frames);
+                //System.out.println(frames);
+                totalTime = 0;
+                frames = 0;
+            }
+
+            Time.update();
+            getInput();
+            update();
+            render();
+            frames++;
+        }*/
+    }
+
+	private: Form1::Void initGame(){
+				 main = gcnew Main();
 
 				 // Create a bitmap
                 dbBitmap = gcnew Bitmap(ClientRectangle.Width,
@@ -101,29 +134,71 @@ namespace Pong_Revisited {
 
 				// Grab its Graphics
                 dbGraphics = Graphics::FromImage(dbBitmap);
+			 }
 
-				canvas = CreateGraphics();
+	private: Form1::Void updateGame(){
+				 main->update();
+			 }
 
-				update->Enabled = true;
+	private: Form1::Void renderGame(){
+				 main->render(dbGraphics);
+			 }
+
+
+
+	private: int frames;
+	private: double lastTime;
+	private: long totalTime;
+
+	private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e) {
+				 initGame();
+
+				 frames = 0;
+				 
+				 lastTime = time(NULL);
+
+
+				 totalTime = 0;	
+
+				 //Time t;
+
+				 
+				
+				 //this->Text = " " + clock_gettime();
+				 
 			 }
 	 
 	private: System::Void Form1_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e) {
+				 //this->Text = " " + lastTime;
+				 double msec = time(NULL);
 				 
+				 //long now = time;
+				 
+				 double passed = msec - lastTime;
 
-				 dbGraphics->Clear(Color::Black);
+				 Text = "FPS: " + passed;
+				 //lastTime = now;
+				 
+				 if(totalTime >= 1000000000){
+					 
+					 totalTime = 0;
+					 frames = 0;
+				 }
+				 
+				 Invalidate();
 
-				 main->render(dbGraphics);
+				 updateGame();
 
+				 renderGame();
+				 
 				 // Make the buffer visible
 				 e->Graphics->DrawImage(dbBitmap, 0, 0);
-				 //e->->DrawImage(dbBitmap, 0, 0);	 
+
+				 frames++;
 			 }
 
     private: System::Void update_Tick(System::Object^  sender, System::EventArgs^  e) {
 				 
-				 main->update();
-				 
-				 Invalidate();
 			 }
 
 	private: System::Void Form1_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {

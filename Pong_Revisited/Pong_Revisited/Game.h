@@ -1,10 +1,10 @@
 #pragma once
 
-#include "gameobject.h"
-#include "enemy.h"
-#include "play.h"
-#include "ball.h"
-#include "wall.h"
+#include "GameObject.h"
+#include "Enemy.h"
+#include "Play.h"
+#include "Ball.h"
+#include "Wall.h"
 
 using namespace System;
 using namespace System::ComponentModel;
