@@ -16,7 +16,9 @@ using namespace System::Drawing;
 ref class Game
 {
 private:
-	//GameObject objects;
+	array<GameObject ^> ^ objects;
+
+	Form^ form;
 
 	Ball^ ball;
 	Play^ player;
@@ -28,7 +30,7 @@ private:
 	int enemyScore;
 
 public:
-	Game();
+	Game(Form^ f);
 
 	Play^ getPlayer(){return player;}
 

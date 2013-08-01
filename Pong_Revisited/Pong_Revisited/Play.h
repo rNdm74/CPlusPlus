@@ -4,6 +4,13 @@
 #include "Physics.h"
 #include "Ball.h"
 
+using namespace System;
+using namespace System::ComponentModel;
+using namespace System::Collections;
+using namespace System::Windows::Forms;
+using namespace System::Data;
+using namespace System::Drawing;
+
 ref class Play :
 public GameObject
 {
@@ -23,13 +30,12 @@ private:
     float startX;
     float startY;
 
-	
-
 public:
 	void setMag(float m){mag = m;}
 
 	Play(float x, float y, Ball^ ball);
 	
-	void update();
+	void input(KeyEventArgs^  e, int mod);	
+	virtual void update() override;
 	void move();
 };

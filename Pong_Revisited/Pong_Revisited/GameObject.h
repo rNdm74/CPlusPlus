@@ -7,7 +7,7 @@ using namespace System::Windows::Forms;
 using namespace System::Data;
 using namespace System::Drawing;
 
-ref class GameObject
+ref class GameObject abstract  
 {
 private:
 
@@ -26,5 +26,6 @@ public:
 	float getHeight() {return height;}
 	float getCenterY() {return yPos + height / 2;}
 
+	virtual void update();
 	void render(Graphics^ g);
 };

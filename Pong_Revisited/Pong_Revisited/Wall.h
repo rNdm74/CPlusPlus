@@ -18,5 +18,5 @@ private:
 public:
 	Wall(float x, float y, float w, float h, Ball^ b);
 
-	void update();
+	virtual void update() override;
 };

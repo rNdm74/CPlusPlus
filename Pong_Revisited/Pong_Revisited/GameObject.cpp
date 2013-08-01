@@ -1,9 +1,10 @@
 #include "StdAfx.h"
 #include "GameObject.h"
 
-GameObject::GameObject()
-{
-}
+GameObject::GameObject(){}
+
+void GameObject::update(){}
+
 void GameObject::render(Graphics^ g)
 {
 	Drawing::RectangleF rect = Drawing::Rectangle(xPos, yPos, width, height);

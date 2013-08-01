@@ -21,5 +21,5 @@ private:
 public:
 	Enemy(float x, float y, Ball^ b);
 
-	void update();
+	virtual void update() override;
 };

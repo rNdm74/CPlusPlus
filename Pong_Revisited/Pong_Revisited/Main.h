@@ -11,11 +11,11 @@ using namespace System::Drawing;
 
 ref class Main
 {
-private:
+private:	
 	Game^ game;
 
 public:
-	Main();
+	Main(Form^ f);
 	
 	Game^ getGame(){return game;}
 

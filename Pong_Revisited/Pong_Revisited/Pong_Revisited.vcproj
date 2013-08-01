@@ -283,16 +283,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Form1.h"
-				FileType="3"
-				>
-				<File
-					RelativePath=".\Form1.resX"
-					SubType="Designer"
-					>
-				</File>
-			</File>
-			<File
 				RelativePath=".\Game.h"
 				>
 			</File>
@@ -311,6 +301,16 @@
 			<File
 				RelativePath=".\Play.h"
 				>
+			</File>
+			<File
+				RelativePath=".\Pong.h"
+				FileType="3"
+				>
+				<File
+					RelativePath=".\Pong.resX"
+					SubType="Designer"
+					>
+				</File>
 			</File>
 			<File
 				RelativePath=".\resource.h"

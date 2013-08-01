@@ -13,6 +13,19 @@ Play::Play(float x, float y, Ball^ b)
     ball = b;
 }
 
+void Play::input(KeyEventArgs^  e, int mod)
+{
+	if(e->KeyCode == Keys::Up || e->KeyCode == Keys::W)
+	{
+		setMag(-mod);
+	}
+	
+	if(e->KeyCode == Keys::Down || e->KeyCode == Keys::S)
+	{
+		setMag(mod);
+	}	
+}
+
 void Play::update()
 {
 	if (physics->checkCollision(this, ball)) ball->reverseX(getCenterY()); 		

@@ -1,9 +1,9 @@
 #include "StdAfx.h"
 #include "Main.h"
 
-Main::Main()
+Main::Main(Form^ f)
 {
-	game = gcnew Game();
+	game = gcnew Game(f);
 }
 
 void Main::update()

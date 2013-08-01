@@ -23,5 +23,5 @@ public:
 	void reverseX(float center);
 	void reverseY();
 
-	void update();
+	virtual void update() override;
 };
