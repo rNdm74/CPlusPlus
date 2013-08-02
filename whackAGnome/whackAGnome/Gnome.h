@@ -13,6 +13,7 @@ ref class Gnome
 		bool visible;
 		bool hamster;
 		bool hit;
+
 		Point location;
 		Image^ image;
 		Graphics^ canvas;
@@ -25,7 +26,7 @@ ref class Gnome
 		void draw();
 		void erase();
 		void changeImage();
-		void isHit();
+		void isHit(Point p);
 		void isAHamster();
 
 		//sets

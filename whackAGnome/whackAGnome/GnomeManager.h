@@ -25,11 +25,14 @@ ref class GnomeManager
 		void eraseAllGnomes();
 		void eraseOneGnome(int index);
 
-		bool hitGnome(int index, Point p);
+		void hitGnome(int index, Point p);
+
+		int getHamsters();
 
 		//set
 		void setRGen(Random^ r){ rGen = r; }
 
 		//get
 		Random^ getRGen(){ return rGen; }
+		array<Gnome^>^ getGnomes(){ return gnomes; }
 	};

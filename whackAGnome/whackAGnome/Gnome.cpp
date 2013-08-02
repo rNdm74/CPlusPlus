@@ -17,9 +17,14 @@ void Gnome::erase()
 	}
 void Gnome::changeImage()
 	{
+		image = Image::FromFile("hamster.jpg");
 	}
-void Gnome::isHit()
-	{
+void Gnome::isHit(Point p)
+	{	
+		if(Rectangle(location, image->Size).Contains(p)){			
+			setHit(true);
+			changeImage();
+		}
 	}
 void Gnome::isAHamster()
 	{

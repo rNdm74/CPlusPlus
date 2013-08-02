@@ -6,38 +6,53 @@ GnomeManager::GnomeManager(Graphics^ g, int gnomeCount)
 		gnomes = gcnew array<Gnome^>(gnomeCount);
 
 		rGen = gcnew Random();
+
+		int width = g->VisibleClipBounds.Width;
+		int height = g->VisibleClipBounds.Height;
 		
 		for(int i = 0; i < gnomes->Length; i++){
-			gnomes[i] = gcnew Gnome(g, Point(rGen->Next(609), rGen->Next(424)));
+			gnomes[i] = gcnew Gnome(g, Point(rGen->Next(width), rGen->Next(height)));
 		}
 	}
 
 void GnomeManager::drawAllGnomes()
 	{
 		for(int i = 0; i < gnomes->Length; i++){
-			gnomes[i]->draw();
+			if(gnomes[i]->getHit()) gnomes[i]->draw();
 		}		
 	}
 
 void GnomeManager::drawOneGnome(int index)
-	{
-		gnomes[index]->draw();		
+	{	
+		if(!gnomes[index]->getHit()) gnomes[index]->draw();		
 	}
 
 void GnomeManager::eraseAllGnomes()
 	{
-		gnomes->Clear(gnomes, 0 , gnomes->Length);
-				
+		for(int i = 0; i < gnomes->Length; i++){
+			gnomes[i]->setVisible(false);
+		}
 	}
 
 void GnomeManager::eraseOneGnome(int index)
 	{
-		gnomes->Clear(gnomes, index, 1);
+		gnomes[index]->setVisible(false);
 	}
 
-bool GnomeManager::hitGnome(int index, Point p)
+void GnomeManager::hitGnome(int index, Point p)
+	{		
+		gnomes[index]->isHit(p);
+	}
+
+int GnomeManager::getHamsters()
 	{
-		return true;
+		int count = 0;
+
+		for(int i = 0; i < gnomes->Length; i++){
+			if(gnomes[i]->getHit()) count++;
+		}
+
+		return count;		
 	}
 
  
