@@ -9,36 +9,44 @@
 
 #define PELLET_DIAMETER 10
 #define PELLET_SPEED 1
+#define PELLET_MIN_VELOCITY 0.1
 
 ref class Pellet
 	{
 	private:
-		int xPos;
-		int yPos;
+		float xPos;
+		float yPos;
+
 		int diameter;
-		int xVel;
-		int yVel;
+
+		float xVel;
+		float yVel;
 
 		bool isAlive;
 
 		Color pelletColour;
+		array<Color>^ colors;
+
 		Graphics^ canvas;
 		Brush^ brush;	
 
 		Random^ rGen;
 
+	private:
+		void init(Graphics^ startCanvas, Random^ startRGen);
+
 	public:
 		Pellet^ Next;
 
 	public:
-		Pellet();
+		Pellet(Point startP, Graphics^ startCanvas, Random^ startRGen);
 		Pellet(int startXPos, int startYPos, Graphics^ startCanvas, Random^ startRGen);
 
 		void draw();
 		void update();
 
-		bool getIsAlive()		{ return isAlive; }
-		void setIsAlive(bool a)	{ isAlive = a; }
+		bool getIsAlive()			{ return isAlive; }
+		void setIsAlive(bool a)		{ isAlive = a; }
 
-		int getYPos()			{ return yPos; }
+		float getYPos()				{ return yPos; }
 	};

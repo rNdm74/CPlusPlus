@@ -30,24 +30,43 @@ void PelletList::deletePellet(Pellet^ pelletToDelete)
 		// Start at the beginning of the list
 		pelletWalker = head;
 
-		// Find the node BEFORE nodeToDelete
-		while(pelletWalker->Next != pelletToDelete)
-			pelletWalker = pelletWalker->Next;
-		
-		// Found it. Swoop around
-		pelletWalker->Next = pelletToDelete->Next;
+		// Check first node
+		if(pelletWalker == pelletToDelete)
+		{
+			// If only node in the list
+			if(pelletWalker->Next == nullptr)
+			{
+				//Clear node
+				head = nullptr;
+				tail = nullptr;
+			}
+			else
+			{
+				// Move to next node
+				head = pelletWalker->Next;
+			}			
+		}
+		else
+		{
+			// Find the node BEFORE nodeToDelete
+			while(pelletWalker->Next != pelletToDelete)
+				pelletWalker = pelletWalker->Next;
+			
+			// Found it. Swoop around
+			pelletWalker->Next = pelletToDelete->Next;
+		}		
 	}
 
 void PelletList::renderPellets()
-	{
-		Pellet^ pelletWalker;
-
-		pelletWalker = head;
+	{		
+		Pellet^ pelletWalker = head;		
 
 		while(pelletWalker != nullptr)
 		{
+			// Draw pellets
 			pelletWalker->draw();
 
+			// Move to next node
 			pelletWalker = pelletWalker->Next;
 		}
 	}
@@ -61,6 +80,8 @@ int PelletList::countPellets()
 		while(pelletWalker != nullptr)
 		{
 			count++;
+
+			// Move to next node
 			pelletWalker = pelletWalker->Next;
 		}
 
@@ -69,14 +90,18 @@ int PelletList::countPellets()
 
 void PelletList::updatePellets()
 	{
-		Pellet^ pelletWalker;
-
-		pelletWalker = head;
+		Pellet^ pelletWalker = head;		
 
 		while(pelletWalker != nullptr)
 		{
-			pelletWalker->update();
+			// Check to delete pellet
+			if(pelletWalker->getYPos() < 0)			
+				deletePellet(pelletWalker);			
 
+			// Move pellet
+			pelletWalker->update();			
+
+			// Move to next node
 			pelletWalker = pelletWalker->Next;
 		}
 	}

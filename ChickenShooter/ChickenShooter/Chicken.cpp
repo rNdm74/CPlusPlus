@@ -3,13 +3,15 @@
 
 Chicken::Chicken(int startX, int startY, Graphics^ g)
 	{
-		speed = 1;
+		image = Image::FromFile("chicken.gif");
+
+		width = image->Width;
+		height = image->Height;
+
 		direction = 0;
 
 		xPos = startX;
 		yPos = startY;
-
-		image = Image::FromFile("chicken.gif");
 
 		canvas = g;
 
@@ -17,28 +19,32 @@ Chicken::Chicken(int startX, int startY, Graphics^ g)
 
 		pellets = gcnew PelletList();
 
-		font = gcnew Font("Microsoft Sans Serif",16);
-		
+		font = gcnew Font("Microsoft Sans Serif", FONT_SIZE);		
 	}
 
 void Chicken::draw()
 	{	
+		// Draw pellets
 		pellets->renderPellets();
 
+		// Draw chicken
 		canvas->DrawImage(image, Point(xPos,yPos));
 
-		canvas->DrawString(pellets->countPellets().ToString(), font, Brushes::WhiteSmoke, 20, 20);
+		// Draw pellet count
+		canvas->DrawString(pellets->countPellets().ToString(), font, Brushes::WhiteSmoke, FONT_X, FONT_Y);
 	}
 
 void Chicken::update()
 	{
+		// Move pellets
 		pellets->updatePellets();
 
-		xPos += speed * direction;
+		// Move chicken
+		xPos += CHICKEN_SPEED * direction;
 	}
 
 void Chicken::shoot()
 	{
-		Pellet^ p = gcnew Pellet(xPos, yPos, canvas, rGen);
-		pellets->addPellet(p);
+		// Shoot pellet
+		pellets->addPellet(gcnew Pellet(getCenter(), canvas, rGen));
 	}
