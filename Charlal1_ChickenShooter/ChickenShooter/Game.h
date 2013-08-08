@@ -44,7 +44,6 @@ namespace ChickenShooter {
 
 	private:
 		Chicken^ chicken;
-		Graphics^ mainCanvas;
 		Graphics^ dbGraphics;
 		Bitmap^ dbBitmap;
 

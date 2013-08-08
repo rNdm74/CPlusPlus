@@ -46,6 +46,15 @@ void PelletList::deletePellet(Pellet^ pelletToDelete)
 				head = pelletWalker->Next;
 			}			
 		}
+		else if(tail == pelletToDelete)
+		{
+			pelletWalker = head;
+
+			while(pelletWalker->Next != nullptr)				
+				pelletWalker = pelletWalker->Next;
+
+			tail = pelletWalker;
+		}
 		else
 		{
 			// Find the node BEFORE nodeToDelete
@@ -53,7 +62,7 @@ void PelletList::deletePellet(Pellet^ pelletToDelete)
 				pelletWalker = pelletWalker->Next;
 			
 			// Found it. Swoop around
-			pelletWalker->Next = pelletToDelete->Next;
+			pelletWalker->Next = pelletToDelete->Next;			
 		}		
 	}
 
@@ -95,7 +104,7 @@ void PelletList::updatePellets()
 		while(pelletWalker != nullptr)
 		{
 			// Check to delete pellet
-			if(pelletWalker->getYPos() < 0)			
+			if(pelletWalker->getYPos() < 0 || pelletWalker->getYPos() > 600)			
 				deletePellet(pelletWalker);			
 
 			// Move pellet
