@@ -78,6 +78,20 @@ int GameObjectList::countGameObjects()
 		return count;
 	}
 
+void GameObjectList::inputGameObjects(KeyEventArgs^  e)
+	{
+		GameObject^ gameObjectWalker = head;		
+
+		while(gameObjectWalker != nullptr)
+		{
+			// Move
+			gameObjectWalker->input(e);			
+
+			// Move to next node
+			gameObjectWalker = gameObjectWalker->Next;
+		}
+	}
+
 void GameObjectList::updateGameObjects()
 	{
 		GameObject^ gameObjectWalker = head;		

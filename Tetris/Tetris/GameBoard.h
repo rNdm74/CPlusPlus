@@ -16,11 +16,22 @@ ref class GameBoard
 	{
 	private:
 		GameObjectList^ board;
+		KeyEventArgs^  e;
+
+		Point location;
+		Rectangle client;
+		Graphics^ canvas;		
 
 	public:
-		GameBoard(Rectangle client, Graphics^ canvas);
+		GameBoard(Point startLocation, Rectangle client, Graphics^ canvas);
+
+		void input(KeyEventArgs^  e);
 		void update();
 		void render();
 
-		GameObjectList^ getBoard() { return board; }
+		void addObject();
+
+		GameObjectList^ getBoard()	{ return board; }
+
+		void setLocation(Point l)	{ location = l;	}
 	};

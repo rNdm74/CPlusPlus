@@ -47,7 +47,7 @@ namespace Tetris {
 		Bitmap^ dbBitmap;
 
 		GameBoard^ board;
-	private: System::Windows::Forms::Timer^  clock;
+
 
 	private: System::ComponentModel::IContainer^  components;
 
@@ -60,32 +60,25 @@ namespace Tetris {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-		this->components = (gcnew System::ComponentModel::Container());
-		this->clock = (gcnew System::Windows::Forms::Timer(this->components));
-		this->SuspendLayout();
-		// 
-		// clock
-		// 
-		this->clock->Interval = 1;
-		this->clock->Tick += gcnew System::EventHandler(this, &Game::clock_Tick);
-		// 
-		// Game
-		// 
-		this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
-		this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-		this->BackColor = System::Drawing::Color::Black;
-		this->ClientSize = System::Drawing::Size(464, 602);
-		this->DoubleBuffered = true;
-		this->Name = L"Game";
-		this->ShowIcon = false;
-		this->Text = L"Tetris";
-		this->Load += gcnew System::EventHandler(this, &Game::Game_Load);
-		this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Game::Game_Paint);
-		this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &Game::Game_KeyUp);
-		this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Game::Game_KeyDown);
-		this->ResumeLayout(false);
+			this->SuspendLayout();
+			// 
+			// Game
+			// 
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->BackColor = System::Drawing::Color::Black;
+			this->ClientSize = System::Drawing::Size(464, 602);
+			this->DoubleBuffered = true;
+			this->Name = L"Game";
+			this->ShowIcon = false;
+			this->Text = L"Tetris";
+			this->Load += gcnew System::EventHandler(this, &Game::Game_Load);
+			this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Game::Game_Paint);
+			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &Game::Game_KeyUp);
+			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Game::Game_KeyDown);
+			this->ResumeLayout(false);
 
-			}
+		}
 #pragma endregion
 	private: int count;
 	private: System::Void Game_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e) {
@@ -111,17 +104,13 @@ namespace Tetris {
 					// Grab its Graphics
 					dbGraphics = Graphics::FromImage(dbBitmap);
 
-					board = gcnew GameBoard(ClientRectangle, dbGraphics);
-
-					clock->Enabled = true;
+					board = gcnew GameBoard(Point(230, 0), ClientRectangle, dbGraphics);
 				 }
-	private: System::Void clock_Tick(System::Object^  sender, System::EventArgs^  e) {
-					//board->update();
-					
-					//Refresh();
-				 }
+	
 	private: System::Void Game_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
-				 board->getBoard()->getHead()->setLocation().X += 20;
+					board->input(e);
+
+					if(e->KeyCode == Keys::Space) board->addObject();
 				 }
 	private: System::Void Game_KeyUp(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 				 }

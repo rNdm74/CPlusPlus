@@ -20,6 +20,8 @@ ref class GameObjectList
 		void addGameObject(GameObject^ newGameObject);
 		void deleteGameObject(GameObject^ gameObjectToDelete);
 		int countGameObjects();
+
+		void inputGameObjects(KeyEventArgs^  e);
 		void updateGameObjects();
 		void renderGameObjects();
 

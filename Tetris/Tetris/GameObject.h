@@ -15,17 +15,19 @@ ref class GameObject
 		Point location;
 		Size size;
 
-		float yVel;
-		float xVel;
+		int yVel;
+		int xVel;
 
 		int direction;
 		int count;
+
+		bool placed;
 
 		Brush^ brush;
 		Pen^ pen;
 
 		Rectangle screen;
-		Graphics^ graphics;	
+		Graphics^ graphics;
 
 	public:
 		GameObject^ Next;
@@ -33,11 +35,12 @@ ref class GameObject
 	public:
 		GameObject(Point startLocation, Size startSize, Rectangle screenBounds, Graphics^ canvas, Color color);
 
+		void input(KeyEventArgs^  e);
 		void update();
 		void render();
 
 		void setLocation(Point l)	{ location = l; }
-		PointF getLocation()		{ return location; }
+		Point getLocation()		{ return location; }
 
 		void setDirection(int d)	{ direction = d; }
 
