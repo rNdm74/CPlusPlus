@@ -49,7 +49,9 @@ void Pellet::draw()
 
 void Pellet::update()
 	{
-		yVel -= 0.003;
+		// Add pellet gravity
+		yVel -= GRAVITY;
+
 		// Move pellet
 		yPos -= yVel * PELLET_SPEED;
 	}

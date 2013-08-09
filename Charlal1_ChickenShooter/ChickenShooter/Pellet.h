@@ -10,6 +10,7 @@
 #define PELLET_DIAMETER 10
 #define PELLET_SPEED 1
 #define PELLET_MIN_VELOCITY 0.1
+#define GRAVITY 0.0015
 
 ref class Pellet
 	{

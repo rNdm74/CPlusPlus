@@ -57,27 +57,27 @@ namespace ChickenShooter {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->components = (gcnew System::ComponentModel::Container());
-			this->tick = (gcnew System::Windows::Forms::Timer(this->components));
-			this->SuspendLayout();
-			// 
-			// Game
-			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
-			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)), 
-				static_cast<System::Int32>(static_cast<System::Byte>(64)));
-			this->ClientSize = System::Drawing::Size(624, 442);
-			this->DoubleBuffered = true;
-			this->Name = L"Game";
-			this->ShowIcon = false;
-			this->Text = L"Chicken Shooter";
-			this->Load += gcnew System::EventHandler(this, &Game::Game_Load);
-			this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Game::Game_Paint);
-			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &Game::Game_KeyUp);
-			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Game::Game_KeyDown);
-			this->ResumeLayout(false);
-		}
+		this->components = (gcnew System::ComponentModel::Container());
+		this->tick = (gcnew System::Windows::Forms::Timer(this->components));
+		this->SuspendLayout();
+		// 
+		// Game
+		// 
+		this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+		this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+		this->BackColor = System::Drawing::Color::Black;
+		this->ClientSize = System::Drawing::Size(624, 442);
+		this->DoubleBuffered = true;
+		this->Name = L"Game";
+		this->ShowIcon = false;
+		this->Text = L"Chicken Shooter";
+		this->Load += gcnew System::EventHandler(this, &Game::Game_Load);
+		this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Game::Game_Paint);
+		this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &Game::Game_KeyUp);
+		this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Game::Game_KeyDown);
+		this->ResumeLayout(false);
+
+			}
 #pragma endregion
 	private: System::Void Game_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e) {
 					// Refresh screen

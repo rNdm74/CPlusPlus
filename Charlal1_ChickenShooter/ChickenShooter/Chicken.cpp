@@ -31,7 +31,7 @@ void Chicken::draw()
 		canvas->DrawImage(image, Point(xPos,yPos));
 
 		// Draw pellet count
-		canvas->DrawString(pellets->countPellets().ToString(), font, Brushes::WhiteSmoke, FONT_X, FONT_Y);
+		canvas->DrawString(pellets->countPellets().ToString(), font, Brushes::AliceBlue, FONT_X, FONT_Y);
 	}
 
 void Chicken::update()
@@ -41,6 +41,10 @@ void Chicken::update()
 
 		// Move chicken
 		xPos += CHICKEN_SPEED * direction;
+
+		// Reset chicken positions
+		if(xPos < 0) xPos = 600;
+		if(xPos > 600) xPos = 0;
 	}
 
 void Chicken::shoot()
