@@ -70,6 +70,8 @@ namespace Breakout {
 		this->Text = L"Breakout";
 		this->Load += gcnew System::EventHandler(this, &Game::Game_Load);
 		this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Game::Game_Paint);
+		this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &Game::Game_KeyUp);
+		this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Game::Game_KeyDown);
 		this->ResumeLayout(false);
 
 			}
@@ -81,7 +83,8 @@ namespace Breakout {
 					// Clear background
 					dbGraphics->Clear(BackColor);
 
-					// Update Code					
+					// Update Code	
+					bManager->update();
 
 					// Render Code
 					bManager->render();
@@ -97,6 +100,12 @@ namespace Breakout {
 					dbGraphics = Graphics::FromImage(dbBitmap);
 
 					bManager = gcnew BlockManager(dbGraphics, ClientSize);
+				 }
+	private: System::Void Game_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+					bManager->keyDown(e);	
+				 }
+	private: System::Void Game_KeyUp(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+					bManager->keyUp(e);
 				 }
 		};
 }

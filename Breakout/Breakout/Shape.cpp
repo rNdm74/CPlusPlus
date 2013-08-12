@@ -21,8 +21,25 @@ void Shape::erase()
 	{
 	}
 
+void Shape::keyDown(KeyEventArgs^  e)
+	{
+		if(e->KeyCode == Keys::Left)
+				xVel = -1;
+		if(e->KeyCode == Keys::Right)
+				xVel = 1;
+	}
+
+void Shape::keyUp(KeyEventArgs^  e)
+	{
+		if(e->KeyCode == Keys::Left ||
+		   e->KeyCode == Keys::Right)
+				xVel = 0;		
+	}
+
 void Shape::move()
 	{
+		xPos += xVel * SPEED;
+		yPos += yVel * 1;
 	}
 
 void Shape::draw()
@@ -30,6 +47,15 @@ void Shape::draw()
 		// Impliemented by child
 	}
 
-void Shape::collision(Shape^ object)
+void Shape::collision(Shape^ s)
 	{
+		Rectangle r1 = getBounds();
+		Rectangle r2 = s->getBounds();
+
+		if(r1.IntersectsWith(r2))
+		{
+			//s = nullptr;
+			visible = false;
+			yVel = -yVel;
+		}
 	}
