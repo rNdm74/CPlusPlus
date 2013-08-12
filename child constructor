@@ -1,0 +1,52 @@
+Shape::Shape(int startXVel, int startYVel, int startWidth, int startHeight, 
+		Graphics^ startCanvas, int startXPos, int startYPos, Color startColor)
+{
+	
+}
+
+ref class EllipseShape : public Shape
+{
+	public:
+	EllipseShape(int startXVel, int startYVel, int startWidth, int startHeight, 
+		Graphics^ startCanvas, int startXPos, int startYPos, Color startColor);
+}
+
+
+EllipseShape::EllipseShape(int startXVel, int startYVel, int startWidth, int startHeight, 
+		Graphics^ startCanvas, int startXPos, int startYPos, 
+		Color startColor) : Shape(startXVel, startYVel, startWidth, startHeight, 
+		startCanvas, startXPos, startYPos, startColor)
+{
+
+}
+
+ref class Parent
+{
+protected:
+	int x;
+public:
+	Parent(int startX);
+};
+
+Parent::Parent(int startX)
+{
+	x = startX;
+}
+
+ref class Child : Public Parent
+{
+private:
+	int y;
+public:
+	Child(int startX, int startY);
+};
+
+Child::Child(int startX, int startY)
+: Parent(startX)
+{
+	y = startY;
+}
+
+
+Child^ newChild = gcnew Child(15, 30);
+

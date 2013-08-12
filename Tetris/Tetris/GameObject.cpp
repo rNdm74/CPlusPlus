@@ -13,7 +13,7 @@ GameObject::GameObject(Point startLocation, Size startSize, Rectangle screenBoun
 		screen = screenBounds;
 		graphics = canvas;
 		brush = gcnew SolidBrush(color);
-		pen = gcnew Pen(color);
+		pen = gcnew Pen(Color::DarkGray, 2);
 	}
 
 void GameObject::input(KeyEventArgs^  e)
@@ -42,7 +42,7 @@ void GameObject::input(KeyEventArgs^  e)
 void GameObject::update()
 	{
 		placed = (location.Y + 20 > screen.Height - 20);
-
+		
 		// Update Code
 		if(count > 200)
 		{
@@ -56,4 +56,6 @@ void GameObject::update()
 void GameObject::render()
 	{
 		graphics->FillRectangle(brush, Rectangle(location, size));
+		graphics->DrawRectangle(pen, Rectangle(location, size));
+		//
 	}

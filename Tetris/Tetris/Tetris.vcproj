@@ -200,15 +200,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\GameBoard.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\GameObject.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\GameObjectList.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\GamePiece.cpp"
 				>
 			</File>
 			<File
@@ -252,15 +252,15 @@
 				</File>
 			</File>
 			<File
-				RelativePath=".\GameBoard.h"
-				>
-			</File>
-			<File
 				RelativePath=".\GameObject.h"
 				>
 			</File>
 			<File
 				RelativePath=".\GameObjectList.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GamePiece.h"
 				>
 			</File>
 			<File

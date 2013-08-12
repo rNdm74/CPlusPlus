@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameBoard.h"
+#include "GamePiece.h"
 
 namespace Tetris {
 
@@ -45,13 +45,9 @@ namespace Tetris {
 	private:
 		Graphics^ dbGraphics;
 		Bitmap^ dbBitmap;
-
-		GameBoard^ board;
-
+		GamePiece^ piece;
 
 	private: System::ComponentModel::IContainer^  components;
-
-
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -60,25 +56,25 @@ namespace Tetris {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->SuspendLayout();
-			// 
-			// Game
-			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
-			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackColor = System::Drawing::Color::Black;
-			this->ClientSize = System::Drawing::Size(464, 602);
-			this->DoubleBuffered = true;
-			this->Name = L"Game";
-			this->ShowIcon = false;
-			this->Text = L"Tetris";
-			this->Load += gcnew System::EventHandler(this, &Game::Game_Load);
-			this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Game::Game_Paint);
-			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &Game::Game_KeyUp);
-			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Game::Game_KeyDown);
-			this->ResumeLayout(false);
+		this->SuspendLayout();
+		// 
+		// Game
+		// 
+		this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+		this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+		this->BackColor = System::Drawing::Color::WhiteSmoke;
+		this->ClientSize = System::Drawing::Size(464, 602);
+		this->DoubleBuffered = true;
+		this->Name = L"Game";
+		this->ShowIcon = false;
+		this->Text = L"Tetris";
+		this->Load += gcnew System::EventHandler(this, &Game::Game_Load);
+		this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Game::Game_Paint);
+		this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &Game::Game_KeyUp);
+		this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Game::Game_KeyDown);
+		this->ResumeLayout(false);
 
-		}
+			}
 #pragma endregion
 	private: int count;
 	private: System::Void Game_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e) {
@@ -89,10 +85,10 @@ namespace Tetris {
 					dbGraphics->Clear(BackColor);
 
 					// Update Code
-					board->update();
+					piece->update();
 
 					// Render Code
-					board->render();
+					piece->render();
 					
 					// Make buffer visible
 					e->Graphics->DrawImage(dbBitmap, 0, 0);
@@ -104,16 +100,16 @@ namespace Tetris {
 					// Grab its Graphics
 					dbGraphics = Graphics::FromImage(dbBitmap);
 
-					board = gcnew GameBoard(Point(230, 0), ClientRectangle, dbGraphics);
+					piece = gcnew GamePiece(Point(230, 0), ClientRectangle, dbGraphics);
 				 }
 	
 	private: System::Void Game_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
-					board->input(e);
+					piece->input(e);
 
-					if(e->KeyCode == Keys::Space) board->addObject();
+					//if(e->KeyCode == Keys::Space) piece->addObject(Point(230, 0));
 				 }
 	private: System::Void Game_KeyUp(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 				 }
-};
+		};
 }
 
