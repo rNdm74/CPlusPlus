@@ -1,8 +1,8 @@
 #include "StdAfx.h"
 #include "EllipseShape.h"
 
-EllipseShape::EllipseShape(int startXPos, int startYPos, int startWidth, int startHeight, 
-			Graphics^ startCanvas, int startXVel, int startYVel, 
+EllipseShape::EllipseShape(float startXPos, float startYPos, float startWidth, float startHeight, 
+			Graphics^ startCanvas, float startXVel, float startYVel, 
 			Color startColor) : Shape(startXPos, startYPos, startWidth, startHeight, 
 			startCanvas, startXVel, startYVel, startColor)
 	{
@@ -10,6 +10,6 @@ EllipseShape::EllipseShape(int startXPos, int startYPos, int startWidth, int sta
 
 void EllipseShape::draw()
 	{
-		canvas->FillEllipse(brush, Rectangle(xPos, yPos, width, height));
-		canvas->DrawEllipse(pen, Rectangle(xPos, yPos, width, height));
+		canvas->FillEllipse(brush, xPos, yPos, width, height);
+		canvas->DrawEllipse(pen, xPos, yPos, width, height);
 	}

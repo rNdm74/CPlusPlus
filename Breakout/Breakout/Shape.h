@@ -7,18 +7,20 @@
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-
-#define SPEED 4
+#define SPEED 1
+#define MAX_SPEEDX 0.5
+#define MAX_SPEEDY 0.5
+#define DAMPING 0.05
 
 ref class Shape
 	{
 	protected:
-		int xVel;
-		int yVel;
-		int	xPos;
-		int yPos;
-		int width;
-		int height;
+		float xVel;
+		float yVel;
+		float xPos;
+		float yPos;
+		float width;
+		float height;
 		Color color;
 		Brush^ brush;
 		Pen^ pen;
@@ -28,22 +30,28 @@ ref class Shape
 		Graphics^ canvas;
 
 	public:
-		Shape(int startXPos, int startYPos, int startWidth, int startHeight, 
-			Graphics^ startCanvas, int startXVel, int startYVel, Color startColor);
+		Shape(float startXPos, float startYPos, float startWidth, float startHeight, 
+			Graphics^ startCanvas, float startXVel, float startYVel, Color startColor);
 
-		void erase();
 		void keyDown(KeyEventArgs^  e);
 		void keyUp(KeyEventArgs^  e);
-		void move();
+
+		void move();		
 		virtual void draw();
-		void collision(Shape^ s);
 
-		Rectangle getBounds() { return Rectangle(xPos, yPos, width, height); }
-
-		bool isVisible() { return visible; }
+		void verticalBounce(float center);
+		void verticalBounce();
+		void horizontalBounce();
 		
-		//void setXPos(int x)	{ xPos = x; }
-		//void setXVel(int x)	{ xVel = x; }
-		int getYPos()		{ return yPos; }
-		//int getXVel()		{ return xVel; }
+		bool collision(Shape^ s);
+
+
+		RectangleF getBounds()	{ return RectangleF(xPos, yPos, width, height); }
+		bool isVisible()		{ return visible; }
+		float getCenterX()		{ return xPos + width / 2; }
+		float getYVel()			{ return yVel; }
+		float getYPos()			{ return yPos; }
+
+		void setVisible(bool b) { visible = b; }
+		void setYVel(float y)		{ yVel = y; }		
 	};

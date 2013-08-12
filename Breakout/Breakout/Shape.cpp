@@ -1,8 +1,8 @@
 #include "StdAfx.h"
 #include "Shape.h"
 
-Shape::Shape(int startXPos, int startYPos, int startWidth, int startHeight, 
-			Graphics^ startCanvas, int startXVel, int startYVel, Color startColor)
+Shape::Shape(float startXPos, float startYPos, float startWidth, float startHeight, 
+			Graphics^ startCanvas, float startXVel, float startYVel, Color startColor)
 	{
 		xPos = startXPos;
 		yPos = startYPos;
@@ -15,10 +15,6 @@ Shape::Shape(int startXPos, int startYPos, int startWidth, int startHeight,
 		brush = gcnew SolidBrush(startColor);
 		pen = gcnew Pen(Color::Black, 2);
 		visible = true;
-	}
-
-void Shape::erase()
-	{
 	}
 
 void Shape::keyDown(KeyEventArgs^  e)
@@ -47,15 +43,30 @@ void Shape::draw()
 		// Impliemented by child
 	}
 
-void Shape::collision(Shape^ s)
+bool Shape::collision(Shape^ s)
 	{
-		Rectangle r1 = getBounds();
-		Rectangle r2 = s->getBounds();
+		RectangleF r1 = getBounds();
+		RectangleF r2 = s->getBounds();
 
-		if(r1.IntersectsWith(r2))
-		{
-			//s = nullptr;
-			visible = false;
-			yVel = -yVel;
-		}
+		return r1.IntersectsWith(r2);
+	}
+
+void Shape::verticalBounce(float center)
+	{
+		yVel *= -1;
+
+		xVel += (float)(getCenterX() - center) * DAMPING;
+
+		if (xVel > MAX_SPEEDY) xVel = MAX_SPEEDX;
+		if (xVel < -MAX_SPEEDY) xVel = -MAX_SPEEDX;
+	}
+
+void Shape::verticalBounce()
+	{
+		yVel *= -1;
+	}
+
+void Shape::horizontalBounce()
+	{
+		xVel *= -1;
 	}

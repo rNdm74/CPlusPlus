@@ -5,8 +5,8 @@ ref class EllipseShape :
 public Shape
 	{
 	public:
-		EllipseShape(int startXPos, int startYPos, int startWidth, int startHeight, 
-			Graphics^ startCanvas, int startXVel, int startYVel, 
+		EllipseShape(float startXPos, float startYPos, float startWidth, float startHeight, 
+			Graphics^ startCanvas, float startXVel, float startYVel, 
 			Color startColor);
 
 		virtual void draw() override;

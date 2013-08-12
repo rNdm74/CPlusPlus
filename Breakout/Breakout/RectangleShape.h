@@ -5,8 +5,8 @@ ref class RectangleShape :
 public Shape
 	{
 	public:
-		RectangleShape(int startXPos, int startYPos, int startWidth, int startHeight, 
-			Graphics^ startCanvas, int startXVel, int startYVel, 
+		RectangleShape(float startXPos, float startYPos, float startWidth, float startHeight, 
+			Graphics^ startCanvas, float startXVel, float startYVel, 
 			Color startColor);
 
 		virtual void draw() override;

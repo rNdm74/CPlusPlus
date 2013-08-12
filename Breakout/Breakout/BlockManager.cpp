@@ -7,33 +7,34 @@
 #define PADDLE_HEIGHT 15
 #define BALL_WIDTH 15
 
-BlockManager::BlockManager(Graphics^ g, Size s)
+BlockManager::BlockManager(Graphics^ g, Size s, int c, int r)
 	{
-		columns = (s.Width / BLOCK_WIDTH);
-		rows = 4;
+		columns = c;
+		rows = r;
+		
 
 		blocks = gcnew array<Shape^,2>(columns,rows);
 		
-		for(int x = 0; x < columns; x++)
-			for(int y = 0; y < rows; y++)
-				blocks[x, y] = gcnew RectangleShape
+		for(int col = 0; col < columns; col++)
+			for(int row = 0; row < rows; row++)
+				blocks[col, row] = gcnew RectangleShape
 				(
-					12 + BLOCK_WIDTH * x,			// xPos
-					BLOCK_HEIGHT * y,				// yPos				
-					BLOCK_WIDTH,					// width
-					BLOCK_HEIGHT,					// height
-					g,								// graphics
-					0,								// xVel
-					0,								// yVel
-					Color::Green					// color
+					(float)12 + BLOCK_WIDTH * col,			// xPos
+					(float)BLOCK_HEIGHT * row,				// yPos				
+					(float)BLOCK_WIDTH,						// width
+					(float)BLOCK_HEIGHT,					// height
+					g,										// graphics
+					0,										// xVel
+					0,										// yVel
+					Color::Green							// color
 				);
 
 		paddle = gcnew RectangleShape
 				(
-					s.Width / 2 - PADDLE_WIDTH / 2, 
-					s.Height - 50, 
-					PADDLE_WIDTH, 
-					PADDLE_HEIGHT, 
+					(float)s.Width / 2 - PADDLE_WIDTH / 2, 
+					(float)s.Height - 50, 
+					(float)PADDLE_WIDTH, 
+					(float)PADDLE_HEIGHT, 
 					g, 
 					0, 
 					0, 
@@ -42,14 +43,50 @@ BlockManager::BlockManager(Graphics^ g, Size s)
 
 		ball = gcnew EllipseShape
 				(
-					s.Width / 2, 
-					s.Height / 2, 
-					BALL_WIDTH, 
-					BALL_WIDTH, 
+					(float)s.Width / 2, 
+					(float)s.Height / 2, 
+					(float)BALL_WIDTH, 
+					(float)BALL_WIDTH, 
 					g, 
 					0, 
-					1, 
+					(float)1, 
 					Color::Red
+				);
+
+		northWall = gcnew RectangleShape
+				(
+					0, 
+					(float)-BALL_WIDTH, 
+					(float)s.Width, 
+					(float)BALL_WIDTH, 
+					g, 
+					0, 
+					0, 
+					Color::WhiteSmoke
+				);
+
+		westWall = gcnew RectangleShape
+				(
+					(float)-BALL_WIDTH, 
+					0, 
+					(float)BALL_WIDTH, 
+					(float)s.Height, 
+					g, 
+					0, 
+					0, 
+					Color::WhiteSmoke
+				);
+
+		eastWall = gcnew RectangleShape
+				(
+					(float)s.Width, 
+					0, 
+					(float)BALL_WIDTH, 
+					(float)s.Height, 
+					g, 
+					0, 
+					0, 
+					Color::WhiteSmoke
 				);
 	}
 
@@ -65,21 +102,25 @@ void BlockManager::keyUp(KeyEventArgs^  e)
 
 void BlockManager::update()
 	{
-		for(int x = 0; x < columns; x++)
+		if(gameRunning)
 		{
-			for(int y = 0; y < rows; y++)
-			{
-				blocks[x, y]->collision(ball);
-				
-				ball->collision(blocks[x, y]);
-			}
-		}	
+			paddle->move();
+			ball->move();
 
-		ball->collision(paddle);
+			if(ball->collision(paddle))		
+				ball->verticalBounce(paddle->getCenterX());
 
-		paddle->move();
-		ball->move();
-		
+			if(ball->collision(westWall))		
+				ball->horizontalBounce();
+
+			if(ball->collision(eastWall))		
+				ball->horizontalBounce();
+
+			if(ball->collision(northWall))		
+				ball->verticalBounce();		
+
+			checkCollision(ball);
+		}
 	}
 
 void BlockManager::render()
@@ -90,4 +131,33 @@ void BlockManager::render()
 
 		paddle->draw();
 		ball->draw();
+	}
+
+bool BlockManager::checkCollision(Shape ^ball)
+	{
+		for(int col = 0; col < columns; col++)
+		{
+			for(int row = 0; row < rows; row++)
+			{
+				Shape^ block = blocks[col, row];
+
+				if(block->isVisible())
+				{
+					if(block->collision(ball))
+					{
+						ball->verticalBounce(block->getCenterX());
+						block->setVisible(false);
+						brokenBrickCount++;						
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+bool BlockManager::checkGameOver()
+	{
+		return (ball->getYPos() > paddle->getYPos() + 50);
 	}

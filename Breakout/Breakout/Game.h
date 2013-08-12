@@ -2,6 +2,9 @@
 
 #include "BlockManager.h"
 
+#define NCOLS 10
+#define NROWS 4
+
 namespace Breakout {
 
 	using namespace System;
@@ -45,6 +48,7 @@ namespace Breakout {
 	private:
 		Graphics^ dbGraphics;
 		Bitmap^ dbBitmap;
+
 		BlockManager^ bManager;
 
 		System::ComponentModel::Container ^components;
@@ -56,26 +60,42 @@ namespace Breakout {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-		this->SuspendLayout();
-		// 
-		// Game
-		// 
-		this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
-		this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-		this->BackColor = System::Drawing::Color::Black;
-		this->ClientSize = System::Drawing::Size(624, 442);
-		this->DoubleBuffered = true;
-		this->Name = L"Game";
-		this->ShowIcon = false;
-		this->Text = L"Breakout";
-		this->Load += gcnew System::EventHandler(this, &Game::Game_Load);
-		this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Game::Game_Paint);
-		this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &Game::Game_KeyUp);
-		this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Game::Game_KeyDown);
-		this->ResumeLayout(false);
+			this->SuspendLayout();
+			// 
+			// Game
+			// 
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->BackColor = System::Drawing::Color::Black;
+			this->ClientSize = System::Drawing::Size(624, 442);
+			this->DoubleBuffered = true;
+			this->Name = L"Game";
+			this->ShowIcon = false;
+			this->Text = L"Breakout";
+			this->Load += gcnew System::EventHandler(this, &Game::Game_Load);
+			this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Game::Game_Paint);
+			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &Game::Game_KeyUp);
+			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Game::Game_KeyDown);
+			this->ResumeLayout(false);
 
-			}
+		}
 #pragma endregion
+	private: Game::Void updateLabels() {
+				if(bManager->getGameRunning())
+					Text = "Score: " + (bManager->getBrokenBrickCount() * 10);
+
+				if(bManager->getBrokenBrickCount() >= (NCOLS * NROWS))
+				{
+					bManager->setGameRunning(false);
+					Text = "You Win !";
+				}
+
+				if(bManager->checkGameOver())
+				{
+					bManager->setGameRunning(false);
+					Text = "You Lose !";
+				}
+			 }
 	private: System::Void Game_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e) {
 					// Refresh screen
 					Invalidate();
@@ -83,10 +103,13 @@ namespace Breakout {
 					// Clear background
 					dbGraphics->Clear(BackColor);
 
-					// Update Code	
+					// Update labels
+					updateLabels();
+
+					// Update game	
 					bManager->update();
 
-					// Render Code
+					// Render game
 					bManager->render();
 					
 					// Make buffer visible
@@ -99,14 +122,18 @@ namespace Breakout {
 					// Grab its Graphics
 					dbGraphics = Graphics::FromImage(dbBitmap);
 
-					bManager = gcnew BlockManager(dbGraphics, ClientSize);
+					// Create game
+					bManager = gcnew BlockManager(dbGraphics, ClientSize, NCOLS, NROWS);
+
+					// Set gamestate 
+					bManager->setGameRunning(true);
 				 }
 	private: System::Void Game_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 					bManager->keyDown(e);	
 				 }
 	private: System::Void Game_KeyUp(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 					bManager->keyUp(e);
-				 }
+				 }	
 		};
 }
 

@@ -25,9 +25,12 @@ void Ball::resetPosition(){
 }
 
 void Ball::reverseX(float center){
-    velX *= -1;
+    velX *= -1; //reverse direction
+
+
     velY += (getCenterY() - center) * DAMPING;
 
+	// capping speeds
     if (velY > MAX_SPEEDY)velY = MAX_SPEEDY;
     if (velY < -MAX_SPEEDY)velY = -MAX_SPEEDY;
 }
