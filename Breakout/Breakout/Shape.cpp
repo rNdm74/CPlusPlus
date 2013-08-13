@@ -20,9 +20,9 @@ Shape::Shape(float startXPos, float startYPos, float startWidth, float startHeig
 void Shape::keyDown(KeyEventArgs^  e)
 	{
 		if(e->KeyCode == Keys::Left)
-				xVel = -1;
+				xVel = -2;
 		if(e->KeyCode == Keys::Right)
-				xVel = 1;
+				xVel = 2;
 	}
 
 void Shape::keyUp(KeyEventArgs^  e)
@@ -53,20 +53,25 @@ bool Shape::collision(Shape^ s)
 
 void Shape::verticalBounce(float center)
 	{
+		// Sets direction
 		yVel *= -1;
 
+		// Sets bounce angle
 		xVel += (float)(getCenterX() - center) * DAMPING;
 
+		// Sets max velocity
 		if (xVel > MAX_SPEEDY) xVel = MAX_SPEEDX;
 		if (xVel < -MAX_SPEEDY) xVel = -MAX_SPEEDX;
 	}
 
 void Shape::verticalBounce()
 	{
+		// Sets direction
 		yVel *= -1;
 	}
 
 void Shape::horizontalBounce()
 	{
+		// Sets direction
 		xVel *= -1;
 	}

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BlockManager.h"
+#include "GameManager.h"
 
 #define NCOLS 10
 #define NROWS 4
@@ -49,7 +49,7 @@ namespace Breakout {
 		Graphics^ dbGraphics;
 		Bitmap^ dbBitmap;
 
-		BlockManager^ bManager;
+		GameManager^ gManager;
 
 		System::ComponentModel::Container ^components;
 
@@ -81,19 +81,24 @@ namespace Breakout {
 		}
 #pragma endregion
 	private: Game::Void updateLabels() {
-				if(bManager->getGameRunning())
-					Text = "Score: " + (bManager->getBrokenBrickCount() * 10);
+				if(gManager->getGameRunning())
+					Text = "Score: " + (gManager->getBrokenBrickCount() * 10) + "  Lifes: " + gManager->getLifes();
 
-				if(bManager->getBrokenBrickCount() >= (NCOLS * NROWS))
+				if(gManager->getBrokenBrickCount() >= (NCOLS * NROWS))
 				{
-					bManager->setGameRunning(false);
+					gManager->setGameRunning(false);
 					Text = "You Win !";
 				}
 
-				if(bManager->checkGameOver())
+				if(gManager->checkGameOver())
 				{
-					bManager->setGameRunning(false);
+					gManager->setGameRunning(false);
 					Text = "You Lose !";
+				}
+
+				if(gManager->checkBallOutOfBounds())
+				{
+					gManager->resetGame(SizeF(ClientSize));					
 				}
 			 }
 	private: System::Void Game_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e) {
@@ -107,10 +112,10 @@ namespace Breakout {
 					updateLabels();
 
 					// Update game	
-					bManager->update();
+					gManager->update();
 
 					// Render game
-					bManager->render();
+					gManager->render();
 					
 					// Make buffer visible
 					e->Graphics->DrawImage(dbBitmap, 0, 0);
@@ -123,16 +128,16 @@ namespace Breakout {
 					dbGraphics = Graphics::FromImage(dbBitmap);
 
 					// Create game
-					bManager = gcnew BlockManager(dbGraphics, ClientSize, NCOLS, NROWS);
+					gManager = gcnew GameManager(dbGraphics, ClientSize, NCOLS, NROWS);
 
 					// Set gamestate 
-					bManager->setGameRunning(true);
+					gManager->setGameRunning(true);
 				 }
 	private: System::Void Game_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
-					bManager->keyDown(e);	
+					gManager->keyDown(e);	
 				 }
 	private: System::Void Game_KeyUp(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
-					bManager->keyUp(e);
+					gManager->keyUp(e);
 				 }	
 		};
 }

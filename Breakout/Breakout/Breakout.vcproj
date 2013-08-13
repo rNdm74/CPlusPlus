@@ -200,15 +200,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\BlockManager.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Breakout.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\EllipseShape.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\GameManager.cpp"
 				>
 			</File>
 			<File
@@ -246,10 +246,6 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\BlockManager.h"
-				>
-			</File>
-			<File
 				RelativePath=".\EllipseShape.h"
 				>
 			</File>
@@ -262,6 +258,10 @@
 					SubType="Designer"
 					>
 				</File>
+			</File>
+			<File
+				RelativePath=".\GameManager.h"
+				>
 			</File>
 			<File
 				RelativePath=".\RectangleShape.h"

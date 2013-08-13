@@ -10,6 +10,9 @@ RectangleShape::RectangleShape(float startXPos, float startYPos, float startWidt
 
 void RectangleShape::draw()
 	{
-		canvas->FillRectangle(brush, xPos, yPos, width, height);
-		canvas->DrawRectangle(pen, xPos, yPos, width, height);
+		if(visible)
+		{
+			canvas->FillRectangle(brush, xPos, yPos, width, height);
+			canvas->DrawRectangle(pen, xPos, yPos, width, height);
+		}		
 	}

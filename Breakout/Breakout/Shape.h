@@ -1,11 +1,11 @@
 #pragma once
 
-	using namespace System;
-	using namespace System::ComponentModel;
-	using namespace System::Collections;
-	using namespace System::Windows::Forms;
-	using namespace System::Data;
-	using namespace System::Drawing;
+using namespace System;
+using namespace System::ComponentModel;
+using namespace System::Collections;
+using namespace System::Windows::Forms;
+using namespace System::Data;
+using namespace System::Drawing;
 
 #define SPEED 1
 #define MAX_SPEEDX 0.5
@@ -53,5 +53,8 @@ ref class Shape
 		float getYPos()			{ return yPos; }
 
 		void setVisible(bool b) { visible = b; }
-		void setYVel(float y)		{ yVel = y; }		
+		void setYVel(float y)	{ yVel = y; }
+		void setXVel(float x)	{ xVel = x; }
+		void setYPos(float y)	{ yPos = y; }
+		void setXPos(float x)	{ xPos = x; }
 	};
