@@ -40,6 +40,9 @@ void GameManager::mouseDown(MouseEventArgs^  e)
 			for(int row = 0; row < 2; row++)
 				{
 					RectangleShape^ rect = rectArray[col, row];
+
+					//if(rect->getBounds().Contains(e->Location))
+						
 				}
 				
 	}
