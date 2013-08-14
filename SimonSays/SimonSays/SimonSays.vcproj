@@ -200,14 +200,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\GameManager.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\RectangleShape.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\SimonSays.cpp"
 				>
 			</File>
@@ -246,14 +238,6 @@
 					SubType="Designer"
 					>
 				</File>
-			</File>
-			<File
-				RelativePath=".\GameManager.h"
-				>
-			</File>
-			<File
-				RelativePath=".\RectangleShape.h"
-				>
 			</File>
 			<File
 				RelativePath=".\resource.h"
