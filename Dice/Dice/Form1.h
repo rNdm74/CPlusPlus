@@ -15,7 +15,7 @@ namespace Dice {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-	
+#define WIN_CONDITION 100
 
 	/// <summary>
 	/// Summary for Form1
@@ -256,6 +256,7 @@ namespace Dice {
 		// playerOneScore
 		// 
 		this->playerOneScore->AutoSize = true;
+		this->playerOneScore->BackColor = System::Drawing::Color::Transparent;
 		this->playerOneScore->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 24, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 			static_cast<System::Byte>(0)));
 		this->playerOneScore->Location = System::Drawing::Point(712, 64);
@@ -267,6 +268,7 @@ namespace Dice {
 		// playerTwoScore
 		// 
 		this->playerTwoScore->AutoSize = true;
+		this->playerTwoScore->BackColor = System::Drawing::Color::Transparent;
 		this->playerTwoScore->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 24, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 			static_cast<System::Byte>(0)));
 		this->playerTwoScore->Location = System::Drawing::Point(712, 64);
@@ -471,50 +473,36 @@ private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e)
 			 rGen = gcnew Random();
 		 }
 
-private: System::Void playerOneRoll_Click(System::Object^  sender, System::EventArgs^  e) {		 
-			
-			 int score = getScore(playerOneDice);
-
-			 playerOneScore->Text = score.ToString();
-
-			 p1RunningScore += score;
-
-			 runningTotalPlayer1Value->Text = p1RunningScore.ToString();
+private: System::Void playerOneRoll_Click(System::Object^  sender, System::EventArgs^  e) {
+			 if(roll(Player::ONE, playerOneDice, playerOneScore, runningTotalPlayer1Value) >= WIN_CONDITION) 
+				 MessageBox::Show("Player One Wins");
 		 }
 
 private: System::Void playerTwoRoll_Click(System::Object^  sender, System::EventArgs^  e) {
-
-			 int score = getScore(playerTwoDice);
-
-			 playerTwoScore->Text = score.ToString();
-
-			 p2RunningScore += score;
-
-			 runningTotalPlayer2Value->Text = p2RunningScore.ToString();
+			 if(roll(Player::TWO, playerTwoDice, playerTwoScore, runningTotalPlayer2Value) >= WIN_CONDITION)
+				 MessageBox::Show("Player Two Wins");
 		 }
 
-private: Form1::Void roll(Player p) {
-			 //Object^ player = getPlayer(p);
+private: int Form1::roll(Player player, array<PictureBox^>^ pBoxs, Label^ pScore, Label^ rScoreValue) {
+			 int score = getScore(pBoxs);
+		
+			 pScore->Text = score.ToString();
 
-			 //array<PictureBox^>^ pBox = safe_cast<array<PictureBox^>>(player[0]);
+			 rScoreValue->Text = getRunningScore(player, score).ToString();	
 
-			 //int score = getScore();
-
-			 //player[1]->Text = score.ToString();
-
-			 //player[2] += score;
-
-			 //player[3]->Text = player[2].ToString();
-			 
+			 return int::Parse(rScoreValue->Text);
 		 }
 
-private: array<PictureBox^>^ Form1::getPlayer(Player p) {
+private: int Form1::getRunningScore(Player p, int score) {
 			 switch(p)
 			 {
 				 case Player::ONE:
-					 return playerOneDice;
+					 p1RunningScore += score;
+					 return p1RunningScore;
+
 				 default:
-					 return playerTwoDice;
+					 p2RunningScore += score;
+					 return p2RunningScore; 
 			 }
 		 }
 
