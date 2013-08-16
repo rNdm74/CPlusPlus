@@ -1,5 +1,11 @@
 #pragma once
 
+
+enum BackColors{ //no enum name needed
+    HIDE, 
+	SHOW
+};
+
 namespace SimonSays {
 
 	using namespace System;
@@ -9,11 +15,7 @@ namespace SimonSays {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-	enum BackColors
-		{
-			HIDE, 
-			SHOW,
-		};
+	
 
 #define PATTERN_LENGTH 20
 #define PATTERN_START_LENGTH 4
@@ -51,6 +53,7 @@ namespace SimonSays {
 
 	private: array<PictureBox^>^ pBoxs;
 	private: array<Color>^ colors;
+	private: array<Color>^ darkcolors;
 	private: array<int>^ pattern;
 	private: array<int>^ answers;
 
@@ -106,58 +109,54 @@ namespace SimonSays {
 		// pictureBox1
 		// 
 		this->pictureBox1->BackColor = System::Drawing::Color::White;
+		this->pictureBox1->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 		this->pictureBox1->Location = System::Drawing::Point(0, 0);
 		this->pictureBox1->Name = L"pictureBox1";
 		this->pictureBox1->Size = System::Drawing::Size(300, 200);
 		this->pictureBox1->TabIndex = 0;
 		this->pictureBox1->TabStop = false;
 		this->pictureBox1->Tag = L"1";
-		this->pictureBox1->MouseLeave += gcnew System::EventHandler(this, &Game::pictureBox_MouseLeave);
 		this->pictureBox1->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &Game::pictureBox_MouseDown);
 		this->pictureBox1->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &Game::pictureBox_MouseUp);
-		this->pictureBox1->MouseEnter += gcnew System::EventHandler(this, &Game::pictureBox_MouseEnter);
 		// 
 		// pictureBox2
 		// 
 		this->pictureBox2->BackColor = System::Drawing::Color::White;
+		this->pictureBox2->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 		this->pictureBox2->Location = System::Drawing::Point(299, 0);
 		this->pictureBox2->Name = L"pictureBox2";
 		this->pictureBox2->Size = System::Drawing::Size(300, 200);
 		this->pictureBox2->TabIndex = 1;
 		this->pictureBox2->TabStop = false;
 		this->pictureBox2->Tag = L"2";
-		this->pictureBox2->MouseLeave += gcnew System::EventHandler(this, &Game::pictureBox_MouseLeave);
 		this->pictureBox2->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &Game::pictureBox_MouseDown);
 		this->pictureBox2->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &Game::pictureBox_MouseUp);
-		this->pictureBox2->MouseEnter += gcnew System::EventHandler(this, &Game::pictureBox_MouseEnter);
 		// 
 		// pictureBox3
 		// 
 		this->pictureBox3->BackColor = System::Drawing::Color::White;
+		this->pictureBox3->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 		this->pictureBox3->Location = System::Drawing::Point(0, 199);
 		this->pictureBox3->Name = L"pictureBox3";
 		this->pictureBox3->Size = System::Drawing::Size(300, 200);
 		this->pictureBox3->TabIndex = 2;
 		this->pictureBox3->TabStop = false;
 		this->pictureBox3->Tag = L"3";
-		this->pictureBox3->MouseLeave += gcnew System::EventHandler(this, &Game::pictureBox_MouseLeave);
 		this->pictureBox3->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &Game::pictureBox_MouseDown);
 		this->pictureBox3->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &Game::pictureBox_MouseUp);
-		this->pictureBox3->MouseEnter += gcnew System::EventHandler(this, &Game::pictureBox_MouseEnter);
 		// 
 		// pictureBox4
 		// 
 		this->pictureBox4->BackColor = System::Drawing::Color::White;
+		this->pictureBox4->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 		this->pictureBox4->Location = System::Drawing::Point(299, 199);
 		this->pictureBox4->Name = L"pictureBox4";
 		this->pictureBox4->Size = System::Drawing::Size(300, 200);
 		this->pictureBox4->TabIndex = 3;
 		this->pictureBox4->TabStop = false;
 		this->pictureBox4->Tag = L"4";
-		this->pictureBox4->MouseLeave += gcnew System::EventHandler(this, &Game::pictureBox_MouseLeave);
 		this->pictureBox4->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &Game::pictureBox_MouseDown);
 		this->pictureBox4->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &Game::pictureBox_MouseUp);
-		this->pictureBox4->MouseEnter += gcnew System::EventHandler(this, &Game::pictureBox_MouseEnter);
 		// 
 		// start_Button
 		// 
@@ -167,9 +166,9 @@ namespace SimonSays {
 		this->start_Button->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 		this->start_Button->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 			static_cast<System::Byte>(0)));
-		this->start_Button->Location = System::Drawing::Point(0, 397);
+		this->start_Button->Location = System::Drawing::Point(0, 400);
 		this->start_Button->Name = L"start_Button";
-		this->start_Button->Size = System::Drawing::Size(599, 47);
+		this->start_Button->Size = System::Drawing::Size(599, 43);
 		this->start_Button->TabIndex = 4;
 		this->start_Button->Text = L"PLAY";
 		this->start_Button->UseVisualStyleBackColor = false;
@@ -265,7 +264,7 @@ namespace SimonSays {
 
 	private: System::Void pictureBox_MouseDown(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 				 // event handler
-				 answers[count] = pickedItem(sender, BackColors::HIDE);
+				 answers[count] = pickedItem(sender, BackColors::SHOW);
 
 				 // add to listbox for debug
 				 listBox2->Items->Add(answers[count]);
@@ -279,19 +278,9 @@ namespace SimonSays {
 
 	private: System::Void pictureBox_MouseUp(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 				 // event handler
-				 pickedItem(sender, BackColors::SHOW);
-			 }
-
-	private: System::Void pictureBox_MouseEnter(System::Object^  sender, System::EventArgs^  e) {
-				 // event handler
-				 pickedItem(sender, BackColors::SHOW);
-			 }
-
-	private: System::Void pictureBox_MouseLeave(System::Object^  sender, System::EventArgs^  e) {
-				 // event handler
 				 pickedItem(sender, BackColors::HIDE);
 			 }
-	
+		
 	private: int Game::pickedItem(System::Object^  s, BackColors bc){
 				 // cast object as picturebox
 				 PictureBox^ pBox = safe_cast<PictureBox^>(s);
@@ -331,10 +320,10 @@ namespace SimonSays {
 				 { 
 					Color::Red, 
 					Color::Blue, 
-					Color::Green, 
+					Color::Lime, 
 					Color::Yellow 
 				 };
-
+				 
 				 // create arrays for sequences
 				 pattern = gcnew array<int>(PATTERN_LENGTH);
 				 answers = gcnew array<int>(PATTERN_LENGTH);
@@ -344,6 +333,8 @@ namespace SimonSays {
 				 
 				 // initialize pattern count
 				 patternCount = PATTERN_START_LENGTH;
+
+				 gameInit();
 			 }
 	
 	private: System::Void start_Button_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -360,7 +351,7 @@ namespace SimonSays {
 				 gameHandleButton();
 
 				 // run main game
-				 gameRun();		
+				 executeGameSequence();		
 
 				 // set game to not running
 				 gameToggleRunning();
@@ -378,21 +369,30 @@ namespace SimonSays {
 				 start_Button->Text = "MATCH THE SEQUENCE OF COLOURS";
 			 }
 
-	private: Game::Void gameRun() {
+	private: Game::Void gameInit() {
+				 generateSequence();
+				 //runSequence();				 
+			 }
+
+	private: Game::Void generateSequence() {
 				 // loop through pattern array
-				 for(int i = 0; i < patternCount; i++)
+				 for(int i = 0; i < pattern->Length; i++)
 				 {	
-					// if empty assign value
-					if(pattern[i] == 0) 
-						pattern[i] = rGen->Next(MIN_RGEN,MAX_RGEN);
-
-					// add to list box for debug
-					listBox1->Items->Add(pattern[i]);
-
-					// run flash sequence
-					runSequence(pattern[i] - 1);					
+					pattern[i] = rGen->Next(MIN_RGEN,MAX_RGEN);
 				 }
 			 }
+
+	private: Game::Void executeGameSequence() {
+				 for(int i = 0; i < patternCount; i++)
+				 {
+				    // add to list box for debug
+				    listBox1->Items->Add(pattern[i]);
+
+				    // run flash sequence
+				    runSequence(pattern[i] - 1);					
+				 }
+			  }
+
 
 	private: Game::Void runSequence(int currInt) {
 					// show color
