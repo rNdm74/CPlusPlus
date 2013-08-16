@@ -196,7 +196,31 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\Alien.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\AssemblyInfo.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Bullet.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\GameObject.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\GameObjectList.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\GameObjectManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Player.cpp"
 				>
 			</File>
 			<File
@@ -230,6 +254,14 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\Alien.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Bullet.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Game.h"
 				FileType="3"
 				>
@@ -238,6 +270,22 @@
 					SubType="Designer"
 					>
 				</File>
+			</File>
+			<File
+				RelativePath=".\GameObject.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GameObjectList.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GameObjectManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Player.h"
+				>
 			</File>
 			<File
 				RelativePath=".\resource.h"

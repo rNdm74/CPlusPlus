@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GameObjectManager.h"
 
 namespace SpaceInvaders {
 
@@ -45,6 +46,8 @@ namespace SpaceInvaders {
 		Graphics^ dbGraphics;
 		Bitmap^ dbBitmap;
 
+		GameObjectManager^ gameObjectManager;
+
 		System::ComponentModel::Container ^components;
 
 #pragma region Windows Form Designer generated code
@@ -54,23 +57,25 @@ namespace SpaceInvaders {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-		this->SuspendLayout();
-		// 
-		// Game
-		// 
-		this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
-		this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-		this->BackColor = System::Drawing::Color::Black;
-		this->ClientSize = System::Drawing::Size(624, 442);
-		this->DoubleBuffered = true;
-		this->Name = L"Game";
-		this->ShowIcon = false;
-		this->Text = L"Space Invaders";
-		this->Load += gcnew System::EventHandler(this, &Game::Game_Load);
-		this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Game::Game_Paint);
-		this->ResumeLayout(false);
+			this->SuspendLayout();
+			// 
+			// Game
+			// 
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->BackColor = System::Drawing::Color::Black;
+			this->ClientSize = System::Drawing::Size(624, 442);
+			this->DoubleBuffered = true;
+			this->Name = L"Game";
+			this->ShowIcon = false;
+			this->Text = L"Space Invaders";
+			this->Load += gcnew System::EventHandler(this, &Game::Game_Load);
+			this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Game::Game_Paint);
+			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &Game::Game_KeyUp);
+			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Game::Game_KeyDown);
+			this->ResumeLayout(false);
 
-			}
+		}
 #pragma endregion
 	private: System::Void Game_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e) {
 					// Refresh screen
@@ -80,8 +85,10 @@ namespace SpaceInvaders {
 					dbGraphics->Clear(BackColor);
 					
 					// Update game	
+					gameObjectManager->update();
 
 					// Render game
+					gameObjectManager->render();
 					
 					// Make buffer visible
 					e->Graphics->DrawImage(dbBitmap, 0, 0);
@@ -92,7 +99,15 @@ namespace SpaceInvaders {
 
 					// Grab its Graphics
 					dbGraphics = Graphics::FromImage(dbBitmap);
+
+					gameObjectManager = gcnew GameObjectManager(dbGraphics, ClientRectangle);
 				 }
-		};
+	private: System::Void Game_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+					gameObjectManager->keyDown(e);
+				 }
+	private: System::Void Game_KeyUp(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+					gameObjectManager->keyUp(e);
+				 }
+	};
 }
 
