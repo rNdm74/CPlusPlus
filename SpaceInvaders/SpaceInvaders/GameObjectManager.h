@@ -11,19 +11,19 @@ using namespace System::Windows::Forms;
 using namespace System::Data;
 using namespace System::Drawing;
 
-#define NCOLS 10
+#define NCOLS 6
 #define NROWS 4
 
 ref class GameObjectManager
 {
 private:
-	GameObjectList^ gameObjects;
-
-	array<Alien^, 2>^ aliens;
+	GameObjectList^ aliens;
+	GameObjectList^ playerBullets;
+	GameObjectList^ alienBullets;
 
 	Player^ player;
 
-	DateTime datetime;
+	Random^ rGen;
 
 public:
 	GameObjectManager(Graphics^ startCanvas, Rectangle gameWindow);
@@ -31,4 +31,6 @@ public:
 	void keyDown(KeyEventArgs^  e);
 	void update();
 	void render();
+	bool checkCollision(GameObjectList^ list, Bullet^ bullet);
+	bool checkCollision(GameObject^ object, Bullet^ bullet);
 };

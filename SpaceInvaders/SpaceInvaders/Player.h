@@ -10,7 +10,7 @@ private:
 	GameObjectList^ bullets;
 
 public:
-	Player(RectangleF startRect, PointF startVel, Graphics^ startGraphics);
+	Player(RectangleF startRect, PointF startVel, Graphics^ startGraphics, GameObjectList^ gameBullets);
 	void keyUp(KeyEventArgs^  e);
 	void keyDown(KeyEventArgs^  e);
 

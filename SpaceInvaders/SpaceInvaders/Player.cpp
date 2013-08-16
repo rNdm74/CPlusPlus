@@ -1,10 +1,10 @@
 #include "StdAfx.h"
 #include "Player.h"
 
-Player::Player(RectangleF startRect, PointF startVel, Graphics^ startGraphics)
+Player::Player(RectangleF startRect, PointF startVel, Graphics^ startGraphics, GameObjectList^ gameBullets)
 	   : GameObject(startRect, startVel, startGraphics)
 {
-	bullets = gcnew GameObjectList();
+	bullets = gameBullets;
 }
 
 void Player::keyDown(KeyEventArgs^  e)
@@ -19,7 +19,7 @@ void Player::keyDown(KeyEventArgs^  e)
 		direction.X = 1;
 
 	if(e->KeyCode == Keys::Space)
-		bullets->add(gcnew Bullet(RectangleF(rect.X + 4, rect.Y + 4, 2, 2), PointF(0.1,0.1), canvas));
+		bullets->add(gcnew Bullet(RectangleF(rect.X + 4, rect.Y + 4, 2, 2), PointF(0.1,0.1), canvas, -1));
 }
 
 void Player::keyUp(KeyEventArgs^  e)
@@ -35,7 +35,7 @@ void Player::keyUp(KeyEventArgs^  e)
 
 void Player::update()
 {
-	bullets->update();
+	//bullets->update();
 
 	rect.X += vel.X * SPEED * direction.X;
 	rect.Y += vel.Y * SPEED * direction.Y;
@@ -43,6 +43,8 @@ void Player::update()
 
 void Player::render()
 {
-	bullets->render();
-	canvas->FillRectangle(brush, rect);	
+	if(visible)
+	{
+		canvas->FillRectangle(brush, rect);
+	}
 }

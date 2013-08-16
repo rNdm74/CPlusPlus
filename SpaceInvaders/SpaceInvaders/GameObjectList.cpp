@@ -7,7 +7,7 @@ GameObjectList::GameObjectList(void)
 	tail = nullptr;
 }
 
-int GameObjectList::countGameObjects()
+int GameObjectList::length()
 {
 	GameObject^ objectWalker = head;
 
@@ -22,6 +22,24 @@ int GameObjectList::countGameObjects()
 	}
 
 	return count;
+}
+GameObject^ GameObjectList::get(int item)
+{
+	GameObject^ objectWalker = head;
+
+	int count = 0;
+
+	while(objectWalker != nullptr)
+	{
+		if(item == count) return objectWalker;
+
+		count++;
+		
+		// Move to next node
+		objectWalker = objectWalker->Next;		
+	}
+
+	return nullptr;
 }
 
 void GameObjectList::add(GameObject^ newGameObject)

@@ -9,7 +9,8 @@ private:
 
 public:
 	GameObjectList();
-	int countGameObjects();
+	int length();
+	GameObject^ get(int item);
 	void add(GameObject^ newGameObject);
 	void remove(GameObject^ gameObjectToDelete);
 	void update();

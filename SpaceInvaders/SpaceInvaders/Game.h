@@ -47,6 +47,7 @@ namespace SpaceInvaders {
 		Bitmap^ dbBitmap;
 
 		GameObjectManager^ gameObjectManager;
+
 	private: System::Windows::Forms::Timer^  clock;
 	private: System::ComponentModel::IContainer^  components;
 
