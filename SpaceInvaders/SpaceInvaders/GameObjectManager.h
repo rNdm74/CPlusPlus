@@ -21,7 +21,9 @@ private:
 
 	array<Alien^, 2>^ aliens;
 
-	Player^ player;	
+	Player^ player;
+
+	DateTime datetime;
 
 public:
 	GameObjectManager(Graphics^ startCanvas, Rectangle gameWindow);

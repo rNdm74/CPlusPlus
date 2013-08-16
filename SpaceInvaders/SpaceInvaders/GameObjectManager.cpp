@@ -14,14 +14,14 @@ GameObjectManager::GameObjectManager(Graphics^ canvas, Rectangle gameWindow)
 		{
 			gameObjects->add(gcnew Alien
 			(
-				RectangleF(78 + (50 * col), 25 + (50 * row),10,10),
+				RectangleF(100 + (40 * col), 40 + (40 * row),10,10),
 				PointF(0,0),
 				canvas
 			));			
 		}
 	}
 
-	player = gcnew Player(RectangleF(gameWindow.Width / 2 - 5, gameWindow.Height - 25,10,10), PointF(0.1,0.1), canvas);
+	player = gcnew Player(RectangleF(gameWindow.Width / 2 - 5, gameWindow.Height - 20,10,10), PointF(0.1,0.1), canvas);
 
 	gameObjects->add(player);
 

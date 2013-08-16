@@ -19,7 +19,7 @@ void Player::keyDown(KeyEventArgs^  e)
 		direction.X = 1;
 
 	if(e->KeyCode == Keys::Space)
-		bullets->add(gcnew Bullet(rect, PointF(0.1,0.1), canvas));
+		bullets->add(gcnew Bullet(RectangleF(rect.X + 4, rect.Y + 4, 2, 2), PointF(0.1,0.1), canvas));
 }
 
 void Player::keyUp(KeyEventArgs^  e)
