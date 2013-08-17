@@ -8,6 +8,7 @@ public GameObject
 {
 private:
 	GameObjectList^ bullets;
+	bool hit;
 
 public:
 	Player(RectangleF startRect, PointF startVel, Graphics^ startGraphics, GameObjectList^ gameBullets);
@@ -16,4 +17,7 @@ public:
 
 	virtual void update() override;
 	virtual void render() override;
+
+	bool isHit()		{ return hit; }
+	void setHit(bool h) { hit = h; }
 };

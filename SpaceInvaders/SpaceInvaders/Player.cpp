@@ -35,15 +35,13 @@ void Player::keyUp(KeyEventArgs^  e)
 
 void Player::update()
 {
-	//bullets->update();
-
 	rect.X += vel.X * SPEED * direction.X;
 	rect.Y += vel.Y * SPEED * direction.Y;
 }
 
 void Player::render()
 {
-	if(visible)
+	if(!hit)
 	{
 		canvas->FillRectangle(brush, rect);
 	}

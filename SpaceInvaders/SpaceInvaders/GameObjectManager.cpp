@@ -4,6 +4,7 @@
 GameObjectManager::GameObjectManager(Graphics^ canvas, Rectangle gameWindow)
 {	
 	rGen = gcnew Random();
+
 	playerBullets = gcnew GameObjectList();
 	alienBullets = gcnew GameObjectList();
 
@@ -48,14 +49,14 @@ void GameObjectManager::update()
 	player->update();
 	
 
-	for(int bullet = 0; bullet < alienBullets->length(); bullet++)
-		checkCollision(aliens, (Bullet^)alienBullets->get(bullet));
-
 	for(int bullet = 0; bullet < playerBullets->length(); bullet++)
-		//checkCollision(player, (Bullet^)playerBullets->get(bullet));
+ 		checkCollision(aliens, (Bullet^)playerBullets->get(bullet));
+
+	for(int bullet = 0; bullet < alienBullets->length(); bullet++)
+		checkCollision(player, (Bullet^)alienBullets->get(bullet));
 	
 
-	if(rGen->Next(1000) == 0) aliens->get(rGen->Next(0,22))->shoot();
+		if(rGen->Next(1000) == 0) aliens->get(rGen->Next(0,aliens->length()))->shoot();
 }
 
 void GameObjectManager::render()
@@ -76,10 +77,11 @@ bool GameObjectManager::checkCollision(GameObjectList^ list, Bullet^ bullet)
 		{
 			if(object->collision(bullet))
 			{
-				//ball->verticalBounce(block->getCenterX());
-				alienBullets->remove(bullet);
-				object->setVisible(false);
-				//brokenBrickCount++;						
+				playerBullets->remove(bullet);
+
+				aliens->remove(object);
+
+				//add to score;						
 				return true;
 			}
 		}
@@ -94,10 +96,11 @@ bool GameObjectManager::checkCollision(GameObject^ object, Bullet^ bullet)
 	{
 		if(object->collision(bullet))
 		{
-			//ball->verticalBounce(block->getCenterX());
-			playerBullets->remove(bullet);
-			object->setVisible(false);
-			//brokenBrickCount++;						
+			alienBullets->remove(bullet);
+
+			player->setHit(true);
+
+			//trigger end game;						
 			return true;
 		}
 	}
