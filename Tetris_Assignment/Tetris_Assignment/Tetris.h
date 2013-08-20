@@ -2,7 +2,12 @@
 
 #include "Grid.h"
 #include "L.h"
+#include "J.h"
+#include "Z.h"
+#include "S.h"
 #include "T.h"
+#include "I.h"
+#include "O.h"
 
 
 namespace Tetris_Assignment {
@@ -52,8 +57,13 @@ namespace Tetris_Assignment {
 		Grid^ grid;
 
 		L^ l;
+		J^ j;
+		Z^ z;
+		S^ s;
 		T^ t;
-
+		I^ i;
+		O^ o;
+		
 		int count;
 	private: System::Windows::Forms::Timer^  clock;
 	private: System::ComponentModel::IContainer^  components;
@@ -107,8 +117,15 @@ namespace Tetris_Assignment {
 					// Update game	
 					if(count > 150)
 					{
-						l->moveDown();
-						t->moveDown();
+						//l->moveDown();
+						//j->moveDown();
+						//z->moveDown();
+						s->moveDown();
+						//d->moveDown();
+						//t->moveDown();
+						//i->moveDown();
+						//o->moveDown();
+
 						count = 0;
 					}
 
@@ -117,7 +134,13 @@ namespace Tetris_Assignment {
 					// Render game
 					grid->draw();
 					//l->draw();
-					t->draw();
+					//j->draw();
+					//z->draw();
+					s->draw();
+					//t->draw();
+					//i->draw();
+					//o->draw();
+
 					
 					// Make buffer visible
 					e->Graphics->DrawImage(dbBitmap, 0, 0);
@@ -145,6 +168,45 @@ namespace Tetris_Assignment {
 						grid
 					);
 
+					j = gcnew J
+					(
+						gcnew array<Point> 
+						{ 
+							Point(3,1), 
+							Point(3,2), 
+							Point(3,3),
+							Point(2,3)
+						}, 
+						Color::Green, 
+						grid
+					);
+
+					z = gcnew Z
+					(
+						gcnew array<Point> 
+						{ 
+							Point(1,1), 
+							Point(2,1), 
+							Point(2,2),
+							Point(3,2)
+						}, 
+						Color::Green, 
+						grid
+					);
+
+					s = gcnew S
+					(
+						gcnew array<Point> 
+						{ 
+							Point(3,1), 
+							Point(2,1), 
+							Point(2,2),
+							Point(1,2)
+						}, 
+						Color::Green, 
+						grid
+					);
+
 					t = gcnew T
 					(
 						gcnew array<Point> 
@@ -158,18 +220,42 @@ namespace Tetris_Assignment {
 						grid
 					);
 
+					i = gcnew I
+					(
+						gcnew array<Point> 
+						{ 
+							Point(2,1), 
+							Point(2,2), 
+							Point(2,3),
+							Point(2,4)
+						}, 
+						Color::Green, 
+						grid
+					);
+
+					o = gcnew O
+					(
+						gcnew array<Point> 
+						{ 
+							Point(2,1), 
+							Point(2,2), 
+							Point(3,1),
+							Point(3,2)
+						}, 
+						Color::Green, 
+						grid
+					);
+
 					count = 0;
 				 }
 	private: System::Void Tetris_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
-					if(e->KeyCode == Keys::Left) t->moveLeft();
-					if(e->KeyCode == Keys::Right) t->moveRight();
-					if(e->KeyCode == Keys::Down) t->moveDown();
+					if(e->KeyCode == Keys::Left) s->moveLeft();
+					if(e->KeyCode == Keys::Right) s->moveRight();
+					if(e->KeyCode == Keys::Down) s->moveDown();
 
 					int direction = 3;
-
 					
-					if(e->KeyCode == Keys::Up) t->rotate();
-					
+					if(e->KeyCode == Keys::Up) s->rotate();					
 				 }
 	private: System::Void clock_Tick(System::Object^  sender, System::EventArgs^  e) {
 					

@@ -1,6 +1,58 @@
 #include "StdAfx.h"
 #include "Z.h"
 
-Z::Z(void)
+Z::Z(array<Point>^ square, Color color, Grid^ grid)
+  : Block(square, color, grid)
 	{
+	}
+
+void Z::rotate()
+	{
+		orientation %= 2;
+
+		switch(static_cast<EDirection>(orientation))
+		{	
+			case EAST: //done
+				squares[0].X+=2;
+				//squares[0].Y+=2;
+				squares[1].X++;
+				squares[1].Y++;
+				//squares[2].X++;
+				//squares[2].Y++;
+				squares[3].X--;
+				squares[3].Y++; 
+				break;
+			case SOUTH: //done
+				squares[0].X-=2;
+				//squares[0].Y+=2;
+				squares[1].X--;
+				squares[1].Y--;
+				//squares[2].X++;
+				//squares[2].Y++;
+				squares[3].X++;
+				squares[3].Y--; 
+				break;
+			//case WEST:
+			//	squares[0].X-=2;
+			//	squares[0].Y-=2;
+			//	squares[1].X--;
+			//	squares[1].Y--;
+			//	//squares[2].X++;
+			//	//squares[2].Y++;
+			//	squares[3].X++;
+			//	squares[3].Y--; 
+			//	break;
+			//case NORTH:
+			//	squares[0].X+=2;
+			//	squares[0].Y-=2;
+			//	squares[1].X++;
+			//	squares[1].Y--;
+			//	//squares[2].X++;
+			//	//squares[2].Y++;
+			//	squares[3].X++;
+			//	squares[3].Y++;
+			//	break;
+		}
+
+		orientation++;
 	}

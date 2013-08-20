@@ -52,10 +52,9 @@ void Grid::drawOneSquare(int col, int row,  Color color)
 		if(row < N_ROWS)
 		{
 			Cell^ cell = gridData[col, row];
-		//if(!cell->isFull())
 		
-		cell->setColor(color);
-		cell->setFull(true);
+			cell->setColor(color);
+			cell->setFull(true);
 		}
 	}
 
