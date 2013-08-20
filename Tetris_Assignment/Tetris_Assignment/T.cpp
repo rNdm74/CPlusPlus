@@ -6,7 +6,7 @@ T::T(array<Point>^ square, Color color, Grid^ grid)
 	{
 	}
 
-void T::rotate()
+void T::rotate(array<Point>^ temp)
 	{
 		orientation %= 4;
 

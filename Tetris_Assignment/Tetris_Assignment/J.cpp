@@ -6,7 +6,7 @@ J::J(array<Point>^ square, Color color, Grid^ grid)
 	{
 	}
 
-void J::rotate()
+void J::rotate(array<Point>^ temp)
 	{
 		orientation %= 4;
 

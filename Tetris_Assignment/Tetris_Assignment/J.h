@@ -6,5 +6,5 @@ public Block
 	{
 	public:
 		J(array<Point>^ square, Color color, Grid^ grid);
-		virtual void rotate() override;
+		virtual void rotate(array<Point>^ temp) override;
 	};

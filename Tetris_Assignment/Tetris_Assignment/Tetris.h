@@ -255,7 +255,7 @@ namespace Tetris_Assignment {
 
 					int direction = 3;
 					
-					if(e->KeyCode == Keys::Up) s->rotate();					
+					if(e->KeyCode == Keys::Up) s->moveRotate();					
 				 }
 	private: System::Void clock_Tick(System::Object^  sender, System::EventArgs^  e) {
 					

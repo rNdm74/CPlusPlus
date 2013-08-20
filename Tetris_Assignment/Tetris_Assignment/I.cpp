@@ -6,7 +6,7 @@ I::I(array<Point>^ square, Color color, Grid^ grid)
 	{
 	}
 
-void I::rotate()
+void I::rotate(array<Point>^ temp)
 	{
 		orientation %= 2;
 

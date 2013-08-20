@@ -6,7 +6,7 @@ O::O(array<Point>^ square, Color color, Grid^ grid)
 	{
 	}
 
-void O::rotate()
+void O::rotate(array<Point>^ temp)
 	{
 		//orientation %= 4;
 

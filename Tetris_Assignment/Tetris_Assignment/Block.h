@@ -17,6 +17,12 @@ enum EDirection
 		NORTH = 3
 	};
 
+enum EMoveType
+	{
+		ROTATE,
+		MOVE
+	};
+
 ref class Block
 	{
 	protected:
@@ -30,8 +36,11 @@ ref class Block
 		void moveLeft();
 		void moveRight();
 		void moveDown();
-		virtual void rotate();
+		void moveRotate();
+		virtual void rotate(array<Point>^ temp);
+		void move(array<Point>^ temp, Point direction);
 		void draw();
-		bool canMove();
+		void lookAhead(Point direction, EMoveType moveType);
+		bool canMove(array<Point>^ temp);
 		void addToGrid(int cel, int row, Color color);
 	};

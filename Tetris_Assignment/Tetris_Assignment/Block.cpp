@@ -10,31 +10,36 @@ Block::Block(array<Point>^ square, Color color, Grid^ grid)
 	}
 
 void Block::moveLeft()
-	{		
-		for(int square = 0; square < squares->Length; square++)
-		{	
-			squares[square].X--;
-		}
+	{
+		lookAhead(Point(-1,0), EMoveType::MOVE);
 	}
 
 void Block::moveRight()
 	{
-		for(int square = 0; square < squares->Length; square++)
-		{	
-			squares[square].X++;
-		}
+		lookAhead(Point(1,0), EMoveType::MOVE);
 	}
 
 void Block::moveDown()
 	{
-		for(int square = 0; square < squares->Length; square++)
-		{	
-			squares[square].Y++;
-		}
+		lookAhead(Point(0,1), EMoveType::MOVE);
 	}
 
-void Block::rotate()
+void Block::moveRotate()
 	{
+		lookAhead(Point(0,0), EMoveType::ROTATE);
+	}
+
+void Block::rotate(array<Point>^ temp)
+	{
+	}
+
+void Block::move(array<Point>^ temp, Point direction)
+	{
+		for(int i = 0; i < temp->Length; i++)
+		{	
+			temp[i].X+=direction.X;
+			temp[i].Y+=direction.Y;
+		}
 	}
 
 void Block::draw()
@@ -46,19 +51,39 @@ void Block::draw()
 				squares[square].Y,
 				blockColor
 			);
-
-		//for(int p = 0; p < blocklocation->Length; p++)
-		//	graphics->FillRectangle(brush, blocklocation[p].X, blocklocation[p].Y, 20, 20);
 	}
 
-bool Block::canMove()
+void Block::lookAhead(Point direction, EMoveType moveType)
 	{
-		/*for(int square = 0; square < blocklocation->Length; square++)
+		array<Point>^ temp = gcnew array<Point>(squares->Length);
+
+		for(int square = 0; square < squares->Length; square++)
+			temp[square] = squares[square];
+
+		switch(moveType)
 		{
-			return	(blocklocation[square].X > gameGrid->getGridLeft()) &&
-					(blocklocation[square].X < 18);
-		}*/
-		return true;
+			case ROTATE:
+				rotate(temp);
+				break;
+			case MOVE:
+				move(temp, direction);
+				break;
+		}
+		
+
+		if(canMove(temp))
+			for(int square = 0; square < squares->Length; square++)
+				squares[square] = temp[square];
+	}
+
+bool Block::canMove(array<Point>^ temp)
+	{
+		for(int square = 0; square < squares->Length; square++)
+		{
+			return	(temp[square].X < 10 && temp[square].X > 1 && temp[square].Y < 19);
+		}
+		
+		return false;
 	}
 
 void Block::addToGrid(int cel, int row, Color color)

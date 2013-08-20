@@ -49,13 +49,10 @@ void Grid::update()
 
 void Grid::drawOneSquare(int col, int row,  Color color)
 	{	
-		if(row < N_ROWS)
-		{
-			Cell^ cell = gridData[col, row];
+		Cell^ cell = gridData[col, row];
 		
-			cell->setColor(color);
-			cell->setFull(true);
-		}
+		cell->setColor(color);
+		cell->setFull(true);
 	}
 
 void Grid::isRowFull()

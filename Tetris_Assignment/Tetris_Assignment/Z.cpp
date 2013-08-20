@@ -6,7 +6,7 @@ Z::Z(array<Point>^ square, Color color, Grid^ grid)
 	{
 	}
 
-void Z::rotate()
+void Z::rotate(array<Point>^ temp)
 	{
 		orientation %= 2;
 

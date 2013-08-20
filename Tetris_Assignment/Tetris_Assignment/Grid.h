@@ -9,9 +9,9 @@ using namespace System::Windows::Forms;
 using namespace System::Data;
 using namespace System::Drawing;
 
-#define CELL_SIZE 20
-#define N_COLS 20
-#define N_ROWS 30
+#define CELL_SIZE 30
+#define N_COLS 10
+#define N_ROWS 20
 
 
 ref class Grid

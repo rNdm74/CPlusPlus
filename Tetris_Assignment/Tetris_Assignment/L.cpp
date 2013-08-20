@@ -7,7 +7,7 @@ L::L(array<Point>^ square, Color color, Grid^ grid)
 		
 	}
 
-void L::rotate()
+void L::rotate(array<Point>^ temp)
 	{
 		orientation %= 4;
 
