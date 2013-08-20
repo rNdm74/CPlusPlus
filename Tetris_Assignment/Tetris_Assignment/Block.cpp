@@ -11,22 +11,37 @@ Block::Block(array<Point>^ square, Color color, Grid^ grid)
 
 void Block::moveLeft()
 	{
-		lookAhead(Point(-1,0), EMoveType::MOVE);
+		lookAhead(Point(-1,0));
 	}
 
 void Block::moveRight()
 	{
-		lookAhead(Point(1,0), EMoveType::MOVE);
+		lookAhead(Point(1,0));
 	}
 
 void Block::moveDown()
 	{
-		lookAhead(Point(0,1), EMoveType::MOVE);
+		lookAhead(Point(0,1));
 	}
 
 void Block::moveRotate()
 	{
-		lookAhead(Point(0,0), EMoveType::ROTATE);
+		array<Point>^ temp = gcnew array<Point>(squares->Length);
+
+		for(int square = 0; square < temp->Length; square++)
+			temp[square] = squares[square];
+
+		rotate(temp);
+		
+		if(canMove(temp))
+		{
+			for(int square = 0; square < squares->Length; square++)
+				squares[square] = temp[square];
+
+			orientation++;
+		}
+			
+
 	}
 
 void Block::rotate(array<Point>^ temp)
@@ -53,24 +68,19 @@ void Block::draw()
 			);
 	}
 
-void Block::lookAhead(Point direction, EMoveType moveType)
+void Block::lookAhead(Point direction)
 	{
 		array<Point>^ temp = gcnew array<Point>(squares->Length);
 
-		for(int square = 0; square < squares->Length; square++)
+		for(int square = 0; square < temp->Length; square++)
 			temp[square] = squares[square];
 
-		switch(moveType)
-		{
-			case ROTATE:
-				rotate(temp);
-				break;
-			case MOVE:
-				move(temp, direction);
-				break;
+		for(int i = 0; i < temp->Length; i++)
+		{	
+			temp[i].X+=direction.X;
+			temp[i].Y+=direction.Y;
 		}
 		
-
 		if(canMove(temp))
 			for(int square = 0; square < squares->Length; square++)
 				squares[square] = temp[square];
@@ -78,9 +88,9 @@ void Block::lookAhead(Point direction, EMoveType moveType)
 
 bool Block::canMove(array<Point>^ temp)
 	{
-		for(int square = 0; square < squares->Length; square++)
+		for(int square = 0; square < temp->Length; square++)
 		{
-			return	(temp[square].X < 10 && temp[square].X > 1 && temp[square].Y < 19);
+			return	(temp[square].X <= 9 && temp[square].X >= 1 && temp[square].Y <= 18);
 		}
 		
 		return false;

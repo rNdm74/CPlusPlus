@@ -40,7 +40,7 @@ ref class Block
 		virtual void rotate(array<Point>^ temp);
 		void move(array<Point>^ temp, Point direction);
 		void draw();
-		void lookAhead(Point direction, EMoveType moveType);
+		void lookAhead(Point direction);
 		bool canMove(array<Point>^ temp);
 		void addToGrid(int cel, int row, Color color);
 	};

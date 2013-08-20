@@ -28,7 +28,7 @@ ref class Grid
 		void update();
 		void drawOneSquare(int col, int row, Color color); //- ifFull(x,y)
 		void isRowFull(); //- all cells in row are full 
-		void deleteRow(); // - cell up above is now my color cycle up from bottom
+		void deleteRow(); //- cell up above is now my color cycle up from bottom
 
 		int getGridLeft()	{ return 0; }
 		int getGridRight()	{ return N_COLS-1; }

@@ -10,6 +10,7 @@ void S::rotate(array<Point>^ temp)
 	{
 		orientation %= 2;
 
+		
 		switch(static_cast<EDirection>(orientation))
 		{	
 			case EAST: //done
@@ -54,5 +55,5 @@ void S::rotate(array<Point>^ temp)
 			//	break;
 		}
 
-		orientation++;
+		
 	}

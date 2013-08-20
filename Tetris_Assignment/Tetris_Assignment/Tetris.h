@@ -153,7 +153,7 @@ namespace Tetris_Assignment {
 					// Grab its Graphics
 					dbGraphics = Graphics::FromImage(dbBitmap);
 
-					grid = gcnew Grid(Point(10,10), dbGraphics);
+					grid = gcnew Grid(Point(30,30), dbGraphics);
 
 					l = gcnew L
 					(
