@@ -33,15 +33,13 @@ void Block::moveRotate()
 
 		rotate(temp);
 		
-		if(canMove(temp))
+		if(canMoveDown(temp))
 		{
 			for(int square = 0; square < squares->Length; square++)
 				squares[square] = temp[square];
 
 			orientation++;
 		}
-			
-
 	}
 
 void Block::rotate(array<Point>^ temp)
@@ -52,8 +50,8 @@ void Block::move(array<Point>^ temp, Point direction)
 	{
 		for(int i = 0; i < temp->Length; i++)
 		{	
-			temp[i].X+=direction.X;
-			temp[i].Y+=direction.Y;
+			//temp[i].X+=direction.X;
+			//temp[i].Y+=direction.Y;
 		}
 	}
 
@@ -66,6 +64,11 @@ void Block::draw()
 				squares[square].Y,
 				blockColor
 			);
+	}
+
+void Block::clear()
+	{
+		
 	}
 
 void Block::lookAhead(Point direction)
@@ -81,16 +84,39 @@ void Block::lookAhead(Point direction)
 			temp[i].Y+=direction.Y;
 		}
 		
-		if(canMove(temp))
+		if(canMoveDown(temp) && !placed)
+		{
 			for(int square = 0; square < squares->Length; square++)
+			{				
 				squares[square] = temp[square];
+				//Point p = squares[square];
+				//gameGrid->getCell(p.X, p.Y)->setFull(true);
+			}				
+		}
+		else
+		{
+			//FLAG TO STOP BLOCK
+			for(int square = 0; square < squares->Length; square++)
+			{	
+				Point p = squares[square];
+				gameGrid->getCell(p.X, p.Y)->setFull(true);
+			}
+			 
+			placed = true;
+			//blockColor = Color::Red;
+		}
 	}
 
-bool Block::canMove(array<Point>^ temp)
-	{
+bool Block::canMoveDown(array<Point>^ temp)
+	{		
+	
 		for(int square = 0; square < temp->Length; square++)
-		{
-			return	(temp[square].X <= 9 && temp[square].X >= 1 && temp[square].Y <= 18);
+		{	
+			Point p = temp[square];
+
+			bool full =	gameGrid->getCell(p.X, p.Y)->isFull();
+
+			return full;
 		}
 		
 		return false;

@@ -9,6 +9,10 @@ Grid::Grid(Point location, Graphics^ dbGraphics)
 		gridData = gcnew array<Cell^, 2>(N_COLS,N_ROWS);
 		
 		brush = gcnew SolidBrush(Color::White);
+		font = gcnew Font("Microsoft Sans Serif", 8);
+		fontBrush = gcnew SolidBrush(Color::Black);
+
+		blocks = gcnew array<Point>(4);
 
 		for(int col = 0; col < N_COLS; col++)
 		{
@@ -17,25 +21,41 @@ Grid::Grid(Point location, Graphics^ dbGraphics)
 				gridData[col, row] = gcnew Cell(Color::White);
 			}
 		}
+
+		
 	}
 
 void Grid::draw()
 	{
 		for(int col = 0; col < N_COLS; col++)
-		{
+		{			
+			Cell^ cell = gridData[col, 10];
+
+			cell->setFull(true);
+
 			for(int row = 0; row < N_ROWS; row++)
 			{
 				Cell^ cell = gridData[col, row];
 
 				graphics->FillRectangle
 				(
-					gcnew SolidBrush(cell->getColor()), 
+					gcnew SolidBrush((cell->isFull()) ? cell->getColor() : Color::White), 
 					gridLocation.X + col * CELL_SIZE,
 					gridLocation.Y + row * CELL_SIZE,
 					CELL_SIZE,
 					CELL_SIZE
 				);
 
+				graphics->DrawString
+				(
+					//col + "," + row, 
+					"" + cell->isFull(),
+					font, 
+					fontBrush, 
+					gridLocation.X + col * CELL_SIZE, 
+					gridLocation.Y + row * CELL_SIZE
+				);
+				
 				cell->setColor(Color::White);
 				cell->setFull(false);
 			}
@@ -48,7 +68,7 @@ void Grid::update()
 	}
 
 void Grid::drawOneSquare(int col, int row,  Color color)
-	{	
+	{
 		Cell^ cell = gridData[col, row];
 		
 		cell->setColor(color);
@@ -61,4 +81,5 @@ void Grid::isRowFull()
 
 void Grid::deleteRow()
 	{
+		
 	}

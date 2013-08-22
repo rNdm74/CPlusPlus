@@ -21,6 +21,11 @@ ref class Grid
 		Point gridLocation;
 		Graphics^ graphics;
 		Brush^ brush;
+		Font^ font;
+		Brush^ fontBrush;
+
+		array<Point>^ blocks;
+
 	public:
 		Grid(Point location, Graphics^ dbGraphics);
 
@@ -33,4 +38,5 @@ ref class Grid
 		int getGridLeft()	{ return 0; }
 		int getGridRight()	{ return N_COLS-1; }
 		int getGridBottom() { return N_ROWS-1; }
+		Cell^ getCell(int col, int row)	{ return gridData[col, row]; }
 	};

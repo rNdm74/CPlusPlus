@@ -30,6 +30,7 @@ ref class Block
 		Color blockColor;
 		Grid^ gameGrid;
 		int orientation;
+		bool placed;
 		
 	public:
 		Block(array<Point>^ square, Color color, Grid^ grid);
@@ -40,7 +41,11 @@ ref class Block
 		virtual void rotate(array<Point>^ temp);
 		void move(array<Point>^ temp, Point direction);
 		void draw();
+		void clear();
 		void lookAhead(Point direction);
-		bool canMove(array<Point>^ temp);
+		bool canMoveDown(array<Point>^ temp);
 		void addToGrid(int cel, int row, Color color);
+
+		array<Point>^ getSquares() { return squares; }
+		bool isPlaced()			   { return placed; }
 	};

@@ -122,7 +122,7 @@ namespace Tetris_Assignment {
 						//z->moveDown();
 						s->moveDown();
 						//d->moveDown();
-						//t->moveDown();
+						if(s->isPlaced())t->moveDown();
 						//i->moveDown();
 						//o->moveDown();
 
@@ -137,6 +137,16 @@ namespace Tetris_Assignment {
 					//j->draw();
 					//z->draw();
 					s->draw();
+
+					array<Point>^ p = s->getSquares();
+
+					Text = p[0] + " " + p[1] +" "+ p[2] + " " + p[3];
+
+					if(s->isPlaced())
+					{
+						t->draw();
+					}
+					
 					//t->draw();
 					//i->draw();
 					//o->draw();
@@ -251,7 +261,11 @@ namespace Tetris_Assignment {
 	private: System::Void Tetris_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 					if(e->KeyCode == Keys::Left) s->moveLeft();
 					if(e->KeyCode == Keys::Right) s->moveRight();
-					if(e->KeyCode == Keys::Down) s->moveDown();
+					if(e->KeyCode == Keys::Down)
+					{						
+						s->moveDown();
+						if(s->isPlaced())t->moveDown();
+					}
 
 					int direction = 3;
 					
