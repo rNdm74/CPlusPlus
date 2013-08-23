@@ -1,39 +1,26 @@
 #include "StdAfx.h"
 #include "Grid.h"
 
-Grid::Grid(Point location, Graphics^ dbGraphics)
+Grid::Grid(Point location, Graphics^ dbGraphics, Font^ font)
 	{		
 		gridLocation = location;
-		graphics = dbGraphics;
+		graphics = dbGraphics;		
 
-		playerScore = 0;
-
-		gridData = gcnew array<Cell^, 2>(N_COLS,N_ROWS);
+		gridData = gcnew array<Cell^, 2>(N_COLS, N_ROWS);
 		
-		brush = gcnew SolidBrush(Color::White);
-
-		pfc = gcnew PrivateFontCollection();
-		pfc->AddFontFile("PressStart2P.ttf");
-		font = gcnew Font(pfc->Families[0], 16, FontStyle::Regular);
-
-		//font = gcnew Font("Consolas", 28);
-		fontBrush = gcnew SolidBrush(Color::CornflowerBlue);
-
 		blocks = gcnew array<Point>(4);
 
 		for(int col = 0; col < N_COLS; col++)
 		{
 			for(int row = 0; row < N_ROWS; row++)
 			{
-				gridData[col, row] = gcnew Cell(Color::Black);
+				gridData[col, row] = gcnew Cell(Color::FromArgb(100, Color::Black));
 			}
-		}		
+		}
 	}
 
 void Grid::draw()
 	{
-		
-
 		for(int col = 0; col < N_COLS; col++)
 		{			
 			Cell^ southWall = gridData[col, 24];
@@ -48,52 +35,33 @@ void Grid::draw()
 				westWall = gridData[1, row];
 				westWall->setSolid(true);	
 
-				Cell^ eastWall = gridData[13, row];
+				Cell^ eastWall = gridData[12, row];
 				eastWall->setSolid(true);
-				eastWall = gridData[14, row];
+				eastWall = gridData[13, row];
 				eastWall->setSolid(true);
 
 				Cell^ cell = gridData[col, row];
 				
 				graphics->FillRectangle
 				(
-				gcnew SolidBrush((cell->isSolid()) ? cell->getColor() : Color::WhiteSmoke), 
+					gcnew SolidBrush((cell->isSolid()) ? cell->getColor() : Color::FromArgb(75,Color::WhiteSmoke)), 
 					gridLocation.X + col * CELL_SIZE,
 					gridLocation.Y + row * CELL_SIZE,
 					CELL_SIZE,
 					CELL_SIZE
 				);
 
-				//graphics->DrawString
-				//(
-				//	//col + "," + row, 
-				//	"" + cell->isBlock(),
-				//	font, 
-				//	fontBrush, 
-				//	gridLocation.X + col * CELL_SIZE, 
-				//	gridLocation.Y + row * CELL_SIZE
-				//);
-			}
-		}
+				graphics->DrawRectangle
+				(
+					gcnew Pen(cell->getColor(), 1), 
+					gridLocation.X + col * CELL_SIZE,
+					gridLocation.Y + row * CELL_SIZE,
+					CELL_SIZE,
+					CELL_SIZE
 
-		graphics->DrawString
-		(
-			//col + "," + row, 
-			"LEVEL:	0\n\n" + 
-			"LINES:	0\n\n" + 
-			"SCORE:	" + playerScore.ToString() + 
-			"\n\n\n\n\n" +
-			"HELP\n\n"+
-			"LEFT:\n\n"+
-			"RIGHT:\n\n"+
-			"UP:ROTATE\n\n"+
-			"DOWN:DROP\n\n\n\n"+
-			"NEXT:",
-			font, 
-			fontBrush, 
-			50, 
-			50
-		);
+				);
+			}
+		}		
 	}
 
 void Grid::update()
@@ -106,6 +74,8 @@ void Grid::update()
 				{
 					deleteRow(row);
 					playerScore += 100;
+					playerLines++;
+					if(playerScore % 100 == 0) playerLevel++;
 				}					
 			}
 		}		
@@ -115,19 +85,29 @@ void Grid::drawOneSquare(int col, int row,  Color color)
 	{
 		graphics->FillRectangle
 		(
-			gcnew SolidBrush(Color::Aquamarine), 
+			gcnew SolidBrush(color), 
 			gridLocation.X + col * CELL_SIZE,
 			gridLocation.Y + row * CELL_SIZE,
 			CELL_SIZE,
 			CELL_SIZE
-		);		
+		);	
+		
+		graphics->DrawRectangle
+		(
+			gcnew Pen(color, 2), 
+			gridLocation.X + col * CELL_SIZE,
+			gridLocation.Y + row * CELL_SIZE,
+			CELL_SIZE,
+			CELL_SIZE
+
+		);
 	}
 
 bool Grid::isRowFull(int rowNumber)
 	{
 		bool fullRow = true;
 		
-		for (int col = 2; col < 13; col++)
+		for (int col = 2; col < 12; col++)
 			if (!gridData[col, rowNumber]->isBlock())
 				fullRow = false;
 
@@ -142,7 +122,7 @@ void Grid::deleteRow(int rowNumber)
 		//to delete row r, work up from that row, moving each row down one
 		for (row = rowNumber; row >= 1; row--)
 		{
-			for (col=2; col < 13; col++)
+			for (col=2; col < 12; col++)
 			{
 				gridData[col, row]->setSolid(gridData[col, row - 1]->isSolid());
 				gridData[col, row]->setBlock(gridData[col, row - 1]->isBlock());

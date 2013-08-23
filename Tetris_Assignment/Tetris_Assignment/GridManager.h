@@ -23,9 +23,19 @@ ref class GridManager
 {
 private:
 	array<Block^>^ blocks;
+
 	Grid^ grid;
+
+	Graphics^ graphics;
+
+	Image^ background;
+	PrivateFontCollection^ pfc;
+	Font^ font;
+	Brush^ fontBrush;
+	
 	int time;
-	int blockInPlay;
+	int waitTime;
+	int blockInPlay;	
 
 	Random^ rGen;
 

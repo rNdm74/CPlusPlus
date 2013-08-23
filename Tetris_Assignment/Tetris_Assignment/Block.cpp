@@ -27,7 +27,7 @@ void Block::moveDown()
 	{
 		newPosition = lookAhead(Point(0,1));
 
-		canMove(newPosition) ? move(newPosition) : addToGrid(Color::Red);
+		canMove(newPosition) ? move(newPosition) : addToGrid(blockColor);
 	}
 
 void Block::moveRotate()

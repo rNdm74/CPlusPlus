@@ -52,6 +52,12 @@ namespace Tetris_Assignment {
 
 
 
+
+
+
+
+
+
 	private: System::ComponentModel::IContainer^  components;
 
 

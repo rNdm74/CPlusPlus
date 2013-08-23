@@ -11,7 +11,7 @@ using namespace System::Drawing;
 using namespace System::Drawing::Text;
 
 #define CELL_SIZE 30
-#define N_COLS 15
+#define N_COLS 14
 #define N_ROWS 26
 
 
@@ -19,20 +19,16 @@ ref class Grid
 	{
 	private:
 		array<Cell^, 2>^ gridData;
+		array<Point>^ blocks;
 		Point gridLocation;
 		Graphics^ graphics;
-		Brush^ brush;
-
-		PrivateFontCollection^ pfc;
-		Font^ font;
-		Brush^ fontBrush;
-
-		array<Point>^ blocks;
 
 		int playerScore;
+		int playerLines;
+		int playerLevel;	
 
 	public:
-		Grid(Point location, Graphics^ dbGraphics);
+		Grid(Point location, Graphics^ dbGraphics, Font^ font);
 
 		void draw();
 		void update();
@@ -41,9 +37,13 @@ ref class Grid
 		void deleteRow(int rowNumber); //- cell up above is now my color cycle up from bottom
 
 		int getPlayerScore()			{ return playerScore; }
+		int getPlayerLines()			{ return playerLines; }
+		int getPlayerLevel()			{ return playerLevel; }
+
 		int getGridLeft()				{ return 0; }
 		int getGridRight()				{ return N_COLS-1; }
 		int getGridBottom()				{ return N_ROWS-1; }
+
 		Cell^ getCell(int col, int row)	{ return gridData[col, row]; }
 		Cell^ getCell(Point p)			{ return gridData[p.X, p.Y]; }
 	};
