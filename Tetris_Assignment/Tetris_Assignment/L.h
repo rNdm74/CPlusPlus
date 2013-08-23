@@ -4,11 +4,8 @@
 ref class L :
 public Block
 	{
-	private:
-		
-
 	public:
-		L(array<Point>^ square, Color color, Grid^ grid);
+		L(Color color, Grid^ grid);
 		virtual void rotate(array<Point>^ temp) override;
 	};
 

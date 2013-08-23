@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Grid.h"
+//#include "GridManager.h"
 
 using namespace System;
 using namespace System::ComponentModel;
@@ -17,10 +18,15 @@ enum EDirection
 		NORTH = 3
 	};
 
-enum EMoveType
+enum EBlockType 
 	{
-		ROTATE,
-		MOVE
+		L_BLOCK = 0,
+		J_BLOCK = 1,
+		Z_BLOCK = 2,
+		S_BLOCK = 3,
+		T_BLOCK = 4,
+		I_BLOCK = 5,
+		O_BLOCK = 6
 	};
 
 ref class Block
@@ -31,9 +37,10 @@ ref class Block
 		Grid^ gameGrid;
 		int orientation;
 		bool placed;
+		EBlockType blockType;
 		
 	public:
-		Block(array<Point>^ square, Color color, Grid^ grid);
+		Block(Color color, Grid^ grid);
 		void moveLeft();
 		void moveRight();
 		void moveDown();
@@ -46,6 +53,7 @@ ref class Block
 		bool canMoveDown(array<Point>^ temp);
 		void addToGrid(int cel, int row, Color color);
 
-		array<Point>^ getSquares() { return squares; }
-		bool isPlaced()			   { return placed; }
+		array<Point>^ getSquares()	{ return squares; }
+		EBlockType getBlockType()	{ return blockType; }
+		bool isPlaced()				{ return placed; }
 	};

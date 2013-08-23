@@ -12,12 +12,15 @@ ref class Cell
 	private:
 		Color cellColor;
 		bool full;
+		bool wall;
 	public:
 		Cell(Color color);
 
 		void setColor(Color c)	{ cellColor = c; }
 		void setFull(bool b)	{ full = b; }
+		void setWall(bool b)	{ wall = b; }
 
 		Color getColor()		{ return cellColor; }
 		bool isFull()			{ return full;	}
+		bool isWall()			{ return wall;	}
 	};

@@ -200,10 +200,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Block.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Cell.cpp"
 				>
 			</File>
@@ -212,23 +208,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\I.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\J.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\L.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\O.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\S.cpp"
+				RelativePath=".\GridManager.cpp"
 				>
 			</File>
 			<File
@@ -252,27 +232,51 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\T.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Tetris_Assignment.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\Z.cpp"
+			<Filter
+				Name="Blocks"
 				>
-			</File>
+				<File
+					RelativePath=".\Block.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\I.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\J.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\L.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\O.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\S.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\T.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Z.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath=".\Block.h"
-				>
-			</File>
 			<File
 				RelativePath=".\Cell.h"
 				>
@@ -282,19 +286,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\I.h"
-				>
-			</File>
-			<File
-				RelativePath=".\J.h"
-				>
-			</File>
-			<File
-				RelativePath=".\L.h"
-				>
-			</File>
-			<File
-				RelativePath=".\O.h"
+				RelativePath=".\GridManager.h"
 				>
 			</File>
 			<File
@@ -302,15 +294,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\S.h"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\T.h"
 				>
 			</File>
 			<File
@@ -323,10 +307,42 @@
 					>
 				</File>
 			</File>
-			<File
-				RelativePath=".\Z.h"
+			<Filter
+				Name="Blocks"
 				>
-			</File>
+				<File
+					RelativePath=".\Block.h"
+					>
+				</File>
+				<File
+					RelativePath=".\I.h"
+					>
+				</File>
+				<File
+					RelativePath=".\J.h"
+					>
+				</File>
+				<File
+					RelativePath=".\L.h"
+					>
+				</File>
+				<File
+					RelativePath=".\O.h"
+					>
+				</File>
+				<File
+					RelativePath=".\S.h"
+					>
+				</File>
+				<File
+					RelativePath=".\T.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Z.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"

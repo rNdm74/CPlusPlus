@@ -1,15 +1,23 @@
 #include "StdAfx.h"
 #include "S.h"
 
-S::S(array<Point>^ square, Color color, Grid^ grid)
-  : Block(square, color, grid)
+S::S(Color color, Grid^ grid)
+  : Block(color, grid)
 	{
+		blockType = EBlockType::S_BLOCK;
+
+		squares = gcnew array<Point> 
+		{ 
+			Point(2,0), 
+			Point(1,0), 
+			Point(1,1),
+			Point(0,1)
+		};
 	}
 
 void S::rotate(array<Point>^ temp)
 	{
 		orientation %= 2;
-
 		
 		switch(static_cast<EDirection>(orientation))
 		{	
@@ -53,7 +61,5 @@ void S::rotate(array<Point>^ temp)
 			//	temp[3].X++;
 			//	temp[3].Y++;
 			//	break;
-		}
-
-		
+		}		
 	}

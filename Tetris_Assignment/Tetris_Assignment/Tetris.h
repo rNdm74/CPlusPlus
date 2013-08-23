@@ -1,14 +1,6 @@
 #pragma once
 
-#include "Grid.h"
-#include "L.h"
-#include "J.h"
-#include "Z.h"
-#include "S.h"
-#include "T.h"
-#include "I.h"
-#include "O.h"
-
+#include "GridManager.h"
 
 namespace Tetris_Assignment {
 
@@ -54,17 +46,10 @@ namespace Tetris_Assignment {
 		Graphics^ dbGraphics;
 		Bitmap^ dbBitmap;
 
-		Grid^ grid;
-
-		L^ l;
-		J^ j;
-		Z^ z;
-		S^ s;
-		T^ t;
-		I^ i;
-		O^ o;
+		GridManager^ gridManager;
 		
 		int count;
+
 	private: System::Windows::Forms::Timer^  clock;
 	private: System::ComponentModel::IContainer^  components;
 
@@ -115,37 +100,40 @@ namespace Tetris_Assignment {
 					dbGraphics->Clear(BackColor);
 					
 					// Update game	
-					if(count > 150)
-					{
-						//l->moveDown();
-						//j->moveDown();
-						//z->moveDown();
-						s->moveDown();
-						//d->moveDown();
-						if(s->isPlaced())t->moveDown();
-						//i->moveDown();
-						//o->moveDown();
+					gridManager->update();
 
-						count = 0;
-					}
+					//if(count > 150)
+					//{
+					//	//l->moveDown();
+					//	//j->moveDown();
+					//	//z->moveDown();
+					//	s->moveDown();
+					//	//d->moveDown();
+					//	if(s->isPlaced())t->moveDown();
+					//	//i->moveDown();
+					//	//o->moveDown();
 
-					count++;
+					//	count = 0;
+					//}
+
+					//count++;
 
 					// Render game
-					grid->draw();
+					gridManager->render();
+					//grid->draw();
 					//l->draw();
 					//j->draw();
 					//z->draw();
-					s->draw();
+					//s->draw();
 
-					array<Point>^ p = s->getSquares();
+					//array<Point>^ p = s->getSquares();
 
-					Text = p[0] + " " + p[1] +" "+ p[2] + " " + p[3];
+					//Text = p[0] + " " + p[1] +" "+ p[2] + " " + p[3];
 
-					if(s->isPlaced())
-					{
-						t->draw();
-					}
+					//if(s->isPlaced())
+					//{
+					//	t->draw();
+					//}
 					
 					//t->draw();
 					//i->draw();
@@ -163,9 +151,9 @@ namespace Tetris_Assignment {
 					// Grab its Graphics
 					dbGraphics = Graphics::FromImage(dbBitmap);
 
-					grid = gcnew Grid(Point(30,30), dbGraphics);
+					gridManager = gcnew GridManager(dbGraphics);
 
-					l = gcnew L
+					/*l = gcnew L
 					(
 						gcnew array<Point> 
 						{ 
@@ -254,22 +242,16 @@ namespace Tetris_Assignment {
 						}, 
 						Color::Green, 
 						grid
-					);
+					);*/
 
 					count = 0;
 				 }
 	private: System::Void Tetris_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
-					if(e->KeyCode == Keys::Left) s->moveLeft();
-					if(e->KeyCode == Keys::Right) s->moveRight();
-					if(e->KeyCode == Keys::Down)
-					{						
-						s->moveDown();
-						if(s->isPlaced())t->moveDown();
-					}
-
-					int direction = 3;
-					
-					if(e->KeyCode == Keys::Up) s->moveRotate();					
+					if(e->KeyCode == Keys::Left) gridManager->moveLeft();
+					if(e->KeyCode == Keys::Right) gridManager->moveRight();
+										
+					if(e->KeyCode == Keys::Up) gridManager->moveRotate();	
+					if(e->KeyCode == Keys::Down)gridManager->moveDown();
 				 }
 	private: System::Void clock_Tick(System::Object^  sender, System::EventArgs^  e) {
 					

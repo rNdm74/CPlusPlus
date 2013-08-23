@@ -29,22 +29,25 @@ void Grid::draw()
 	{
 		for(int col = 0; col < N_COLS; col++)
 		{			
-			Cell^ cell = gridData[col, 10];
+			Cell^ southWall = gridData[col, 18];
 
-			cell->setFull(true);
+			southWall->setFull(true);
+			southWall->setWall(true);
 
 			for(int row = 0; row < N_ROWS; row++)
 			{
 				Cell^ cell = gridData[col, row];
-
+				
 				graphics->FillRectangle
 				(
-					gcnew SolidBrush((cell->isFull()) ? cell->getColor() : Color::White), 
+					gcnew SolidBrush((cell->isWall()) ? cell->getColor() : Color::White), 
 					gridLocation.X + col * CELL_SIZE,
 					gridLocation.Y + row * CELL_SIZE,
 					CELL_SIZE,
 					CELL_SIZE
 				);
+
+				
 
 				graphics->DrawString
 				(
@@ -56,7 +59,7 @@ void Grid::draw()
 					gridLocation.Y + row * CELL_SIZE
 				);
 				
-				cell->setColor(Color::White);
+				//cell->setColor(Color::White);
 				cell->setFull(false);
 			}
 		}		
@@ -69,10 +72,21 @@ void Grid::update()
 
 void Grid::drawOneSquare(int col, int row,  Color color)
 	{
-		Cell^ cell = gridData[col, row];
+		//Cell^ cell = gridData[col, row];
 		
-		cell->setColor(color);
-		cell->setFull(true);
+		//cell->setColor(color);
+		//cell->setFull(true);
+
+		graphics->FillRectangle
+				(
+				gcnew SolidBrush(Color::Aquamarine), 
+					gridLocation.X + col * CELL_SIZE,
+					gridLocation.Y + row * CELL_SIZE,
+					CELL_SIZE,
+					CELL_SIZE
+				);
+
+		
 	}
 
 void Grid::isRowFull()

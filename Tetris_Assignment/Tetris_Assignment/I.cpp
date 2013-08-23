@@ -1,9 +1,18 @@
 #include "StdAfx.h"
 #include "I.h"
 
-I::I(array<Point>^ square, Color color, Grid^ grid)
-  : Block(square, color, grid)
+I::I(Color color, Grid^ grid)
+  : Block(color, grid)
 	{
+		blockType = EBlockType::I_BLOCK;
+
+		squares = gcnew array<Point> 
+		{ 
+			Point(0,0), 
+			Point(0,1), 
+			Point(0,2),
+			Point(0,3)
+		};
 	}
 
 void I::rotate(array<Point>^ temp)
@@ -13,46 +22,44 @@ void I::rotate(array<Point>^ temp)
 		switch(static_cast<EDirection>(orientation))
 		{	
 			case EAST: //done
-				squares[0].X+=2;
-				squares[0].Y+=2;
-				squares[1].X++;
-				squares[1].Y++;
-				//squares[2].X++;
-				//squares[2].Y++;
-				squares[3].X--;
-				squares[3].Y--; 
+				temp[0].X+=2;
+				temp[0].Y+=2;
+				temp[1].X++;
+				temp[1].Y++;
+				//temp[2].X++;
+				//temp[2].Y++;
+				temp[3].X--;
+				temp[3].Y--; 
 				break;
 			case SOUTH: //done
-				squares[0].X-=2;
-				squares[0].Y-=2;
-				squares[1].X--;
-				squares[1].Y--;
-				//squares[2].X++;
-				//squares[2].Y++;
-				squares[3].X++;
-				squares[3].Y++; 
+				temp[0].X-=2;
+				temp[0].Y-=2;
+				temp[1].X--;
+				temp[1].Y--;
+				//temp[2].X++;
+				//temp[2].Y++;
+				temp[3].X++;
+				temp[3].Y++; 
 				break;
 			//case WEST:
-			//	squares[0].X-=2;
-			//	squares[0].Y-=2;
-			//	squares[1].X--;
-			//	squares[1].Y--;
-			//	//squares[2].X++;
-			//	//squares[2].Y++;
-			//	squares[3].X++;
-			//	squares[3].Y--; 
+			//	temp[0].X-=2;
+			//	temp[0].Y-=2;
+			//	temp[1].X--;
+			//	temp[1].Y--;
+			//	//temp[2].X++;
+			//	//temp[2].Y++;
+			//	temp[3].X++;
+			//	temp[3].Y--; 
 			//	break;
 			//case NORTH:
-			//	squares[0].X+=2;
-			//	squares[0].Y-=2;
-			//	squares[1].X++;
-			//	squares[1].Y--;
-			//	//squares[2].X++;
-			//	//squares[2].Y++;
-			//	squares[3].X++;
-			//	squares[3].Y++;
+			//	temp[0].X+=2;
+			//	temp[0].Y-=2;
+			//	temp[1].X++;
+			//	temp[1].Y--;
+			//	//temp[2].X++;
+			//	//temp[2].Y++;
+			//	temp[3].X++;
+			//	temp[3].Y++;
 			//	break;
 		}
-
-		orientation++;
 	}

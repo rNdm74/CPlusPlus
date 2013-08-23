@@ -1,9 +1,18 @@
 #include "StdAfx.h"
 #include "O.h"
 
-O::O(array<Point>^ square, Color color, Grid^ grid)
-  : Block(square, color, grid)
+O::O(Color color, Grid^ grid)
+  : Block(color, grid)
 	{
+		blockType = EBlockType::O_BLOCK;
+
+		squares = gcnew array<Point> 
+		{ 
+			Point(1,0), 
+			Point(1,1), 
+			Point(2,0),
+			Point(2,1)
+		};
 	}
 
 void O::rotate(array<Point>^ temp)

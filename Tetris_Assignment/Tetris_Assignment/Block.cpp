@@ -1,9 +1,9 @@
 #include "StdAfx.h"
 #include "Block.h"
 
-Block::Block(array<Point>^ square, Color color, Grid^ grid)
-	{
-		squares = square;
+Block::Block(Color color, Grid^ grid)
+	{	
+		squares = nullptr;
 		blockColor = color;
 		gameGrid = grid;
 		orientation = EDirection::EAST;
@@ -43,8 +43,8 @@ void Block::moveRotate()
 	}
 
 void Block::rotate(array<Point>^ temp)
-	{
-	}
+{
+}
 
 void Block::move(array<Point>^ temp, Point direction)
 	{
@@ -84,8 +84,9 @@ void Block::lookAhead(Point direction)
 			temp[i].Y+=direction.Y;
 		}
 		
-		if(canMoveDown(temp) && !placed)
+		if(canMoveDown(temp))
 		{
+			 
 			for(int square = 0; square < squares->Length; square++)
 			{				
 				squares[square] = temp[square];
@@ -99,7 +100,9 @@ void Block::lookAhead(Point direction)
 			for(int square = 0; square < squares->Length; square++)
 			{	
 				Point p = squares[square];
-				gameGrid->getCell(p.X, p.Y)->setFull(true);
+				gameGrid->getCell(p.X, p.Y)->setWall(true);
+				gameGrid->getCell(p.X, p.Y)->setColor(Color::Red);
+
 			}
 			 
 			placed = true;
@@ -109,17 +112,22 @@ void Block::lookAhead(Point direction)
 
 bool Block::canMoveDown(array<Point>^ temp)
 	{		
-	
+		array<bool>^ flags = gcnew array<bool>(4);
+
 		for(int square = 0; square < temp->Length; square++)
 		{	
-			Point p = temp[square];
+			Point newP = temp[square];
+			
+			if(gameGrid->getCell(newP.X, newP.Y)->isWall())
+			{
+				flags[square] = gameGrid->getCell(newP.X, newP.Y)->isWall();
+			}			
+		}	
 
-			bool full =	gameGrid->getCell(p.X, p.Y)->isFull();
+		for(int item = 0; item < squares->Length; item++)
+			if(flags[item])return false;
 
-			return full;
-		}
-		
-		return false;
+		return true;
 	}
 
 void Block::addToGrid(int cel, int row, Color color)
