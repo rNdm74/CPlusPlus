@@ -112,7 +112,9 @@ void Block::addToGrid(Color color)
 			Cell^ cell = gameGrid->getCell(squares[square]);
 
 			cell->setSolid(true);
+			cell->setBlock(true);
 			cell->setColor(color);
+			//blockColor = color;
 		}	
 
 		placed = true;

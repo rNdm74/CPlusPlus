@@ -5,7 +5,7 @@ GridManager::GridManager(Graphics^ dbGraphics)
 {
 	rGen = gcnew Random();
 
-	grid = gcnew Grid(Point(30,60), dbGraphics);
+	grid = gcnew Grid(Point(287,-60), dbGraphics);
 
 	blocks = gcnew array<Block^>(100);
 
@@ -42,10 +42,14 @@ void GridManager::update()
 	if(blocks[blockInPlay]->isPlaced())
 		blockInPlay++;
 
+	grid->update();
+
 	if(time > 150)
 	{
-		blocks[blockInPlay]->moveDown();
+		
 
+		blocks[blockInPlay]->moveDown();
+		
 		time = 0;
 	}
 
@@ -60,7 +64,7 @@ void GridManager::render()
 
 Block^ GridManager::getGameBlock()
 {
-	int startX = 5;
+	int startX = 6;
 	switch(rGen->Next(7))
 	{
 		case 0:

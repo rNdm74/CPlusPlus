@@ -11,13 +11,17 @@ ref class Cell
 	{
 	private:
 		Color cellColor;
-		bool solid;
+		bool gameBlock;
+		bool solid;		
+
 	public:
 		Cell(Color color);
 
 		void setColor(Color c)	{ cellColor = c; }
+		void setBlock(bool b)	{ gameBlock = b; }
 		void setSolid(bool s)	{ solid = s; }
-
+		
 		Color getColor()		{ return cellColor; }
-		bool isSolid()			{ return solid;	}
+		bool isBlock()			{ return gameBlock;	}
+		bool isSolid()			{ return solid;	}		
 	};

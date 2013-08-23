@@ -10,6 +10,7 @@ namespace Tetris_Assignment {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Drawing::Text;
 
 	/// <summary>
 	/// Summary for Tetris
@@ -48,7 +49,9 @@ namespace Tetris_Assignment {
 
 		GridManager^ gridManager;
 
-	private: System::Windows::Forms::Timer^  clock;
+
+
+
 	private: System::ComponentModel::IContainer^  components;
 
 
@@ -60,35 +63,28 @@ namespace Tetris_Assignment {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-		this->components = (gcnew System::ComponentModel::Container());
-		this->clock = (gcnew System::Windows::Forms::Timer(this->components));
-		this->SuspendLayout();
-		// 
-		// clock
-		// 
-		this->clock->Enabled = true;
-		this->clock->Tick += gcnew System::EventHandler(this, &Tetris::clock_Tick);
-		// 
-		// Tetris
-		// 
-		this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
-		this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-		this->BackColor = System::Drawing::Color::Black;
-		this->ClientSize = System::Drawing::Size(1008, 730);
-		this->DoubleBuffered = true;
-		this->MaximumSize = System::Drawing::Size(1024, 768);
-		this->MinimumSize = System::Drawing::Size(1024, 736);
-		this->Name = L"Tetris";
-		this->ShowIcon = false;
-		this->SizeGripStyle = System::Windows::Forms::SizeGripStyle::Hide;
-		this->StartPosition = System::Windows::Forms::FormStartPosition::Manual;
-		this->Text = L"Tetris";
-		this->Load += gcnew System::EventHandler(this, &Tetris::Tetris_Load);
-		this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Tetris::Tetris_Paint);
-		this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Tetris::Tetris_KeyDown);
-		this->ResumeLayout(false);
+			this->SuspendLayout();
+			// 
+			// Tetris
+			// 
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->BackColor = System::Drawing::Color::Black;
+			this->ClientSize = System::Drawing::Size(1008, 729);
+			this->DoubleBuffered = true;
+			this->MaximumSize = System::Drawing::Size(1024, 768);
+			this->MinimumSize = System::Drawing::Size(1024, 736);
+			this->Name = L"Tetris";
+			this->ShowIcon = false;
+			this->SizeGripStyle = System::Windows::Forms::SizeGripStyle::Hide;
+			this->StartPosition = System::Windows::Forms::FormStartPosition::Manual;
+			this->Text = L"Tetris";
+			this->Load += gcnew System::EventHandler(this, &Tetris::Tetris_Load);
+			this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Tetris::Tetris_Paint);
+			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Tetris::Tetris_KeyDown);
+			this->ResumeLayout(false);
 
-			}
+		}
 #pragma endregion
 	private: System::Void Tetris_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e) {
 					// Refresh screen
@@ -102,9 +98,11 @@ namespace Tetris_Assignment {
 					
 					// Render game
 					gridManager->render();
+
+					//Text = gridManager->getPlayerScore().ToString();
 										
 					// Make buffer visible
-					e->Graphics->DrawImage(dbBitmap, 0, 0);
+					e->Graphics->DrawImage(dbBitmap, 0, 0);										
 				 }
 
 	private: System::Void Tetris_Load(System::Object^  sender, System::EventArgs^  e) {
@@ -115,6 +113,9 @@ namespace Tetris_Assignment {
 					dbGraphics = Graphics::FromImage(dbBitmap);
 
 					gridManager = gcnew GridManager(dbGraphics);
+
+					
+
 				 }
 	private: System::Void Tetris_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 					if(e->KeyCode == Keys::Left) gridManager->moveLeft();
@@ -122,9 +123,6 @@ namespace Tetris_Assignment {
 										
 					if(e->KeyCode == Keys::Up) gridManager->moveRotate();	
 					if(e->KeyCode == Keys::Down)gridManager->moveDown();
-				 }
-	private: System::Void clock_Tick(System::Object^  sender, System::EventArgs^  e) {
-					
 				 }
 };
 }

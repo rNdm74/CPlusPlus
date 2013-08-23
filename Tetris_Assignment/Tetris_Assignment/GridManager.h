@@ -38,4 +38,6 @@ public:
 	Block^ getGameBlock();
 	void update();
 	void render();
+
+	int getPlayerScore() { return grid->getPlayerScore(); }
 };

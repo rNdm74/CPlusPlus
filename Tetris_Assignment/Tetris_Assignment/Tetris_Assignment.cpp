@@ -10,7 +10,7 @@ int main(array<System::String ^> ^args)
 {
 	// Enabling Windows XP visual effects before any controls are created
 	Application::EnableVisualStyles();
-	Application::SetCompatibleTextRenderingDefault(false); 
+	Application::SetCompatibleTextRenderingDefault(true); 
 
 	// Create the main window and run it
 	Application::Run(gcnew Tetris());
