@@ -1,17 +1,17 @@
 #include "StdAfx.h"
 #include "Z.h"
 
-Z::Z(Color color, Grid^ grid)
+Z::Z(int startX, Color color, Grid^ grid)
   : Block(color, grid)
 	{
 		blockType = EBlockType::Z_BLOCK;
 
 		squares = gcnew array<Point> 
 		{ 
-			Point(0,0), 
-			Point(1,0), 
-			Point(1,1),
-			Point(2,1)
+			Point(0 + startX, 0), 
+			Point(1 + startX, 0), 
+			Point(1 + startX, 1),
+			Point(2 + startX, 1)
 		};
 	}
 

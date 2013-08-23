@@ -29,18 +29,23 @@ void Grid::draw()
 	{
 		for(int col = 0; col < N_COLS; col++)
 		{			
-			Cell^ southWall = gridData[col, 18];
-
-			southWall->setFull(true);
-			southWall->setWall(true);
+			Cell^ southWall = gridData[col, 20];
+			southWall->setSolid(true);
 
 			for(int row = 0; row < N_ROWS; row++)
 			{
+				Cell^ westWall = gridData[0, row];
+				westWall->setSolid(true);
+
+				Cell^ eastWall = gridData[11, row];
+				eastWall->setSolid(true);
+
+
 				Cell^ cell = gridData[col, row];
 				
 				graphics->FillRectangle
 				(
-					gcnew SolidBrush((cell->isWall()) ? cell->getColor() : Color::White), 
+				gcnew SolidBrush((cell->isSolid()) ? cell->getColor() : Color::Black), 
 					gridLocation.X + col * CELL_SIZE,
 					gridLocation.Y + row * CELL_SIZE,
 					CELL_SIZE,
@@ -49,18 +54,15 @@ void Grid::draw()
 
 				
 
-				graphics->DrawString
-				(
-					//col + "," + row, 
-					"" + cell->isFull(),
-					font, 
-					fontBrush, 
-					gridLocation.X + col * CELL_SIZE, 
-					gridLocation.Y + row * CELL_SIZE
-				);
-				
-				//cell->setColor(Color::White);
-				cell->setFull(false);
+				//graphics->DrawString
+				//(
+				//	//col + "," + row, 
+				//	"" + cell->isSolid(),
+				//	font, 
+				//	fontBrush, 
+				//	gridLocation.X + col * CELL_SIZE, 
+				//	gridLocation.Y + row * CELL_SIZE
+				//);
 			}
 		}		
 	}
@@ -72,21 +74,14 @@ void Grid::update()
 
 void Grid::drawOneSquare(int col, int row,  Color color)
 	{
-		//Cell^ cell = gridData[col, row];
-		
-		//cell->setColor(color);
-		//cell->setFull(true);
-
 		graphics->FillRectangle
-				(
-				gcnew SolidBrush(Color::Aquamarine), 
-					gridLocation.X + col * CELL_SIZE,
-					gridLocation.Y + row * CELL_SIZE,
-					CELL_SIZE,
-					CELL_SIZE
-				);
-
-		
+		(
+		gcnew SolidBrush(Color::Aquamarine), 
+			gridLocation.X + col * CELL_SIZE,
+			gridLocation.Y + row * CELL_SIZE,
+			CELL_SIZE,
+			CELL_SIZE
+		);		
 	}
 
 void Grid::isRowFull()

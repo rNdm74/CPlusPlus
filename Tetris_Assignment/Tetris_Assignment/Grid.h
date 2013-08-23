@@ -10,8 +10,8 @@ using namespace System::Data;
 using namespace System::Drawing;
 
 #define CELL_SIZE 30
-#define N_COLS 10
-#define N_ROWS 20
+#define N_COLS 12
+#define N_ROWS 21
 
 
 ref class Grid
@@ -39,4 +39,5 @@ ref class Grid
 		int getGridRight()	{ return N_COLS-1; }
 		int getGridBottom() { return N_ROWS-1; }
 		Cell^ getCell(int col, int row)	{ return gridData[col, row]; }
+		Cell^ getCell(Point p)	{ return gridData[p.X, p.Y]; }
 	};

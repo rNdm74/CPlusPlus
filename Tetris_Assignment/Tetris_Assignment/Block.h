@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Grid.h"
-//#include "GridManager.h"
 
 using namespace System;
 using namespace System::ComponentModel;
@@ -33,6 +32,7 @@ ref class Block
 	{
 	protected:
 		array<Point>^ squares;
+		array<Point>^ newPosition;
 		Color blockColor;
 		Grid^ gameGrid;
 		int orientation;
@@ -46,12 +46,12 @@ ref class Block
 		void moveDown();
 		void moveRotate();
 		virtual void rotate(array<Point>^ temp);
-		void move(array<Point>^ temp, Point direction);
+		void move(array<Point>^ temp);
 		void draw();
 		void clear();
-		void lookAhead(Point direction);
-		bool canMoveDown(array<Point>^ temp);
-		void addToGrid(int cel, int row, Color color);
+		array<Point>^ lookAhead(Point direction);
+		bool canMove(array<Point>^ temp);
+		void addToGrid(Color color);
 
 		array<Point>^ getSquares()	{ return squares; }
 		EBlockType getBlockType()	{ return blockType; }

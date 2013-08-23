@@ -11,16 +11,13 @@ ref class Cell
 	{
 	private:
 		Color cellColor;
-		bool full;
-		bool wall;
+		bool solid;
 	public:
 		Cell(Color color);
 
 		void setColor(Color c)	{ cellColor = c; }
-		void setFull(bool b)	{ full = b; }
-		void setWall(bool b)	{ wall = b; }
+		void setSolid(bool s)	{ solid = s; }
 
 		Color getColor()		{ return cellColor; }
-		bool isFull()			{ return full;	}
-		bool isWall()			{ return wall;	}
+		bool isSolid()			{ return solid;	}
 	};

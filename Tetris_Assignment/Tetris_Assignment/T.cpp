@@ -1,17 +1,17 @@
 #include "StdAfx.h"
 #include "T.h"
 
-T::T(Color color, Grid^ grid)
+T::T(int startX, Color color, Grid^ grid)
   : Block(color, grid)
 	{
 		blockType = EBlockType::T_BLOCK;
 
 		squares = gcnew array<Point> 
 		{ 
-			Point(1,0), 
-			Point(0,1), 
-			Point(1,1),
-			Point(2,1)
+			Point(1 + startX, 0), 
+			Point(0 + startX, 1), 
+			Point(1 + startX, 1),
+			Point(2 + startX, 1)
 		};
 	}
 

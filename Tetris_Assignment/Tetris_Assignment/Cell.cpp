@@ -4,5 +4,4 @@
 Cell::Cell(Color color)
 	{
 		cellColor = color;
-		//full = true;
 	}

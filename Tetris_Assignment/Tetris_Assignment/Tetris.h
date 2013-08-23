@@ -47,8 +47,6 @@ namespace Tetris_Assignment {
 		Bitmap^ dbBitmap;
 
 		GridManager^ gridManager;
-		
-		int count;
 
 	private: System::Windows::Forms::Timer^  clock;
 	private: System::ComponentModel::IContainer^  components;
@@ -101,45 +99,10 @@ namespace Tetris_Assignment {
 					
 					// Update game	
 					gridManager->update();
-
-					//if(count > 150)
-					//{
-					//	//l->moveDown();
-					//	//j->moveDown();
-					//	//z->moveDown();
-					//	s->moveDown();
-					//	//d->moveDown();
-					//	if(s->isPlaced())t->moveDown();
-					//	//i->moveDown();
-					//	//o->moveDown();
-
-					//	count = 0;
-					//}
-
-					//count++;
-
+					
 					// Render game
 					gridManager->render();
-					//grid->draw();
-					//l->draw();
-					//j->draw();
-					//z->draw();
-					//s->draw();
-
-					//array<Point>^ p = s->getSquares();
-
-					//Text = p[0] + " " + p[1] +" "+ p[2] + " " + p[3];
-
-					//if(s->isPlaced())
-					//{
-					//	t->draw();
-					//}
-					
-					//t->draw();
-					//i->draw();
-					//o->draw();
-
-					
+										
 					// Make buffer visible
 					e->Graphics->DrawImage(dbBitmap, 0, 0);
 				 }
@@ -152,99 +115,6 @@ namespace Tetris_Assignment {
 					dbGraphics = Graphics::FromImage(dbBitmap);
 
 					gridManager = gcnew GridManager(dbGraphics);
-
-					/*l = gcnew L
-					(
-						gcnew array<Point> 
-						{ 
-							Point(1,1), 
-							Point(1,2), 
-							Point(1,3),
-							Point(2,3)
-						}, 
-						Color::Green, 
-						grid
-					);
-
-					j = gcnew J
-					(
-						gcnew array<Point> 
-						{ 
-							Point(3,1), 
-							Point(3,2), 
-							Point(3,3),
-							Point(2,3)
-						}, 
-						Color::Green, 
-						grid
-					);
-
-					z = gcnew Z
-					(
-						gcnew array<Point> 
-						{ 
-							Point(1,1), 
-							Point(2,1), 
-							Point(2,2),
-							Point(3,2)
-						}, 
-						Color::Green, 
-						grid
-					);
-
-					s = gcnew S
-					(
-						gcnew array<Point> 
-						{ 
-							Point(3,1), 
-							Point(2,1), 
-							Point(2,2),
-							Point(1,2)
-						}, 
-						Color::Green, 
-						grid
-					);
-
-					t = gcnew T
-					(
-						gcnew array<Point> 
-						{ 
-							Point(2,1), 
-							Point(1,2), 
-							Point(2,2),
-							Point(3,2)
-						}, 
-						Color::Green, 
-						grid
-					);
-
-					i = gcnew I
-					(
-						gcnew array<Point> 
-						{ 
-							Point(2,1), 
-							Point(2,2), 
-							Point(2,3),
-							Point(2,4)
-						}, 
-						Color::Green, 
-						grid
-					);
-
-					o = gcnew O
-					(
-						gcnew array<Point> 
-						{ 
-							Point(2,1), 
-							Point(2,2), 
-							Point(3,1),
-							Point(3,2)
-						}, 
-						Color::Green, 
-						grid
-					);*/
-
-					count = 0;
 				 }
 	private: System::Void Tetris_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 					if(e->KeyCode == Keys::Left) gridManager->moveLeft();

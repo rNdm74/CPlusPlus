@@ -5,14 +5,13 @@ GridManager::GridManager(Graphics^ dbGraphics)
 {
 	rGen = gcnew Random();
 
-	grid = gcnew Grid(Point(30,30), dbGraphics);
+	grid = gcnew Grid(Point(30,60), dbGraphics);
 
 	blocks = gcnew array<Block^>(100);
 
 	for(int b = 0; b < blocks->Length; b++)
 		blocks[b] = getGameBlock();
-	
-	
+		
 	blockInPlay = 0;
 }
 
@@ -61,21 +60,24 @@ void GridManager::render()
 
 Block^ GridManager::getGameBlock()
 {
+	int startX = 5;
 	switch(rGen->Next(7))
 	{
 		case 0:
-			return gcnew I(Color::Green, grid);
+			return gcnew I(startX, Color::Green, grid);
 		case 1:
-			return gcnew J(Color::Green, grid);
+			return gcnew J(startX, Color::Green, grid);
 		case 2:
-			return gcnew L(Color::Green, grid);
+			return gcnew L(startX, Color::Green, grid);
 		case 3:
-			return gcnew O(Color::Green, grid);
+			return gcnew O(startX, Color::Green, grid);
 		case 4:
-			return gcnew S(Color::Green, grid);
+			return gcnew S(startX, Color::Green, grid);
 		case 5:
-			return gcnew T(Color::Green, grid);
+			return gcnew T(startX, Color::Green, grid);
 		case 6:
-			return gcnew Z(Color::Green, grid);
+			return gcnew Z(startX, Color::Green, grid);
+		default:
+			return nullptr;
 	}
 }

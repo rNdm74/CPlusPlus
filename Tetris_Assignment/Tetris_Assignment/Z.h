@@ -5,6 +5,6 @@ ref class Z :
 public Block
 	{
 	public:
-		Z(Color color, Grid^ grid);
+		Z(int startX, Color color, Grid^ grid);
 		virtual void rotate(array<Point>^ temp) override;
 	};
