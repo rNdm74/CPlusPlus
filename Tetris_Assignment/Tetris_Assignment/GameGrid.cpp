@@ -8,10 +8,14 @@ GameGrid::GameGrid(Point location, Graphics^ dbGraphics, int cols, int rows)
 
 void GameGrid::update()
 	{
+		int combo = 0;
+
 		for(int col = 0; col < N_COLS; col++)
 		{
 			for(int row = 0; row < N_ROWS; row++)
-			{				
+			{	
+				
+
 				if(isRowFull(row))
 				{
 					SoundPlayer^ player = gcnew SoundPlayer();
@@ -20,10 +24,12 @@ void GameGrid::update()
 					player->Play();
 
 					deleteRow(row);
-					
-					playerScore += 100;
+					combo++;
 					playerLines++;
 
+					playerScore += (40 * combo) * (playerLevel + 1);
+					
+					
 					if(playerScore % 1000 == 0)
 					{
 						SoundPlayer^ player = gcnew SoundPlayer();
@@ -32,7 +38,9 @@ void GameGrid::update()
 						player->Play();
 						playerLevel++;
 					}
-				}					
+				}	
+
+
 			}
 		}		
 	}

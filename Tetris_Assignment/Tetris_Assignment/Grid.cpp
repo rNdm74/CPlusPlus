@@ -27,14 +27,14 @@ void Grid::update()
 
 void Grid::draw()
 	{
-		for(int col = 0; col < N_COLS; col++)
+		for(int col = 1; col < N_COLS-1; col++)
 		{			
 			Cell^ southWall = gridData[col, N_ROWS-2];
 			southWall->setSolid(true);
 			southWall = gridData[col, N_ROWS-1];
 			southWall->setSolid(true);
 
-			for(int row = 3; row < N_ROWS; row++)
+			for(int row = 3; row < N_ROWS-1; row++)
 			{
 				Cell^ westWall = gridData[0, row];
 				westWall->setSolid(true);
@@ -50,7 +50,7 @@ void Grid::draw()
 				
 				graphics->FillRectangle
 				(
-					gcnew SolidBrush((cell->isSolid()) ? cell->getColor() : Color::FromArgb(75,Color::WhiteSmoke)), 
+				gcnew SolidBrush((cell->isSolid()) ? cell->getColor() : Color::FromArgb(75,Color::WhiteSmoke)), 
 					gridLocation.X + col * CELL_SIZE,
 					gridLocation.Y + row * CELL_SIZE,
 					CELL_SIZE,

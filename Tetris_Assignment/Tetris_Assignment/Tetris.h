@@ -47,7 +47,7 @@ namespace Tetris_Assignment {
 		Graphics^ dbGraphics;
 		Bitmap^ dbBitmap;
 
-		GridManager^ gridManager;
+		GameManager^ gameManager;
 
 
 
@@ -100,11 +100,11 @@ namespace Tetris_Assignment {
 					dbGraphics->Clear(BackColor);
 					
 					// Update game	
-					if(gridManager->isGameOver()) 
-						gridManager->update();
+					if(gameManager->isGameOver()) 
+						gameManager->update();
 					
 					// Render game
-					gridManager->render();
+					gameManager->render();
 
 					//Text = gridManager->getPlayerScore().ToString();
 										
@@ -119,17 +119,19 @@ namespace Tetris_Assignment {
 					// Grab its Graphics
 					dbGraphics = Graphics::FromImage(dbBitmap);
 
-					gridManager = gcnew GridManager(dbGraphics, ClientRectangle);
+					gameManager = gcnew GameManager(dbGraphics, ClientRectangle);
 
 					
 
 				 }
 	private: System::Void Tetris_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
-					if(e->KeyCode == Keys::Left) gridManager->moveLeft();
-					if(e->KeyCode == Keys::Right) gridManager->moveRight();
+					if(e->KeyCode == Keys::Left) gameManager->moveLeft();
+					if(e->KeyCode == Keys::Right) gameManager->moveRight();
 										
-					if(e->KeyCode == Keys::Up) gridManager->moveRotate();	
-					if(e->KeyCode == Keys::Down)gridManager->moveDown();
+					if(e->KeyCode == Keys::Up) gameManager->moveRotate();	
+					if(e->KeyCode == Keys::Down)gameManager->moveDown();
+
+					if(e->KeyCode == Keys::Space)gameManager->setDrop(true);
 				 }
 };
 }

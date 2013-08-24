@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "GameManager.h"
 
-GridManager::GridManager(Graphics^ dbGraphics, Rectangle clientRectangle)
+GameManager::GameManager(Graphics^ dbGraphics, Rectangle clientRectangle)
 {
 	rGen = gcnew Random();
 	graphics = dbGraphics;
@@ -19,7 +19,7 @@ GridManager::GridManager(Graphics^ dbGraphics, Rectangle clientRectangle)
 	grid = gcnew GameGrid(Point(302,-30), graphics, GAMEGRID_COLS, GAMEGRID_ROWS);
 	preview = gcnew Grid(Point(50,480), graphics, PREVIEW_COLS, PREVIEW_ROWS); 
 
-	blocks = gcnew array<Block^>(1000);
+	blocks = gcnew array<Block^>(2);
 
 		
 
@@ -39,30 +39,30 @@ GridManager::GridManager(Graphics^ dbGraphics, Rectangle clientRectangle)
 		blocks[b] = generateBlock();
 
 	blockInPlay = 0;
-	waitTime = 150;
+	waitTime = 20;
 }
 
-void GridManager::moveLeft()
+void GameManager::moveLeft()
 {
 	blocks[blockInPlay]->moveLeft();
 }
 
-void GridManager::moveRight()
+void GameManager::moveRight()
 {
 	blocks[blockInPlay]->moveRight();
 }
 
-void GridManager::moveDown()
+void GameManager::moveDown()
 {
 	blocks[blockInPlay]->moveDown();
 }
 
-void GridManager::moveRotate()
+void GameManager::moveRotate()
 {
 	blocks[blockInPlay]->moveRotate();	
 }
 
-void GridManager::update()
+void GameManager::update()
 {
 	grid->update();
 
@@ -70,9 +70,18 @@ void GridManager::update()
 	
 	if(block->isPlaced())
 	{
+		setDrop(false);
 		updateStats(block->getBlockType());
-		blockInPlay++;
+		//random block gen
+		blocks[0] = blocks[1];
+		blocks[1] = generateBlock();
+		//blockInPlay++;
 	}
+
+	
+
+	if(drop) block->moveDown();
+		
 		
 	if(time > waitTime - (grid->getPlayerLevel() * 20))
 	{
@@ -86,21 +95,20 @@ void GridManager::update()
 	
 }
 
-void GridManager::updateStats(EBlockType type)
+void GameManager::updateStats(EBlockType type)
 	{		
 		for(int i = 0; i < blockTypes->Length; i++)
 			if(type == blockTypes[i]) blockStats[i]++;		
 	}
 
-void GridManager::render()
+void GameManager::render()
 {
-	//graphics->DrawImageUnscaledAndClipped(background, screenBounds);
+	graphics->DrawImageUnscaledAndClipped(background, screenBounds);
 
 	grid->draw();
 	blocks[blockInPlay]->draw();
 	blocks[blockInPlay+1]->drawPreview();
 	
-
 	graphics->DrawString
 	( 
 		"LEVEL:	"+ grid->getPlayerLevel().ToString() +
@@ -130,20 +138,21 @@ void GridManager::render()
 	(			 
 		"STATISTICS"+
 		"\n\n\n"+
-		"I:	"+ blockStats[0] +  
+		"    I:	"+ blockStats[0] +  
 		"\n\n"+ 
-		"J:	"+  blockStats[1] + 
+		"    J:	"+  blockStats[1] + 
 		"\n\n"+ 
-		"L:	"+  blockStats[2] +   
+		"    L:	"+  blockStats[2] +   
 		"\n\n"+
-		"O:	" +  blockStats[3] + 
+		"    O:	" +  blockStats[3] + 
 		"\n\n"+
-		"S:	"+  blockStats[4] + 
+		"    S:	"+  blockStats[4] + 
 		"\n\n"+
-		"T:	"+  blockStats[5] + 
+		"    T:	"+  blockStats[5] + 
 		"\n\n"+
-		"Z:	"+  blockStats[6] + 
-		"\n\n",
+		"    Z:	"+  blockStats[6] + 
+		"\n\n\n"+
+		"TOTAL:	"+ getTotalStats(),
 		font, 
 		fontBrush, 
 		757, 
@@ -170,30 +179,30 @@ void GridManager::render()
 	}
 }
 
-Block^ GridManager::generateBlock()
+Block^ GameManager::generateBlock()
 {
 	switch(rGen->Next(blockTypes->Length))
 	{
 		case 0:
 			return gcnew I(START_X, Color::FromArgb(ALPHA, Color::Red), grid, preview);
 		case 1:
-			return gcnew J(START_X, Color::FromArgb(ALPHA, Color::White), grid, preview);
+			return gcnew J(START_X, Color::FromArgb(ALPHA, Color::Yellow), grid, preview);
 		case 2:
-			return gcnew L(START_X, Color::FromArgb(ALPHA, Color::Violet), grid, preview);
+			return gcnew L(START_X, Color::FromArgb(ALPHA, Color::Magenta), grid, preview);
 		case 3:
 			return gcnew O(START_X, Color::FromArgb(ALPHA, Color::Blue), grid, preview);
 		case 4:
-			return gcnew S(START_X, Color::FromArgb(ALPHA, Color::Green), grid, preview);
+			return gcnew S(START_X, Color::FromArgb(ALPHA, Color::Cyan), grid, preview);
 		case 5:
-			return gcnew T(START_X, Color::FromArgb(ALPHA, Color::Orange), grid, preview);
+			return gcnew T(START_X, Color::FromArgb(ALPHA, Color::Green), grid, preview);
 		case 6:
-			return gcnew Z(START_X, Color::FromArgb(ALPHA, Color::LightBlue), grid, preview);
+			return gcnew Z(START_X, Color::FromArgb(ALPHA, Color::Orange), grid, preview);
 		default:
 			return nullptr;
 	}
 }
 
-bool GridManager::isGameOver()
+bool GameManager::isGameOver()
 {
 	Block^ block = blocks[blockInPlay];
 
@@ -206,4 +215,14 @@ bool GridManager::isGameOver()
 	}
 
 	return true;
+}
+
+int GameManager::getTotalStats()
+{
+	int total = 0; 
+
+	for(int i=0;i<blockStats->Length; i++)
+		total += blockStats[i];
+	
+	return total;
 }

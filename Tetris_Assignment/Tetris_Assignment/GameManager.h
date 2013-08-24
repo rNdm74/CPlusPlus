@@ -25,7 +25,7 @@ using namespace System::Media;
 #define START_X 6
 #define ALPHA 99
 
-ref class GridManager
+ref class GameManager
 {
 private:
 	array<Block^>^ blocks;
@@ -45,7 +45,7 @@ private:
 	int waitTime;
 	int blockInPlay;
 
-	
+	bool drop;
 
 	array<int>^ blockStats;
 	array<EBlockType>^ blockTypes;
@@ -53,7 +53,7 @@ private:
 	Random^ rGen;
 
 public:
-	GridManager(Graphics^ dbGraphics, Rectangle screenBounds);
+	GameManager(Graphics^ dbGraphics, Rectangle screenBounds);
 
 	void moveLeft();
 	void moveRight();
@@ -62,12 +62,14 @@ public:
 
 	Block^ generateBlock();
 	bool isGameOver();
+	int getTotalStats();
 	
 	void update();
 	void updateStats(EBlockType type);
 	
-	
 	void render();
 
-	int getPlayerScore() { return grid->getPlayerScore(); }
+	int getPlayerScore()	{ return grid->getPlayerScore(); }
+	bool getDrop()			{ return drop; }
+	void setDrop(bool b)	{ drop = b; }
 };

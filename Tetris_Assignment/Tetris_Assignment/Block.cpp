@@ -8,12 +8,8 @@ Block::Block(Color color, Grid^ grid, Grid^ preview)
 		gameGrid = grid;
 		blockPreview = preview;
 		orientation = EAST;
-		
-		
 
-		
-
-		
+		gravity = 2;
 	}
 
 void Block::moveLeft()
@@ -150,6 +146,7 @@ void Block::addToGrid(Color color)
 		}	
 
 		placed = true;
+		
 
 		SoundPlayer^ touchDownSound = gcnew SoundPlayer();
 		touchDownSound->SoundLocation = "SFX_PieceLockDown.wav";

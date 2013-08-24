@@ -41,6 +41,7 @@ ref class Block abstract
 		bool placed;
 		EBlockType blockType;
 		
+		float gravity;
 		
 		
 		
