@@ -1,10 +1,10 @@
 #include "StdAfx.h"
 #include "O.h"
 
-O::O(int startX, Color color, Grid^ grid)
-  : Block(color, grid)
+O::O(int startX, Color color, Grid^ grid, Grid^ preview)
+  : Block(color, grid, preview)
 	{
-		blockType = EBlockType::O_BLOCK;
+		blockType = O_BLOCK;
 
 		squares = gcnew array<Point> 
 		{ 

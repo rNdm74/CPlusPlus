@@ -1,10 +1,12 @@
 #include "StdAfx.h"
 #include "Grid.h"
 
-Grid::Grid(Point location, Graphics^ dbGraphics, Font^ font)
+Grid::Grid(Point location, Graphics^ dbGraphics, int cols, int rows)
 	{		
 		gridLocation = location;
-		graphics = dbGraphics;		
+		graphics = dbGraphics;	
+		N_COLS = cols;
+		N_ROWS = rows;
 
 		gridData = gcnew array<Cell^, 2>(N_COLS, N_ROWS);
 		
@@ -19,25 +21,29 @@ Grid::Grid(Point location, Graphics^ dbGraphics, Font^ font)
 		}
 	}
 
+void Grid::update()
+	{				
+	}
+
 void Grid::draw()
 	{
 		for(int col = 0; col < N_COLS; col++)
 		{			
-			Cell^ southWall = gridData[col, 24];
+			Cell^ southWall = gridData[col, N_ROWS-2];
 			southWall->setSolid(true);
-			southWall = gridData[col, 25];
+			southWall = gridData[col, N_ROWS-1];
 			southWall->setSolid(true);
 
-			for(int row = 0; row < N_ROWS; row++)
+			for(int row = 2; row < N_ROWS; row++)
 			{
 				Cell^ westWall = gridData[0, row];
 				westWall->setSolid(true);
 				westWall = gridData[1, row];
 				westWall->setSolid(true);	
 
-				Cell^ eastWall = gridData[12, row];
+				Cell^ eastWall = gridData[N_COLS - 2, row];
 				eastWall->setSolid(true);
-				eastWall = gridData[13, row];
+				eastWall = gridData[N_COLS - 1, row];
 				eastWall->setSolid(true);
 
 				Cell^ cell = gridData[col, row];
@@ -64,26 +70,11 @@ void Grid::draw()
 		}		
 	}
 
-void Grid::update()
-	{
-		for(int col = 0; col < N_COLS; col++)
-		{
-			for(int row = 0; row < N_ROWS; row++)
-			{
-				if(isRowFull(row))
-				{
-					deleteRow(row);
-					playerScore += 100;
-					playerLines++;
-					if(playerScore % 100 == 0) playerLevel++;
-				}					
-			}
-		}		
-	}
-
 void Grid::drawOneSquare(int col, int row,  Color color)
 	{
-		graphics->FillRectangle
+		if(row > 1)
+		{
+			graphics->FillRectangle
 		(
 			gcnew SolidBrush(color), 
 			gridLocation.X + col * CELL_SIZE,
@@ -94,39 +85,23 @@ void Grid::drawOneSquare(int col, int row,  Color color)
 		
 		graphics->DrawRectangle
 		(
-			gcnew Pen(color, 2), 
+			gcnew Pen(color, 3), 
 			gridLocation.X + col * CELL_SIZE,
 			gridLocation.Y + row * CELL_SIZE,
 			CELL_SIZE,
 			CELL_SIZE
 
 		);
+
+		}
+		
 	}
 
 bool Grid::isRowFull(int rowNumber)
 	{
-		bool fullRow = true;
-		
-		for (int col = 2; col < 12; col++)
-			if (!gridData[col, rowNumber]->isBlock())
-				fullRow = false;
-
-		return fullRow;						
+		return false;							
 	}
 
 void Grid::deleteRow(int rowNumber)
-	{
-		int col;
-		int row;
-
-		//to delete row r, work up from that row, moving each row down one
-		for (row = rowNumber; row >= 1; row--)
-		{
-			for (col=2; col < 12; col++)
-			{
-				gridData[col, row]->setSolid(gridData[col, row - 1]->isSolid());
-				gridData[col, row]->setBlock(gridData[col, row - 1]->isBlock());
-				gridData[col, row]->setColor(gridData[col, row - 1]->getColor());
-			}
-		}		
+	{				
 	}

@@ -1,12 +1,13 @@
 #include "StdAfx.h"
 #include "Block.h"
 
-Block::Block(Color color, Grid^ grid)
+Block::Block(Color color, Grid^ grid, Grid^ preview)
 	{	
 		squares = nullptr;
 		blockColor = color;
 		gameGrid = grid;
-		orientation = EDirection::EAST;
+		blockPreview = preview;
+		orientation = EAST;
 	}
 
 void Block::moveLeft()
@@ -43,9 +44,7 @@ void Block::moveRotate()
 		{
 			move(newPosition);
 			orientation++;
-		}
-
-		
+		}		
 	}
 
 void Block::rotate(array<Point>^ temp)
@@ -70,9 +69,15 @@ void Block::draw()
 			);
 	}
 
-void Block::clear()
+void Block::drawPreview()
 	{
-		
+		for(int square = 0; square < squares->Length; square++)
+			blockPreview->drawOneSquare
+			(
+				squares[square].X-4,
+				squares[square].Y+2,
+				blockColor
+			);		
 	}
 
 array<Point>^ Block::lookAhead(Point direction)

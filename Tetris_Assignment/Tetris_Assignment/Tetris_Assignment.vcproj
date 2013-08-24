@@ -200,15 +200,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Cell.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Grid.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\GridManager.cpp"
+				RelativePath=".\GameManager.cpp"
 				>
 			</File>
 			<File
@@ -271,6 +263,22 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Grids"
+				>
+				<File
+					RelativePath=".\Cell.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\GameGrid.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Grid.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -278,15 +286,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\Cell.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Grid.h"
-				>
-			</File>
-			<File
-				RelativePath=".\GridManager.h"
+				RelativePath=".\GameManager.h"
 				>
 			</File>
 			<File
@@ -340,6 +340,22 @@
 				</File>
 				<File
 					RelativePath=".\Z.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Grids"
+				>
+				<File
+					RelativePath=".\Cell.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GameGrid.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Grid.h"
 					>
 				</File>
 			</Filter>

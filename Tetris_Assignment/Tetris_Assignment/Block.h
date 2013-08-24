@@ -28,27 +28,33 @@ enum EBlockType
 		O_BLOCK = 6
 	};
 
-ref class Block
+ref class Block abstract 
 	{
 	protected:
 		array<Point>^ squares;
 		array<Point>^ newPosition;
 		Color blockColor;
 		Grid^ gameGrid;
+		Grid^ blockPreview;
 		int orientation;
 		bool placed;
 		EBlockType blockType;
 		
 	public:
-		Block(Color color, Grid^ grid);
+		Block(Color color, Grid^ grid, Grid^ preview);
+
 		void moveLeft();
 		void moveRight();
 		void moveDown();
 		void moveRotate();
+
 		virtual void rotate(array<Point>^ temp);
+
 		void move(array<Point>^ temp);
+
 		void draw();
-		void clear();
+		void drawPreview();
+
 		array<Point>^ lookAhead(Point direction);
 		bool canMove(array<Point>^ temp);
 		void addToGrid(Color color);

@@ -1,10 +1,10 @@
 #include "StdAfx.h"
 #include "J.h"
 
-J::J(int startX, Color color, Grid^ grid)
-  : Block(color, grid)
+J::J(int startX, Color color, Grid^ grid, Grid^ preview)
+  : Block(color, grid, preview)
 	{
-		blockType = EBlockType::J_BLOCK;
+		blockType = J_BLOCK;
 
 		squares = gcnew array<Point> 
 		{ 

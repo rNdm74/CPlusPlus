@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GridManager.h"
+#include "GameManager.h"
 
 namespace Tetris_Assignment {
 
@@ -118,7 +118,7 @@ namespace Tetris_Assignment {
 					// Grab its Graphics
 					dbGraphics = Graphics::FromImage(dbBitmap);
 
-					gridManager = gcnew GridManager(dbGraphics);
+					gridManager = gcnew GridManager(dbGraphics, ClientRectangle);
 
 					
 
