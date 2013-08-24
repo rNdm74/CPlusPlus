@@ -100,7 +100,8 @@ namespace Tetris_Assignment {
 					dbGraphics->Clear(BackColor);
 					
 					// Update game	
-					gridManager->update();
+					if(gridManager->isGameOver()) 
+						gridManager->update();
 					
 					// Render game
 					gridManager->render();

@@ -34,7 +34,7 @@ void Grid::draw()
 			southWall = gridData[col, N_ROWS-1];
 			southWall->setSolid(true);
 
-			for(int row = 2; row < N_ROWS; row++)
+			for(int row = 3; row < N_ROWS; row++)
 			{
 				Cell^ westWall = gridData[0, row];
 				westWall->setSolid(true);
@@ -72,7 +72,7 @@ void Grid::draw()
 
 void Grid::drawOneSquare(int col, int row,  Color color)
 	{
-		if(row > 1)
+		if(row > 2)
 		{
 			graphics->FillRectangle
 		(

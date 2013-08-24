@@ -17,7 +17,7 @@ GridManager::GridManager(Graphics^ dbGraphics, Rectangle clientRectangle)
 	fontBrush = gcnew SolidBrush(Color::CornflowerBlue);
 
 	grid = gcnew GameGrid(Point(302,-30), graphics, GAMEGRID_COLS, GAMEGRID_ROWS);
-	preview = gcnew Grid(Point(50,510), graphics, PREVIEW_COLS, PREVIEW_ROWS); 
+	preview = gcnew Grid(Point(50,480), graphics, PREVIEW_COLS, PREVIEW_ROWS); 
 
 	blocks = gcnew array<Block^>(1000);
 
@@ -64,22 +64,26 @@ void GridManager::moveRotate()
 
 void GridManager::update()
 {
-	if(blocks[blockInPlay]->isPlaced())
+	grid->update();
+
+	Block^ block = blocks[blockInPlay];
+	
+	if(block->isPlaced())
 	{
-		updateStats(blocks[blockInPlay]->getBlockType());
+		updateStats(block->getBlockType());
 		blockInPlay++;
 	}
 		
 	if(time > waitTime - (grid->getPlayerLevel() * 20))
 	{
-		blocks[blockInPlay]->moveDown();
+		block->moveDown();
 		
 		time = 0;
 	}
 
 	time++;
 
-	grid->update();
+	
 }
 
 void GridManager::updateStats(EBlockType type)
@@ -90,7 +94,7 @@ void GridManager::updateStats(EBlockType type)
 
 void GridManager::render()
 {
-	graphics->DrawImageUnscaledAndClipped(background, screenBounds);
+	//graphics->DrawImageUnscaledAndClipped(background, screenBounds);
 
 	grid->draw();
 	blocks[blockInPlay]->draw();
@@ -98,21 +102,24 @@ void GridManager::render()
 	
 
 	graphics->DrawString
-	(
-		//col + "," + row, 
+	( 
 		"LEVEL:	"+ grid->getPlayerLevel().ToString() +
-		"\n\n" + 
-		"LINES:	" + grid->getPlayerLines().ToString() +
-		"\n\n" + 
-		"SCORE:	" + grid->getPlayerScore().ToString() + 
-		"\n\n\n\n" +
-		"HELP" +
-		"\n\n\n" +
-		"LEFT:MOVE\n\n"+
-		"RIGHT:MOVE\n\n"+
-		"UP:ROTATE\n\n"+
-		"DOWN:DROP\n\n\n\n"+
-		"NEXT:",
+		"\n\n"+ 
+		"LINES:	"+ grid->getPlayerLines().ToString() +
+		"\n\n"+ 
+		"SCORE:	"+ grid->getPlayerScore().ToString() + 
+		"\n\n\n\n"+
+		"HELP"+
+		"\n\n\n"+
+		"LEFT:MOVE"+
+		"\n\n"+
+		"RIGHT:MOVE"+
+		"\n\n"+
+		"UP:ROTATE"+
+		"\n\n"+
+		"DOWN:DROP"+
+		"\n\n\n\n"+
+		"NEXT",
 		font, 
 		fontBrush, 
 		50, 
@@ -122,9 +129,7 @@ void GridManager::render()
 	graphics->DrawString
 	(			 
 		"STATISTICS"+
-		"\n\n\n\n"+
-		"PLACED"+		
-		"\n\n"+
+		"\n\n\n"+
 		"I:	"+ blockStats[0] +  
 		"\n\n"+ 
 		"J:	"+  blockStats[1] + 
@@ -144,6 +149,25 @@ void GridManager::render()
 		757, 
 		50
 	);
+
+	if(!isGameOver())
+	{
+		SoundPlayer^ player = gcnew SoundPlayer();
+		player->SoundLocation = "SFX_GameOver.wav";
+		player->Load();
+		player->PlaySync();
+
+		graphics->FillRectangle(gcnew SolidBrush(Color::FromArgb(99, Color::Black)), Rectangle(0, 0, 1024, 768));
+
+		graphics->DrawString
+		(			 
+			"GAMEOVER",		
+			font, 
+			fontBrush, 
+			420, 
+			270
+		);
+	}
 }
 
 Block^ GridManager::generateBlock()
@@ -167,4 +191,19 @@ Block^ GridManager::generateBlock()
 		default:
 			return nullptr;
 	}
+}
+
+bool GridManager::isGameOver()
+{
+	Block^ block = blocks[blockInPlay];
+
+	for(int square = 0; square < block->getSquares()->Length; square++)
+	{ 
+		Point p = block->getSquares()[square];
+
+		if(block->isPlaced() && p.Y < 4)
+			return false;
+	}
+
+	return true;
 }

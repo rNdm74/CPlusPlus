@@ -8,6 +8,7 @@ using namespace System::Collections;
 using namespace System::Windows::Forms;
 using namespace System::Data;
 using namespace System::Drawing;
+using namespace System::Media;
 
 enum EDirection 
 	{
@@ -39,6 +40,9 @@ ref class Block abstract
 		int orientation;
 		bool placed;
 		EBlockType blockType;
+		
+		
+		
 		
 	public:
 		Block(Color color, Grid^ grid, Grid^ preview);

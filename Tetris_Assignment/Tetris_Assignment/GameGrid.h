@@ -1,6 +1,8 @@
 #pragma once
 #include "grid.h"
 
+using namespace System::Media;
+
 ref class GameGrid :
 public Grid
 {

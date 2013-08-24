@@ -16,6 +16,7 @@ using namespace System::Collections;
 using namespace System::Windows::Forms;
 using namespace System::Data;
 using namespace System::Drawing;
+using namespace System::Media;
 
 #define GAMEGRID_COLS 14
 #define GAMEGRID_ROWS 26
@@ -44,6 +45,8 @@ private:
 	int waitTime;
 	int blockInPlay;
 
+	
+
 	array<int>^ blockStats;
 	array<EBlockType>^ blockTypes;
 
@@ -58,9 +61,11 @@ public:
 	void moveRotate();
 
 	Block^ generateBlock();
+	bool isGameOver();
 	
 	void update();
 	void updateStats(EBlockType type);
+	
 	
 	void render();
 

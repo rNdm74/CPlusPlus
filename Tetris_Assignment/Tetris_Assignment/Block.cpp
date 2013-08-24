@@ -8,6 +8,12 @@ Block::Block(Color color, Grid^ grid, Grid^ preview)
 		gameGrid = grid;
 		blockPreview = preview;
 		orientation = EAST;
+		
+		
+
+		
+
+		
 	}
 
 void Block::moveLeft()
@@ -15,6 +21,11 @@ void Block::moveLeft()
 		newPosition = lookAhead(Point(-1,0));
 
 		if(canMove(newPosition)) move(newPosition);	
+
+		SoundPlayer^ moveSound = gcnew SoundPlayer();
+		moveSound->SoundLocation = "SFX_PieceMoveLR.wav";
+		moveSound->Load();
+		moveSound->Play();
 	}
 
 void Block::moveRight()
@@ -22,6 +33,11 @@ void Block::moveRight()
 		newPosition = lookAhead(Point(1,0));
 
 		if(canMove(newPosition)) move(newPosition);
+
+		SoundPlayer^ moveSound = gcnew SoundPlayer();
+		moveSound->SoundLocation = "SFX_PieceMoveLR.wav";
+		moveSound->Load();
+		moveSound->Play();
 	}
 
 void Block::moveDown()
@@ -29,6 +45,11 @@ void Block::moveDown()
 		newPosition = lookAhead(Point(0,1));
 
 		canMove(newPosition) ? move(newPosition) : addToGrid(blockColor);
+
+		/*SoundPlayer^ moveSound; = gcnew SoundPlayer();
+		fallSound->SoundLocation = "SFX_PieceMoveLR.wav";
+		fallSound->Load();
+		fallSound->Play();*/
 	}
 
 void Block::moveRotate()
@@ -43,6 +64,10 @@ void Block::moveRotate()
 		if(canMove(newPosition))
 		{
 			move(newPosition);
+			SoundPlayer^ rotateSound = gcnew SoundPlayer();
+			rotateSound->SoundLocation = "SFX_PieceRotateLR.wav";
+			rotateSound->Load();
+			rotateSound->Play();
 			orientation++;
 		}		
 	}
@@ -55,7 +80,10 @@ void Block::rotate(array<Point>^ temp)
 void Block::move(array<Point>^ temp)
 	{
 		for(int square = 0; square < squares->Length; square++)
-				squares[square] = temp[square];		
+				squares[square] = temp[square];	
+
+		
+		
 	}
 
 void Block::draw()
@@ -75,7 +103,7 @@ void Block::drawPreview()
 			blockPreview->drawOneSquare
 			(
 				squares[square].X-4,
-				squares[square].Y+2,
+				squares[square].Y+3,
 				blockColor
 			);		
 	}
@@ -119,8 +147,12 @@ void Block::addToGrid(Color color)
 			cell->setSolid(true);
 			cell->setBlock(true);
 			cell->setColor(color);
-			//blockColor = color;
 		}	
 
 		placed = true;
+
+		SoundPlayer^ touchDownSound = gcnew SoundPlayer();
+		touchDownSound->SoundLocation = "SFX_PieceLockDown.wav";
+		touchDownSound->Load();
+		touchDownSound->Play();
 	}

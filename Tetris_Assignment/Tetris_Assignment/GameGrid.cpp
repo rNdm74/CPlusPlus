@@ -11,15 +11,27 @@ void GameGrid::update()
 		for(int col = 0; col < N_COLS; col++)
 		{
 			for(int row = 0; row < N_ROWS; row++)
-			{
+			{				
 				if(isRowFull(row))
 				{
-					deleteRow(row);
+					SoundPlayer^ player = gcnew SoundPlayer();
+					player->SoundLocation = "SFX_SpecialLineClearTriple.wav";
+					player->Load();
+					player->Play();
 
+					deleteRow(row);
+					
 					playerScore += 100;
 					playerLines++;
 
-					if(playerScore % 100 == 0) playerLevel++;
+					if(playerScore % 1000 == 0)
+					{
+						SoundPlayer^ player = gcnew SoundPlayer();
+						player->SoundLocation = "SFX_LevelUp.wav";
+						player->Load();
+						player->Play();
+						playerLevel++;
+					}
 				}					
 			}
 		}		
