@@ -5,6 +5,7 @@ O::O(Color color, Grid^ grid, Grid^ preview)
   : Tetrimino(color, grid, preview)
 	{
 		tetriminoType = O_TETRIMINO;
+		tetrimino = Image::FromFile("O.png");
 
 		curPosition = gcnew array<Point> 
 		{ 

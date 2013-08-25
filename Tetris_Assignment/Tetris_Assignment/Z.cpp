@@ -5,6 +5,7 @@ Z::Z(Color color, Grid^ grid, Grid^ preview)
   : Tetrimino(color, grid, preview)
 	{
 		tetriminoType = Z_TETRIMINO;
+		tetrimino = Image::FromFile("Z.png");
 
 		curPosition = gcnew array<Point> 
 		{ 

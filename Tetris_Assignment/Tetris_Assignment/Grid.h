@@ -20,8 +20,11 @@ ref class Grid
 	{
 	protected:
 		array<Cell^, 2>^ gridData;
-		array<Point>^ blocks;
+		
 		Point gridLocation;
+
+		Image^ wall;
+
 		int N_COLS;
 		int N_ROWS;
 		Graphics^ graphics;
@@ -32,7 +35,7 @@ ref class Grid
 		virtual void update();
 
 		virtual void draw();		
-		virtual void drawOneSquare(int col, int row, Color color); //- ifFull(x,y)	
+		virtual void drawOneSquare(int col, int row, Color color, Image^ image); //- ifFull(x,y)	
 
 		virtual bool isRowFull(int rowNumber); //- all cells in row are full 
 		virtual void deleteRow(int rowNumber); //- cell up above is now my color cycle up from bottom

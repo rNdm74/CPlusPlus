@@ -1,7 +1,7 @@
 #pragma once
 #include "tetrimino.h"
 
-#define L_X 6
+#define L_X 5
 
 ref class L :
 public Tetrimino

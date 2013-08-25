@@ -39,6 +39,8 @@ ref class Tetrimino abstract
 		Grid^ gameGrid;
 		Grid^ tetriminoPreview;
 
+		Image^ tetrimino;
+
 		Color tetriminoColor;
 		ETetriminoType tetriminoType;		
 
@@ -65,7 +67,8 @@ ref class Tetrimino abstract
 		bool canMove(array<Point>^ temp);
 		void addToGrid(Color color);
 
-		array<Point>^ getCurPosition()	{ return curPosition; }
+		Image^ getTetrimino()				{ return tetrimino; }
+		array<Point>^ getCurPosition()		{ return curPosition; }
 		ETetriminoType getTetriminoType()	{ return tetriminoType; }
-		bool isPlaced()				{ return placed; }
+		bool isPlaced()						{ return placed; }
 	};

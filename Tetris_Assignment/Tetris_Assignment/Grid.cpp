@@ -10,13 +10,13 @@ Grid::Grid(Point location, Graphics^ dbGraphics, int cols, int rows)
 
 		gridData = gcnew array<Cell^, 2>(N_COLS, N_ROWS);
 		
-		blocks = gcnew array<Point>(4);
+		wall = Image::FromFile("W.png");
 
 		for(int col = 0; col < N_COLS; col++)
 		{
 			for(int row = 0; row < N_ROWS; row++)
 			{
-				gridData[col, row] = gcnew Cell(Color::FromArgb(100, Color::Black));
+				gridData[col, row] = gcnew Cell(Color::FromArgb(199, Color::Gray));
 			}
 		}
 	}
@@ -47,51 +47,114 @@ void Grid::draw()
 				eastWall->setSolid(true);
 
 				Cell^ cell = gridData[col, row];
-				
-				graphics->FillRectangle
+								
+				/*graphics->FillRectangle
 				(
-				gcnew SolidBrush((cell->isSolid()) ? cell->getColor() : Color::FromArgb(75,Color::WhiteSmoke)), 
+					gcnew SolidBrush((cell->isSolid()) ? cell->getColor() : Color::FromArgb(0,Color::WhiteSmoke)), 
 					gridLocation.X + col * CELL_SIZE,
 					gridLocation.Y + row * CELL_SIZE,
 					CELL_SIZE,
 					CELL_SIZE
-				);
+				);*/
 
-				graphics->DrawRectangle
-				(
-					gcnew Pen(cell->getColor(), 1), 
-					gridLocation.X + col * CELL_SIZE,
-					gridLocation.Y + row * CELL_SIZE,
-					CELL_SIZE,
-					CELL_SIZE
+				if(cell->isSolid())
+				{
+					graphics->DrawImage
+					(
+						wall, 
+						gridLocation.X + col * CELL_SIZE,
+						gridLocation.Y + row * CELL_SIZE,
+						CELL_SIZE,
+						CELL_SIZE
+					);
 
-				);
+					graphics->FillRectangle
+					(
+						gcnew SolidBrush(Color::FromArgb(199, Color::Black)), 
+						gridLocation.X + col * CELL_SIZE,
+						gridLocation.Y + row * CELL_SIZE,
+						CELL_SIZE,
+						CELL_SIZE
+					);
+				}
+					/*graphics->DrawRectangle
+					(
+						gcnew Pen(cell->getColor(), 1), 
+						gridLocation.X + col * CELL_SIZE,
+						gridLocation.Y + row * CELL_SIZE,
+						CELL_SIZE,
+						CELL_SIZE
+
+					);*/
+
+				if(cell->isTetrimino())
+				{
+					/*graphics->DrawRectangle
+					(
+						gcnew Pen(cell->getColor(), 1), 
+						gridLocation.X + col * CELL_SIZE,
+						gridLocation.Y + row * CELL_SIZE,
+						CELL_SIZE,
+						CELL_SIZE
+
+					);*/
+
+					graphics->DrawImage
+					(
+						cell->getImage(), 
+						gridLocation.X + col * CELL_SIZE,
+						gridLocation.Y + row * CELL_SIZE,
+						CELL_SIZE,
+						CELL_SIZE
+					);
+
+					/*graphics->FillRectangle
+					(
+						gcnew SolidBrush(cell->getColor()), 
+						gridLocation.X + col * CELL_SIZE,
+						gridLocation.Y + row * CELL_SIZE,
+						CELL_SIZE,
+						CELL_SIZE
+					);*/
+				}
 			}
 		}		
 	}
 
-void Grid::drawOneSquare(int col, int row,  Color color)
+void Grid::drawOneSquare(int col, int row,  Color color, Image^ image)
 	{
 		if(row > 2)
-		{
-			graphics->FillRectangle
+		{			
+				
+			/*
+			graphics->DrawRectangle
 			(
-				gcnew SolidBrush(color), 
+				gcnew Pen(color, 1), 
 				gridLocation.X + col * CELL_SIZE,
 				gridLocation.Y + row * CELL_SIZE,
 				CELL_SIZE,
 				CELL_SIZE
-			);	
-			
-			graphics->DrawRectangle
+
+			);*/
+
+			graphics->DrawImage
 			(
-				gcnew Pen(color, 3), 
+				image, 
 				gridLocation.X + col * CELL_SIZE,
 				gridLocation.Y + row * CELL_SIZE,
 				CELL_SIZE,
 				CELL_SIZE
 
 			);
+
+			/*graphics->FillRectangle
+			(
+				gcnew SolidBrush(color), 
+				gridLocation.X + col * CELL_SIZE,
+				gridLocation.Y + row * CELL_SIZE,
+				CELL_SIZE,
+				CELL_SIZE
+			);*/
 		}		
 	}
 

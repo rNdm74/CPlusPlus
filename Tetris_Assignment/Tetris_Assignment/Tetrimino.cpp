@@ -64,10 +64,7 @@ void Tetrimino::rotate(array<Point>^ newPosition)
 void Tetrimino::move(array<Point>^ newPosition)
 	{
 		for(int pos = 0; pos < newPosition->Length; pos++)
-				curPosition[pos] = newPosition[pos];	
-
-		
-		
+				curPosition[pos] = newPosition[pos];
 	}
 
 void Tetrimino::draw()
@@ -77,7 +74,8 @@ void Tetrimino::draw()
 			(
 				curPosition[pos].X,
 				curPosition[pos].Y,
-				tetriminoColor
+				tetriminoColor,
+				tetrimino
 			);
 	}
 
@@ -88,7 +86,8 @@ void Tetrimino::drawPreview()
 			(
 				curPosition[pos].X-4,
 				curPosition[pos].Y+3,
-				tetriminoColor
+				tetriminoColor,
+				tetrimino
 			);		
 	}
 
@@ -131,6 +130,7 @@ void Tetrimino::addToGrid(Color color)
 			cell->setSolid(true);
 			cell->setTetrimino(true);
 			cell->setColor(color);
+			cell->setImage(tetrimino);
 		}	
 
 		placed = true;		

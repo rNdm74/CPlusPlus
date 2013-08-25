@@ -35,15 +35,7 @@ private:
 
 	GameGrid^ grid;
 	Grid^ preview;
-
-	//Graphics^ graphics;
-	//Rectangle screenBounds;
-
-	//Image^ background;
-	
-	//Font^ font;
-	//Brush^ brush;
-	
+		
 	int time;
 	int waitTime;
 	
@@ -72,11 +64,8 @@ public:
 	virtual void update() override;
 	virtual void render() override;
 
-
 	void updateStats(ETetriminoType type);
-	
-	
-
+		
 	int getPlayerScore()	{ return grid->getPlayerScore(); }
 	bool getDrop()			{ return drop; }
 	void setDrop(bool b)	{ drop = b; }
