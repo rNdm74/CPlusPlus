@@ -10,10 +10,18 @@ using namespace System::Data;
 using namespace System::Drawing;
 using namespace System::Drawing::Text;
 
+#define DIRECTION -1
+
 ref class GameMenu :
 public Game
 	{
 	private:
+		float xPos;
+		float yPos;
+
+		float vel;
+
+
 		Image^ logo;
 		System::String^ label;
 		

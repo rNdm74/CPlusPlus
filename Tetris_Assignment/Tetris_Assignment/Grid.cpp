@@ -5,8 +5,12 @@ Grid::Grid(Point location, Graphics^ dbGraphics, int cols, int rows)
 	{		
 		gridLocation = location;
 		graphics = dbGraphics;	
+
 		N_COLS = cols;
 		N_ROWS = rows;
+
+		vel = 0;
+		posY = 0;
 
 		gridData = gcnew array<Cell^, 2>(N_COLS, N_ROWS);
 		
@@ -98,24 +102,35 @@ void Grid::draw()
 						CELL_SIZE
 
 					);*/
+					//float posX = gridLocation.X + col * CELL_SIZE;
+					//posY = ;
+
+					//if(vel > 10) vel *= -1;
+					//if(vel > 5) vel *= -1;
+
+					//vel += 1;
+
+					//posY -= vel;
+
+					//posY += 0.1 * vel;
 
 					graphics->DrawImage
 					(
 						cell->getImage(), 
-						gridLocation.X + col * CELL_SIZE,
-						gridLocation.Y + row * CELL_SIZE,
-						CELL_SIZE,
-						CELL_SIZE
+						(float)gridLocation.X + col * CELL_SIZE,
+						(float)(gridLocation.Y + row * CELL_SIZE) + posY,
+						(float)30,
+						(float)30
 					);
 
-					/*graphics->FillRectangle
+					graphics->FillRectangle
 					(
 						gcnew SolidBrush(cell->getColor()), 
 						gridLocation.X + col * CELL_SIZE,
 						gridLocation.Y + row * CELL_SIZE,
 						CELL_SIZE,
 						CELL_SIZE
-					);*/
+					);
 				}
 			}
 		}		
@@ -147,14 +162,14 @@ void Grid::drawOneSquare(int col, int row,  Color color, Image^ image)
 
 			);
 
-			/*graphics->FillRectangle
+			graphics->FillRectangle
 			(
 				gcnew SolidBrush(color), 
 				gridLocation.X + col * CELL_SIZE,
 				gridLocation.Y + row * CELL_SIZE,
 				CELL_SIZE,
 				CELL_SIZE
-			);*/
+			);
 		}		
 	}
 

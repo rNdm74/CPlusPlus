@@ -8,6 +8,9 @@ GameGrid::GameGrid(Point location, Graphics^ dbGraphics, int cols, int rows)
 
 void GameGrid::update()
 	{
+		
+
+
 		int combo = 0;
 
 		for(int col = 0; col < N_COLS; col++)
@@ -34,9 +37,7 @@ void GameGrid::update()
 
 						playerLevel++;
 					}
-				}	
-
-
+				}
 			}
 		}		
 	}

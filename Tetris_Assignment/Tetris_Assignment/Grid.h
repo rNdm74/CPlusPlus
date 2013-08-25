@@ -25,8 +25,12 @@ ref class Grid
 
 		Image^ wall;
 
+		float posY;
+		float vel;
+
 		int N_COLS;
 		int N_ROWS;
+
 		Graphics^ graphics;
 		
 	public:

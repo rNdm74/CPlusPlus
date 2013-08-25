@@ -24,7 +24,7 @@ using namespace System::Media;
 #define PREVIEW_COLS 8
 #define PREVIEW_ROWS 6
 
-#define ALPHA 99
+#define ALPHA 75
 
 ref class GamePlay:
 public Game
