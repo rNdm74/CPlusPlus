@@ -1,6 +1,8 @@
 #pragma once
 
-#include "GameManager.h"
+#include "GameMenu.h"
+#include "GamePlay.h"
+#include "GameOver.h"
 
 namespace Tetris_Assignment {
 
@@ -11,6 +13,8 @@ namespace Tetris_Assignment {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::Drawing::Text;
+
+	
 
 	/// <summary>
 	/// Summary for Tetris
@@ -47,20 +51,17 @@ namespace Tetris_Assignment {
 		Graphics^ dbGraphics;
 		Bitmap^ dbBitmap;
 
-		GameManager^ gameManager;
+		PrivateFontCollection^ pfc;
+		System::Drawing::Font^ font;
+		Brush^ brush;
 
+		GameMenu^ gameMenu;
+		GamePlay^ gamePlay;
+		GameOver^ gameOver;
 
-
-
-
-
-
-
-
+		EGameState gameState;
 
 	private: System::ComponentModel::IContainer^  components;
-
-
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -98,15 +99,37 @@ namespace Tetris_Assignment {
 
 					// Clear background
 					dbGraphics->Clear(BackColor);
-					
-					// Update game	
-					if(gameManager->isGameOver()) 
-						gameManager->update();
-					
-					// Render game
-					gameManager->render();
 
-					//Text = gridManager->getPlayerScore().ToString();
+					// Update gamestate
+					switch(gameState)
+					{
+						case MENU:
+							// Update gamemenu	 
+							gameMenu->update();
+					
+							// Render gamemenu
+							gameMenu->render();
+							break;
+
+						case PLAY:
+							// Game ends	
+							if(gamePlay->isGameOver()) gameState = OVER;
+
+							// Update gameplay
+							gamePlay->update();
+					
+							// Render gameplay
+							gamePlay->render();
+							break;
+
+						case OVER:
+							// Update gameover	
+							gameOver->update();
+					
+							// Render gameover
+							gameOver->render();
+							break;
+					}
 										
 					// Make buffer visible
 					e->Graphics->DrawImage(dbBitmap, 0, 0);										
@@ -119,19 +142,45 @@ namespace Tetris_Assignment {
 					// Grab its Graphics
 					dbGraphics = Graphics::FromImage(dbBitmap);
 
-					gameManager = gcnew GameManager(dbGraphics, ClientRectangle);
+					// Load game font
+					pfc = gcnew PrivateFontCollection();
+					pfc->AddFontFile("PressStart2P.ttf");
 
+					// Create font
+					font = gcnew System::Drawing::Font(pfc->Families[0], 16, FontStyle::Regular);
 					
+					// Create font brush
+					brush = gcnew SolidBrush(Color::CornflowerBlue);
 
+					// Create Game
+					gameMenu = gcnew GameMenu(dbGraphics, ClientRectangle, font, brush);
+					gamePlay = gcnew GamePlay(dbGraphics, ClientRectangle, font, brush);
+					gameOver = gcnew GameOver(dbGraphics, ClientRectangle, font, brush);
+
+					// Set initial game state
+					gameState = MENU;
 				 }
 	private: System::Void Tetris_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
-					if(e->KeyCode == Keys::Left) gameManager->moveLeft();
-					if(e->KeyCode == Keys::Right) gameManager->moveRight();
-										
-					if(e->KeyCode == Keys::Up) gameManager->moveRotate();	
-					if(e->KeyCode == Keys::Down)gameManager->moveDown();
+					// Update gamestate
+					switch(gameState)
+					{
+						case MENU:														
+							gamePlay = gcnew GamePlay(dbGraphics, ClientRectangle, font, brush);							
+							
+							// Update gamemenu
+							gameState = gameMenu->input(e);	
+							break;
 
-					if(e->KeyCode == Keys::Space)gameManager->setDrop(true);
+						case PLAY:							
+							// Update gameplay								
+							gameState = gamePlay->input(e);
+							break;
+
+						case OVER:
+							// Update gameover								
+							gameState = gameOver->input(e);
+							break;
+					}					
 				 }
 };
 }

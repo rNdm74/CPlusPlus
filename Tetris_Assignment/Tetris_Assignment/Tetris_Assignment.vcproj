@@ -200,7 +200,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\GameManager.cpp"
+				RelativePath=".\PlaySound.cpp"
 				>
 			</File>
 			<File
@@ -228,12 +228,8 @@
 				>
 			</File>
 			<Filter
-				Name="Blocks"
+				Name="Tetriminos"
 				>
-				<File
-					RelativePath=".\Block.cpp"
-					>
-				</File>
 				<File
 					RelativePath=".\I.cpp"
 					>
@@ -259,6 +255,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Tetrimino.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\Z.cpp"
 					>
 				</File>
@@ -279,6 +279,26 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Game"
+				>
+				<File
+					RelativePath=".\Game.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\GameMenu.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\GameOver.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\GamePlay.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -286,7 +306,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\GameManager.h"
+				RelativePath=".\PlaySound.h"
 				>
 			</File>
 			<File
@@ -308,12 +328,8 @@
 				</File>
 			</File>
 			<Filter
-				Name="Blocks"
+				Name="Tetriminos"
 				>
-				<File
-					RelativePath=".\Block.h"
-					>
-				</File>
 				<File
 					RelativePath=".\I.h"
 					>
@@ -339,6 +355,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Tetrimino.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Z.h"
 					>
 				</File>
@@ -356,6 +376,26 @@
 				</File>
 				<File
 					RelativePath=".\Grid.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Game"
+				>
+				<File
+					RelativePath=".\Game.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GameMenu.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GameOver.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GamePlay.h"
 					>
 				</File>
 			</Filter>

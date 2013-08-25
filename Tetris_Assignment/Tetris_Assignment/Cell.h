@@ -11,17 +11,17 @@ ref class Cell
 	{
 	private:
 		Color cellColor;
-		bool gameBlock;
+		bool tetrimino;
 		bool solid;		
 
 	public:
 		Cell(Color color);
 
 		void setColor(Color c)	{ cellColor = c; }
-		void setBlock(bool b)	{ gameBlock = b; }
+		void setTetrimino(bool t)	{ tetrimino = t; }
 		void setSolid(bool s)	{ solid = s; }
 		
 		Color getColor()		{ return cellColor; }
-		bool isBlock()			{ return gameBlock;	}
+		bool isTetrimino()		{ return tetrimino;	}
 		bool isSolid()			{ return solid;	}		
 	};

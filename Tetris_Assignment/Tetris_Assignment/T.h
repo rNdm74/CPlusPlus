@@ -1,10 +1,12 @@
 #pragma once
-#include "block.h"
+#include "tetrimino.h"
+
+#define T_X 5
 
 ref class T :
-public Block
+public Tetrimino
 	{
 	public:
-		T(int startX, Color color, Grid^ grid, Grid^ preview);
+		T(Color color, Grid^ grid, Grid^ preview);
 		virtual void rotate(array<Point>^ temp) override;
 	};

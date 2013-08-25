@@ -75,26 +75,24 @@ void Grid::drawOneSquare(int col, int row,  Color color)
 		if(row > 2)
 		{
 			graphics->FillRectangle
-		(
-			gcnew SolidBrush(color), 
-			gridLocation.X + col * CELL_SIZE,
-			gridLocation.Y + row * CELL_SIZE,
-			CELL_SIZE,
-			CELL_SIZE
-		);	
-		
-		graphics->DrawRectangle
-		(
-			gcnew Pen(color, 3), 
-			gridLocation.X + col * CELL_SIZE,
-			gridLocation.Y + row * CELL_SIZE,
-			CELL_SIZE,
-			CELL_SIZE
+			(
+				gcnew SolidBrush(color), 
+				gridLocation.X + col * CELL_SIZE,
+				gridLocation.Y + row * CELL_SIZE,
+				CELL_SIZE,
+				CELL_SIZE
+			);	
+			
+			graphics->DrawRectangle
+			(
+				gcnew Pen(color, 3), 
+				gridLocation.X + col * CELL_SIZE,
+				gridLocation.Y + row * CELL_SIZE,
+				CELL_SIZE,
+				CELL_SIZE
 
-		);
-
-		}
-		
+			);
+		}		
 	}
 
 bool Grid::isRowFull(int rowNumber)

@@ -1,17 +1,17 @@
 #include "StdAfx.h"
 #include "Z.h"
 
-Z::Z(int startX, Color color, Grid^ grid, Grid^ preview)
-  : Block(color, grid, preview)
+Z::Z(Color color, Grid^ grid, Grid^ preview)
+  : Tetrimino(color, grid, preview)
 	{
-		blockType = Z_BLOCK;
+		tetriminoType = Z_TETRIMINO;
 
-		squares = gcnew array<Point> 
+		curPosition = gcnew array<Point> 
 		{ 
-			Point(0 + startX, 0), 
-			Point(1 + startX, 0), 
-			Point(1 + startX, 1),
-			Point(2 + startX, 1)
+			Point(0 + Z_X, 0), 
+			Point(1 + Z_X, 0), 
+			Point(1 + Z_X, 1),
+			Point(2 + Z_X, 1)
 		};
 	}
 

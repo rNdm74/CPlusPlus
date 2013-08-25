@@ -1,17 +1,17 @@
 #include "StdAfx.h"
 #include "T.h"
 
-T::T(int startX, Color color, Grid^ grid, Grid^ preview)
-  : Block(color, grid, preview)
+T::T(Color color, Grid^ grid, Grid^ preview)
+  : Tetrimino(color, grid, preview)
 	{
-		blockType = T_BLOCK;
+		tetriminoType = T_TETRIMINO;
 
-		squares = gcnew array<Point> 
+		curPosition = gcnew array<Point> 
 		{ 
-			Point(1 + startX, 0), 
-			Point(0 + startX, 1), 
-			Point(1 + startX, 1),
-			Point(2 + startX, 1)
+			Point(1 + T_X, 0), 
+			Point(0 + T_X, 1), 
+			Point(1 + T_X, 1),
+			Point(2 + T_X, 1)
 		};
 	}
 
