@@ -1,0 +1,18 @@
+#include "StdAfx.h"
+#include "Sound.h"
+
+Sound::Sound()
+{
+	Play = true;	
+}
+
+void Sound::play(System::String^ file)
+{	
+	player = gcnew SoundPlayer();
+
+	player->SoundLocation = file;
+	player->Load();
+
+	if(Play) player->Play();
+}
+
