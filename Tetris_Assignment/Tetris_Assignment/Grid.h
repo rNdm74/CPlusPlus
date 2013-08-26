@@ -31,6 +31,8 @@ ref class Grid
 		int N_COLS;
 		int N_ROWS;
 
+		
+
 		Graphics^ graphics;
 		Sound^ gSound;
 		

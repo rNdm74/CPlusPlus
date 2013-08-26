@@ -19,6 +19,7 @@ public:
 	virtual bool isRowFull(int rowNumber) override; //- all cells in row are full 
 	virtual void deleteRow(int rowNumber) override; //- cell up above is now my color cycle up from bottom
 
+	void setPlayerScore(int p)		{ playerScore += p; }
 	int getPlayerScore()			{ return playerScore; }
 	int getPlayerLines()			{ return playerLines; }
 	int getPlayerLevel()			{ return playerLevel; }

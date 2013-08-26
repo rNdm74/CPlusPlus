@@ -92,7 +92,7 @@ void GamePlay::update()
 
 	if(drop) tetriminoInPlay->moveDown();		
 		
-	if(time > waitTime - (grid->getPlayerLevel()))
+	if(time > waitTime - (grid->getPlayerLevel()*2))
 	{
 		tetriminoInPlay->moveDown();
 		//if(!drop && tetriminoInPlay->getCurPosition()[3].Y > 2)

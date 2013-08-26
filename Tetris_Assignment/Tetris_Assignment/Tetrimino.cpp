@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "Tetrimino.h"
 
-Tetrimino::Tetrimino(Color color, Grid^ grid, Grid^ preview)
+Tetrimino::Tetrimino(Color color, GameGrid^ grid, Grid^ preview)
 	{	
 		curPosition = nullptr;
 		tetriminoColor = color;
@@ -133,7 +133,8 @@ void Tetrimino::addToGrid(Color color)
 			cell->setImage(tetrimino);
 		}	
 
-		placed = true;		
-		
+		placed = true;	
+
+		gameGrid->setPlayerScore(10);		
 		gameGrid->getSound()->play("SFX_PieceLockDown.wav");		
 	}

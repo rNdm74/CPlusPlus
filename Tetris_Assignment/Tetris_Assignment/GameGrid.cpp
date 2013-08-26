@@ -4,6 +4,7 @@
 GameGrid::GameGrid(Point location, Graphics^ dbGraphics, Sound^ sound, int cols, int rows)
 		 : Grid(location, dbGraphics, sound, cols, rows)
 {
+	playerLevel = 1;
 }
 
 void GameGrid::update()

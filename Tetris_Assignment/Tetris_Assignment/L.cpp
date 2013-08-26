@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "L.h"
 
-L::L(Color color, Grid^ grid, Grid^ preview)
+L::L(Color color, GameGrid^ grid, Grid^ preview)
   : Tetrimino(color, grid, preview)
 	{
 		tetriminoType = L_TETRIMINO;

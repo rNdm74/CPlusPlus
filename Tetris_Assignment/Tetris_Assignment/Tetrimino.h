@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GameGrid.h"
 #include "Grid.h"
 #include "Sound.h"
 
@@ -36,7 +37,7 @@ ref class Tetrimino abstract
 		array<Point>^ curPosition;
 		array<Point>^ newPosition;
 
-		Grid^ gameGrid;
+		GameGrid^ gameGrid;
 		Grid^ tetriminoPreview;
 
 		Image^ tetrimino;
@@ -49,7 +50,7 @@ ref class Tetrimino abstract
 		bool drop;
 		
 	public:
-		Tetrimino(Color color, Grid^ grid, Grid^ preview);
+		Tetrimino(Color color, GameGrid^ grid, Grid^ preview);
 
 		void moveLeft();
 		void moveRight();

@@ -11,7 +11,7 @@ void Sound::play(System::String^ file)
 	player = gcnew SoundPlayer();
 
 	player->SoundLocation = file;
-	player->Load();
+	player->LoadAsync();
 
 	if(Play) player->Play();
 }
