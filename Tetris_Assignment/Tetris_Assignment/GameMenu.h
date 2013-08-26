@@ -21,12 +21,11 @@ public Game
 
 		float vel;
 
-
 		Image^ logo;
 		System::String^ label;
 		
 	public:
-		GameMenu(Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush);
+		GameMenu(Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush, Sound^ sound);
 
 		virtual EGameState input(KeyEventArgs^  e) override;
 		virtual void update() override;

@@ -1,10 +1,36 @@
 #include "StdAfx.h"
 #include "Grid.h"
 
+
 Grid::Grid(Point location, Graphics^ dbGraphics, int cols, int rows)
 	{		
 		gridLocation = location;
 		graphics = dbGraphics;	
+
+		N_COLS = cols;
+		N_ROWS = rows;
+
+		vel = 0;
+		posY = 0;
+
+		gridData = gcnew array<Cell^, 2>(N_COLS, N_ROWS);
+		
+		wall = Image::FromFile("W.png");
+
+		for(int col = 0; col < N_COLS; col++)
+		{
+			for(int row = 0; row < N_ROWS; row++)
+			{
+				gridData[col, row] = gcnew Cell(Color::FromArgb(199, Color::Gray));
+			}
+		}
+	}
+
+Grid::Grid(Point location, Graphics^ dbGraphics, Sound^ sound, int cols, int rows)
+	{		
+		gridLocation = location;
+		graphics = dbGraphics;	
+		gSound = sound;
 
 		N_COLS = cols;
 		N_ROWS = rows;
@@ -114,14 +140,14 @@ void Grid::draw()
 
 					//posY += 0.1 * vel;
 
-					graphics->DrawImage
+					/*graphics->DrawImage
 					(
 						cell->getImage(), 
 						(float)gridLocation.X + col * CELL_SIZE,
 						(float)(gridLocation.Y + row * CELL_SIZE) + posY,
 						(float)30,
 						(float)30
-					);
+					);*/
 
 					graphics->FillRectangle
 					(

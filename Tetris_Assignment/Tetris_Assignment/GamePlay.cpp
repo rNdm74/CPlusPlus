@@ -1,19 +1,14 @@
 #include "StdAfx.h"
 #include "GamePlay.h"
 
-GamePlay::GamePlay(Graphics^ dbGraphics, Rectangle clientRectangle, Font^ gameFont, Brush^ fontBrush)
-		 : Game(dbGraphics, screenBounds, gameFont, fontBrush)
+GamePlay::GamePlay(Graphics^ dbGraphics, Rectangle clientRectangle, Font^ gameFont, Brush^ fontBrush, Sound^ sound)
+		 : Game(dbGraphics, screenBounds, gameFont, fontBrush, sound)
 {
 	rGen = gcnew Random();
-	graphics = dbGraphics;
-	screenBounds = clientRectangle;
-	font = gameFont;
-	brush = fontBrush;
 	
-
 	background = Image::FromFile("background5.jpg");
 
-	grid = gcnew GameGrid(Point(302,-30), graphics, GAMEGRID_COLS, GAMEGRID_ROWS);
+	grid = gcnew GameGrid(Point(302,-30), graphics, sound, GAMEGRID_COLS, GAMEGRID_ROWS);
 	preview = gcnew Grid(Point(757,480), graphics, PREVIEW_COLS, PREVIEW_ROWS); 
 
 	tetriminoStats = gcnew array<int>(7);
@@ -37,19 +32,19 @@ GamePlay::GamePlay(Graphics^ dbGraphics, Rectangle clientRectangle, Font^ gameFo
 void GamePlay::moveLeft()
 {
 	tetriminoInPlay->moveLeft();
-	gcnew PlaySound("SFX_PieceMoveLR.wav");
+	gSound->play("SFX_PieceMoveLR.wav");
 }
 
 void GamePlay::moveRight()
 {
 	tetriminoInPlay->moveRight();
-	gcnew PlaySound("SFX_PieceMoveLR.wav");
+	gSound->play("SFX_PieceMoveLR.wav");
 }
 
 void GamePlay::moveDown()
 {
 	tetriminoInPlay->moveDown();
-	gcnew PlaySound("SFX_PieceFall.wav");
+	gSound->play("SFX_PieceFall.wav");
 }
 
 void GamePlay::moveRotate()
@@ -68,12 +63,11 @@ EGameState GamePlay::input(KeyEventArgs^  e)
 						
 		if(e->KeyCode == Keys::Up) moveRotate();	
 		if(e->KeyCode == Keys::Down) moveDown();
-
+		if(e->KeyCode == Keys::S) gSound->Play = !gSound->Play;
 		if(e->KeyCode == Keys::Space)
 		{
 			setDrop(true);
-			gcnew PlaySound("SFX_PieceHardDrop.wav");
-			
+			gSound->play("SFX_PieceHardDrop.wav");			
 		}
 	}
 
@@ -96,13 +90,12 @@ void GamePlay::update()
 		//blockInPlay++;
 	}
 
-	if(drop) tetriminoInPlay->moveDown();
-		
+	if(drop) tetriminoInPlay->moveDown();		
 		
 	if(time > waitTime - (grid->getPlayerLevel()))
 	{
 		tetriminoInPlay->moveDown();
-		if(!drop && tetriminoInPlay->getCurPosition()[3].Y > 2)
+		//if(!drop && tetriminoInPlay->getCurPosition()[3].Y > 2)
 			//gcnew PlaySound("SFX_PieceFall.wav");
 		
 		time = 0;
@@ -118,7 +111,9 @@ void GamePlay::render()
 	graphics->DrawImageUnscaledAndClipped(background, screenBounds);
 
 	grid->draw();
+
 	tetriminoInPlay->draw();
+
 	nextTetrimino->drawPreview();
 	
 	graphics->DrawString
@@ -129,6 +124,7 @@ void GamePlay::render()
 		"\n\n"+ 
 		"SCORE:	"+ grid->getPlayerScore().ToString() + 
 		"\n\n\n\n"+
+		"\n\n\n"+
 		"HELP"+
 		"\n\n\n"+
 		"LEFT:MOVE"+
@@ -141,7 +137,9 @@ void GamePlay::render()
 		"\n\n"+		
 		"SPACE:DROP"+
 		"\n\n"+		
-		"ESCAPE:MENU",
+		"ESCAPE:MENU"
+		"\n\n"+		
+		"S:SOUND " + ((gSound->Play) ? "ON" : "OFF"),
 		font, 
 		brush, 
 		50, 
@@ -215,7 +213,7 @@ bool GamePlay::isGameOver()
 
 		if(tetriminoInPlay->isPlaced() && p.Y < 3)
 		{
-			gcnew PlaySound("SFX_GameOver.wav");
+			gSound->play("SFX_GameOver.wav");
 			return true;
 		}
 	}

@@ -1,15 +1,14 @@
 #include "StdAfx.h"
 #include "GameMenu.h"
 
-GameMenu::GameMenu(Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush)
-		 : Game(dbGraphics, screenBounds, gameFont, fontBrush)
-{
-	graphics = dbGraphics;
-	background = Image::FromFile("background5.jpg");
+GameMenu::GameMenu(Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush, Sound^ sound)
+		 : Game(dbGraphics, screenBounds, gameFont, fontBrush, sound)
+{	
+	
 	logo = Image::FromFile("logo.png");
-	font = gameFont;
-	brush = fontBrush;
-	gcnew PlaySound("SFX_SpecialTetris.wav");
+	
+	gSound->play("SFX_SpecialTetris.wav");
+
 	label = "Press Enter To Start";
 
 	xPos = background->Width / 2 - logo->Width / 2;
@@ -19,16 +18,20 @@ GameMenu::GameMenu(Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont,
 }
 
 EGameState GameMenu::input(KeyEventArgs^  e)
-{
-	gcnew PlaySound("SFX_PieceHold.wav");
+{	
+	if(e->KeyData == Keys::Enter)
+	{
+		gSound->play("SFX_PieceHold.wav");
+		return PLAY;
+	}
 
-	return PLAY;
+	return MENU;
 }
 
 void GameMenu::update()
 {
-	if(vel > 4) vel *= DIRECTION;
-	if(vel < -4) vel *= -DIRECTION;
+	if(vel > 5) vel *= DIRECTION;
+	if(vel < -5) vel *= -DIRECTION;
 
 	vel += 0.15;
 

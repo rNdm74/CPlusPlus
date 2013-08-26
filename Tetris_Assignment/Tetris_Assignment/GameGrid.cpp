@@ -1,39 +1,34 @@
 #include "StdAfx.h"
 #include "GameGrid.h"
 
-GameGrid::GameGrid(Point location, Graphics^ dbGraphics, int cols, int rows)
-		 : Grid(location, dbGraphics, cols, rows)
+GameGrid::GameGrid(Point location, Graphics^ dbGraphics, Sound^ sound, int cols, int rows)
+		 : Grid(location, dbGraphics, sound, cols, rows)
 {
 }
 
 void GameGrid::update()
 	{
-		
-
-
 		int combo = 0;
 
 		for(int col = 0; col < N_COLS; col++)
 		{
 			for(int row = 0; row < N_ROWS; row++)
-			{	
-				
-
+			{
 				if(isRowFull(row))
 				{
-					gcnew PlaySound("SFX_SpecialLineClearTriple.wav");
+					gSound->play("SFX_SpecialLineClearTriple.wav");
 					
 					deleteRow(row);
 
 					combo++;
+
 					playerLines++;
 
-					playerScore += 100;//(40 * combo) * (playerLevel + 1);
-					
-					
-					if(playerScore % 100 == 0)
+					playerScore += (40 * combo) * (playerLevel + 1);
+										
+					if(playerLines % 10 == 0)
 					{
-						gcnew PlaySound("SFX_LevelUp.wav");
+						gSound->play("SFX_LevelUp.wav");
 
 						playerLevel++;
 					}

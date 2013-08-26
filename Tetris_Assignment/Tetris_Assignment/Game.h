@@ -1,6 +1,6 @@
 #pragma once
 
-#include "PlaySound.h"
+#include "Sound.h"
 
 using namespace System;
 using namespace System::ComponentModel;
@@ -25,9 +25,13 @@ ref class Game abstract
 		Rectangle screenBounds;
 		Font^ font;
 		Brush^ brush;
+		Sound^ gSound;
 
 	public:
-		Game(Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush);
+		static bool Play;
+
+	public:
+		Game(Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush, Sound^ sound);
 		virtual EGameState input(KeyEventArgs^  e);
 		virtual void update();
 		virtual void render();

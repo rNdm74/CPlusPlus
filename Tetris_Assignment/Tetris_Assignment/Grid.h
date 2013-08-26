@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Cell.h"
-#include "PlaySound.h"
+#include "Sound.h"
 
 using namespace System;
 using namespace System::ComponentModel;
@@ -32,9 +32,11 @@ ref class Grid
 		int N_ROWS;
 
 		Graphics^ graphics;
+		Sound^ gSound;
 		
 	public:
 		Grid(Point location, Graphics^ dbGraphics, int cols, int rows);
+		Grid(Point location, Graphics^ dbGraphics, Sound^ sound, int cols, int rows);
 
 		virtual void update();
 
@@ -44,6 +46,7 @@ ref class Grid
 		virtual bool isRowFull(int rowNumber); //- all cells in row are full 
 		virtual void deleteRow(int rowNumber); //- cell up above is now my color cycle up from bottom
 
+		Sound^ getSound()				{ return gSound; }
 		Cell^ getCell(int col, int row)	{ return gridData[col, row]; }
 		Cell^ getCell(Point p)			{ return gridData[p.X, p.Y]; }
 	};

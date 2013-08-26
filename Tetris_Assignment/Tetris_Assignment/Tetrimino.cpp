@@ -50,7 +50,7 @@ void Tetrimino::moveRotate()
 		{
 			move(newPosition);
 
-			gcnew PlaySound("SFX_PieceRotateLR.wav");
+			gameGrid->getSound()->play("SFX_PieceRotateLR.wav");
 			
 			orientation++;
 		}		
@@ -134,6 +134,6 @@ void Tetrimino::addToGrid(Color color)
 		}	
 
 		placed = true;		
-
-		gcnew PlaySound("SFX_PieceLockDown.wav");		
+		
+		gameGrid->getSound()->play("SFX_PieceLockDown.wav");		
 	}

@@ -13,13 +13,12 @@ using namespace System::Drawing::Text;
 ref class GameOver:
 public Game
 {
-	private:
-		bool gameOver;
-	public:
-		GameOver(Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush);
-		
-		virtual EGameState input(KeyEventArgs^  e) override;
-		virtual void update() override;
-		virtual void render() override; 
-		
+private:
+	bool gameOver;
+public:
+	GameOver(Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush, Sound^ sound);
+	
+	virtual EGameState input(KeyEventArgs^  e) override;
+	virtual void update() override;
+	virtual void render() override; 		
 };

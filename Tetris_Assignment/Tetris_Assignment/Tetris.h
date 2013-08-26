@@ -51,6 +51,8 @@ namespace Tetris_Assignment {
 		Graphics^ dbGraphics;
 		Bitmap^ dbBitmap;
 
+		Sound^ sound;
+
 		PrivateFontCollection^ pfc;
 		System::Drawing::Font^ font;
 		Brush^ brush;
@@ -70,28 +72,30 @@ namespace Tetris_Assignment {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->SuspendLayout();
-			// 
-			// Tetris
-			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
-			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackColor = System::Drawing::Color::Black;
-			this->ClientSize = System::Drawing::Size(1008, 729);
-			this->DoubleBuffered = true;
-			this->MaximumSize = System::Drawing::Size(1024, 768);
-			this->MinimumSize = System::Drawing::Size(1024, 736);
-			this->Name = L"Tetris";
-			this->ShowIcon = false;
-			this->SizeGripStyle = System::Windows::Forms::SizeGripStyle::Hide;
-			this->StartPosition = System::Windows::Forms::FormStartPosition::Manual;
-			this->Text = L"Tetris";
-			this->Load += gcnew System::EventHandler(this, &Tetris::Tetris_Load);
-			this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Tetris::Tetris_Paint);
-			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Tetris::Tetris_KeyDown);
-			this->ResumeLayout(false);
+		this->SuspendLayout();
+		// 
+		// Tetris
+		// 
+		this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+		this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+		this->BackColor = System::Drawing::Color::Black;
+		this->ClientSize = System::Drawing::Size(1008, 729);
+		this->DoubleBuffered = true;
+		this->MaximizeBox = false;
+		this->MaximumSize = System::Drawing::Size(1024, 768);
+		this->MinimizeBox = false;
+		this->MinimumSize = System::Drawing::Size(1024, 736);
+		this->Name = L"Tetris";
+		this->ShowIcon = false;
+		this->SizeGripStyle = System::Windows::Forms::SizeGripStyle::Hide;
+		this->StartPosition = System::Windows::Forms::FormStartPosition::Manual;
+		this->Text = L"Tetris";
+		this->Load += gcnew System::EventHandler(this, &Tetris::Tetris_Load);
+		this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Tetris::Tetris_Paint);
+		this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Tetris::Tetris_KeyDown);
+		this->ResumeLayout(false);
 
-		}
+			}
 #pragma endregion
 	private: System::Void Tetris_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e) {
 					// Refresh screen
@@ -142,6 +146,9 @@ namespace Tetris_Assignment {
 					// Grab its Graphics
 					dbGraphics = Graphics::FromImage(dbBitmap);
 
+					// Create sound player
+					sound = gcnew Sound();
+
 					// Load game font
 					pfc = gcnew PrivateFontCollection();
 					pfc->AddFontFile("PressStart2P.ttf");
@@ -153,9 +160,9 @@ namespace Tetris_Assignment {
 					brush = gcnew SolidBrush(Color::CornflowerBlue);
 
 					// Create Game
-					gameMenu = gcnew GameMenu(dbGraphics, ClientRectangle, font, brush);
-					gamePlay = gcnew GamePlay(dbGraphics, ClientRectangle, font, brush);
-					gameOver = gcnew GameOver(dbGraphics, ClientRectangle, font, brush);
+					gameMenu = gcnew GameMenu(dbGraphics, ClientRectangle, font, brush, sound);
+					gamePlay = gcnew GamePlay(dbGraphics, ClientRectangle, font, brush, sound);
+					gameOver = gcnew GameOver(dbGraphics, ClientRectangle, font, brush, sound);
 
 					// Set initial game state
 					gameState = MENU;
@@ -165,7 +172,7 @@ namespace Tetris_Assignment {
 					switch(gameState)
 					{
 						case MENU:														
-							gamePlay = gcnew GamePlay(dbGraphics, ClientRectangle, font, brush);							
+							gamePlay = gcnew GamePlay(dbGraphics, ClientRectangle, font, brush, sound);							
 							
 							// Update gamemenu
 							gameState = gameMenu->input(e);	

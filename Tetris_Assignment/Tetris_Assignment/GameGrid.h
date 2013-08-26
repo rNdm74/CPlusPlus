@@ -12,7 +12,7 @@ private:
 	int playerLevel;
 
 public:
-	GameGrid(Point location, Graphics^ dbGraphics, int cols, int rows);
+	GameGrid(Point location, Graphics^ dbGraphics, Sound^ sound, int cols, int rows);
 
 	virtual void update() override;
 

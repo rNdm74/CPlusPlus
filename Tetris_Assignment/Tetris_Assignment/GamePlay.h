@@ -38,10 +38,8 @@ private:
 		
 	int time;
 	int waitTime;
-	
-
-	bool drop;
-	
+		
+	bool drop;	
 
 	array<int>^ tetriminoStats;
 	array<ETetriminoType>^ tetriminoTypes;
@@ -49,7 +47,7 @@ private:
 	Random^ rGen;
 
 public:
-	GamePlay(Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush);
+	GamePlay(Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush, Sound^ sound);
 
 	void moveLeft();
 	void moveRight();

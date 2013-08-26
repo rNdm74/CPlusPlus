@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Grid.h"
-#include "PlaySound.h"
+#include "Sound.h"
 
 using namespace System;
 using namespace System::ComponentModel;

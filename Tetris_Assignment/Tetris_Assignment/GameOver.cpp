@@ -1,13 +1,12 @@
 #include "StdAfx.h"
 #include "GameOver.h"
 
-GameOver::GameOver(Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush)
-		 : Game(dbGraphics, screenBounds, gameFont, fontBrush)
+GameOver::GameOver(Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush, Sound^ sound)
+		 : Game(dbGraphics, screenBounds, gameFont, fontBrush, sound)
 {
-	graphics = dbGraphics;
-	background = Image::FromFile("background5.jpg");
-	font = gameFont;
-	brush = fontBrush;
+	
+	
+	
 }
 
 EGameState GameOver::input(KeyEventArgs^  e)
@@ -35,9 +34,7 @@ void GameOver::render()
 	);
 
 	if(gameOver)
-	{
-		
-		
+	{	
 		gameOver = false;
 	}
 }
