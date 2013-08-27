@@ -48,13 +48,13 @@ namespace Tetris_Assignment {
 		}
 
 	private:
+		PrivateFontCollection^ pfc;
+		System::Drawing::Font^ font;
+
 		Graphics^ dbGraphics;
 		Bitmap^ dbBitmap;
 
-		Sound^ sound;
-
-		PrivateFontCollection^ pfc;
-		System::Drawing::Font^ font;
+		Sound^ sound;		
 		Brush^ brush;
 
 		GameMenu^ gameMenu;
