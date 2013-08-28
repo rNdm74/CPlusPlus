@@ -102,7 +102,7 @@ namespace SpriteClass {
 
 					rGen = gcnew Random();
 
-					blobos = gcnew array<Sprite^>(50);
+					blobos = gcnew array<Sprite^>(10);
 
 					for(int b = 0; b < blobos->Length; b++)
 						blobos[b] = gcnew Sprite(dbGraphics, spriteSheet, rGen, ClientRectangle); 
@@ -136,6 +136,9 @@ namespace SpriteClass {
 						blobos[b]->checkBounds();
 						blobos[b]->move();
 					}
+
+					for(int b = 0; b < blobos->Length; b++)
+						blobos[b]->drawDead();
 
 					// Draw
 					for(int b = 0; b < blobos->Length; b++)

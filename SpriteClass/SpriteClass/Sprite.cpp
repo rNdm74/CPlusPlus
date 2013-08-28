@@ -44,14 +44,28 @@ void Sprite::init()
 
 void Sprite::draw()
 	{
-		canvas->DrawImage
-		(
-			spriteSheet, 
-			(float)xPos, 
-			(float)yPos, 
-			srcRectangle, 
-			GraphicsUnit::Pixel
-		);		
+		if(!dead)
+			canvas->DrawImage
+			(
+				spriteSheet, 
+				(float)xPos, 
+				(float)yPos, 
+				srcRectangle, 
+				GraphicsUnit::Pixel
+			);
+	}
+
+void Sprite::drawDead()
+	{
+		if(dead)
+			canvas->DrawImage
+			(
+				spriteSheet, 
+				(float)xPos, 
+				(float)yPos, 
+				srcRectangle, 
+				GraphicsUnit::Pixel
+			);
 	}
 
 void Sprite::erase(Color eraseColor)
@@ -61,8 +75,11 @@ void Sprite::erase(Color eraseColor)
 
 void Sprite::move()
 	{
-		xPos += SPEED * xVel;
-		yPos += SPEED * yVel;
+		if(!dead)
+		{
+			xPos += SPEED * xVel;
+			yPos += SPEED * yVel;
+		}
 	}
 
 void Sprite::checkBounds()
@@ -78,6 +95,8 @@ void Sprite::updateFrame()
 		srcRectangle = Rectangle(currentFrame * frameWidth, 0, frameWidth-1, frameHeight);
 
 		currentFrame++;
+
+		age++;
 	}
 
 void Sprite::setSpriteSheet(Bitmap^ newSpriteSheet, int newNframes)
@@ -92,4 +111,11 @@ void Sprite::setSpriteSheet(Bitmap^ newSpriteSheet, int newNframes)
 void Sprite::wander()
 	{
 		if(rGen->Next(WANDER_PROB) == 0) xVel *= DIRECTION;
+
+		if(age > rGen->Next(LIFE_EXPECTANCY) && !dead)
+		{
+			yPos+=10;
+			setSpriteSheet(gcnew Bitmap("tombstone.bmp"), 1);
+			dead = true;
+		}
 	}

@@ -7,7 +7,8 @@ using namespace System::Windows::Forms;
 using namespace System::Data;
 using namespace System::Drawing;
 
-#define WANDER_PROB 5
+#define WANDER_PROB 35
+#define LIFE_EXPECTANCY 1000
 #define DIRECTION -1
 #define SPEED 1
 
@@ -33,12 +34,17 @@ ref class Sprite
 		float xVel;
 		float yVel;
 
+		int age;
+
+		bool dead;
+
 	public:
 		Sprite(Graphics^ startCanvas, Bitmap^ startSpriteSheet, Random^ startRGen, Rectangle bounds);
 		Sprite(Graphics^ startCanvas, Bitmap^ startSpriteSheet, Random^ startRGen, int startXPos, int startYPos, int startXVel, int startYVel);
 	
 		void init();
 		void draw();
+		void drawDead();
 		void erase(Color eraseColor);
 		void move();
 		void checkBounds();
