@@ -98,11 +98,11 @@ namespace SpriteClass {
 
 					background = Image::FromFile("Rainbow-d.jpg");
 
-					spriteSheet = gcnew Bitmap("BlobboMulti.bmp");
+					spriteSheet = gcnew Bitmap("blobboLeft.bmp");
 
 					rGen = gcnew Random();
 
-					blobos = gcnew array<Sprite^>(10);
+					blobos = gcnew array<Sprite^>(1);
 
 					for(int b = 0; b < blobos->Length; b++)
 						blobos[b] = gcnew Sprite(dbGraphics, spriteSheet, rGen, ClientRectangle); 

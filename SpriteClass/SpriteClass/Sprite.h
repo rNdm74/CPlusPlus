@@ -35,8 +35,10 @@ ref class Sprite
 		float yVel;
 
 		int age;
+		int scale;
 
 		bool dead;
+		bool adult;
 
 	public:
 		Sprite(Graphics^ startCanvas, Bitmap^ startSpriteSheet, Random^ startRGen, Rectangle bounds);

@@ -32,6 +32,8 @@ Sprite::Sprite(Graphics^ startCanvas, Bitmap^ startSpriteSheet, Random^ startRGe
 
 void Sprite::init()
 	{
+		scale = 128;
+
 		nFrames = spriteSheet->Width / spriteSheet->Height;
 		
 		currentFrame = rGen->Next(nFrames-1);
@@ -45,6 +47,7 @@ void Sprite::init()
 void Sprite::draw()
 	{
 		if(!dead)
+			spriteSheet->SetResolution(scale, scale);
 			canvas->DrawImage
 			(
 				spriteSheet, 
@@ -97,25 +100,46 @@ void Sprite::updateFrame()
 		currentFrame++;
 
 		age++;
+
+		if(!adult && !dead)
+		{
+			scale--;
+
+			yPos -= frameHeight / scale;
+		}
+
+		if(scale < 90)
+		{
+			adult = true;
+			scale = 90;
+		}
 	}
 
 void Sprite::setSpriteSheet(Bitmap^ newSpriteSheet, int newNframes)
 	{
 		spriteSheet = newSpriteSheet;
 
-		nFrames = newNframes;
+		//nFrames = newNframes;
 
 		init();		
 	}
 
 void Sprite::wander()
 	{
-		if(rGen->Next(WANDER_PROB) == 0) xVel *= DIRECTION;
+		float currXPos = xPos;
 
-		if(age > rGen->Next(LIFE_EXPECTANCY) && !dead)
+		if(rGen->Next(WANDER_PROB) == 0)
 		{
-			yPos+=10;
+			xVel *= DIRECTION;			
+		}
+
+		//(currXPos > xPos) ? setSpriteSheet(gcnew Bitmap("blobboLeft.bmp"), 1) : setSpriteSheet(gcnew Bitmap("blobboRight.bmp"), 1); 
+
+		if(age > rGen->Next(LIFE_EXPECTANCY) && !dead && adult)
+		{
+			yPos+=20;
 			setSpriteSheet(gcnew Bitmap("tombstone.bmp"), 1);
 			dead = true;
+			//scale = 90;
 		}
 	}
