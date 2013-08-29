@@ -8,8 +8,11 @@ Sprite::Sprite(Graphics^ startCanvas, Bitmap^ startSpriteSheet, Random^ startRGe
 		rGen = startRGen;
 		boundsRect = startBounds;
 
-		xPos = boundsRect.Width / 2;
-		yPos = boundsRect.Height - spriteSheet->Height - 5;
+		leftFrame = gcnew Bitmap("blobboLeft.bmp");
+		rightFrame = gcnew Bitmap("blobboRight.bmp");
+
+		xPos = rGen->Next(boundsRect.Width-32);
+		yPos = boundsRect.Height - spriteSheet->Height;
 
 		xVel = 0.1;
 		yVel = 0;
@@ -32,8 +35,6 @@ Sprite::Sprite(Graphics^ startCanvas, Bitmap^ startSpriteSheet, Random^ startRGe
 
 void Sprite::init()
 	{
-		scale = 128;
-
 		nFrames = spriteSheet->Width / spriteSheet->Height;
 		
 		currentFrame = rGen->Next(nFrames-1);
@@ -42,12 +43,27 @@ void Sprite::init()
 		frameHeight = spriteSheet->Height;
 
 		spriteSheet->MakeTransparent(spriteSheet->GetPixel(0,0));
+
+		lifeExpectancy = rGen->Next(MIN_LIFE_EXPECTANCY, MAX_LIFE_EXPECTANCY);
+
+		scale = 256;
+		tombStoneTime = 0;
+
+		do
+		{
+			growRate = (rGen->NextDouble() * rGen->Next(2));
+		}
+		while(growRate == 0);
 	}
 
 void Sprite::draw()
 	{
 		if(!dead)
+		{
 			spriteSheet->SetResolution(scale, scale);
+			
+			//canvas->DrawString(spriteSheet->VerticalResolution
+
 			canvas->DrawImage
 			(
 				spriteSheet, 
@@ -56,33 +72,58 @@ void Sprite::draw()
 				srcRectangle, 
 				GraphicsUnit::Pixel
 			);
+		}
 	}
 
 void Sprite::drawDead()
-	{
-		if(dead)
-			canvas->DrawImage
-			(
-				spriteSheet, 
-				(float)xPos, 
-				(float)yPos, 
-				srcRectangle, 
-				GraphicsUnit::Pixel
-			);
+	{	
+		if(tombStoneTime < 100)
+		{
+			if(dead)
+			{
+				canvas->DrawImage
+				(
+					spriteSheet, 
+					(float)xPos, 
+					(float)yPos, 
+					srcRectangle, 
+					GraphicsUnit::Pixel
+				);				
+			}
+		}		
 	}
 
 void Sprite::erase(Color eraseColor)
 	{
-		canvas->FillRectangle(gcnew SolidBrush(eraseColor),srcRectangle);
+		canvas->FillRectangle(gcnew SolidBrush(eraseColor),(float)xPos, (float)yPos, srcRectangle.Width, srcRectangle.Height);
 	}
 
 void Sprite::move()
 	{
+		if(!adult && !dead)
+		{			
+			scale-=growRate;
+
+			float growScale = frameHeight / scale;
+
+			//yPos -= growScale;
+		}
+
+		if(scale < 100)
+		{
+			adult = true;
+			scale = 100;
+		}
+
 		if(!dead)
 		{
+			float pastPos = xPos;
+
 			xPos += SPEED * xVel;
 			yPos += SPEED * yVel;
-		}
+
+			setSpriteSheet(((xPos < pastPos) ? leftFrame : rightFrame), 4);
+		}		
 	}
 
 void Sprite::checkBounds()
@@ -93,53 +134,42 @@ void Sprite::checkBounds()
 
 void Sprite::updateFrame()
 	{
+		if(dead) tombStoneTime++;
+
 		currentFrame %= nFrames;
 
 		srcRectangle = Rectangle(currentFrame * frameWidth, 0, frameWidth-1, frameHeight);
 
 		currentFrame++;
 
-		age++;
-
-		if(!adult && !dead)
-		{
-			scale--;
-
-			yPos -= frameHeight / scale;
-		}
-
-		if(scale < 90)
-		{
-			adult = true;
-			scale = 90;
-		}
+		age++;		
 	}
 
 void Sprite::setSpriteSheet(Bitmap^ newSpriteSheet, int newNframes)
 	{
 		spriteSheet = newSpriteSheet;
 
-		//nFrames = newNframes;
+		nFrames = newNframes;
 
-		init();		
+		frameWidth = spriteSheet->Width / nFrames;
+		frameHeight = spriteSheet->Height;
+
+		spriteSheet->MakeTransparent(spriteSheet->GetPixel(0,0));		
 	}
 
 void Sprite::wander()
 	{
-		float currXPos = xPos;
-
 		if(rGen->Next(WANDER_PROB) == 0)
 		{
 			xVel *= DIRECTION;			
 		}
 
-		//(currXPos > xPos) ? setSpriteSheet(gcnew Bitmap("blobboLeft.bmp"), 1) : setSpriteSheet(gcnew Bitmap("blobboRight.bmp"), 1); 
-
-		if(age > rGen->Next(LIFE_EXPECTANCY) && !dead && adult)
+		if(age > lifeExpectancy && !dead && adult)
 		{
-			yPos+=20;
+			yPos+=10;
 			setSpriteSheet(gcnew Bitmap("tombstone.bmp"), 1);
-			dead = true;
-			//scale = 90;
+			dead = true;			
 		}
+
+		
 	}

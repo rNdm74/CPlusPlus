@@ -8,13 +8,23 @@ using namespace System::Data;
 using namespace System::Drawing;
 
 #define WANDER_PROB 35
-#define LIFE_EXPECTANCY 1000
+#define MIN_LIFE_EXPECTANCY 100
+#define MAX_LIFE_EXPECTANCY 200
 #define DIRECTION -1
-#define SPEED 1
+#define SPEED 2
+
+enum orientation
+	{
+		EAST,
+		WEST
+	};
 
 ref class Sprite
 	{
 	private:
+		Bitmap^ leftFrame;
+		Bitmap^ rightFrame;
+
 		Bitmap^ spriteSheet;
 		Graphics^ canvas;		
 		Random^ rGen;
@@ -34,8 +44,11 @@ ref class Sprite
 		float xVel;
 		float yVel;
 
-		int age;
+		double growRate;
+		double age;
 		int scale;
+		int lifeExpectancy;
+		int tombStoneTime;
 
 		bool dead;
 		bool adult;
@@ -53,4 +66,6 @@ ref class Sprite
 		void updateFrame();
 		void setSpriteSheet(Bitmap^ newSpriteSheet, int newNframes);
 		void wander();
+
+		float getVerticalResolution() { return spriteSheet->VerticalResolution; }
 	};

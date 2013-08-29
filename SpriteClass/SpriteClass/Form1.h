@@ -11,7 +11,7 @@ namespace SpriteClass {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-#define UPDATE 30
+#define UPDATE 20
 
 	/// <summary>
 	/// Summary for Form1
@@ -76,13 +76,13 @@ namespace SpriteClass {
 		this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 		this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 		this->BackColor = System::Drawing::Color::Black;
-		this->ClientSize = System::Drawing::Size(784, 262);
+		this->ClientSize = System::Drawing::Size(624, 442);
 		this->DoubleBuffered = true;
 		this->MaximizeBox = false;
 		this->MinimizeBox = false;
 		this->Name = L"Form1";
 		this->ShowIcon = false;
-		this->Text = L"Blobo Family";
+		this->Text = L"Blobbo Family";
 		this->Load += gcnew System::EventHandler(this, &Form1::Form1_Load);
 		this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Form1::Form1_Paint);
 		this->ResumeLayout(false);
@@ -108,7 +108,7 @@ namespace SpriteClass {
 						blobos[b] = gcnew Sprite(dbGraphics, spriteSheet, rGen, ClientRectangle); 
 				 }
 	private: System::Void Form1_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e) {
-				 // Refresh screen
+					// Refresh screen
 					Invalidate();
 
 					// Clear background
@@ -136,6 +136,8 @@ namespace SpriteClass {
 						blobos[b]->checkBounds();
 						blobos[b]->move();
 					}
+
+					Text = blobos[0]->getVerticalResolution().ToString();
 
 					for(int b = 0; b < blobos->Length; b++)
 						blobos[b]->drawDead();
