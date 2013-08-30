@@ -25,7 +25,7 @@ public Game
 		System::String^ label;
 		
 	public:
-		GameMenu(Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush, Sound^ sound);
+		GameMenu(ResourceManager^ rm, Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush, Sound^ sound);
 
 		virtual EGameState input(KeyEventArgs^  e) override;
 		virtual void update() override;

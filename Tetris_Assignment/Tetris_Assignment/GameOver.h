@@ -16,7 +16,7 @@ public Game
 private:
 	bool gameOver;
 public:
-	GameOver(Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush, Sound^ sound);
+	GameOver(ResourceManager^ rm, Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush, Sound^ sound);
 	
 	virtual EGameState input(KeyEventArgs^  e) override;
 	virtual void update() override;

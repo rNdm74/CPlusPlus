@@ -4,6 +4,7 @@
 #include "Sound.h"
 
 using namespace System;
+using namespace System::Resources;
 using namespace System::ComponentModel;
 using namespace System::Collections;
 using namespace System::Windows::Forms;
@@ -29,16 +30,14 @@ ref class Grid
 		float vel;
 
 		int N_COLS;
-		int N_ROWS;
-
-		
+		int N_ROWS;		
 
 		Graphics^ graphics;
 		Sound^ gSound;
 		
 	public:
-		Grid(Point location, Graphics^ dbGraphics, int cols, int rows);
-		Grid(Point location, Graphics^ dbGraphics, Sound^ sound, int cols, int rows);
+		Grid(ResourceManager^ rm, Point location, Graphics^ dbGraphics, int cols, int rows);
+		Grid(ResourceManager^ rm, Point location, Graphics^ dbGraphics, Sound^ sound, int cols, int rows);
 
 		virtual void update();
 

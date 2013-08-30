@@ -200,10 +200,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Sound.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -298,6 +294,10 @@
 					RelativePath=".\GamePlay.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\Sound.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -307,10 +307,6 @@
 			>
 			<File
 				RelativePath=".\resource.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Sound.h"
 				>
 			</File>
 			<File
@@ -398,6 +394,10 @@
 					RelativePath=".\GamePlay.h"
 					>
 				</File>
+				<File
+					RelativePath=".\Sound.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -413,7 +413,111 @@
 				RelativePath=".\app.rc"
 				>
 			</File>
+			<File
+				RelativePath="..\Resources\background.jpg"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\I.png"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\J.png"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\L.png"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\logo.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\logo.png"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\O.png"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\S.png"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\SFX_GameOver.wav"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\SFX_GameStart.wav"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\SFX_LevelUp.wav"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\SFX_PieceFall.wav"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\SFX_PieceHardDrop.wav"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\SFX_PieceHold.wav"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\SFX_PieceLockdown.wav"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\SFX_PieceMoveLR.wav"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\SFX_PieceRotateFail.wav"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\SFX_PieceRotateLR.wav"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\SFX_PieceTouchDown.wav"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\SFX_SpecialLineClearTriple.wav"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\SFX_SpecialTetris.wav"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\SFX_Splash.wav"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\T.png"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\W.png"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\Z.png"
+				>
+			</File>
 		</Filter>
+		<File
+			RelativePath="..\PressStart2P.ttf"
+			>
+		</File>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>

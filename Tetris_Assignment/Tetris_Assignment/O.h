@@ -7,6 +7,6 @@ ref class O :
 public Tetrimino
 	{
 	public:
-		O(Color color, GameGrid^ grid, Grid^ preview);
+		O(ResourceManager^ rm, Color color, GameGrid^ grid, Grid^ preview);
 		virtual void rotate(array<Point>^ temp) override;
 	};

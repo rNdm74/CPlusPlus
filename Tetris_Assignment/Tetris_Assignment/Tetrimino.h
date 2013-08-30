@@ -5,6 +5,7 @@
 #include "Sound.h"
 
 using namespace System;
+using namespace System::Resources;
 using namespace System::ComponentModel;
 using namespace System::Collections;
 using namespace System::Windows::Forms;
@@ -40,7 +41,7 @@ ref class Tetrimino abstract
 		GameGrid^ gameGrid;
 		Grid^ tetriminoPreview;
 
-		Image^ tetrimino;
+		Image^ tetrimino;	
 
 		Color tetriminoColor;
 		ETetriminoType tetriminoType;		
@@ -50,7 +51,7 @@ ref class Tetrimino abstract
 		bool drop;
 		
 	public:
-		Tetrimino(Color color, GameGrid^ grid, Grid^ preview);
+		Tetrimino(ResourceManager^ rm, Color color, GameGrid^ grid, Grid^ preview);
 
 		void moveLeft();
 		void moveRight();

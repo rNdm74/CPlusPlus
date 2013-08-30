@@ -1,12 +1,14 @@
 #include "StdAfx.h"
 #include "J.h"
 
-J::J(Color color, GameGrid^ grid, Grid^ preview)
-  : Tetrimino(color, grid, preview)
+J::J(ResourceManager^ rm, Color color, GameGrid^ grid, Grid^ preview)
+  : Tetrimino(rm, color, grid, preview)
 	{
+		// Applys block type
 		tetriminoType = J_TETRIMINO;
-		tetrimino = Image::FromFile("J.png");
+		tetrimino = (Image^)rm->GetObject("J");//Image::FromFile("J.png");
 
+		// Initializes the block pattern
 		curPosition = gcnew array<Point> 
 		{ 
 			Point(2 + J_X, 1), 			 
@@ -14,39 +16,32 @@ J::J(Color color, GameGrid^ grid, Grid^ preview)
 			Point(0 + J_X, 1),
 			Point(0 + J_X, 0)
 		};
-
-		/*curPosition = gcnew array<Point> 
-		{ 
-			Point(1 + J_X, 0), 
-			Point(1 + J_X, 1), 
-			Point(1 + J_X, 2),
-			Point(0 + J_X, 2)
-		};*/
-
 	}
 
 void J::rotate(array<Point>^ temp)
 	{
+		// Resets the enumeration variable
 		orientation %= 4;
 
+		// Shifts the point to a new point based on the block shape
 		switch(static_cast<EDirection>(orientation))
 		{	
-			case EAST: //done
+			case EAST:
 				temp[0].X-=2;
 				temp[0].Y+=2;
 				temp[1].X--;
 				temp[1].Y++;
-				//temp[2].X++;
+				//temp[2].X++; // Rotation point
 				//temp[2].Y++;
 				temp[3].X++;
 				temp[3].Y++;				 
 				break;
-			case SOUTH: //done
+			case SOUTH:
 				temp[0].X-=2;
 				temp[0].Y-=2;
 				temp[1].X--;
 				temp[1].Y--;
-				//temp[2].X++;
+				//temp[2].X++; // Rotation point
 				//temp[2].Y++;
 				temp[3].X--;
 				temp[3].Y++;
@@ -56,7 +51,7 @@ void J::rotate(array<Point>^ temp)
 				temp[0].Y-=2;
 				temp[1].X++;
 				temp[1].Y--;
-				//temp[2].X++;
+				//temp[2].X++; // Rotation point
 				//temp[2].Y++;
 				temp[3].X--;
 				temp[3].Y--;  
@@ -66,7 +61,7 @@ void J::rotate(array<Point>^ temp)
 				temp[0].Y+=2;
 				temp[1].X++;
 				temp[1].Y++;
-				//temp[2].X++;
+				//temp[2].X++; // Rotation point
 				//temp[2].Y++;
 				temp[3].X++;
 				temp[3].Y--;				

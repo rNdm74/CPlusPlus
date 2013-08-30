@@ -1,12 +1,14 @@
 #include "StdAfx.h"
 #include "L.h"
 
-L::L(Color color, GameGrid^ grid, Grid^ preview)
-  : Tetrimino(color, grid, preview)
+L::L(ResourceManager^ rm, Color color, GameGrid^ grid, Grid^ preview)
+  : Tetrimino(rm, color, grid, preview)
 	{
+		// Applys block type
 		tetriminoType = L_TETRIMINO;
-		tetrimino = Image::FromFile("L.png");
+		tetrimino = (Image^)rm->GetObject("L");//Image::FromFile("L.png");
 				
+		// Initializes the block pattern
 		curPosition = gcnew array<Point> 
 		{ 
 			Point(0 + L_X, 1), 
@@ -18,8 +20,10 @@ L::L(Color color, GameGrid^ grid, Grid^ preview)
 
 void L::rotate(array<Point>^ temp)
 	{
+		// Resets the enumeration variable
 		orientation %= 4;
 
+		// Shifts the point to a new point based on the block shape
 		switch(static_cast<EDirection>(orientation))
 		{	
 			case EAST: //done
@@ -27,19 +31,19 @@ void L::rotate(array<Point>^ temp)
 				temp[0].Y-=2;
 				temp[1].X++;
 				temp[1].Y--;
-				//squares[2].X++;
+				//squares[2].X++; // Rotation point
 				//squares[2].Y++;
 				temp[3].X++;
 				temp[3].Y++;
 
 				 
 				break;
-			case SOUTH: //done
+			case SOUTH:
 				temp[0].X+=2;
 				temp[0].Y+=2;
 				temp[1].X++;
 				temp[1].Y++;
-				//squares[2].X++;
+				//squares[2].X++; // Rotation point
 				//squares[2].Y++;
 				temp[3].X--;
 				temp[3].Y++; 
@@ -49,7 +53,7 @@ void L::rotate(array<Point>^ temp)
 				temp[0].Y+=2;
 				temp[1].X--;
 				temp[1].Y++;
-				//squares[2].X++;
+				//squares[2].X++; // Rotation point
 				//squares[2].Y++;
 				temp[3].X--;
 				temp[3].Y--; 
@@ -59,7 +63,7 @@ void L::rotate(array<Point>^ temp)
 				temp[0].Y-=2;
 				temp[1].X--;
 				temp[1].Y--;
-				//squares[2].X++;
+				//squares[2].X++; // Rotation point
 				//squares[2].Y++;
 				temp[3].X++;
 				temp[3].Y--;

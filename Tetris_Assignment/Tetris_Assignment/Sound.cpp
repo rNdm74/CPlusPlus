@@ -1,17 +1,19 @@
 #include "StdAfx.h"
 #include "Sound.h"
 
-Sound::Sound()
+Sound::Sound(ResourceManager^ rm)
 {
+	rManager = rm;
 	Play = true;	
 }
 
 void Sound::play(System::String^ file)
 {	
-	player = gcnew SoundPlayer();
+	//
+	player = gcnew SoundPlayer(rManager->GetStream(file));
 
-	player->SoundLocation = file;
-	player->LoadAsync();
+	//player->SoundLocation = rManager->GetString(file);
+	//player->LoadAsync();
 
 	if(Play) player->Play();
 }

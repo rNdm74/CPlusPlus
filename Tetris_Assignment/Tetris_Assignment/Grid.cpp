@@ -2,11 +2,10 @@
 #include "Grid.h"
 
 
-Grid::Grid(Point location, Graphics^ dbGraphics, int cols, int rows)
+Grid::Grid(ResourceManager^ rm, Point location, Graphics^ dbGraphics, int cols, int rows)
 	{		
 		gridLocation = location;
-		graphics = dbGraphics;	
-
+		graphics = dbGraphics;
 		N_COLS = cols;
 		N_ROWS = rows;
 
@@ -15,7 +14,7 @@ Grid::Grid(Point location, Graphics^ dbGraphics, int cols, int rows)
 
 		gridData = gcnew array<Cell^, 2>(N_COLS, N_ROWS);
 		
-		wall = Image::FromFile("W.png");
+		wall = (Image^)rm->GetObject("W");//Image::FromFile("W.png");
 
 		for(int col = 0; col < N_COLS; col++)
 		{
@@ -26,7 +25,7 @@ Grid::Grid(Point location, Graphics^ dbGraphics, int cols, int rows)
 		}
 	}
 
-Grid::Grid(Point location, Graphics^ dbGraphics, Sound^ sound, int cols, int rows)
+Grid::Grid(ResourceManager^ rm, Point location, Graphics^ dbGraphics, Sound^ sound, int cols, int rows)
 	{		
 		gridLocation = location;
 		graphics = dbGraphics;	
@@ -40,7 +39,7 @@ Grid::Grid(Point location, Graphics^ dbGraphics, Sound^ sound, int cols, int row
 
 		gridData = gcnew array<Cell^, 2>(N_COLS, N_ROWS);
 		
-		wall = Image::FromFile("W.png");
+		wall = (Image^)rm->GetObject("W");//Image::FromFile("W.png");
 
 		for(int col = 0; col < N_COLS; col++)
 		{
@@ -52,7 +51,8 @@ Grid::Grid(Point location, Graphics^ dbGraphics, Sound^ sound, int cols, int row
 	}
 
 void Grid::update()
-	{				
+	{	
+		// Overridden
 	}
 
 void Grid::draw()
@@ -77,16 +77,7 @@ void Grid::draw()
 				eastWall->setSolid(true);
 
 				Cell^ cell = gridData[col, row];
-								
-				/*graphics->FillRectangle
-				(
-					gcnew SolidBrush((cell->isSolid()) ? cell->getColor() : Color::FromArgb(0,Color::WhiteSmoke)), 
-					gridLocation.X + col * CELL_SIZE,
-					gridLocation.Y + row * CELL_SIZE,
-					CELL_SIZE,
-					CELL_SIZE
-				);*/
-
+				
 				if(cell->isSolid())
 				{
 					graphics->DrawImage
@@ -107,48 +98,9 @@ void Grid::draw()
 						CELL_SIZE
 					);
 				}
-					/*graphics->DrawRectangle
-					(
-						gcnew Pen(cell->getColor(), 1), 
-						gridLocation.X + col * CELL_SIZE,
-						gridLocation.Y + row * CELL_SIZE,
-						CELL_SIZE,
-						CELL_SIZE
-
-					);*/
-
+					
 				if(cell->isTetrimino())
 				{
-					/*graphics->DrawRectangle
-					(
-						gcnew Pen(cell->getColor(), 1), 
-						gridLocation.X + col * CELL_SIZE,
-						gridLocation.Y + row * CELL_SIZE,
-						CELL_SIZE,
-						CELL_SIZE
-
-					);*/
-					//float posX = gridLocation.X + col * CELL_SIZE;
-					//posY = ;
-
-					//if(vel > 10) vel *= -1;
-					//if(vel > 5) vel *= -1;
-
-					//vel += 1;
-
-					//posY -= vel;
-
-					//posY += 0.1 * vel;
-
-					/*graphics->DrawImage
-					(
-						cell->getImage(), 
-						(float)gridLocation.X + col * CELL_SIZE,
-						(float)(gridLocation.Y + row * CELL_SIZE) + posY,
-						(float)30,
-						(float)30
-					);*/
-
 					graphics->FillRectangle
 					(
 						gcnew SolidBrush(cell->getColor()), 
@@ -165,19 +117,7 @@ void Grid::draw()
 void Grid::drawOneSquare(int col, int row,  Color color, Image^ image)
 	{
 		if(row > 2)
-		{			
-				
-			/*
-			graphics->DrawRectangle
-			(
-				gcnew Pen(color, 1), 
-				gridLocation.X + col * CELL_SIZE,
-				gridLocation.Y + row * CELL_SIZE,
-				CELL_SIZE,
-				CELL_SIZE
-
-			);*/
-
+		{
 			graphics->DrawImage
 			(
 				image, 
@@ -205,5 +145,6 @@ bool Grid::isRowFull(int rowNumber)
 	}
 
 void Grid::deleteRow(int rowNumber)
-	{				
+	{	
+		// Overridden
 	}

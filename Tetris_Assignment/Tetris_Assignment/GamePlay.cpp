@@ -1,16 +1,20 @@
 #include "StdAfx.h"
 #include "GamePlay.h"
 
-GamePlay::GamePlay(Graphics^ dbGraphics, Rectangle clientRectangle, Font^ gameFont, Brush^ fontBrush, Sound^ sound)
-		 : Game(dbGraphics, screenBounds, gameFont, fontBrush, sound)
+GamePlay::GamePlay(ResourceManager^ rm, Graphics^ dbGraphics, Rectangle clientRectangle, Font^ gameFont, Brush^ fontBrush, Sound^ sound)
+		 : Game(rm, dbGraphics, screenBounds, gameFont, fontBrush, sound)
 {
+	// Create random instance
 	rGen = gcnew Random();
 	
-	background = Image::FromFile("background5.jpg");
+	// Load background image
+	//background = Image::FromFile("background.jpg");
 
-	grid = gcnew GameGrid(Point(302,-30), graphics, sound, GAMEGRID_COLS, GAMEGRID_ROWS);
-	preview = gcnew Grid(Point(757,480), graphics, PREVIEW_COLS, PREVIEW_ROWS); 
+	// Create gamegrid and preview
+	grid = gcnew GameGrid(rm, Point(302,-30), graphics, sound, GAMEGRID_COLS, GAMEGRID_ROWS);
+	preview = gcnew Grid(rm, Point(757,480), graphics, PREVIEW_COLS, PREVIEW_ROWS); 
 
+	// Create arrays for tracking block stats
 	tetriminoStats = gcnew array<int>(7);
 	tetriminoTypes = gcnew array<ETetriminoType>
 	{
@@ -23,28 +27,30 @@ GamePlay::GamePlay(Graphics^ dbGraphics, Rectangle clientRectangle, Font^ gameFo
 		Z_TETRIMINO
 	};
 
+	// Create first two tetriminos
 	tetriminoInPlay = generateTetrimino();
 	nextTetrimino = generateTetrimino();
 
+	// Initialize game update time
 	waitTime = 50;
 }
 
 void GamePlay::moveLeft()
 {
 	tetriminoInPlay->moveLeft();
-	gSound->play("SFX_PieceMoveLR.wav");
+	gSound->play("SFX_PieceMoveLR");
 }
 
 void GamePlay::moveRight()
 {
 	tetriminoInPlay->moveRight();
-	gSound->play("SFX_PieceMoveLR.wav");
+	gSound->play("SFX_PieceMoveLR");
 }
 
 void GamePlay::moveDown()
 {
 	tetriminoInPlay->moveDown();
-	gSound->play("SFX_PieceFall.wav");
+	gSound->play("SFX_PieceFall");
 }
 
 void GamePlay::moveRotate()
@@ -54,23 +60,25 @@ void GamePlay::moveRotate()
 
 EGameState GamePlay::input(KeyEventArgs^  e)
 {
-	Point p = tetriminoInPlay->getCurPosition()[0];
+	Point p = tetriminoInPlay->getCurPosition()[2];
 
+	// If block visible in game grid 
 	if(p.Y > 2)
 	{
 		if(e->KeyCode == Keys::Left) moveLeft();
-		if(e->KeyCode == Keys::Right) moveRight();
-						
+		if(e->KeyCode == Keys::Right) moveRight();						
 		if(e->KeyCode == Keys::Up) moveRotate();	
 		if(e->KeyCode == Keys::Down) moveDown();
+		
 		if(e->KeyCode == Keys::S) gSound->Play = !gSound->Play;
 		if(e->KeyCode == Keys::Space)
 		{
 			setDrop(true);
-			gSound->play("SFX_PieceHardDrop.wav");			
+			gSound->play("SFX_PieceHardDrop");			
 		}
 	}
 
+	if(e->KeyCode == Keys::P) return MENU;
 	if(e->KeyCode == Keys::Escape) return MENU;
 
 	return PLAY;
@@ -80,6 +88,7 @@ void GamePlay::update()
 {
 	grid->update();
 	
+	// If tetrimino is placed
 	if(tetriminoInPlay->isPlaced())
 	{
 		setDrop(false);
@@ -90,39 +99,42 @@ void GamePlay::update()
 		//blockInPlay++;
 	}
 
+	// Tetrimino hard drop
 	if(drop) tetriminoInPlay->moveDown();		
 		
-	if(time > waitTime - (grid->getPlayerLevel()*2))
+	// Tetrimino update time based on player level
+	if(time > waitTime - (grid->getPlayerLevel()* 5))
 	{
-		tetriminoInPlay->moveDown();
-		//if(!drop && tetriminoInPlay->getCurPosition()[3].Y > 2)
-			//gcnew PlaySound("SFX_PieceFall.wav");
-		
+		tetriminoInPlay->moveDown();		
 		time = 0;
 	}
 
-	time++;
-
-	
+	// Increase game time
+	time++;	
 }
 
 void GamePlay::render()
 {
-	graphics->DrawImageUnscaledAndClipped(background, screenBounds);
+	// Draw background
+	graphics->DrawImageUnscaledAndClipped(background , screenBounds);
 
+	// Draw game grid
 	grid->draw();
 
+	// Draw tetrimino in play
 	tetriminoInPlay->draw();
 
+	// Draw preview
 	nextTetrimino->drawPreview();
 	
+	// Draw main player hud
 	graphics->DrawString
 	( 
-		"LEVEL:	"+ grid->getPlayerLevel().ToString() +
+		"LEVEL:"+ grid->getPlayerLevel().ToString() +
 		"\n\n"+ 
-		"LINES:	"+ grid->getPlayerLines().ToString() +
+		"LINES:"+ grid->getPlayerLines().ToString() +
 		"\n\n"+ 
-		"SCORE:	"+ grid->getPlayerScore().ToString() + 
+		"SCORE:"+ grid->getPlayerScore().ToString() + 
 		"\n\n\n\n"+
 		"\n\n\n"+
 		"HELP"+
@@ -136,16 +148,19 @@ void GamePlay::render()
 		"UP:ROTATE"+
 		"\n\n"+		
 		"SPACE:DROP"+
-		"\n\n"+		
-		"ESCAPE:MENU"
-		"\n\n"+		
-		"S:SOUND " + ((gSound->Play) ? "ON" : "OFF"),
+		"\n\n"+
+		"S:SOUND " + ((gSound->Play) ? "ON" : "OFF")+
+		"\n\n"+	
+		//"P:PAUSE"+
+		//"\n\n"+		
+		"ESC:PAUSE",
 		font, 
 		brush, 
 		50, 
 		50
 	);
 
+	// Draw stats player hud
 	graphics->DrawString
 	(			 
 		"STATISTICS"+
@@ -175,7 +190,8 @@ void GamePlay::render()
 }
 
 void GamePlay::updateStats(ETetriminoType type)
-	{		
+	{	
+		// Update stats based on dropped block
 		for(int i = 0; i < tetriminoTypes->Length; i++)
 			if(type == tetriminoTypes[i]) tetriminoStats[i]++;		
 	}
@@ -184,22 +200,23 @@ void GamePlay::updateStats(ETetriminoType type)
 
 Tetrimino^ GamePlay::generateTetrimino()
 {
+	// Return a randomly created tetrimino
 	switch(rGen->Next(tetriminoTypes->Length))
 	{
 		case 0:
-			return gcnew I(Color::FromArgb(ALPHA, Color::Red), grid, preview);
+			return gcnew I(rManager, Color::FromArgb(ALPHA, Color::Red), grid, preview);
 		case 1:
-			return gcnew J(Color::FromArgb(ALPHA, Color::Yellow), grid, preview);
+			return gcnew J(rManager, Color::FromArgb(ALPHA, Color::Yellow), grid, preview);
 		case 2:
-			return gcnew L(Color::FromArgb(ALPHA, Color::Magenta), grid, preview);
+			return gcnew L(rManager, Color::FromArgb(ALPHA, Color::Magenta), grid, preview);
 		case 3:
-			return gcnew O(Color::FromArgb(ALPHA, Color::Blue), grid, preview);
+			return gcnew O(rManager, Color::FromArgb(ALPHA, Color::Blue), grid, preview);
 		case 4:
-			return gcnew S(Color::FromArgb(ALPHA, Color::Cyan), grid, preview);
+			return gcnew S(rManager, Color::FromArgb(ALPHA, Color::Cyan), grid, preview);
 		case 5:
-			return gcnew T(Color::FromArgb(ALPHA, Color::Green), grid, preview);
+			return gcnew T(rManager, Color::FromArgb(ALPHA, Color::Green), grid, preview);
 		case 6:
-			return gcnew Z(Color::FromArgb(ALPHA, Color::Orange), grid, preview);
+			return gcnew Z(rManager, Color::FromArgb(ALPHA, Color::Orange), grid, preview);
 		default:
 			return nullptr;
 	}
@@ -207,22 +224,26 @@ Tetrimino^ GamePlay::generateTetrimino()
 
 bool GamePlay::isGameOver()
 {
+	// Loop through tetrimino points
 	for(int pos = 0; pos < tetriminoInPlay->getCurPosition()->Length; pos++)
 	{ 
 		Point p = tetriminoInPlay->getCurPosition()[pos];
 
+		// If outside of game grid game is over
 		if(tetriminoInPlay->isPlaced() && p.Y < 3)
 		{
-			gSound->play("SFX_GameOver.wav");
+			gSound->play("SFX_GameOver");
 			return true;
 		}
 	}
 
+	// Default game is running
 	return false;
 }
 
 int GamePlay::getTotalStats()
 {
+	// Addition of all block statistics return total
 	int total = 0; 
 
 	for(int i=0;i<tetriminoStats->Length; i++)

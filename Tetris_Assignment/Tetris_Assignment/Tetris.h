@@ -3,16 +3,34 @@
 #include "GameMenu.h"
 #include "GamePlay.h"
 #include "GameOver.h"
+#include "resource.h"
 
 namespace Tetris_Assignment {
 
+	//using namespace System;
+	using namespace System::Collections::Generic;
+	//using namespace System::ComponentModel;
+	//using namespace System::Data;
+	//using namespace System::Drawing;
+//	using namespace System::Linq;
+	using namespace System::Text;
+	using namespace System::Windows::Forms;
+//	using namespace System::IO;
+	//using namespace System::Reflection;
+	//using namespace System::Runtime.InteropServices;
+	//using namespace System::Drawing::Text;
+
 	using namespace System;
+	using namespace System::IO;
+	using namespace System::Resources;
+	using namespace System::Reflection;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::Drawing::Text;
+	using namespace System::Runtime::InteropServices;
 
 	
 
@@ -56,12 +74,15 @@ namespace Tetris_Assignment {
 
 		Sound^ sound;		
 		Brush^ brush;
+		
+		ResourceManager^ rm;
 
 		GameMenu^ gameMenu;
 		GamePlay^ gamePlay;
 		GameOver^ gameOver;
 
 		EGameState gameState;
+
 
 	private: System::ComponentModel::IContainer^  components;
 
@@ -76,15 +97,18 @@ namespace Tetris_Assignment {
 		// 
 		// Tetris
 		// 
-		this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+		this->AutoScaleDimensions = System::Drawing::SizeF(12, 25);
 		this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 		this->BackColor = System::Drawing::Color::Black;
-		this->ClientSize = System::Drawing::Size(1008, 729);
+		this->ClientSize = System::Drawing::Size(1008, 730);
 		this->DoubleBuffered = true;
+		this->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+			static_cast<System::Byte>(0)));
+		this->Margin = System::Windows::Forms::Padding(6);
 		this->MaximizeBox = false;
 		this->MaximumSize = System::Drawing::Size(1024, 768);
 		this->MinimizeBox = false;
-		this->MinimumSize = System::Drawing::Size(1024, 736);
+		this->MinimumSize = System::Drawing::Size(1024, 766);
 		this->Name = L"Tetris";
 		this->ShowIcon = false;
 		this->SizeGripStyle = System::Windows::Forms::SizeGripStyle::Hide;
@@ -104,14 +128,14 @@ namespace Tetris_Assignment {
 					// Clear background
 					dbGraphics->Clear(BackColor);
 
-					// Update gamestate
+					// Updates what game state is updated and drawn to the screen
 					switch(gameState)
 					{
 						case MENU:
-							// Update gamemenu	 
+							// Update menu screen animation	 
 							gameMenu->update();
 					
-							// Render gamemenu
+							// Renders gamemenu to the screen
 							gameMenu->render();
 							break;
 
@@ -119,18 +143,17 @@ namespace Tetris_Assignment {
 							// Game ends	
 							if(gamePlay->isGameOver()) gameState = OVER;
 
-							// Update gameplay
+							// Updates all the gameobjects to play the game
 							gamePlay->update();
 					
-							// Render gameplay
+							// Renders gameobjects to the screen
 							gamePlay->render();
 							break;
 
-						case OVER:
-							// Update gameover	
-							gameOver->update();
+						case OVER:								
+							//gameOver->update(); // NOT USED
 					
-							// Render gameover
+							// Renders gamemenu to the screen
 							gameOver->render();
 							break;
 					}
@@ -145,24 +168,55 @@ namespace Tetris_Assignment {
 
 					// Grab its Graphics
 					dbGraphics = Graphics::FromImage(dbBitmap);
+					
+					//// Grab the assembly this is being called from
+					Assembly^ assembly = Assembly::GetExecutingAssembly();
+					AssemblyName^ assemblyName = assembly->GetName();
 
+					//// Grab the images from the assembly
+					rm = gcnew ResourceManager(assemblyName->Name+".Tetris", assembly);
+					
 					// Create sound player
-					sound = gcnew Sound();
+					sound = gcnew Sound(rm);
 
 					// Load game font
 					pfc = gcnew PrivateFontCollection();
-					pfc->AddFontFile("PressStart2P.ttf");
 
+					// receive resource stream
+					System::IO::Stream^ ms = rm->GetStream("PressStart2P");
+					
+					//
+					System::IntPtr data = Marshal::AllocCoTaskMem(ms->Length);
+				 
+					// create a buffer to read in to
+					array<unsigned char>^ fontdata = gcnew array<unsigned char>(ms->Length);
+
+					// read the font data from the resource
+					ms->Read(fontdata, 0, (int)ms->Length);
+
+					// copy the bytes to the unsafe memory block
+					Marshal::Copy(fontdata, 0, data, (int)ms->Length);
+
+					// pass the font to the font collection
+					pfc->AddMemoryFont(data, (int)ms->Length);
+
+					// close the resource stream
+					ms->Close();
+
+					// free up the unsafe memory
+					Marshal::FreeCoTaskMem(data);
+					
 					// Create font
 					font = gcnew System::Drawing::Font(pfc->Families[0], 16, FontStyle::Regular);
 					
 					// Create font brush
 					brush = gcnew SolidBrush(Color::CornflowerBlue);
-
-					// Create Game
-					gameMenu = gcnew GameMenu(dbGraphics, ClientRectangle, font, brush, sound);
-					gamePlay = gcnew GamePlay(dbGraphics, ClientRectangle, font, brush, sound);
-					gameOver = gcnew GameOver(dbGraphics, ClientRectangle, font, brush, sound);
+										
+					// Create game screen takes a bitmap graphics object 
+					// the window size the games font, color and sound
+					gameMenu = gcnew GameMenu(rm, dbGraphics, ClientRectangle, font, brush, sound);
+					gamePlay = gcnew GamePlay(rm, dbGraphics, ClientRectangle, font, brush, sound);
+					gameOver = gcnew GameOver(rm, dbGraphics, ClientRectangle, font, brush, sound);
 
 					// Set initial game state
 					gameState = MENU;
@@ -171,20 +225,24 @@ namespace Tetris_Assignment {
 					// Update gamestate
 					switch(gameState)
 					{
-						case MENU:														
-							gamePlay = gcnew GamePlay(dbGraphics, ClientRectangle, font, brush, sound);							
+						case MENU:	
+							if(e->KeyCode == Keys::Enter)
+								gamePlay = gcnew GamePlay(rm, dbGraphics, ClientRectangle, font, brush, sound);							
 							
-							// Update gamemenu
+							// Sends player input for the menu
 							gameState = gameMenu->input(e);	
 							break;
 
 						case PLAY:							
-							// Update gameplay								
+							// Sends player input for the main game								
 							gameState = gamePlay->input(e);
 							break;
 
 						case OVER:
-							// Update gameover								
+							if(e->KeyCode == Keys::Space)
+								gamePlay = gcnew GamePlay(rm, dbGraphics, ClientRectangle, font, brush, sound);							
+							
+							// Sends player input for the gover over menu								
 							gameState = gameOver->input(e);
 							break;
 					}					

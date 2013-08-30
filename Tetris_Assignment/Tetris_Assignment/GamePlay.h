@@ -23,7 +23,6 @@ using namespace System::Media;
 #define GAMEGRID_ROWS 25
 #define PREVIEW_COLS 8
 #define PREVIEW_ROWS 6
-
 #define ALPHA 75
 
 ref class GamePlay:
@@ -47,8 +46,8 @@ private:
 	Random^ rGen;
 
 public:
-	GamePlay(Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush, Sound^ sound);
-
+	GamePlay(ResourceManager^ rm, Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush, Sound^ sound);
+	
 	void moveLeft();
 	void moveRight();
 	void moveDown();
@@ -59,6 +58,7 @@ public:
 	int getTotalStats();
 	
 	virtual EGameState input(KeyEventArgs^  e) override;
+
 	virtual void update() override;
 	virtual void render() override;
 

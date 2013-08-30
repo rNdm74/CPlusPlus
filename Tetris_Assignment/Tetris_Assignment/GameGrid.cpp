@@ -1,11 +1,11 @@
 #include "StdAfx.h"
 #include "GameGrid.h"
 
-GameGrid::GameGrid(Point location, Graphics^ dbGraphics, Sound^ sound, int cols, int rows)
-		 : Grid(location, dbGraphics, sound, cols, rows)
-{
-	playerLevel = 1;
-}
+GameGrid::GameGrid(ResourceManager^ rm, Point location, Graphics^ dbGraphics, Sound^ sound, int cols, int rows)
+		 : Grid(rm, location, dbGraphics, sound, cols, rows)
+	{
+		playerLevel = 1;
+	}
 
 void GameGrid::update()
 	{
@@ -17,7 +17,7 @@ void GameGrid::update()
 			{
 				if(isRowFull(row))
 				{
-					gSound->play("SFX_SpecialLineClearTriple.wav");
+					gSound->play("SFX_SpecialLineClearTriple");
 					
 					deleteRow(row);
 
@@ -29,7 +29,7 @@ void GameGrid::update()
 										
 					if(playerLines % 10 == 0)
 					{
-						gSound->play("SFX_LevelUp.wav");
+						gSound->play("SFX_LevelUp");
 
 						playerLevel++;
 					}

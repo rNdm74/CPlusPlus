@@ -3,6 +3,7 @@
 #include "Sound.h"
 
 using namespace System;
+using namespace System::Resources;
 using namespace System::ComponentModel;
 using namespace System::Collections;
 using namespace System::Windows::Forms;
@@ -10,7 +11,8 @@ using namespace System::Data;
 using namespace System::Drawing;
 using namespace System::Drawing::Text;
 
-enum EGameState 
+
+enum EGameState // Different game states
 	{
 		MENU = 0,
 		PLAY = 1,
@@ -26,12 +28,13 @@ ref class Game abstract
 		Font^ font;
 		Brush^ brush;
 		Sound^ gSound;
+		ResourceManager^ rManager;
 
 	public:
 		static bool Play;
 
 	public:
-		Game(Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush, Sound^ sound);
+		Game(ResourceManager^ rm, Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush, Sound^ sound);
 		virtual EGameState input(KeyEventArgs^  e);
 		virtual void update();
 		virtual void render();

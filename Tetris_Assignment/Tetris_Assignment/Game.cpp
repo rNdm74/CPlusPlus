@@ -1,26 +1,30 @@
 #include "StdAfx.h"
 #include "Game.h"
 
-Game::Game(Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush, Sound^ sound)
+Game::Game(ResourceManager^ rm, Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush, Sound^ sound)
 {
 	graphics = dbGraphics;
 	font = gameFont;
 	brush = fontBrush;
 	gSound = sound;
-	background = Image::FromFile("background5.jpg");
+	rManager = rm;
+	//background = Image::FromStream(assembly->GetManifestResourceStream("background.png"));
+    background = (Image^)rManager->GetObject("background");//Image::FromFile("background.jpg");
 }
 
 EGameState Game::input(KeyEventArgs^  e)
-{
+{	
 	return MENU;
 }
 
 void Game::update()
 {
+	// Overridden
 }
 
 void Game::render()
 {
+	// Overridden
 }
 
 

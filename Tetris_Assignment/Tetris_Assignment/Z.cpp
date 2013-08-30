@@ -1,12 +1,14 @@
 #include "StdAfx.h"
 #include "Z.h"
 
-Z::Z(Color color, GameGrid^ grid, Grid^ preview)
-  : Tetrimino(color, grid, preview)
+Z::Z(ResourceManager^ rm, Color color, GameGrid^ grid, Grid^ preview)
+  : Tetrimino(rm, color, grid, preview)
 	{
+		// Applys block type
 		tetriminoType = Z_TETRIMINO;
-		tetrimino = Image::FromFile("Z.png");
+		tetrimino = (Image^)rm->GetObject("Z");//Image::FromFile("Z.png");
 
+		// Initializes the block pattern
 		curPosition = gcnew array<Point> 
 		{ 
 			Point(0 + Z_X, 0), 
@@ -18,49 +20,31 @@ Z::Z(Color color, GameGrid^ grid, Grid^ preview)
 
 void Z::rotate(array<Point>^ temp)
 	{
+		// Resets the enumeration variable
 		orientation %= 2;
 
+		// Shifts the point to a new point based on the block shape
 		switch(static_cast<EDirection>(orientation))
 		{	
-			case EAST: //done
+			case EAST:
 				temp[0].X+=2;
 				//temp[0].Y+=2;
 				temp[1].X++;
 				temp[1].Y++;
-				//temp[2].X++;
+				//temp[2].X++; // Rotation point
 				//temp[2].Y++;
 				temp[3].X--;
 				temp[3].Y++; 
 				break;
-			case SOUTH: //done
+			case SOUTH:
 				temp[0].X-=2;
 				//temp[0].Y+=2;
 				temp[1].X--;
 				temp[1].Y--;
-				//temp[2].X++;
+				//temp[2].X++; // Rotation point
 				//temp[2].Y++;
 				temp[3].X++;
 				temp[3].Y--; 
-				break;
-			//case WEST:
-			//	temp[0].X-=2;
-			//	temp[0].Y-=2;
-			//	temp[1].X--;
-			//	temp[1].Y--;
-			//	//temp[2].X++;
-			//	//temp[2].Y++;
-			//	temp[3].X++;
-			//	temp[3].Y--; 
-			//	break;
-			//case NORTH:
-			//	temp[0].X+=2;
-			//	temp[0].Y-=2;
-			//	temp[1].X++;
-			//	temp[1].Y--;
-			//	//temp[2].X++;
-			//	//temp[2].Y++;
-			//	temp[3].X++;
-			//	temp[3].Y++;
-			//	break;
+				break;			
 		}
 	}

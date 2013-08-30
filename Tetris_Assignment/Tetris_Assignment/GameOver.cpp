@@ -1,36 +1,67 @@
 #include "StdAfx.h"
 #include "GameOver.h"
 
-GameOver::GameOver(Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush, Sound^ sound)
-		 : Game(dbGraphics, screenBounds, gameFont, fontBrush, sound)
-{
-	
-	
-	
+GameOver::GameOver(ResourceManager^ rm, Graphics^ dbGraphics, Rectangle screenBounds, Font^ gameFont, Brush^ fontBrush, Sound^ sound)
+		 : Game(rm, dbGraphics, screenBounds, gameFont, fontBrush, sound)
+{	
+	// Default
 }
 
 EGameState GameOver::input(KeyEventArgs^  e)
 {
-	return MENU;
+	// If enter is pressed return menu state else return current state
+	if(e->KeyData == Keys::Enter)
+	{
+		gSound->play("SFX_PieceHold");
+		return MENU;
+	}
+
+	// If space is pressed the game will start
+	if(e->KeyData == Keys::Space)
+	{
+		gSound->play("SFX_PieceHold");
+		return PLAY;
+	}
+
+	// Exit application if escape is pressed
+	if(e->KeyData == Keys::Escape)
+	{
+		Application::Exit();
+	}
+
+	return OVER;
 }
 
 void GameOver::update()
 {
+	// Default
 }
 
 void GameOver::render()
-{
+{	
 	graphics->DrawImage(background, 0, 0);
-
-	graphics->FillRectangle(gcnew SolidBrush(Color::FromArgb(99, Color::Black)), Rectangle(0, 0, 1024, 768));
 
 	graphics->DrawString
 	(			 
-		"GAMEOVER",		
+		"\t\t GAMEOVER"+
+		"\n\n\n\n",	
 		font, 
 		brush, 
-		420, 
+		220, 
 		270
+	);
+
+	graphics->DrawString
+	(
+		"ENTER\t: MENU"+
+		"\n\n"+
+		"SPACE\t: RESTART"+
+		"\n\n"+
+		"Q\t: QUIT",		
+		font, 
+		brush, 
+		100, 
+		500
 	);
 
 	if(gameOver)
