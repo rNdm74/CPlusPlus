@@ -93,33 +93,35 @@ namespace Tetris_Assignment {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-		this->SuspendLayout();
-		// 
-		// Tetris
-		// 
-		this->AutoScaleDimensions = System::Drawing::SizeF(12, 25);
-		this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-		this->BackColor = System::Drawing::Color::Black;
-		this->ClientSize = System::Drawing::Size(1008, 730);
-		this->DoubleBuffered = true;
-		this->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
-			static_cast<System::Byte>(0)));
-		this->Margin = System::Windows::Forms::Padding(6);
-		this->MaximizeBox = false;
-		this->MaximumSize = System::Drawing::Size(1024, 768);
-		this->MinimizeBox = false;
-		this->MinimumSize = System::Drawing::Size(1024, 766);
-		this->Name = L"Tetris";
-		this->ShowIcon = false;
-		this->SizeGripStyle = System::Windows::Forms::SizeGripStyle::Hide;
-		this->StartPosition = System::Windows::Forms::FormStartPosition::Manual;
-		this->Text = L"Tetris";
-		this->Load += gcnew System::EventHandler(this, &Tetris::Tetris_Load);
-		this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Tetris::Tetris_Paint);
-		this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Tetris::Tetris_KeyDown);
-		this->ResumeLayout(false);
+			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(Tetris::typeid));
+			this->SuspendLayout();
+			// 
+			// Tetris
+			// 
+			this->AutoScaleDimensions = System::Drawing::SizeF(12, 25);
+			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->BackColor = System::Drawing::Color::Black;
+			this->ClientSize = System::Drawing::Size(1008, 730);
+			this->DoubleBuffered = true;
+			this->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^  >(resources->GetObject(L"$this.Icon")));
+			this->Margin = System::Windows::Forms::Padding(6);
+			this->MaximizeBox = false;
+			this->MaximumSize = System::Drawing::Size(1024, 768);
+			this->MinimizeBox = false;
+			this->MinimumSize = System::Drawing::Size(1024, 766);
+			this->Name = L"Tetris";
+			this->ShowIcon = false;
+			this->SizeGripStyle = System::Windows::Forms::SizeGripStyle::Hide;
+			this->StartPosition = System::Windows::Forms::FormStartPosition::Manual;
+			this->Text = L"Tetris";
+			this->Load += gcnew System::EventHandler(this, &Tetris::Tetris_Load);
+			this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Tetris::Tetris_Paint);
+			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Tetris::Tetris_KeyDown);
+			this->ResumeLayout(false);
 
-			}
+		}
 #pragma endregion
 	private: System::Void Tetris_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e) {
 					// Refresh screen
