@@ -11,7 +11,8 @@ using namespace System::Drawing;
 // Constants
 //=================================================
 #define MAX_DIRECTIONS 4
-#define WANDER_PROB 10
+#define HALF 2
+#define WANDER_PROB 25
 #define SPEED 2
 
 
@@ -20,10 +21,19 @@ using namespace System::Drawing;
 //=================================================
 public enum EBearing
 	{
-		NORTH,
-		SOUTH,
-		EAST,
-		WEST
+		NORTH = 0,
+		EAST = 1,
+		SOUTH = 2,
+		WEST = 3
+	};
+
+public enum EBoundsAction
+	{
+		BOUNCE,
+		WRAP,
+		DIE,
+		STOP, 
+		WALK
 	};
 
 ref class Sprite
@@ -35,7 +45,8 @@ ref class Sprite
 		array<Bitmap^>^ spriteSheets;
 		array<Point>^ spriteDirection;
 
-		EBearing bearing;
+		EBoundsAction action;
+		EBearing bearing;		
 
 		Graphics^ canvas;		
 		Random^ rGen;
@@ -44,6 +55,7 @@ ref class Sprite
 		Rectangle boundsRect;
 
 		bool walking;
+		bool alive;
 
 		int currentFrame;
 		int frames;
@@ -58,10 +70,13 @@ ref class Sprite
 		int yMag;
 
 	public:
+		Sprite^ Next;
+
+	public:
 		//=================================================
 		// Construtor
 		//=================================================
-		Sprite(Graphics^ startCanvas, array<String^>^ filenames, int nFrames, Random^ startRGen, Rectangle bounds);
+		Sprite(EBoundsAction startAction, Graphics^ startCanvas, array<String^>^ filenames, int nFrames, Random^ startRgen, Point startPos, Rectangle bounds);
 
 		//=================================================
 		// Methods
@@ -69,21 +84,34 @@ ref class Sprite
 		void setSpriteSheet();
 		void erase(Color eraseColor);
 
-		void checkBounds();
-		void move();
-		void wander();
-		
-		void updateFrame();		
+		bool isBoundsCollision();		
+		void executeBoundsAction();
+		void wrap();
+		void reverse();
+		void die();
+		void stop();
 
+		void move();
+		void wander();		
+		void updateFrame();	
+
+		void update();
 		void draw();
 
 		//=================================================
 		// Gets and Sets
 		//=================================================
-		Rectangle getSrcRectangle()	{ return Rectangle(xPos, yPos, srcRectangle.Width,	srcRectangle.Height); }
+		Rectangle getSrcRectangle()		{ return Rectangle(xPos, yPos, srcRectangle.Width,	srcRectangle.Height); }
+		Rectangle getBoundsRectangle()	{ return boundsRect; }
+
+		EBoundsAction getAction()		{ return action; }
+		void setAction(EBoundsAction a)	{ action = a; }
 
 		bool isWalking()				{ return walking; }
 		void setWalking(bool w)			{ walking = w; }
+
+		bool isAlive()					{ return alive; }
+		void setAlive(bool a)			{ alive = a; }
 
 		int getXPos()					{ return xPos; }
 		int getYPos()					{ return yPos; }

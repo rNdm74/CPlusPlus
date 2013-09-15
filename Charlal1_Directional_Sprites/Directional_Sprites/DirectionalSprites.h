@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Sprite.h"
+#include "SpriteList.h"
+#include "TileMap.h"
 
 namespace Directional_Sprites {
 
@@ -59,6 +61,10 @@ namespace Directional_Sprites {
 		Bitmap^ dbBitmap;
 
 		Image^ background;
+
+		TileMap^ tileMap;
+
+		SpriteList^ spriteList;
 
 		Sprite^ knight;
 
@@ -134,23 +140,32 @@ namespace Directional_Sprites {
 					//=================================================
 					// Create background
 					//=================================================
-					background = Image::FromFile("ground.png");
+					tileMap = gcnew TileMap(dbGraphics);
+					tileMap->generateTileMap();
+					//background = Image::FromFile("ground.png");
+
+					//=================================================
+					// Create SpriteList
+					//=================================================
+					spriteList = gcnew SpriteList();
 
 					//=================================================
 					// Create knight
 					//=================================================
 					knight = gcnew Sprite
 					(
+						WRAP,
 						dbGraphics,
 						gcnew array<String^>
 						{
 							"Knight Walk North 8.bmp",
+							"Knight Walk East 8.bmp",							
 							"Knight Walk South 8.bmp",
-							"Knight Walk East 8.bmp",
 							"Knight Walk West 8.bmp"
 						},
 						KNIGHT_FRAMES,
 						rGen,
+						Point(ClientRectangle.Width / 2, ClientRectangle.Height / 2),
 						ClientRectangle
 					);
 					
@@ -165,19 +180,26 @@ namespace Directional_Sprites {
 					{
 						chickens[c] = gcnew Sprite
 						(
+							BOUNCE,
 							dbGraphics,
 							gcnew array<String^>
 							{
-								"Little Chicken Walk North 8.bmp",
-								"Little Chicken Walk South 8.bmp",
+								"Little Chicken Walk North 8.bmp",								
 								"Little Chicken Walk East 8.bmp",
+								"Little Chicken Walk South 8.bmp",
 								"Little Chicken Walk West 8.bmp"
 							},
 							CHICKEN_FRAMES,
 							rGen,
+							Point(rGen->Next(ClientRectangle.Width), rGen->Next(ClientRectangle.Height)),
 							ClientRectangle
 						);
 					}
+
+					for(int c = 0; c < chickens->Length; c++)
+						spriteList->add(chickens[c]);
+
+					spriteList->add(knight);
 				 }
 
 		private: System::Void DirectionalSprites_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
@@ -185,16 +207,40 @@ namespace Directional_Sprites {
 						 // Handle key down event
 						 //=================================================
 						 if(e->KeyCode==Keys::Up ||e->KeyCode==Keys::Down || e->KeyCode==Keys::Left || e->KeyCode==Keys::Right)
-						 	knight->setWalking(true);
+							 knight->setWalking(true);
+
 
 						 if(e->KeyCode==Keys::Up)
-							 knight->setBearing(NORTH);
+						 {
+							knight->setBearing(NORTH);
+							tileMap->moveMapDown();
+						 }
+
 						 if(e->KeyCode==Keys::Down)
-							 knight->setBearing(SOUTH);	
+						 {
+							knight->setBearing(SOUTH);
+							tileMap->moveMapUp();
+						 }
+
 						 if(e->KeyCode==Keys::Right)
-							 knight->setBearing(EAST);
+						 {
+							knight->setBearing(EAST);
+							tileMap->moveMapLeft();
+						 }
+
 						 if(e->KeyCode==Keys::Left)
+						 {
 							 knight->setBearing(WEST);
+							 tileMap->moveMapRight();
+						 }
+
+						 if(e->KeyCode==Keys::W);
+							 
+						 if(e->KeyCode==Keys::S);
+							 	
+						 if(e->KeyCode==Keys::D);
+							 
+						 if(e->KeyCode==Keys::A);
 						 
 					 }
 
@@ -203,49 +249,28 @@ namespace Directional_Sprites {
 						// Handle key up event
 						//=================================================
 						knight->setWalking(false);
+						tileMap->mapStop();
 					 }		
 		private: System::Void clock_Tick(System::Object^  sender, System::EventArgs^  e) {
 						//=================================================
 						// Draw background 
 						//=================================================
-						dbGraphics->DrawImage(background, ClientRectangle);
-
-						//=================================================
-						// Check bounds then move chickens
-						//=================================================					
-						for(int c = 0; c < chickens->Length; c++)
-						{
-							chickens[c]->checkBounds();
-							chickens[c]->move();
-						}
+						tileMap->updateTilePosition();
+						tileMap->drawTileMap(); 
 						
-						//=================================================
-						// Check bounds then move knight
-						//=================================================	
-						knight->checkBounds();
-						knight->move();	
-
-						 
 						//=================================================
 						// Update sprites frame animation
 						//=================================================
+						spriteList->update();
+						
 						for(int c = 0; c < chickens->Length; c++)
-						{
-							chickens[c]->updateFrame();
 							chickens[c]->wander();
-						}
 
-						knight->updateFrame();
-						
-						
 						//=================================================
 						// Draw sprites to the canvas 
 						//=================================================
-						for(int c = 0; c < chickens->Length; c++)
-							chickens[c]->draw();
+						spriteList->draw();
 
-						knight->draw();
-												
 						//=================================================
 						// Make buffer visible 
 						//=================================================

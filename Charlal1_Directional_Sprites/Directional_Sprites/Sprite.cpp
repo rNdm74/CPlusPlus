@@ -1,13 +1,17 @@
 #include "StdAfx.h"
 #include "Sprite.h"
 
-Sprite::Sprite(Graphics^ startCanvas, array<String^>^ filenames, int nFrames, Random^ startRGen, Rectangle startBounds)
+Sprite::Sprite(EBoundsAction startAction, Graphics^ startCanvas, 
+			   array<String^>^ filenames, int nFrames, 
+			   Random^ startRGen,Point startPos, Rectangle startBounds)
 	{
+		action = startAction;
 		canvas = startCanvas;
 		frames = nFrames;
 		rGen = startRGen;
 		boundsRect = startBounds;
 		walking = true;
+		alive = true;		
 		
 
 		//=================================================
@@ -27,8 +31,8 @@ Sprite::Sprite(Graphics^ startCanvas, array<String^>^ filenames, int nFrames, Ra
 		spriteDirection = gcnew array<Point>(MAX_DIRECTIONS);
 
 		spriteDirection[NORTH] = Point(0,-1);
-		spriteDirection[SOUTH] = Point(0,1);
 		spriteDirection[EAST] = Point(1,0);
+		spriteDirection[SOUTH] = Point(0,1);
 		spriteDirection[WEST] = Point(-1,0);
 
 		
@@ -48,7 +52,7 @@ Sprite::Sprite(Graphics^ startCanvas, array<String^>^ filenames, int nFrames, Ra
 		//=================================================
 		// Get frame to be drawn
 		//=================================================
-		currentFrame = rGen->Next(frames-1);
+		currentFrame = rGen->Next(frames-1);// minus 1 to keep in bounds
 
 		frameWidth = spriteSheets[bearing]->Width / frames;
 		frameHeight = spriteSheets[bearing]->Height;
@@ -57,8 +61,8 @@ Sprite::Sprite(Graphics^ startCanvas, array<String^>^ filenames, int nFrames, Ra
 		//=================================================
 		// Set initial position
 		//=================================================
-		xPos = rGen->Next(boundsRect.Width - frameWidth);
-		yPos = rGen->Next(boundsRect.Height - frameHeight);
+		xPos = startPos.X;
+		yPos = startPos.Y;
 	}
 
 EBearing Sprite::getRandomBearing()
@@ -73,12 +77,18 @@ EBearing Sprite::getRandomBearing()
 			case 0:
 				return NORTH;
 			case 1:
-				return SOUTH;
-			case 2:
 				return EAST;
+			case 2:
+				return SOUTH;
 			case 3:
 				return WEST;
 		}
+	}
+
+void Sprite::update()
+	{
+		move();	
+		updateFrame();
 	}
 
 void Sprite::draw()
@@ -108,9 +118,14 @@ void Sprite::erase(Color eraseColor)
 
 void Sprite::move()
 	{
-		//=================================================
-		// Move if sprite is walking
-		//=================================================
+		//=======================================================================
+		// If sprite can walk the xPosition and yPosition is incremented
+		// the a set magnitude, a direction is then applied to the magnitude 1, -1
+		// this will allow the sprite to move up, down, left and right
+		//=======================================================================
+		if(isBoundsCollision())
+			executeBoundsAction();		// pull thus out
+
 		if(walking)
 		{
 			xPos += xMag * spriteDirection[bearing].X;
@@ -118,16 +133,97 @@ void Sprite::move()
 		}
 	}
 
-void Sprite::checkBounds()
+bool Sprite::isBoundsCollision()// should return info
 	{
-		//=================================================
-		// If sprite goes out of bounds change direction
-		//=================================================
-		if(xPos + frameWidth > boundsRect.Width) bearing = WEST;
-		if(yPos + frameWidth > boundsRect.Height) bearing = NORTH;
+		//=======================================================================
+		// checks the top, right, bottom and left side of the sprite
+		// if outside of the specified area an action is triggered
+		//======================================================================= 
+		
+		bool hitLeft = xPos < boundsRect.Left;						// Check left
 
-		if(xPos < 0) bearing = EAST;
-		if(yPos < 0) bearing = SOUTH;
+		bool hitRight = xPos + frameWidth > boundsRect.Right;		// Check right
+
+		bool hitTop = yPos < boundsRect.Top;						// Check top
+
+		bool hitBottom = yPos + frameHeight > boundsRect.Bottom;	// Check bottom
+
+		return ( hitLeft || hitRight || hitTop || hitBottom );			
+	}
+
+void Sprite::executeBoundsAction()
+	{
+	    //=======================================================================
+	    // Depending on the selected action of a sprite, a function will be
+		// called that will force the sprite to do a specific action 
+		// e.g. wrap around the screen or bounce off an object
+		//=======================================================================
+	    switch(action)
+	    {
+		    case BOUNCE:
+			    reverse();	// Reverse sprites direction
+			    break;
+		    case WRAP:
+			    wrap();		// Allows sprite wrap the screen e.g. right side to the left
+			    break;
+		    case DIE:
+			    die();		// Sprite dies
+			    break;
+		    case STOP:
+			    stop();		//Stop the sprite from moving
+			    break;
+	    }
+	}
+
+void Sprite::wrap()
+	{
+		switch(bearing)
+		{
+			case NORTH:
+				yPos = 480;
+			break;
+
+			case EAST:
+				xPos = 0;
+			break;
+
+			case SOUTH:
+				yPos = 0;
+			break;
+
+			case WEST:
+				xPos = 640;
+			break;
+		}
+	}
+
+void Sprite::reverse()
+	{
+		// Reverse direction for bounce, modulo required for wrap around
+		// Current bearings + half total directions mod max number directions)
+		// This is to reverse the direction of our sprite, 
+		// todo this we must add to our current bearing enumeration
+		// Then after we have added we must use modulo to wrap around 
+		// and the correct oposite direction is chosen
+		int newBearing = (bearing + (MAX_DIRECTIONS / HALF)) % MAX_DIRECTIONS; 
+
+		// If new bearing is in acceptable range
+		bool inRange = newBearing < MAX_DIRECTIONS && newBearing >= 0;
+		
+		if(inRange) bearing = static_cast<EBearing>(newBearing);
+
+		// if illegal direction bearing unchanged 
+		// throwing exception is more appropriate	
+	}
+
+void Sprite::die()
+	{
+		alive = false;
+	}
+
+void Sprite::stop()
+	{
+		walking = false;
 	}
 
 void Sprite::updateFrame()

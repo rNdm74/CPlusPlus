@@ -208,6 +208,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SpriteList.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -226,6 +230,18 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\Tile.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TileList.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TileMap.cpp"
+				>
 			</File>
 		</Filter>
 		<Filter
@@ -252,7 +268,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SpriteList.h"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Tile.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TileList.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TileMap.h"
 				>
 			</File>
 		</Filter>
