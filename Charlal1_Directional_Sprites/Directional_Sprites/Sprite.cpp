@@ -106,6 +106,21 @@ void Sprite::draw()
 		);		
 	}
 
+void Sprite::draw(int newXPos, int newYPos)
+	{
+		//=================================================
+		// Draw sprites frame to the screen
+		//=================================================
+		canvas->DrawImage
+		(
+			spriteSheets[bearing], 
+			newXPos, 
+			newYPos, 
+			srcRectangle, 
+			GraphicsUnit::Pixel
+		);		
+	}
+
 void Sprite::erase(Color eraseColor)
 	{
 		//=================================================

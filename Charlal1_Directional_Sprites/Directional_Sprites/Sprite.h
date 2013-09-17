@@ -100,6 +100,7 @@ ref class Sprite
 
 		void update();
 		void draw();
+		void draw(int newXPos, int newYPos);
 
 		//=================================================
 		// Gets and Sets

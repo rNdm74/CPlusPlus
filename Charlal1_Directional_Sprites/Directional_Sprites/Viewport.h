@@ -32,5 +32,7 @@ public:
 	int getViewportWorldX()	{ return viewportWorldX; }
 	int getViewportWorldY()	{ return viewportWorldY; }
 
+	Rectangle getViewportBounds();
+
 	void setMove(bool m)	{ move = m; }
 };

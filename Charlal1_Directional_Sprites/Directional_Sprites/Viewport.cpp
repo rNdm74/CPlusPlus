@@ -16,9 +16,11 @@ Viewport::Viewport(int startX, int startY, int startTilesWide, int startTilesHig
 
 void Viewport::checkViewportCanMove()
 {
-	int boundsX = (N_COLS * T_SIZE) - (V_COLS * T_SIZE);
-	int boundsY = (N_ROWS * T_SIZE) - (V_ROWS * T_SIZE);
+	//converts back into pixels
+	int boundsX = (N_COLS * T_SIZE) - (viewportTilesWide * T_SIZE);
+	int boundsY = (N_ROWS * T_SIZE) - (viewportTilesHigh * T_SIZE);
 
+	// temp bounds checking for viewport
 	if(viewportWorldX < 1)
 		viewportWorldX = 1;
 
@@ -34,16 +36,19 @@ void Viewport::checkViewportCanMove()
 
 void Viewport::viewportUpdate()
 {
+	// move check bounds
 	checkViewportCanMove();
 
-	viewportWorldX += 2 * directionX;
-	viewportWorldY += 2 * directionY;	
+	viewportWorldX += 1 * directionX;
+	viewportWorldY += 1 * directionY;	
 }
 
 void Viewport::viewportMove(int xMove, int yMove)
 {
-	directionX = xMove;
-	directionY = yMove;
+	checkViewportCanMove();
+
+	viewportWorldX += xMove;
+	viewportWorldY += yMove;
 }
 
 void Viewport::viewportDraw()
@@ -66,4 +71,12 @@ void Viewport::viewportDraw()
 			canvas->DrawImage(tile, screenX, screenY);
 		}
 	}
+}
+
+Rectangle Viewport::getViewportBounds()
+{
+	int vWidth = viewportTilesWide * T_SIZE;
+	int vHeight = viewportTilesHigh * T_SIZE;
+	
+	return Rectangle(viewportWorldX, viewportWorldY, vWidth, vHeight); 
 }

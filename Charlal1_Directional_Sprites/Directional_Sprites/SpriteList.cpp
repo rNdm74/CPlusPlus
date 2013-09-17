@@ -1,8 +1,10 @@
 #include "StdAfx.h"
 #include "SpriteList.h"
 
-SpriteList::SpriteList(void)
+SpriteList::SpriteList(Viewport^ startViewport)
 	{
+		viewport = startViewport;
+
 		head = nullptr;
 		tail = nullptr;
 	}
@@ -109,6 +111,27 @@ void SpriteList::update()
 		Rectangle bounds = spriteWalker->getBoundsRectangle();
 
 	    spriteWalker->update();
+
+		// Move to next node
+		spriteWalker = spriteWalker->Next;
+	}
+}
+
+void SpriteList::renderSprites(int vX, int vY)
+{		
+	Sprite^ spriteWalker = head;		
+
+	while(spriteWalker != nullptr)
+	{
+		// calculate sprite pos in the viewport
+		int vPosX = spriteWalker->getXPos() - vX;
+		int vPosY = spriteWalker->getYPos() - vY;
+
+		// if sprite is in viewport bounds draw
+		Rectangle vBounds = viewport->getViewportBounds();
+
+		if(vBounds.Contains(vPosX, vPosY))
+			spriteWalker->draw(vPosX, vPosY);		
 
 		// Move to next node
 		spriteWalker = spriteWalker->Next;

@@ -81,6 +81,7 @@ namespace Directional_Sprites {
 	
 		long gameTime;
 
+
 		private: System::Windows::Forms::Timer^  clock;
 
 #pragma region Windows Form Designer generated code
@@ -105,7 +106,7 @@ namespace Directional_Sprites {
 		this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 		this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 		this->BackColor = System::Drawing::Color::DarkOliveGreen;
-		this->ClientSize = System::Drawing::Size(624, 442);
+		this->ClientSize = System::Drawing::Size(800, 498);
 		this->DoubleBuffered = true;
 		this->MaximizeBox = false;
 		this->MinimizeBox = false;
@@ -149,12 +150,12 @@ namespace Directional_Sprites {
 					tileMap->generateTileMap();
 					//background = Image::FromFile("ground.png");
 
-					viewport = gcnew Viewport(0, 0, N_COLS, N_ROWS, tileMap, dbGraphics);
+					viewport = gcnew Viewport(0, 0, V_COLS, V_ROWS, tileMap, dbGraphics);
 
 					//=================================================
 					// Create SpriteList
 					//=================================================
-					spriteList = gcnew SpriteList();
+					spriteList = gcnew SpriteList(viewport);
 
 					//=================================================
 					// Create knight
@@ -181,7 +182,7 @@ namespace Directional_Sprites {
 					//=================================================
 					// Create chickens
 					//=================================================
-					chickens = gcnew array<Chicken^>(20);
+					chickens = gcnew array<Chicken^>(50);
 
 					Rectangle mapRect = tileMap->getMapBounds();
 
@@ -265,15 +266,15 @@ namespace Directional_Sprites {
 						// Handle key up event
 						//=================================================
 						knight->setWalking(false);
-						viewport->viewportMove(0, 0);
+						//viewport->viewportMove(0, 0);
 						//tileMap->mapStop();
 					 }		
 		private: System::Void clock_Tick(System::Object^  sender, System::EventArgs^  e) {
 						//=================================================
 						// Draw background 
 						//=================================================/
-						viewport->viewportUpdate();
-						viewport->viewportDraw();
+						//viewport->viewportUpdate();
+						
 						//=================================================
 						// Update sprites frame animation
 						//=================================================
@@ -285,7 +286,11 @@ namespace Directional_Sprites {
 						//=================================================
 						// Draw sprites to the canvas 
 						//=================================================
-						spriteList->draw();
+						viewport->viewportDraw();
+
+						// draw chickens
+						spriteList->renderSprites(viewport->getViewportWorldX(), viewport->getViewportWorldY());
+						//spriteList->draw();
 
 						//=================================================
 						// Make buffer visible 
