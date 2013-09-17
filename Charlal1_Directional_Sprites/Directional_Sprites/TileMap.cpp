@@ -10,9 +10,6 @@ TileMap::TileMap(Graphics^ panelCanvas)
 		tiles = gcnew TileList();
 
 		tileMap = gcnew array<int, 2>(N_ROWS, N_COLS);	
-
-		xPos = 0;
-		yPos = 0;
 	}
 
 void TileMap::generateTileMap()
@@ -78,12 +75,6 @@ void TileMap::generateTileMap()
 				//tileMap[col, row] = rGen->Next(N_TILES);
 	}
 
-void TileMap::updateTilePosition()
-	{
-		xPos += 2 * xDirection;
-		yPos += 2 * yDirection;
-	}
-
 void TileMap::drawTileMap()
 	{
 		//===================================================================
@@ -95,8 +86,8 @@ void TileMap::drawTileMap()
 			{
 				Bitmap^ tileImage = tiles->getTileBitmap(tileMap[row, col]);
 
-				int x = xPos + (col * T_SIZE);
-				int y = yPos + (row * T_SIZE);
+				int x = (col * T_SIZE);
+				int y = (row * T_SIZE);
 
 				canvas->DrawImage(tileImage, x, y); 
 			}

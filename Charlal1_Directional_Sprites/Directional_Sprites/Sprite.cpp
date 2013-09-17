@@ -231,11 +231,21 @@ void Sprite::updateFrame()
 		//=================================================
 		// Update sprites frame is not standing
 		//=================================================
+		
 		currentFrame %= frames; // does this work?  c = c%f;
 
 		srcRectangle = Rectangle(currentFrame * frameWidth, 0, frameWidth, frameHeight);
 
-		if(walking) currentFrame++;
+		bool changeFrame = frameTime > 2;
+
+		if(changeFrame && walking) 
+		{
+			frameTime = 0;
+
+			currentFrame++;
+		}
+
+		frameTime++;
 	}
 
 void Sprite::setSpriteSheet() // multiple sheets?

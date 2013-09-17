@@ -1,8 +1,10 @@
 #pragma once
 
+#include "Chicken.h"
 #include "Sprite.h"
 #include "SpriteList.h"
 #include "TileMap.h"
+#include "Viewport.h"
 
 namespace Directional_Sprites {
 
@@ -55,9 +57,12 @@ namespace Directional_Sprites {
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
+		Viewport^ viewport;
+
 		Graphics^ canvas;
 
-		Graphics^ dbGraphics;		
+		Graphics^ dbGraphics;
+
 		Bitmap^ dbBitmap;
 
 		Image^ background;
@@ -68,7 +73,7 @@ namespace Directional_Sprites {
 
 		Sprite^ knight;
 
-		array<Sprite^>^ chickens;
+		array<Chicken^>^ chickens;
 		
 		bool collision;
 
@@ -144,6 +149,8 @@ namespace Directional_Sprites {
 					tileMap->generateTileMap();
 					//background = Image::FromFile("ground.png");
 
+					viewport = gcnew Viewport(0, 0, N_COLS, N_ROWS, tileMap, dbGraphics);
+
 					//=================================================
 					// Create SpriteList
 					//=================================================
@@ -174,12 +181,15 @@ namespace Directional_Sprites {
 					//=================================================
 					// Create chickens
 					//=================================================
-					chickens = gcnew array<Sprite^>(20);
+					chickens = gcnew array<Chicken^>(20);
+
+					Rectangle mapRect = tileMap->getMapBounds();
 
 					for(int c = 0; c < chickens->Length; c++)
 					{
-						chickens[c] = gcnew Sprite
+						chickens[c] = gcnew Chicken
 						(
+							tileMap,
 							BOUNCE,
 							dbGraphics,
 							gcnew array<String^>
@@ -191,8 +201,8 @@ namespace Directional_Sprites {
 							},
 							CHICKEN_FRAMES,
 							rGen,
-							Point(rGen->Next(ClientRectangle.Width), rGen->Next(ClientRectangle.Height)),
-							ClientRectangle
+							Point(rGen->Next(mapRect.Width), rGen->Next(mapRect.Height)),
+							mapRect
 						);
 					}
 
@@ -207,31 +217,37 @@ namespace Directional_Sprites {
 						 // Handle key down event
 						 //=================================================
 						 if(e->KeyCode==Keys::Up ||e->KeyCode==Keys::Down || e->KeyCode==Keys::Left || e->KeyCode==Keys::Right)
-							 knight->setWalking(true);
+							 viewport->setMove(true);
+							 //knight->setWalking(true);
 
 
 						 if(e->KeyCode==Keys::Up)
 						 {
-							knight->setBearing(NORTH);
-							tileMap->moveMapDown();
+							
+						    viewport->viewportMove(0, -1);
+							//knight->setBearing(NORTH);
+							//tileMap->moveMapDown();
 						 }
 
 						 if(e->KeyCode==Keys::Down)
 						 {
-							knight->setBearing(SOUTH);
-							tileMap->moveMapUp();
+							viewport->viewportMove(0, 1);
+							//knight->setBearing(SOUTH);
+							//tileMap->moveMapUp();
 						 }
 
 						 if(e->KeyCode==Keys::Right)
 						 {
-							knight->setBearing(EAST);
-							tileMap->moveMapLeft();
+							viewport->viewportMove(1, 0);
+							//knight->setBearing(EAST);
+							//tileMap->moveMapLeft();
 						 }
 
 						 if(e->KeyCode==Keys::Left)
 						 {
-							 knight->setBearing(WEST);
-							 tileMap->moveMapRight();
+							 viewport->viewportMove(-1, 0);
+							 //knight->setBearing(WEST);
+							 //tileMap->moveMapRight();
 						 }
 
 						 if(e->KeyCode==Keys::W);
@@ -249,15 +265,15 @@ namespace Directional_Sprites {
 						// Handle key up event
 						//=================================================
 						knight->setWalking(false);
-						tileMap->mapStop();
+						viewport->viewportMove(0, 0);
+						//tileMap->mapStop();
 					 }		
 		private: System::Void clock_Tick(System::Object^  sender, System::EventArgs^  e) {
 						//=================================================
 						// Draw background 
-						//=================================================
-						tileMap->updateTilePosition();
-						tileMap->drawTileMap(); 
-						
+						//=================================================/
+						viewport->viewportUpdate();
+						viewport->viewportDraw();
 						//=================================================
 						// Update sprites frame animation
 						//=================================================

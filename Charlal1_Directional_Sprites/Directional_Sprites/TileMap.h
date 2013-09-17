@@ -33,19 +33,15 @@ ref class TileMap
 	public:
 		TileMap(Graphics^ panelCanvas);
 
-		void generateTileMap();
-
-		void updateTilePosition();
+		void generateTileMap();		
 
 		void drawTileMap();
 
 		void setMapValue(int col, int row, int tileValue);
 
 		int getMapValue(int col, int row);
+		
+		Bitmap^ getTileBitmap(int row, int col) { return tiles->getTileBitmap(tileMap[row, col]); }
 
-		void moveMapLeft()		{ xDirection = -1; }
-		void moveMapRight()		{ xDirection = 1; }
-		void moveMapUp()		{ yDirection = -1; }
-		void moveMapDown()		{ yDirection = 1; }
-		void mapStop()			{ xDirection = 0; yDirection = 0; }
+		Rectangle getMapBounds(){ return Rectangle(xPos, yPos, T_SIZE * N_COLS, T_SIZE * N_ROWS); }
 	};

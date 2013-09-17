@@ -200,6 +200,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Chicken.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Directional_Sprites.cpp"
 				>
 			</File>
@@ -243,12 +247,20 @@
 				RelativePath=".\TileMap.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\Viewport.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\Chicken.h"
+				>
+			</File>
 			<File
 				RelativePath=".\DirectionalSprites.h"
 				FileType="3"
@@ -285,6 +297,10 @@
 			</File>
 			<File
 				RelativePath=".\TileMap.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Viewport.h"
 				>
 			</File>
 		</Filter>

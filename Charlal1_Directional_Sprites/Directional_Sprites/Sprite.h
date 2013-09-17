@@ -13,7 +13,7 @@ using namespace System::Drawing;
 #define MAX_DIRECTIONS 4
 #define HALF 2
 #define WANDER_PROB 25
-#define SPEED 2
+#define SPEED 0
 
 
 //=================================================
@@ -38,7 +38,7 @@ public enum EBoundsAction
 
 ref class Sprite
 	{
-	private:
+	protected:
 		//=================================================
 		// Variables
 		//=================================================
@@ -69,6 +69,8 @@ ref class Sprite
 		int xMag;
 		int yMag;
 
+		long frameTime;
+
 	public:
 		Sprite^ Next;
 
@@ -86,12 +88,13 @@ ref class Sprite
 
 		bool isBoundsCollision();		
 		void executeBoundsAction();
+
 		void wrap();
 		void reverse();
 		void die();
 		void stop();
 
-		void move();
+		virtual void move();
 		void wander();		
 		void updateFrame();	
 
