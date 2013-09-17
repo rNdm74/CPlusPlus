@@ -13,7 +13,7 @@ using namespace System::Drawing;
 #define MAX_DIRECTIONS 4
 #define HALF 2
 #define WANDER_PROB 25
-#define SPEED 0
+#define SPEED 2
 
 
 //=================================================
@@ -118,7 +118,13 @@ ref class Sprite
 		void setAlive(bool a)			{ alive = a; }
 
 		int getXPos()					{ return xPos; }
+		void setXPos(int x)				{ xPos = x; }
+
 		int getYPos()					{ return yPos; }
+		void setYPos(int y)				{ yPos = y; }
+
+		int getWidth()					{ return frameWidth; }
+		int getHeight()					{ return frameHeight; }
 		
 		EBearing getRandomBearing();
 		void setBearing(EBearing b)		{ bearing = b; }

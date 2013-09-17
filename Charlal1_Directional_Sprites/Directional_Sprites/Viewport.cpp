@@ -14,41 +14,30 @@ Viewport::Viewport(int startX, int startY, int startTilesWide, int startTilesHig
 	move = true;
 }
 
-void Viewport::checkViewportCanMove()
+void Viewport::canViewportMove(int xMove, int yMove)
 {
 	//converts back into pixels
 	int boundsX = (N_COLS * T_SIZE) - (viewportTilesWide * T_SIZE);
 	int boundsY = (N_ROWS * T_SIZE) - (viewportTilesHigh * T_SIZE);
+	
+	if(xMove < boundsX && xMove > 0)
+		viewportWorldX = xMove;
 
-	// temp bounds checking for viewport
-	if(viewportWorldX < 1)
-		viewportWorldX = 1;
-
-	if(viewportWorldX > boundsX)
-		viewportWorldX = boundsX;
-
-	if(viewportWorldY < 1)
-		viewportWorldY = 1;
-
-	if(viewportWorldY > boundsY)
-		viewportWorldY = boundsY;
+	if(yMove < boundsY && yMove > 0)
+		viewportWorldY = yMove;
 }
 
-void Viewport::viewportUpdate()
+void Viewport::moveRelativeToPlayer(int playerWorldX, int playerWorldY)
 {
-	// move check bounds
-	checkViewportCanMove();
+	int newViewportWorldX = playerWorldX - ((viewportTilesWide * T_SIZE) / 2);
+	int newViewportWorldY = playerWorldY - ((viewportTilesHigh * T_SIZE) / 2);
 
-	viewportWorldX += 1 * directionX;
-	viewportWorldY += 1 * directionY;	
+	canViewportMove(newViewportWorldX, newViewportWorldY);
 }
 
 void Viewport::viewportMove(int xMove, int yMove)
 {
-	checkViewportCanMove();
-
-	viewportWorldX += xMove;
-	viewportWorldY += yMove;
+			
 }
 
 void Viewport::viewportDraw()
@@ -78,5 +67,5 @@ Rectangle Viewport::getViewportBounds()
 	int vWidth = viewportTilesWide * T_SIZE;
 	int vHeight = viewportTilesHigh * T_SIZE;
 	
-	return Rectangle(viewportWorldX, viewportWorldY, vWidth, vHeight); 
+	return Rectangle(0, 0, vWidth, vHeight); 
 }

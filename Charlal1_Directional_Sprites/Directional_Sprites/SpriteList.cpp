@@ -108,7 +108,7 @@ void SpriteList::update()
 		// Check to delete pellet
 		/*if(spriteWalker->getYPos() < 0)			
 			remove(spriteWalker);*/
-		Rectangle bounds = spriteWalker->getBoundsRectangle();
+		//Rectangle bounds = spriteWalker->getBoundsRectangle();
 
 	    spriteWalker->update();
 

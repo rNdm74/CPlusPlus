@@ -23,10 +23,10 @@ private:
 public:
 	Viewport(int startX, int startY, int startTilesWide, int startTilesHigh, TileMap^ startBackgroundMap, Graphics^ startCanvas);
 
-	void checkViewportCanMove();
+	void canViewportMove(int xMove, int yMove);
 	
 	void viewportMove(int xMove, int yMove);
-	void viewportUpdate();
+	void moveRelativeToPlayer(int playerWorldX, int playerWorldY);
 	void viewportDraw();
 
 	int getViewportWorldX()	{ return viewportWorldX; }

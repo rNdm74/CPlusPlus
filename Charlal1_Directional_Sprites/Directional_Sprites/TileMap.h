@@ -43,5 +43,5 @@ ref class TileMap
 		
 		Bitmap^ getTileBitmap(int row, int col) { return tiles->getTileBitmap(tileMap[row, col]); }
 
-		Rectangle getMapBounds(){ return Rectangle(xPos, yPos, T_SIZE * N_COLS, T_SIZE * N_ROWS); }
+		Rectangle getMapBounds(){ return Rectangle(0, 0, T_SIZE * N_COLS, T_SIZE * N_ROWS); }
 	};
