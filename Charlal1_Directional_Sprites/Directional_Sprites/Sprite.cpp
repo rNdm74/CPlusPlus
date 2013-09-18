@@ -5,7 +5,7 @@ Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction, Graphics^ start
 			   array<String^>^ filenames, int nFrames, 
 			   Random^ startRGen,Point startPos, Rectangle startBounds)
 	{
-		tilemap = startTileMap;
+		tileMap = startTileMap;
 		action = startAction;
 		canvas = startCanvas;
 		frames = nFrames;
@@ -87,7 +87,7 @@ EBearing Sprite::getRandomBearing()
 
 void Sprite::update()
 	{
-		move();	
+		//move(viewportWorldX, viewportWorldY);	
 		updateFrame();
 	}
 
@@ -131,7 +131,7 @@ void Sprite::erase(Color eraseColor)
 		canvas->FillRectangle(brush, rect);
 	}
 
-void Sprite::move()
+void Sprite::move(int viewportWorldX, int viewportWorldY)
 	{
 		//=======================================================================
 		// If sprite can walk the xPosition and yPosition is incremented
@@ -143,48 +143,71 @@ void Sprite::move()
 
 		if(walking)
 		{
-			canSpriteMove(xPos, yPos);
+			canSpriteMove(viewportWorldX, viewportWorldY);
 		}
 	}
 
-void Sprite::canSpriteMove(int curXPos, int curYPos)
-{
-	int newXPos = curXPos; 
-	int newYPos = curYPos; 
+void Sprite::canSpriteMove(int viewportWorldX, int viewportWorldY)
+{	
+		int newKnightXPos = xPos;
+		int newKnightYPos = yPos;
 
-	newXPos += xMag * spriteDirection[bearing].X;
-	newYPos += yMag * spriteDirection[bearing].Y;
+		newKnightXPos += xMag * spriteDirection[bearing].X;
+		newKnightYPos += yMag * spriteDirection[bearing].Y;
 
-	int col = newXPos / T_SIZE;
-	int row = newYPos / T_SIZE;
+		int viewportKnightX = newKnightXPos - viewportWorldX;
+		int viewportKnightY = newKnightYPos - viewportWorldY;
 
-	int offsetX = newXPos % T_SIZE;
-	int offsetY = newYPos % T_SIZE;
+		int kXPos;
+		int kYpos;
 
-	ETileType tile = tilemap->getTileType(row, col);
+		switch(bearing)
+		{
+			case NORTH:
+				kXPos = frameWidth / 2;
+				kYpos = 50;
+				break;
+			case EAST:
+				kXPos = frameWidth - 20;
+				kYpos = frameHeight / 2;
+				break;
+			case SOUTH:
+				kXPos = frameWidth / 2;
+				kYpos = frameHeight - 10;
+				break;
+			case WEST:
+				kXPos = 20;
+				kYpos = frameHeight / 2;
+				break;
+		}
+		
+		viewportKnightX += kXPos;
+		viewportKnightY += kYpos;	
 
-	Brush^ brush = gcnew SolidBrush(Color::Red);
-	Rectangle rect = Rectangle(newXPos, newYPos, T_SIZE, T_SIZE);
-	canvas->FillRectangle(brush, rect);
+		if(tileMap->getMapValue(newKnightXPos + kXPos, newKnightYPos + kYpos) == 0)
+		{
+			
+		}
 
-	/*switch(tile)
-	{
-		case SOLID:
+		if(tileMap->getMapValue(newKnightXPos + kXPos, newKnightYPos + kYpos) == 1)
+		{
+			xMag = 1;
+			yMag = 1;
+		}
 
-			break;
-		case GRASS:
-			break;
-		case COBBLESTONE:
-			break;
-	}*/
+		if(tileMap->getMapValue(newKnightXPos + kXPos, newKnightYPos + kYpos) == 2)
+		{
+			xMag = 2;
+			yMag = 2;
+		}
 
-	
+		if(tileMap->getMapValue(newKnightXPos + kXPos, newKnightYPos + kYpos) != 0)
+		{
+			xPos = newKnightXPos;
+			yPos = newKnightYPos;
+		}
 
-	if(tile != SOLID)
-	{
-		xPos = newXPos;
-		yPos = newYPos;
-	}	
+		
 }
 
 bool Sprite::isBoundsCollision()// should return info
@@ -286,7 +309,7 @@ void Sprite::die()
 
 void Sprite::stop()
 	{
-		walking = false;
+		//walking = false;
 	}
 
 void Sprite::updateFrame()

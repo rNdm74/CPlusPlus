@@ -23,16 +23,14 @@ private:
 public:
 	Viewport(int startX, int startY, int startTilesWide, int startTilesHigh, TileMap^ startBackgroundMap, Graphics^ startCanvas);
 
-	void canViewportMove(int xMove, int yMove);
-	
-	void viewportMove(int xMove, int yMove);
+	void canViewportMove(int xMove, int yMove);	
 	void moveRelativeToPlayer(int playerWorldX, int playerWorldY);
-	void viewportDraw();
+	void viewportDraw(int playerWorldX, int playerWorldY);
 
 	int getViewportWorldX()	{ return viewportWorldX; }
 	int getViewportWorldY()	{ return viewportWorldY; }
 
 	Rectangle getViewportBounds();
 
-	void setMove(bool m)	{ move = m; }
+	ETileType getTileType(int tileX, int tileY)			{ return backgroundMap->getTileType(tileX, tileY); }
 };

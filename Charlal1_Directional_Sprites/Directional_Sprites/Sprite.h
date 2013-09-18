@@ -16,6 +16,8 @@ using namespace System::Drawing;
 #define HALF 2
 #define WANDER_PROB 25
 #define SPEED 2
+#define V_COLS 21
+#define V_ROWS 15
 
 
 //=================================================
@@ -56,7 +58,7 @@ ref class Sprite
 		Rectangle srcRectangle;
 		Rectangle boundsRect;
 
-		TileMap^ tilemap;
+		TileMap^ tileMap;
 
 		bool walking;
 		bool alive;
@@ -92,14 +94,14 @@ ref class Sprite
 
 		bool isBoundsCollision();		
 		void executeBoundsAction();
-		void canSpriteMove(int xPos, int yPos);
+		void canSpriteMove(int viewportWorldX, int viewportWorldY);
 
 		void wrap();
 		void reverse();
 		void die();
 		void stop();
 
-		virtual void move();
+		virtual void move(int viewportWorldX, int viewportWorldY);
 		void wander();		
 		void updateFrame();	
 
@@ -132,5 +134,6 @@ ref class Sprite
 		int getHeight()					{ return frameHeight; }
 		
 		EBearing getRandomBearing();
+		EBearing getBearing()			{ return bearing; }
 		void setBearing(EBearing b)		{ bearing = b; }
 	};

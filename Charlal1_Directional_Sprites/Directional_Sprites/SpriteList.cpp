@@ -104,13 +104,8 @@ void SpriteList::update()
 	Sprite^ spriteWalker = head;		
 
 	while(spriteWalker != nullptr)
-	{
-		// Check to delete pellet
-		/*if(spriteWalker->getYPos() < 0)			
-			remove(spriteWalker);*/
-		//Rectangle bounds = spriteWalker->getBoundsRectangle();
-
-	    spriteWalker->update();
+	{				
+		spriteWalker->update();
 
 		// Move to next node
 		spriteWalker = spriteWalker->Next;

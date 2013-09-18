@@ -7,7 +7,7 @@ Chicken::Chicken(TileMap^ startTileMap, EBoundsAction startAction, Graphics^ sta
 	
 }
 
-void Chicken::move()
+void Chicken::move(int xV, int vY)
 {
 	if(isBoundsCollision())
 			executeBoundsAction();		// pull thus out

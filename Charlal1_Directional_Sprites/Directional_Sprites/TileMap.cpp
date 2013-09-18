@@ -70,7 +70,7 @@ void TileMap::drawTileMap()
 				int x = (row * T_SIZE);
 				int y = (col * T_SIZE);
 
-				canvas->DrawImage(tileImage, x, y); 
+				canvas->DrawImage(tileImage, x, y); 				 
 			}
 		}
 	}
@@ -80,7 +80,7 @@ void TileMap::setMapValue(int col, int row, int tileValue)
 		//===================================================================
 		// Return bitmap of a indexed tile
 		//===================================================================
-		tileMap[col,row] = tileValue;
+		tileMap[col, row] = tileValue;
 	}
 
 int TileMap::getMapValue(int col, int row)
@@ -88,5 +88,5 @@ int TileMap::getMapValue(int col, int row)
 		//===================================================================
 		// Return bitmap of a indexed tile
 		//===================================================================
-		return tileMap[col, row];
+		return tileMap[row/T_SIZE, col/T_SIZE];
 	}

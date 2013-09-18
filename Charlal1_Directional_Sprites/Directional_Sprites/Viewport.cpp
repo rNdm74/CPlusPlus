@@ -35,12 +35,8 @@ void Viewport::moveRelativeToPlayer(int playerWorldX, int playerWorldY)
 	canViewportMove(newViewportWorldX, newViewportWorldY);
 }
 
-void Viewport::viewportMove(int xMove, int yMove)
-{
-			
-}
 
-void Viewport::viewportDraw()
+void Viewport::viewportDraw(int playerWorldX, int playerWorldY)
 {
 	int startTileColumn = viewportWorldX / T_SIZE;	
 	int startTileRow = viewportWorldY / T_SIZE;
@@ -58,10 +54,28 @@ void Viewport::viewportDraw()
 			int screenY = (row - startTileRow) * T_SIZE - offsetY;
 
 			canvas->DrawImage(tileBitmap, screenX, screenY);
-			ETileType tileType = backgroundMap->getTileType(row, col);
 
+			// shows solid tiles
+			/*ETileType tileType = backgroundMap->getTileType(row, col);
 			if(tileType == SOLID)
-				canvas->FillRectangle(Brushes::Black, screenX, screenY, T_SIZE, T_SIZE);
+				canvas->FillRectangle(Brushes::Black, screenX, screenY, T_SIZE, T_SIZE);*/
+
+			//// show tile player is on
+			//int x = playerWorldX / T_SIZE;
+			//int y = playerWorldY / T_SIZE;
+
+			//if(x == col && y == row)
+			//{
+			//	canvas->FillRectangle(Brushes::Blue, screenX, screenY, T_SIZE, T_SIZE);
+
+			//	if(tileType == SOLID)
+			//	{
+			//		canvas->FillRectangle(Brushes::Red, screenX, screenY, T_SIZE, T_SIZE);					
+			//	}
+			//}
+			//// show tile values
+			//String^ t = (col + "," + row);
+			//canvas->DrawString(t, gcnew Font("Microsoft Sans Serif", 8), Brushes::White, col * T_SIZE,row * T_SIZE);
 		}
 	}
 }

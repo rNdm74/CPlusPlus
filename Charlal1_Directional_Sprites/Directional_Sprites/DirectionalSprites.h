@@ -273,13 +273,6 @@ namespace Directional_Sprites {
 							 knight->setBearing(WEST);
 						 }
 
-						 if(e->KeyCode==Keys::W);
-							 
-						 if(e->KeyCode==Keys::S);
-							 	
-						 if(e->KeyCode==Keys::D);
-							 
-						 if(e->KeyCode==Keys::A);
 						 
 					 }
 
@@ -292,18 +285,63 @@ namespace Directional_Sprites {
 						//tileMap->mapStop();
 					 }		
 		private: System::Void clock_Tick(System::Object^  sender, System::EventArgs^  e) {
-						label1->Text = "xTile:" + (knight->getXPos() / T_SIZE).ToString();
-						label2->Text = "yTile:" + (knight->getYPos() / T_SIZE).ToString();
+						
 						//=================================================
 						// Move and update player
 						//=================================================
-						spriteList->update();						
-						
+						//int newKnightXPos = knight->getXPos();
+						//int newKnightYPos = knight->getYPos();
+
+						//int viewportKnightX = newKnightXPos - viewport->getViewportWorldX();
+						//int viewportKnightY = newKnightYPos - viewport->getViewportWorldY();
+
+						//
+
+						//int kXPos;
+						//int kYpos;
+
+						//switch(knight->getBearing())
+						//{
+						//	case NORTH:
+						//		kXPos = knight->getWidth() / 2;
+						//		kYpos = 10;
+						//		break;
+						//	case EAST:
+						//		kXPos = knight->getWidth()- 20;
+						//		kYpos = knight->getHeight() / 2;
+						//		break;
+						//	case SOUTH:
+						//		kXPos = knight->getWidth() / 2;
+						//		kYpos = knight->getHeight() - 10;
+						//		break;
+						//	case WEST:
+						//		kXPos = 20;
+						//		kYpos = knight->getHeight() / 2;
+						//		break;
+						//}
+						//
+						//viewportKnightX += kXPos;
+						//viewportKnightY += kYpos;
+						//
+
+						//if(tileMap->getMapValue(newKnightXPos + kXPos, newKnightYPos + kYpos) != 0)
+						//{
+						//	knight->setXPos(newKnightXPos);
+						//	knight->setYPos(newKnightYPos);
+						//}
+
+						//label1->Text = tileMap->getMapValue(newKnightXPos + kXPos, newKnightYPos + kYpos).ToString();//viewportKnightX.ToString();//knight->getXPos().ToString();//"xTile:" + (knight->getXPos() / T_SIZE).ToString();
+						//label2->Text = viewportKnightY.ToString();//"yTile:" + (knight->getYPos() / T_SIZE).ToString();
+						//
 						//=================================================
 						// Set viewports position on player
 						//=================================================
 						int knightX = knight->getXPos() + (knight->getWidth() / 2);
 						int knightY = knight->getYPos() + (knight->getHeight() / 2);
+
+						knight->move(viewport->getViewportWorldX(), viewport->getViewportWorldY());
+
+						spriteList->update();
 
 						viewport->moveRelativeToPlayer(knightX, knightY);
 						
@@ -313,7 +351,7 @@ namespace Directional_Sprites {
 						//=================================================
 						// Draw viewport to canvas 
 						//=================================================
-						viewport->viewportDraw();
+						viewport->viewportDraw(knightX, knightY);
 
 						//=================================================
 						// Draw visible NPC  to canvas
@@ -323,7 +361,9 @@ namespace Directional_Sprites {
 						//=================================================
 						// Draw player to canvas 
 						//=================================================
-						
+						/*Brush^ brush = gcnew SolidBrush(Color::Fuchsia);
+						Rectangle rect = Rectangle(viewportKnightX, viewportKnightY, 2, 2);
+						dbGraphics->FillRectangle(brush, rect);*/
 
 						//=================================================
 						// Make buffer visible 

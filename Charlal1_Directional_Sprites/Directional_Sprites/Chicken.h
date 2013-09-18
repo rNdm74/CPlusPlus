@@ -11,5 +11,5 @@ private:
 public:
 	Chicken(TileMap^ startTileMap, EBoundsAction startAction, Graphics^ startCanvas, array<String^>^ filenames, int nFrames, Random^ startRgen, Point startPos, Rectangle bounds);
 
-	virtual void move() override;
+	virtual void move(int xV, int vY) override;
 };
