@@ -12,9 +12,9 @@ TileList::TileList()
 		//===================================================================
 		tiles = gcnew array<Tile^>
 		{			
-			gcnew Tile(flowerTile),
-			gcnew Tile(grassTile),
-			gcnew Tile(cobblestoneTile)
+			gcnew Tile(flowerTile, SOLID),
+			gcnew Tile(grassTile, GRASS),
+			gcnew Tile(cobblestoneTile, COBBLESTONE)
 		};
 	}
 

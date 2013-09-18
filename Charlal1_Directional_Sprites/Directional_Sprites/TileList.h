@@ -18,5 +18,7 @@ ref class TileList
 		
 		Bitmap^ getTileBitmap(int index);
 
+		ETileType getTileType(int index)		{ return tiles[index]->getTileType(); }
+
 		void setTile(int index, Tile^ newTile)	{ tiles[index] = newTile;  }
 	};

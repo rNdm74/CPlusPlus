@@ -1,18 +1,18 @@
 #include "StdAfx.h"
 #include "Sprite.h"
 
-Sprite::Sprite(EBoundsAction startAction, Graphics^ startCanvas, 
+Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction, Graphics^ startCanvas, 
 			   array<String^>^ filenames, int nFrames, 
 			   Random^ startRGen,Point startPos, Rectangle startBounds)
 	{
+		tilemap = startTileMap;
 		action = startAction;
 		canvas = startCanvas;
 		frames = nFrames;
 		rGen = startRGen;
 		boundsRect = startBounds;
 		walking = true;
-		alive = true;		
-		
+		alive = true;
 
 		//=================================================
 		// Create spritesheets from file names
@@ -139,14 +139,53 @@ void Sprite::move()
 		// this will allow the sprite to move up, down, left and right
 		//=======================================================================
 		if(isBoundsCollision())
-			executeBoundsAction();		// pull thus out
+			executeBoundsAction();				
 
 		if(walking)
 		{
-			xPos += xMag * spriteDirection[bearing].X;
-			yPos += yMag * spriteDirection[bearing].Y;
+			canSpriteMove(xPos, yPos);
 		}
 	}
+
+void Sprite::canSpriteMove(int curXPos, int curYPos)
+{
+	int newXPos = curXPos; 
+	int newYPos = curYPos; 
+
+	newXPos += xMag * spriteDirection[bearing].X;
+	newYPos += yMag * spriteDirection[bearing].Y;
+
+	int col = newXPos / T_SIZE;
+	int row = newYPos / T_SIZE;
+
+	int offsetX = newXPos % T_SIZE;
+	int offsetY = newYPos % T_SIZE;
+
+	ETileType tile = tilemap->getTileType(row, col);
+
+	Brush^ brush = gcnew SolidBrush(Color::Red);
+	Rectangle rect = Rectangle(newXPos, newYPos, T_SIZE, T_SIZE);
+	canvas->FillRectangle(brush, rect);
+
+	/*switch(tile)
+	{
+		case SOLID:
+
+			break;
+		case GRASS:
+			break;
+		case COBBLESTONE:
+			break;
+	}*/
+
+	
+
+	if(tile != SOLID)
+	{
+		xPos = newXPos;
+		yPos = newYPos;
+	}	
+}
 
 bool Sprite::isBoundsCollision()// should return info
 	{
@@ -163,7 +202,16 @@ bool Sprite::isBoundsCollision()// should return info
 
 		bool hitBottom = yPos + frameHeight > boundsRect.Bottom;	// Check bottom
 
-		return ( hitLeft || hitRight || hitTop || hitBottom );			
+		/*int col = xPos / T_SIZE;
+		int row = yPos / T_SIZE;
+
+		ETileType tile = tilemap->getTileType(row, col);
+
+		bool solidTile =  tile == SOLID;*/
+
+		return ( hitLeft || hitRight || hitTop || hitBottom );	
+
+
 	}
 
 void Sprite::executeBoundsAction()

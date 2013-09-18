@@ -9,7 +9,7 @@ private:
 	TileMap^ tileMap;
 
 public:
-	Chicken(TileMap^ map, EBoundsAction startAction, Graphics^ startCanvas, array<String^>^ filenames, int nFrames, Random^ startRgen, Point startPos, Rectangle bounds);
+	Chicken(TileMap^ startTileMap, EBoundsAction startAction, Graphics^ startCanvas, array<String^>^ filenames, int nFrames, Random^ startRgen, Point startPos, Rectangle bounds);
 
 	virtual void move() override;
 };

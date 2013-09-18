@@ -80,6 +80,8 @@ namespace Directional_Sprites {
 		Random^ rGen;
 	
 		long gameTime;
+	private: System::Windows::Forms::Label^  label1;
+	private: System::Windows::Forms::Label^  label2;
 
 
 
@@ -93,34 +95,57 @@ namespace Directional_Sprites {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->components = (gcnew System::ComponentModel::Container());
-			this->clock = (gcnew System::Windows::Forms::Timer(this->components));
-			this->SuspendLayout();
-			// 
-			// clock
-			// 
-			this->clock->Enabled = true;
-			this->clock->Interval = 1;
-			this->clock->Tick += gcnew System::EventHandler(this, &DirectionalSprites::clock_Tick);
-			// 
-			// DirectionalSprites
-			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
-			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackColor = System::Drawing::Color::White;
-			this->ClientSize = System::Drawing::Size(624, 441);
-			this->DoubleBuffered = true;
-			this->MaximizeBox = false;
-			this->MinimizeBox = false;
-			this->Name = L"DirectionalSprites";
-			this->ShowIcon = false;
-			this->Text = L"Directional Sprites";
-			this->Load += gcnew System::EventHandler(this, &DirectionalSprites::DirectionalSprites_Load);
-			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &DirectionalSprites::DirectionalSprites_KeyUp);
-			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &DirectionalSprites::DirectionalSprites_KeyDown);
-			this->ResumeLayout(false);
+		this->components = (gcnew System::ComponentModel::Container());
+		this->clock = (gcnew System::Windows::Forms::Timer(this->components));
+		this->label1 = (gcnew System::Windows::Forms::Label());
+		this->label2 = (gcnew System::Windows::Forms::Label());
+		this->SuspendLayout();
+		// 
+		// clock
+		// 
+		this->clock->Enabled = true;
+		this->clock->Interval = 1;
+		this->clock->Tick += gcnew System::EventHandler(this, &DirectionalSprites::clock_Tick);
+		// 
+		// label1
+		// 
+		this->label1->AutoSize = true;
+		this->label1->Location = System::Drawing::Point(726, 70);
+		this->label1->Name = L"label1";
+		this->label1->Size = System::Drawing::Size(35, 13);
+		this->label1->TabIndex = 0;
+		this->label1->Text = L"label1";
+		// 
+		// label2
+		// 
+		this->label2->AutoSize = true;
+		this->label2->Location = System::Drawing::Point(767, 70);
+		this->label2->Name = L"label2";
+		this->label2->Size = System::Drawing::Size(35, 13);
+		this->label2->TabIndex = 1;
+		this->label2->Text = L"label2";
+		// 
+		// DirectionalSprites
+		// 
+		this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+		this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+		this->BackColor = System::Drawing::Color::White;
+		this->ClientSize = System::Drawing::Size(864, 441);
+		this->Controls->Add(this->label2);
+		this->Controls->Add(this->label1);
+		this->DoubleBuffered = true;
+		this->MaximizeBox = false;
+		this->MinimizeBox = false;
+		this->Name = L"DirectionalSprites";
+		this->ShowIcon = false;
+		this->Text = L"Directional Sprites";
+		this->Load += gcnew System::EventHandler(this, &DirectionalSprites::DirectionalSprites_Load);
+		this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &DirectionalSprites::DirectionalSprites_KeyUp);
+		this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &DirectionalSprites::DirectionalSprites_KeyDown);
+		this->ResumeLayout(false);
+		this->PerformLayout();
 
-		}
+			}
 #pragma endregion
 	
 
@@ -166,7 +191,8 @@ namespace Directional_Sprites {
 					//=================================================
 					knight = gcnew Sprite
 					(
-						BOUNCE,
+						tileMap,
+						STOP,
 						dbGraphics,
 						gcnew array<String^>
 						{
@@ -266,7 +292,8 @@ namespace Directional_Sprites {
 						//tileMap->mapStop();
 					 }		
 		private: System::Void clock_Tick(System::Object^  sender, System::EventArgs^  e) {
-						
+						label1->Text = "xTile:" + (knight->getXPos() / T_SIZE).ToString();
+						label2->Text = "yTile:" + (knight->getYPos() / T_SIZE).ToString();
 						//=================================================
 						// Move and update player
 						//=================================================

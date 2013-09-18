@@ -1,10 +1,10 @@
 #include "StdAfx.h"
 #include "Chicken.h"
 
-Chicken::Chicken(TileMap^ map, EBoundsAction startAction, Graphics^ startCanvas, array<String^>^ filenames, int nFrames, Random^ startRgen, Point startPos, Rectangle bounds)
-				 : Sprite(startAction, startCanvas, filenames, nFrames, startRgen, startPos, bounds)
+Chicken::Chicken(TileMap^ startTileMap, EBoundsAction startAction, Graphics^ startCanvas, array<String^>^ filenames, int nFrames, Random^ startRgen, Point startPos, Rectangle bounds)
+				 : Sprite(startTileMap, startAction, startCanvas, filenames, nFrames, startRgen, startPos, bounds)
 {
-	tileMap = map;
+	
 }
 
 void Chicken::move()

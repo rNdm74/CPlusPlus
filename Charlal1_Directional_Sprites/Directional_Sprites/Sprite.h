@@ -1,5 +1,7 @@
 #pragma once
 
+#include "TileMap.h"
+
 using namespace System;
 using namespace System::ComponentModel;
 using namespace System::Collections;
@@ -54,6 +56,8 @@ ref class Sprite
 		Rectangle srcRectangle;
 		Rectangle boundsRect;
 
+		TileMap^ tilemap;
+
 		bool walking;
 		bool alive;
 
@@ -78,7 +82,7 @@ ref class Sprite
 		//=================================================
 		// Construtor
 		//=================================================
-		Sprite(EBoundsAction startAction, Graphics^ startCanvas, array<String^>^ filenames, int nFrames, Random^ startRgen, Point startPos, Rectangle bounds);
+		Sprite(TileMap^ startTileMap, EBoundsAction startAction, Graphics^ startCanvas, array<String^>^ filenames, int nFrames, Random^ startRgen, Point startPos, Rectangle bounds);
 
 		//=================================================
 		// Methods
@@ -88,6 +92,7 @@ ref class Sprite
 
 		bool isBoundsCollision();		
 		void executeBoundsAction();
+		void canSpriteMove(int xPos, int yPos);
 
 		void wrap();
 		void reverse();

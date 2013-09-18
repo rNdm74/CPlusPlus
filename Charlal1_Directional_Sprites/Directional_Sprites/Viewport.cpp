@@ -52,12 +52,16 @@ void Viewport::viewportDraw()
 	{
 		for(int row = startTileRow; row < startTileRow + V_ROWS; row++)
 		{			
-			Bitmap^ tile = backgroundMap->getTileBitmap(row, col);			
+			Bitmap^ tileBitmap = backgroundMap->getTileBitmap(row, col);			
 
 			int screenX = (col - startTileColumn) * T_SIZE - offsetX;
 			int screenY = (row - startTileRow) * T_SIZE - offsetY;
 
-			canvas->DrawImage(tile, screenX, screenY);
+			canvas->DrawImage(tileBitmap, screenX, screenY);
+			ETileType tileType = backgroundMap->getTileType(row, col);
+
+			if(tileType == SOLID)
+				canvas->FillRectangle(Brushes::Black, screenX, screenY, T_SIZE, T_SIZE);
 		}
 	}
 }
