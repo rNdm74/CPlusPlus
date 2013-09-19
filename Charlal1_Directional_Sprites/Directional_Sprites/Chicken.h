@@ -5,11 +5,12 @@
 ref class Chicken :
 public Sprite
 {
-private:
-	TileMap^ tileMap;
-
 public:
-	Chicken(TileMap^ startTileMap, EBoundsAction startAction, Graphics^ startCanvas, array<String^>^ filenames, int nFrames, Random^ startRgen, Point startPos, Rectangle bounds);
+	Chicken(TileMap^ startTileMap, EBoundsAction startAction, 
+			Graphics^ startCanvas, array<String^>^ filenames, 
+			int nFrames, Random^ startRgen, Point startPos, 
+			Viewport^ startViewPort);
 
-	virtual void move(int xV, int vY) override;
+	virtual void move(int viewportWorldX, int viewportWorldY) override;
+	virtual void canSpriteMove(int viewportWorldX, int viewportWorldY) override;
 };

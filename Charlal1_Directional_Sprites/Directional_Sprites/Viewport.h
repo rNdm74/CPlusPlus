@@ -4,6 +4,7 @@
 
 #define V_COLS 21
 #define V_ROWS 15
+#define OFFSET 100
  
 ref class Viewport
 {
@@ -27,10 +28,9 @@ public:
 	void moveRelativeToPlayer(int playerWorldX, int playerWorldY);
 	void viewportDraw(int playerWorldX, int playerWorldY);
 
-	int getViewportWorldX()	{ return viewportWorldX; }
-	int getViewportWorldY()	{ return viewportWorldY; }
+	int getViewportWorldX()								{ return viewportWorldX; }
+	int getViewportWorldY()								{ return viewportWorldY; }
+	ETileType getTileType(int tileX, int tileY)			{ return backgroundMap->getTileType(tileX, tileY); }
 
 	Rectangle getViewportBounds();
-
-	ETileType getTileType(int tileX, int tileY)			{ return backgroundMap->getTileType(tileX, tileY); }
 };

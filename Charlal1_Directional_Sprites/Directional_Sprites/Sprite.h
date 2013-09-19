@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TileMap.h"
+#include "ViewPort.h"
 
 using namespace System;
 using namespace System::ComponentModel;
@@ -55,10 +56,11 @@ ref class Sprite
 		Graphics^ canvas;		
 		Random^ rGen;
 		
-		Rectangle srcRectangle;
+		Rectangle frameRectangle;
 		Rectangle boundsRect;
 
 		TileMap^ tileMap;
+		Viewport^ viewPort;
 
 		bool walking;
 		bool alive;
@@ -75,6 +77,9 @@ ref class Sprite
 		int xMag;
 		int yMag;
 
+		int boundsX;
+		int boundsY;
+
 		long frameTime;
 
 	public:
@@ -84,7 +89,10 @@ ref class Sprite
 		//=================================================
 		// Construtor
 		//=================================================
-		Sprite(TileMap^ startTileMap, EBoundsAction startAction, Graphics^ startCanvas, array<String^>^ filenames, int nFrames, Random^ startRgen, Point startPos, Rectangle bounds);
+		Sprite(TileMap^ startTileMap, EBoundsAction startAction, 
+			   Graphics^ startCanvas,array<String^>^ filenames, 
+			   int nFrames, Random^ startRgen, Point startPos, 
+			   Viewport^ startViewPort);
 
 		//=================================================
 		// Methods
@@ -94,14 +102,16 @@ ref class Sprite
 
 		bool isBoundsCollision();		
 		void executeBoundsAction();
-		void canSpriteMove(int viewportWorldX, int viewportWorldY);
+		
 
 		void wrap();
 		void reverse();
 		void die();
 		void stop();
 
+		virtual void canSpriteMove(int viewportWorldX, int viewportWorldY);
 		virtual void move(int viewportWorldX, int viewportWorldY);
+
 		void wander();		
 		void updateFrame();	
 
@@ -112,7 +122,7 @@ ref class Sprite
 		//=================================================
 		// Gets and Sets
 		//=================================================
-		Rectangle getSrcRectangle()		{ return Rectangle(xPos, yPos, srcRectangle.Width,	srcRectangle.Height); }
+		Rectangle getFrameRectangle()		{ return Rectangle(xPos, yPos, frameRectangle.Width, frameRectangle.Height); }
 		Rectangle getBoundsRectangle()	{ return boundsRect; }
 
 		EBoundsAction getAction()		{ return action; }

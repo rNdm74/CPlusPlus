@@ -105,6 +105,7 @@ void SpriteList::update()
 
 	while(spriteWalker != nullptr)
 	{				
+		spriteWalker->move(viewport->getViewportWorldX(), viewport->getViewportWorldY());
 		spriteWalker->update();
 
 		// Move to next node

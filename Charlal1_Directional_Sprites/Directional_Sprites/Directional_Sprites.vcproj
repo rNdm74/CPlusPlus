@@ -212,6 +212,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Player.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Sprite.cpp"
 				>
 			</File>
@@ -278,6 +282,10 @@
 					SubType="Designer"
 					>
 				</File>
+			</File>
+			<File
+				RelativePath=".\Player.h"
+				>
 			</File>
 			<File
 				RelativePath=".\resource.h"

@@ -1,16 +1,18 @@
 #include "StdAfx.h"
 #include "Sprite.h"
 
-Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction, Graphics^ startCanvas, 
-			   array<String^>^ filenames, int nFrames, 
-			   Random^ startRGen,Point startPos, Rectangle startBounds)
+Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction, 
+			   Graphics^ startCanvas, array<String^>^ filenames, 
+			   int nFrames, Random^ startRGen, Point startPos, 
+			   Viewport^ startViewPort)
 	{
 		tileMap = startTileMap;
 		action = startAction;
 		canvas = startCanvas;
 		frames = nFrames;
 		rGen = startRGen;
-		boundsRect = startBounds;
+		viewPort = startViewPort;
+		boundsRect = tileMap->getMapBounds();
 		walking = true;
 		alive = true;
 
@@ -100,7 +102,7 @@ void Sprite::draw()
 			spriteSheets[bearing], 
 			xPos, 
 			yPos, 
-			srcRectangle, 
+			frameRectangle, 
 			GraphicsUnit::Pixel
 		);		
 	}
@@ -115,9 +117,11 @@ void Sprite::draw(int newXPos, int newYPos)
 			spriteSheets[bearing], 
 			newXPos, 
 			newYPos, 
-			srcRectangle, 
+			frameRectangle, 
 			GraphicsUnit::Pixel
-		);		
+		);
+
+		canvas->DrawRectangle(gcnew Pen(Color::Fuchsia), Rectangle(boundsX, boundsY, 2, 2));
 	}
 
 void Sprite::erase(Color eraseColor)
@@ -126,96 +130,20 @@ void Sprite::erase(Color eraseColor)
 		// Draw coloured rectangle over sprite
 		//=================================================
 		Brush^ brush = gcnew SolidBrush(eraseColor);
-		Rectangle rect = Rectangle(xPos, yPos, srcRectangle.Width, srcRectangle.Height);
+		Rectangle rect = Rectangle(xPos, yPos, frameRectangle.Width, frameRectangle.Height);
 		canvas->FillRectangle(brush, rect);
 	}
 
 void Sprite::move(int viewportWorldX, int viewportWorldY)
 	{
-		//=======================================================================
-		// If sprite can walk the xPosition and yPosition is incremented
-		// the a set magnitude, a direction is then applied to the magnitude 1, -1
-		// this will allow the sprite to move up, down, left and right
-		//=======================================================================
-		if(isBoundsCollision())
-			executeBoundsAction();				
-
-		if(walking)
-		{
-			canSpriteMove(viewportWorldX, viewportWorldY);
-		}
+		
 	}
 
 void Sprite::canSpriteMove(int viewportWorldX, int viewportWorldY)
-{	
-		// Copies current position to new variable
-		int newKnightXPos = xPos;
-		int newKnightYPos = yPos;
-
-		// Adds to the new variable this will see where the knight wants to move
-		newKnightXPos += xMag * spriteDirection[bearing].X;
-		newKnightYPos += yMag * spriteDirection[bearing].Y;
-
-		// Brings new positon into the viewport area
-		int viewportKnightX = newKnightXPos - viewportWorldX;
-		int viewportKnightY = newKnightYPos - viewportWorldY;
-
-		//**************************************************
-		// Sets the detection point for the knight to tell what tile he is on
-		int knightXPos;
-		int knightYPos;
-
-		switch(bearing)
-		{
-			case NORTH:
-				knightXPos = frameWidth / 2; 
-				knightYPos = 50;
-				break;
-			case EAST:
-				knightXPos = frameWidth - 20;
-				knightYPos = frameHeight / 2;
-				break;
-			case SOUTH:
-				knightXPos = frameWidth / 2;
-				knightYPos = frameHeight - 10;
-				break;
-			case WEST:
-				knightXPos = 20;
-				knightYPos = frameHeight / 2;
-				break;
-		}
-		
-		viewportKnightX += knightXPos;
-		viewportKnightY += knightYPos;
-		//
-		//**************************************************
-		
-		int newTilePosX = (newKnightXPos + knightXPos) / T_SIZE;
-		int newTilePosY = (newKnightYPos + knightYPos) / T_SIZE;
-
-		if(tileMap->getMapValue(newTilePosX, newTilePosY) == 0);
-
-		// If the tile is grass change movement speed to 1
-		if(tileMap->getMapValue(newTilePosX, newTilePosY) == 1)
-		{
-			xMag = 1;
-			yMag = 1;
-		}
-
-		// If the tile is cobblestone change movement speed to 2
-		if(tileMap->getMapValue(newTilePosX, newTilePosY) == 2)
-		{
-			xMag = 2;
-			yMag = 2;
-		}
-
-		// If the tile is not flowers apply new move position
-		if(tileMap->getMapValue(newTilePosX, newTilePosY) != 0)
-		{
-			xPos = newKnightXPos;
-			yPos = newKnightYPos;
-		}
+{
 }
+
+
 
 bool Sprite::isBoundsCollision()// should return info
 	{
@@ -232,16 +160,7 @@ bool Sprite::isBoundsCollision()// should return info
 
 		bool hitBottom = yPos + frameHeight > boundsRect.Bottom;	// Check bottom
 
-		/*int col = xPos / T_SIZE;
-		int row = yPos / T_SIZE;
-
-		ETileType tile = tilemap->getTileType(row, col);
-
-		bool solidTile =  tile == SOLID;*/
-
 		return ( hitLeft || hitRight || hitTop || hitBottom );	
-
-
 	}
 
 void Sprite::executeBoundsAction()
@@ -270,10 +189,12 @@ void Sprite::executeBoundsAction()
 
 void Sprite::wrap()
 	{
+		// Depending on what bearing the sprite is when called 
+		// the players position is changed to wrap around the screen
 		switch(bearing)
 		{
 			case NORTH:
-				yPos = 480;
+				yPos = tileMap->getMapBounds().Height - frameWidth;				
 			break;
 
 			case EAST:
@@ -285,7 +206,7 @@ void Sprite::wrap()
 			break;
 
 			case WEST:
-				xPos = 640;
+				xPos = tileMap->getMapBounds().Width - frameWidth;
 			break;
 		}
 	}
@@ -327,7 +248,7 @@ void Sprite::updateFrame()
 		
 		currentFrame %= frames; // does this work?  c = c%f;
 
-		srcRectangle = Rectangle(currentFrame * frameWidth, 0, frameWidth, frameHeight);
+		frameRectangle = Rectangle(currentFrame * frameWidth, 0, frameWidth, frameHeight);
 
 		bool changeFrame = frameTime > 2;
 

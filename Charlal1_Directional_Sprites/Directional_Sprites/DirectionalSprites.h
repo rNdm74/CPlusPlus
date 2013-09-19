@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicken.h"
+#include "Player.h"
 #include "Sprite.h"
 #include "SpriteList.h"
 #include "TileMap.h"
@@ -72,7 +73,7 @@ namespace Directional_Sprites {
 
 		SpriteList^ spriteList;
 
-		Sprite^ knight;
+		Player^ knight;
 
 		array<Chicken^>^ chickens;
 		
@@ -83,6 +84,7 @@ namespace Directional_Sprites {
 		CsvReader^ reader;
 	
 		long gameTime;
+	private: System::Windows::Forms::Label^  label1;
 
 
 
@@ -99,34 +101,46 @@ namespace Directional_Sprites {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-		this->components = (gcnew System::ComponentModel::Container());
-		this->clock = (gcnew System::Windows::Forms::Timer(this->components));
-		this->SuspendLayout();
-		// 
-		// clock
-		// 
-		this->clock->Enabled = true;
-		this->clock->Interval = 1;
-		this->clock->Tick += gcnew System::EventHandler(this, &DirectionalSprites::clock_Tick);
-		// 
-		// DirectionalSprites
-		// 
-		this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
-		this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-		this->BackColor = System::Drawing::Color::White;
-		this->ClientSize = System::Drawing::Size(624, 442);
-		this->DoubleBuffered = true;
-		this->MaximizeBox = false;
-		this->MinimizeBox = false;
-		this->Name = L"DirectionalSprites";
-		this->ShowIcon = false;
-		this->Text = L"Directional Sprites";
-		this->Load += gcnew System::EventHandler(this, &DirectionalSprites::DirectionalSprites_Load);
-		this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &DirectionalSprites::DirectionalSprites_KeyUp);
-		this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &DirectionalSprites::DirectionalSprites_KeyDown);
-		this->ResumeLayout(false);
+			this->components = (gcnew System::ComponentModel::Container());
+			this->clock = (gcnew System::Windows::Forms::Timer(this->components));
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->SuspendLayout();
+			// 
+			// clock
+			// 
+			this->clock->Enabled = true;
+			this->clock->Interval = 1;
+			this->clock->Tick += gcnew System::EventHandler(this, &DirectionalSprites::clock_Tick);
+			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Location = System::Drawing::Point(681, 56);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(35, 13);
+			this->label1->TabIndex = 0;
+			this->label1->Text = L"label1";
+			// 
+			// DirectionalSprites
+			// 
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->BackColor = System::Drawing::Color::White;
+			this->ClientSize = System::Drawing::Size(784, 561);
+			this->Controls->Add(this->label1);
+			this->DoubleBuffered = true;
+			this->MaximizeBox = false;
+			this->MinimizeBox = false;
+			this->Name = L"DirectionalSprites";
+			this->ShowIcon = false;
+			this->Text = L"Directional Sprites";
+			this->Load += gcnew System::EventHandler(this, &DirectionalSprites::DirectionalSprites_Load);
+			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &DirectionalSprites::DirectionalSprites_KeyUp);
+			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &DirectionalSprites::DirectionalSprites_KeyDown);
+			this->ResumeLayout(false);
+			this->PerformLayout();
 
-			}
+		}
 #pragma endregion
 	
 
@@ -157,13 +171,14 @@ namespace Directional_Sprites {
 					// Create background
 					//=================================================
 					tileMap = gcnew TileMap(dbGraphics, reader->getTileMap());
-					//tileMap->generateTileMap();
-					//background = Image::FromFile("ground.png");
-
-					viewport = gcnew Viewport(0, 0, V_COLS, V_ROWS, tileMap, dbGraphics);
 
 					//=================================================
-					// Create SpriteList
+					// Create viewport
+					//=================================================
+					viewport = gcnew Viewport(0, 0, ClientRectangle.Width / T_SIZE, ClientRectangle.Height / T_SIZE, tileMap, dbGraphics);
+
+					//=================================================
+					// Create spritelist
 					//=================================================
 					spriteList = gcnew SpriteList(viewport);
 
@@ -172,10 +187,10 @@ namespace Directional_Sprites {
 					//=================================================
 					// Create knight
 					//=================================================
-					knight = gcnew Sprite
+					knight = gcnew Player
 					(
 						tileMap,
-						STOP,
+						WRAP,
 						dbGraphics,
 						gcnew array<String^>
 						{
@@ -186,8 +201,8 @@ namespace Directional_Sprites {
 						},
 						KNIGHT_FRAMES,
 						rGen,
-						Point(ClientRectangle.Width / 2, ClientRectangle.Height / 2),
-						mapRect
+						Point(mapRect.Width / 2 - 50, mapRect.Height / 2 - 50),
+						viewport
 					);
 					
 					knight->setWalking(false);
@@ -214,16 +229,16 @@ namespace Directional_Sprites {
 							},
 							CHICKEN_FRAMES,
 							rGen,
-							Point(rGen->Next(mapRect.Width), rGen->Next(mapRect.Height)),
-							mapRect
+							Point(rGen->Next(260, 800), rGen->Next(260, 300)),
+							viewport
 						);
 					}
 
 					for(int c = 0; c < chickens->Length; c++)
 						spriteList->add(chickens[c]);
 
-					knight->setXPos(viewport->getViewportBounds().Width / 2 - knight->getWidth() / 2);
-					knight->setYPos(viewport->getViewportBounds().Height / 2 - knight->getHeight() / 2);
+					//knight->setXPos();
+					//knight->setYPos();
 
 					spriteList->add(knight);
 				 }
@@ -266,11 +281,12 @@ namespace Directional_Sprites {
 						knight->setWalking(false);
 					 }		
 		private: System::Void clock_Tick(System::Object^  sender, System::EventArgs^  e) {
+						label1->Text = knight->getXPos() + "," + knight->getYPos();
 						
 						//=================================================
 						// Move knight
 						//=================================================
-						knight->move(viewport->getViewportWorldX(), viewport->getViewportWorldY());
+						//knight->move(viewport->getViewportWorldX(), viewport->getViewportWorldY());
 
 						//=================================================
 						// Set viewports position on player
