@@ -31,7 +31,7 @@ ref class TileMap
 		int yDirection;
 
 	public:
-		TileMap(Graphics^ panelCanvas);
+		TileMap(Graphics^ panelCanvas, array<int, 2>^ startTileMap);
 
 		void generateTileMap();		
 

@@ -86,8 +86,7 @@ EBearing Sprite::getRandomBearing()
 	}
 
 void Sprite::update()
-	{
-		//move(viewportWorldX, viewportWorldY);	
+	{	
 		updateFrame();
 	}
 
@@ -149,65 +148,73 @@ void Sprite::move(int viewportWorldX, int viewportWorldY)
 
 void Sprite::canSpriteMove(int viewportWorldX, int viewportWorldY)
 {	
+		// Copies current position to new variable
 		int newKnightXPos = xPos;
 		int newKnightYPos = yPos;
 
+		// Adds to the new variable this will see where the knight wants to move
 		newKnightXPos += xMag * spriteDirection[bearing].X;
 		newKnightYPos += yMag * spriteDirection[bearing].Y;
 
+		// Brings new positon into the viewport area
 		int viewportKnightX = newKnightXPos - viewportWorldX;
 		int viewportKnightY = newKnightYPos - viewportWorldY;
 
-		int kXPos;
-		int kYpos;
+		//**************************************************
+		// Sets the detection point for the knight to tell what tile he is on
+		int knightXPos;
+		int knightYPos;
 
 		switch(bearing)
 		{
 			case NORTH:
-				kXPos = frameWidth / 2;
-				kYpos = 50;
+				knightXPos = frameWidth / 2; 
+				knightYPos = 50;
 				break;
 			case EAST:
-				kXPos = frameWidth - 20;
-				kYpos = frameHeight / 2;
+				knightXPos = frameWidth - 20;
+				knightYPos = frameHeight / 2;
 				break;
 			case SOUTH:
-				kXPos = frameWidth / 2;
-				kYpos = frameHeight - 10;
+				knightXPos = frameWidth / 2;
+				knightYPos = frameHeight - 10;
 				break;
 			case WEST:
-				kXPos = 20;
-				kYpos = frameHeight / 2;
+				knightXPos = 20;
+				knightYPos = frameHeight / 2;
 				break;
 		}
 		
-		viewportKnightX += kXPos;
-		viewportKnightY += kYpos;	
+		viewportKnightX += knightXPos;
+		viewportKnightY += knightYPos;
+		//
+		//**************************************************
+		
+		int newTilePosX = (newKnightXPos + knightXPos) / T_SIZE;
+		int newTilePosY = (newKnightYPos + knightYPos) / T_SIZE;
 
-		if(tileMap->getMapValue(newKnightXPos + kXPos, newKnightYPos + kYpos) == 0)
-		{
-			
-		}
+		if(tileMap->getMapValue(newTilePosX, newTilePosY) == 0);
 
-		if(tileMap->getMapValue(newKnightXPos + kXPos, newKnightYPos + kYpos) == 1)
+		// If the tile is grass change movement speed to 1
+		if(tileMap->getMapValue(newTilePosX, newTilePosY) == 1)
 		{
 			xMag = 1;
 			yMag = 1;
 		}
 
-		if(tileMap->getMapValue(newKnightXPos + kXPos, newKnightYPos + kYpos) == 2)
+		// If the tile is cobblestone change movement speed to 2
+		if(tileMap->getMapValue(newTilePosX, newTilePosY) == 2)
 		{
 			xMag = 2;
 			yMag = 2;
 		}
 
-		if(tileMap->getMapValue(newKnightXPos + kXPos, newKnightYPos + kYpos) != 0)
+		// If the tile is not flowers apply new move position
+		if(tileMap->getMapValue(newTilePosX, newTilePosY) != 0)
 		{
 			xPos = newKnightXPos;
 			yPos = newKnightYPos;
 		}
-
-		
 }
 
 bool Sprite::isBoundsCollision()// should return info

@@ -5,6 +5,7 @@
 #include "SpriteList.h"
 #include "TileMap.h"
 #include "Viewport.h"
+#include "CsvReader.h"
 
 namespace Directional_Sprites {
 
@@ -78,10 +79,13 @@ namespace Directional_Sprites {
 		bool collision;
 
 		Random^ rGen;
+
+		CsvReader^ reader;
 	
 		long gameTime;
-	private: System::Windows::Forms::Label^  label1;
-	private: System::Windows::Forms::Label^  label2;
+
+
+
 
 
 
@@ -97,8 +101,6 @@ namespace Directional_Sprites {
 		{
 		this->components = (gcnew System::ComponentModel::Container());
 		this->clock = (gcnew System::Windows::Forms::Timer(this->components));
-		this->label1 = (gcnew System::Windows::Forms::Label());
-		this->label2 = (gcnew System::Windows::Forms::Label());
 		this->SuspendLayout();
 		// 
 		// clock
@@ -107,32 +109,12 @@ namespace Directional_Sprites {
 		this->clock->Interval = 1;
 		this->clock->Tick += gcnew System::EventHandler(this, &DirectionalSprites::clock_Tick);
 		// 
-		// label1
-		// 
-		this->label1->AutoSize = true;
-		this->label1->Location = System::Drawing::Point(726, 70);
-		this->label1->Name = L"label1";
-		this->label1->Size = System::Drawing::Size(35, 13);
-		this->label1->TabIndex = 0;
-		this->label1->Text = L"label1";
-		// 
-		// label2
-		// 
-		this->label2->AutoSize = true;
-		this->label2->Location = System::Drawing::Point(767, 70);
-		this->label2->Name = L"label2";
-		this->label2->Size = System::Drawing::Size(35, 13);
-		this->label2->TabIndex = 1;
-		this->label2->Text = L"label2";
-		// 
 		// DirectionalSprites
 		// 
 		this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 		this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 		this->BackColor = System::Drawing::Color::White;
-		this->ClientSize = System::Drawing::Size(864, 441);
-		this->Controls->Add(this->label2);
-		this->Controls->Add(this->label1);
+		this->ClientSize = System::Drawing::Size(624, 442);
 		this->DoubleBuffered = true;
 		this->MaximizeBox = false;
 		this->MinimizeBox = false;
@@ -143,13 +125,14 @@ namespace Directional_Sprites {
 		this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &DirectionalSprites::DirectionalSprites_KeyUp);
 		this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &DirectionalSprites::DirectionalSprites_KeyDown);
 		this->ResumeLayout(false);
-		this->PerformLayout();
 
 			}
 #pragma endregion
 	
 
 		private: System::Void DirectionalSprites_Load(System::Object^  sender, System::EventArgs^  e) {
+					reader = gcnew CsvReader();
+
 					//=================================================
 					// Create canvas from form
 					//================================================= 
@@ -173,8 +156,8 @@ namespace Directional_Sprites {
 					//=================================================
 					// Create background
 					//=================================================
-					tileMap = gcnew TileMap(dbGraphics);
-					tileMap->generateTileMap();
+					tileMap = gcnew TileMap(dbGraphics, reader->getTileMap());
+					//tileMap->generateTileMap();
 					//background = Image::FromFile("ground.png");
 
 					viewport = gcnew Viewport(0, 0, V_COLS, V_ROWS, tileMap, dbGraphics);
@@ -281,90 +264,46 @@ namespace Directional_Sprites {
 						// Handle key up event
 						//=================================================
 						knight->setWalking(false);
-						//viewport->viewportMove(0, 0);
-						//tileMap->mapStop();
 					 }		
 		private: System::Void clock_Tick(System::Object^  sender, System::EventArgs^  e) {
 						
 						//=================================================
-						// Move and update player
+						// Move knight
 						//=================================================
-						//int newKnightXPos = knight->getXPos();
-						//int newKnightYPos = knight->getYPos();
+						knight->move(viewport->getViewportWorldX(), viewport->getViewportWorldY());
 
-						//int viewportKnightX = newKnightXPos - viewport->getViewportWorldX();
-						//int viewportKnightY = newKnightYPos - viewport->getViewportWorldY();
-
-						//
-
-						//int kXPos;
-						//int kYpos;
-
-						//switch(knight->getBearing())
-						//{
-						//	case NORTH:
-						//		kXPos = knight->getWidth() / 2;
-						//		kYpos = 10;
-						//		break;
-						//	case EAST:
-						//		kXPos = knight->getWidth()- 20;
-						//		kYpos = knight->getHeight() / 2;
-						//		break;
-						//	case SOUTH:
-						//		kXPos = knight->getWidth() / 2;
-						//		kYpos = knight->getHeight() - 10;
-						//		break;
-						//	case WEST:
-						//		kXPos = 20;
-						//		kYpos = knight->getHeight() / 2;
-						//		break;
-						//}
-						//
-						//viewportKnightX += kXPos;
-						//viewportKnightY += kYpos;
-						//
-
-						//if(tileMap->getMapValue(newKnightXPos + kXPos, newKnightYPos + kYpos) != 0)
-						//{
-						//	knight->setXPos(newKnightXPos);
-						//	knight->setYPos(newKnightYPos);
-						//}
-
-						//label1->Text = tileMap->getMapValue(newKnightXPos + kXPos, newKnightYPos + kYpos).ToString();//viewportKnightX.ToString();//knight->getXPos().ToString();//"xTile:" + (knight->getXPos() / T_SIZE).ToString();
-						//label2->Text = viewportKnightY.ToString();//"yTile:" + (knight->getYPos() / T_SIZE).ToString();
-						//
 						//=================================================
 						// Set viewports position on player
 						//=================================================
+						// Gets knights center
 						int knightX = knight->getXPos() + (knight->getWidth() / 2);
 						int knightY = knight->getYPos() + (knight->getHeight() / 2);
 
-						knight->move(viewport->getViewportWorldX(), viewport->getViewportWorldY());
-
+						viewport->moveRelativeToPlayer(knightX, knightY);						
+																		
+						//=================================================
+						// Updates sprites animation
+						//=================================================
 						spriteList->update();
 
-						viewport->moveRelativeToPlayer(knightX, knightY);
 						
+						//=================================================
+						// NPC AI
+						//=================================================
 						for(int c = 0; c < chickens->Length; c++)
 							chickens[c]->wander();
 
 						//=================================================
 						// Draw viewport to canvas 
 						//=================================================
+						
 						viewport->viewportDraw(knightX, knightY);
 
 						//=================================================
-						// Draw visible NPC  to canvas
+						// Draw sprites to canvas
 						//=================================================
 						spriteList->renderSprites(viewport->getViewportWorldX(), viewport->getViewportWorldY());
-						
-						//=================================================
-						// Draw player to canvas 
-						//=================================================
-						/*Brush^ brush = gcnew SolidBrush(Color::Fuchsia);
-						Rectangle rect = Rectangle(viewportKnightX, viewportKnightY, 2, 2);
-						dbGraphics->FillRectangle(brush, rect);*/
-
+												
 						//=================================================
 						// Make buffer visible 
 						//=================================================

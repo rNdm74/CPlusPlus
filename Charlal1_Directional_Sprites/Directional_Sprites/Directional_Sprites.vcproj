@@ -204,6 +204,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CsvReader.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Directional_Sprites.cpp"
 				>
 			</File>
@@ -259,6 +263,10 @@
 			>
 			<File
 				RelativePath=".\Chicken.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CsvReader.h"
 				>
 			</File>
 			<File
