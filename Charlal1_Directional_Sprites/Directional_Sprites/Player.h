@@ -11,6 +11,7 @@ public:
 		   int nFrames, Random^ startRgen, Point startPos, 
 		   Viewport^ startViewPort);
 
+	bool collision(Rectangle r);
 	virtual void move(int viewportWorldX, int viewportWorldY) override;
 	virtual void canSpriteMove(int viewportWorldX, int viewportWorldY) override;
 };

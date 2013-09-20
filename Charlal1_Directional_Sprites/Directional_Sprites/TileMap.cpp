@@ -22,7 +22,7 @@ void TileMap::generateTileMap()
 void TileMap::drawTileMap()
 	{
 		//===================================================================
-		// Draw tile bitmap to canvas
+		// Draw tile bitmap to canvas //(REDUNDANT HANDLED BY THE VIEWPORT)
 		//===================================================================
 		for(int col = 0; col < N_COLS; col++)
 		{
@@ -50,7 +50,8 @@ int TileMap::getMapValue(int col, int row)
 	{
 		//===================================================================
 		// Return bitmap of a indexed tile
-		//===================================================================
-		
-		return tileMap[row, col];
+		// the row and col are reversed because of the way
+		// the tile map is read into the game
+		//===================================================================		
+		return tileMap[row, col]; 
 	}

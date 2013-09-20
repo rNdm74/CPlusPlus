@@ -20,5 +20,10 @@ ref class TileList
 
 		ETileType getTileType(int index)		{ return tiles[index]->getTileType(); }
 
+		bool isSolid(int index)					{ return tiles[index]->isSolid(); }
+		bool isBreakable(int index)				{ return tiles[index]->isBreakable(); }
+		bool isGrass(int index)					{ return tiles[index]->isGrass(); }
+		bool isCobblestone(int index)			{ return tiles[index]->isCobblestone(); }
+
 		void setTile(int index, Tile^ newTile)	{ tiles[index] = newTile;  }
 	};

@@ -79,6 +79,8 @@ ref class Sprite
 
 		int boundsX;
 		int boundsY;
+		array<Point>^ bounds;
+		Rectangle hitbox;
 
 		long frameTime;
 

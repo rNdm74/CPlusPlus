@@ -16,6 +16,8 @@ Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction,
 		walking = true;
 		alive = true;
 
+		bounds = gcnew array<Point>(20);
+
 		//=================================================
 		// Create spritesheets from file names
 		//=================================================
@@ -28,7 +30,8 @@ Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction,
 		}
 
 		//=================================================
-		// Init directional point array
+		// Init directional point array with values 
+		// that will move the sprite in specific directions
 		//=================================================
 		spriteDirection = gcnew array<Point>(MAX_DIRECTIONS);
 
@@ -39,23 +42,29 @@ Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction,
 
 		
 		//=================================================
-		// Get random bearing
+		// Initialize bearing with a random one
 		//=================================================
 		bearing = getRandomBearing();
 
 
 		//=================================================
-		// Set mag speed
+		// Set mag speed for the sprite
 		//=================================================
 		xMag = SPEED;
 		yMag = SPEED;
 
 
 		//=================================================
-		// Get frame to be drawn
+		// Picks a random frame to be drawn this creates a random
+		// look of all the sprites used in the game and that all 
+		// will not start with the same frame animation
 		//=================================================
 		currentFrame = rGen->Next(frames-1);// minus 1 to keep in bounds
 
+		//=================================================
+		// Gets the frame width and hight the sprites 
+		// frame being drawn to the screen
+		//=================================================
 		frameWidth = spriteSheets[bearing]->Width / frames;
 		frameHeight = spriteSheets[bearing]->Height;
 
@@ -89,13 +98,14 @@ EBearing Sprite::getRandomBearing()
 
 void Sprite::update()
 	{	
-		updateFrame();
+		// REDUNDANT
 	}
 
 void Sprite::draw()
 	{
 		//=================================================
 		// Draw sprites frame to the screen
+		// Its position is based on its worldX and worldY
 		//=================================================
 		canvas->DrawImage
 		(
@@ -121,7 +131,9 @@ void Sprite::draw(int newXPos, int newYPos)
 			GraphicsUnit::Pixel
 		);
 
-		canvas->DrawRectangle(gcnew Pen(Color::Fuchsia), Rectangle(boundsX, boundsY, 2, 2));
+		// Draws the hit box on top of the sprite  (for debugging)
+		//canvas->DrawRectangle(gcnew Pen(Color::Fuchsia), Rectangle(boundsX, boundsY, 2, 2));
+		canvas->DrawRectangle(gcnew Pen(Color::Fuchsia), hitbox);
 	}
 
 void Sprite::erase(Color eraseColor)
@@ -136,14 +148,13 @@ void Sprite::erase(Color eraseColor)
 
 void Sprite::move(int viewportWorldX, int viewportWorldY)
 	{
-		
+		// OVERRIDDEN FUNCTION		
 	}
 
 void Sprite::canSpriteMove(int viewportWorldX, int viewportWorldY)
-{
-}
-
-
+	{
+		// OVERRIDDEN FUNCTION
+	}
 
 bool Sprite::isBoundsCollision()// should return info
 	{
@@ -194,18 +205,22 @@ void Sprite::wrap()
 		switch(bearing)
 		{
 			case NORTH:
-				yPos = tileMap->getMapBounds().Height - frameWidth;				
+				// puts sprite on the south side on the screen
+				yPos = tileMap->getMapBounds().Height - frameWidth; 				
 			break;
 
 			case EAST:
-				xPos = 0;
+				// puts sprite on the west side of the screen
+				xPos = 0;  
 			break;
 
 			case SOUTH:
+				// puts sprite on the north side of the screen
 				yPos = 0;
 			break;
 
 			case WEST:
+				// puts sprite on the east side of the screen
 				xPos = tileMap->getMapBounds().Width - frameWidth;
 			break;
 		}
@@ -232,12 +247,12 @@ void Sprite::reverse()
 
 void Sprite::die()
 	{
-		alive = false;
+		// NOT IMPLIMENTED YET
 	}
 
 void Sprite::stop()
 	{
-		//walking = false;
+		// NOT IMPLIMENTED YET
 	}
 
 void Sprite::updateFrame()
@@ -246,30 +261,33 @@ void Sprite::updateFrame()
 		// Update sprites frame is not standing
 		//=================================================
 		
-		currentFrame %= frames; // does this work?  c = c%f;
+		currentFrame %= frames; // c = c%f;
 
 		frameRectangle = Rectangle(currentFrame * frameWidth, 0, frameWidth, frameHeight);
 
+		// this is to slow down the frame animation so that the sprites have a more realistic movement
 		bool changeFrame = frameTime > 2;
 
 		if(changeFrame && walking) 
 		{
-			frameTime = 0;
+			frameTime = 0; // resets frame time
 
-			currentFrame++;
+			currentFrame++; // move to sprites next frame
 		}
 
-		frameTime++;
+		frameTime++; // increase frame time
 	}
 
-void Sprite::setSpriteSheet() // multiple sheets?
-	{				
+void Sprite::setSpriteSheet() 
+	{		
+		// NOT IMPLIMENTED this will handle multiple spritesheets
 	}
 
 void Sprite::wander()
 	{
 		//=================================================
-		// Randomly change sprites bearing
+		// Depending on a specified probability 
+		// a random bearing is picked for the sprite
 		//=================================================
 		if(rGen->Next(WANDER_PROB) == 0) bearing = getRandomBearing();
 	}

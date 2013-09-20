@@ -42,6 +42,11 @@ ref class TileMap
 		int getMapValue(int col, int row);
 
 		ETileType getTileType(int row, int col)		{ return tiles->getTileType(tileMap[row, col]); }
+
+		bool isSolid(int row, int col)				{ return tiles->isSolid(tileMap[row, col]); }
+		bool isBreakable(int row, int col)			{ return tiles->isBreakable(tileMap[row, col]); }
+		bool isGrass(int row, int col)				{ return tiles->isGrass(tileMap[row, col]); }
+		bool isCobblestone(int row, int col)		{ return tiles->isCobblestone(tileMap[row, col]); }
 		
 		Bitmap^ getTileBitmap(int row, int col)		{ return tiles->getTileBitmap(tileMap[row, col]); }
 

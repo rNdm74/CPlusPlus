@@ -26,79 +26,119 @@ void Player::move(int viewportWorldX, int viewportWorldY)
 		}
 }
 
+bool Player::collision(Rectangle r)
+{
+	for(int x = r.X; x < r.X + r.Width; x++)
+	{
+		for(int y = r.Y; y < r.X + r.Height; y++)
+		{
+			int newTilePosY = y / T_SIZE;
+			int newTilePosX = x / T_SIZE;
+
+			if(tileMap->isSolid(newTilePosY, newTilePosX))
+				return true;
+		}
+	}
+
+	return false;
+}
+
 void Player::canSpriteMove(int viewportWorldX, int viewportWorldY)
 {	
 		// Copies current position to new variable
-		int newKnightXPos = xPos;
-		int newKnightYPos = yPos;
+		int newSpriteXPos = xPos;
+		int newSpriteYPos = yPos;
 
 		// Adds to the new variable this will see where the knight wants to move
-		newKnightXPos += xMag * spriteDirection[bearing].X;
-		newKnightYPos += yMag * spriteDirection[bearing].Y;
+		newSpriteXPos += xMag * spriteDirection[bearing].X;
+		newSpriteYPos += yMag * spriteDirection[bearing].Y;
 
 		// Brings new positon into the viewport area
-		int viewportKnightX = newKnightXPos - viewportWorldX;
-		int viewportKnightY = newKnightYPos - viewportWorldY;
+		int viewportSpriteX = newSpriteXPos - viewportWorldX;
+		int viewportSpriteY = newSpriteYPos - viewportWorldY;
 
 		//**************************************************
 		// Sets the detection point for the knight to tell what tile he is on
-		int knightXPos;
-		int knightYPos;
-
+		int spriteXPos;
+		int spriteYPos;
+		
+		// depending on the sprites bearing values are created 
+		// to position the hitbox on the sprite
+		// these values will create the box around the sprites feet
+		// hard coded at this stage will modifiy at a later date to be more generic
 		switch(bearing)
 		{
 			case NORTH:
-				knightXPos = frameWidth / 2; 
-				knightYPos = 60;
+				spriteXPos = frameWidth / 2; 
+				spriteYPos = 60;				
 				break;
 			case EAST:
-				knightXPos = frameWidth - 40;
-				knightYPos = frameHeight - 15;
+				spriteXPos = frameWidth - 40;
+				spriteYPos = frameHeight - 30;
 				break;
 			case SOUTH:
-				knightXPos = frameWidth / 2;
-				knightYPos = frameHeight - 15;
+				spriteXPos = 40;
+				spriteYPos = frameHeight - 15;
 				break;
 			case WEST:
-				knightXPos = 40;
-				knightYPos = frameHeight - 15;
+				spriteXPos = 40;
+				spriteYPos = frameHeight - 30;
 				break;
 		}
 		
 		// for drawing hit box to the canvas
-		viewportKnightX += knightXPos;
-		viewportKnightY += knightYPos;
-		boundsX = viewportKnightX;
-		boundsY = viewportKnightY;		
+		viewportSpriteX += 40;
+		viewportSpriteY += 60;
+
+		hitbox = Rectangle(viewportSpriteX, viewportSpriteY, 20,20);
+
+		//bool hit;
+		/*for(int x = 0; x < 20; x++)
+			bounds[x] = Point(viewportSpriteX + x, viewportSpriteY);*/
+
+			/*for(int y = 0; y < 10; y++)
+			{
+				bounds[x, y] = Point(viewportSpriteX + x, viewportSpriteY + y); 
+			}*/
+
+		/*for(int x = hitbox.X; x < hitbox.Right; x++)
+			for(int y = hitbox.Y; y < hitbox.Bottom; y++)
+			{
+				int newTilePosY = y / T_SIZE;
+				int newTilePosX = x / T_SIZE;
+
+				hit = (tileMap->isSolid(newTilePosY, newTilePosX));
+			}*/
+
+
+		/*boundsX = viewportSpriteX;
+		boundsY = viewportSpriteY;*/		
 		//**************************************************
 		
-		// current pixel plus half framewidth puts pixel in center of knight then devides to get tile position 
-		int newTilePosX = (newKnightXPos + knightXPos) / T_SIZE; 
-		int newTilePosY = (newKnightYPos + knightYPos) / T_SIZE;
+		// Current pixel plus half framewidth puts pixel in 
+		// center of knight then devides to get tile position 
+		//int newTilePosY = (newSpriteYPos + spriteYPos) / T_SIZE;
+		//int newTilePosX = (newSpriteXPos + spriteXPos) / T_SIZE;
 
-		int tile = tileMap->getMapValue(newTilePosX, newTilePosY);
+		// Gets the new tile value from the map (look ahead)
+		//int tileValue = tileMap->getMapValue(newTilePosX, newTilePosY);
 
-		if(tile == 0){};
-			//executeBoundsAction();
-
-		// If the tile is grass change movement speed to 1
-		if(tile == 1)
-		{
-			xMag = 1;
-			yMag = 1;
-		}
-
-		// If the tile is cobblestone change movement speed to 2
-		if(tile == 2)
-		{
-			xMag = 3;
-			yMag = 3;
-		}
-
-		// If the tile is not flowers apply new move position
-		if(tile != 0)
+		
+		//if(tileMap->isGrass(newTilePosY, newTilePosX)) // If the tile is grass change movement speed to 1
+		//{
+		//	xMag = 1;
+		//	yMag = 1;
+		//}
+		//
+		//if(tileMap->isCobblestone(newTilePosY, newTilePosX)) // If the tile is cobblestone change movement speed to 2
+		//{
+		//	xMag = 3;
+		//	yMag = 3;
+		//}		
+		
+		if(collision(hitbox)) // If the tile is not flowers apply new move position
 		{			
-			xPos = newKnightXPos;
-			yPos = newKnightYPos;
+			xPos = newSpriteXPos;
+			yPos = newSpriteYPos;
 		}
 }

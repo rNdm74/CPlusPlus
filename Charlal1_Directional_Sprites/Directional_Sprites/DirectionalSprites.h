@@ -145,6 +145,9 @@ namespace Directional_Sprites {
 	
 
 		private: System::Void DirectionalSprites_Load(System::Object^  sender, System::EventArgs^  e) {
+				    //=================================================
+					// Create the csv file reader
+					//=================================================
 					reader = gcnew CsvReader();
 
 					//=================================================
@@ -210,8 +213,7 @@ namespace Directional_Sprites {
 					//=================================================
 					// Create chickens
 					//=================================================
-					chickens = gcnew array<Chicken^>(50);
-				
+					chickens = gcnew array<Chicken^>(50);				
 
 					for(int c = 0; c < chickens->Length; c++)
 					{
@@ -234,11 +236,9 @@ namespace Directional_Sprites {
 						);
 					}
 
+					// Adds all game characters to the spritelist
 					for(int c = 0; c < chickens->Length; c++)
 						spriteList->add(chickens[c]);
-
-					//knight->setXPos();
-					//knight->setYPos();
 
 					spriteList->add(knight);
 				 }

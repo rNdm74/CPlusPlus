@@ -30,76 +30,59 @@ void Chicken::move(int viewportWorldX, int viewportWorldY)
 void Chicken::canSpriteMove(int viewportWorldX, int viewportWorldY)
 {	
 		// Copies current position to new variable
-		int newKnightXPos = xPos;
-		int newKnightYPos = yPos;
+		int newSpriteXPos = xPos;
+		int newSpriteYPos = yPos;
 
 		// Adds to the new variable this will see where the knight wants to move
-		newKnightXPos += xMag * spriteDirection[bearing].X;
-		newKnightYPos += yMag * spriteDirection[bearing].Y;
+		newSpriteXPos += xMag * spriteDirection[bearing].X;
+		newSpriteYPos += yMag * spriteDirection[bearing].Y;
 
 		// Brings new positon into the viewport area
-		int viewportKnightX = newKnightXPos - viewportWorldX;
-		int viewportKnightY = newKnightYPos - viewportWorldY;
+		int viewportSpriteX = newSpriteXPos - viewportWorldX;
+		int viewportSpriteY = newSpriteYPos - viewportWorldY;
 
 		//**************************************************
 		// Sets the detection point for the knight to tell what tile he is on
-		int knightXPos = frameWidth / 2;
-		int knightYPos = frameHeight / 2;
-
-		/*switch(bearing)
-		{
-			case NORTH:
-				knightXPos = frameWidth / 2; 
-				knightYPos = 50;
-				break;
-			case EAST:
-				knightXPos = frameWidth - 20;
-				knightYPos = frameHeight / 2;
-				break;
-			case SOUTH:
-				knightXPos = frameWidth / 2;
-				knightYPos = frameHeight - 10;
-				break;
-			case WEST:
-				knightXPos = 20;
-				knightYPos = frameHeight / 2;
-				break;
-		}*/
-		
+		// Centeres the hitbox on the sprite
+		int spriteXPos = frameWidth / 2;
+		int spriteYPos = frameHeight / 2;
+				
 		// for drawing hit box to the canvas
-		viewportKnightX += knightXPos;
-		viewportKnightY += knightYPos;
-		boundsX = viewportKnightX;
-		boundsY = viewportKnightY;		
+		viewportSpriteX += spriteXPos;
+		viewportSpriteY += spriteYPos;
+		boundsX = viewportSpriteX;
+		boundsY = viewportSpriteY;	
 		//**************************************************
 		
 		// current pixel plus half framewidth puts pixel in center of knight then devides to get tile position 
-		int newTilePosX = (newKnightXPos + knightXPos) / T_SIZE; 
-		int newTilePosY = (newKnightYPos + knightYPos) / T_SIZE;
+		int newTilePosX = (newSpriteXPos + spriteXPos) / T_SIZE; 
+		int newTilePosY = (newSpriteYPos + spriteYPos) / T_SIZE;
 
-		if(tileMap->getMapValue(newTilePosX, newTilePosY) == 0)
-			executeBoundsAction();
 
-		// If the tile is grass change movement speed to 1
-		if(tileMap->getMapValue(newTilePosX, newTilePosY) == 1)
+		// Gets the new tile value from the map (look ahead)
+		int tileValue = tileMap->getMapValue(newTilePosX, newTilePosY);		
+		
+		if(tileValue == SOLID)
+			executeBoundsAction();			
+
+		if(tileValue == GRASS) // If the tile is grass change movement speed to 1
 		{
 			xMag = 1;
 			yMag = 1;
 		}
-
-		// If the tile is cobblestone change movement speed to 2
-		if(tileMap->getMapValue(newTilePosX, newTilePosY) == 2)
+		
+		if(tileValue == COBBLESTONE) // If the tile is cobblestone change movement speed to 2
 		{
-			xMag = 2;
-			yMag = 2;
+			xMag = 3;
+			yMag = 3;
+		}		
+		
+		if(tileValue != SOLID) // If the tile is not flowers apply new move position
+		{			
+			xPos = newSpriteXPos;
+			yPos = newSpriteYPos;
 		}
 
-		// If the tile is not flowers apply new move position
-		if(tileMap->getMapValue(newTilePosX, newTilePosY) != 0)
-		{
-			xPos = newKnightXPos;
-			yPos = newKnightYPos;
-		}
 }
 
 

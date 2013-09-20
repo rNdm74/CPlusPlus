@@ -19,9 +19,22 @@ ref class Tile
 private:
 	Bitmap^ tileBitmap;
 	ETileType tileType;
+
+	bool solid;
+	bool breakable;
+	bool grass;
+	bool cobblestone;
+	
+
 public:
 	Tile(Bitmap^ startTileBitmap, ETileType startTileType);
 
 	ETileType getTileType() { return tileType; }
+
+	bool isSolid()			{ return solid; }
+	bool isBreakable()		{ return breakable; }
+	bool isGrass()			{ return grass; }
+	bool isCobblestone()	{ return cobblestone; }
+
 	Bitmap^ getTileBitmap() { return tileBitmap; }
 };
