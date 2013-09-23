@@ -126,7 +126,7 @@ namespace Directional_Sprites {
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::White;
-			this->ClientSize = System::Drawing::Size(784, 561);
+			this->ClientSize = System::Drawing::Size(1008, 729);
 			this->Controls->Add(this->label1);
 			this->DoubleBuffered = true;
 			this->MaximizeBox = false;
@@ -178,7 +178,7 @@ namespace Directional_Sprites {
 					//=================================================
 					// Create viewport
 					//=================================================
-					viewport = gcnew Viewport(0, 0, 26, 19, tileMap, dbGraphics);
+					viewport = gcnew Viewport(0, 0, V_COLS, V_ROWS, tileMap, dbGraphics);
 
 					//=================================================
 					// Create spritelist
@@ -213,7 +213,7 @@ namespace Directional_Sprites {
 					//=================================================
 					// Create chickens
 					//=================================================
-					chickens = gcnew array<Chicken^>(50);				
+					chickens = gcnew array<Chicken^>(10);				
 
 					for(int c = 0; c < chickens->Length; c++)
 					{

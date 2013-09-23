@@ -143,13 +143,16 @@ Sprite^ SpriteList::checkCollisions(Sprite^ sprite)
 
 	while(spriteWalker != nullptr)
 	{
-		bool hit = spriteWalker->collided(sprite);
-
-		if(hit)	
+		if(spriteWalker != sprite)
 		{
-			/*spriteWalker->setAction(DIE);
-			spriteWalker->executeBoundsAction();*/
-		}
+			bool hit = spriteWalker->collided(sprite);
+
+			if(hit)	
+			{
+				//spriteWalker->setAction(DIE);
+				spriteWalker->executeBoundsAction();
+			}
+		}		
 
 		// Move to next node
 		spriteWalker = spriteWalker->Next;

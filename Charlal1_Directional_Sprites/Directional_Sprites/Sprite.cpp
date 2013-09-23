@@ -103,33 +103,23 @@ void Sprite::update()
 
 bool Sprite::collided(Sprite^ sprite)
 	{
-		//bool collided = true;
+		bool collided = true;
 
-		int s1XPos = xPos - viewPort->getViewportWorldX();
-		int s1YPos = yPos - viewPort->getViewportWorldY();
+		int s1XPos = (xPos - viewPort->getViewportWorldX()) + (frameWidth / 3);
+		int s1YPos = (yPos - viewPort->getViewportWorldY())  + (frameHeight / 3);
 
-		int s2XPos = sprite->getXPos() - viewPort->getViewportWorldX();
-		int s2YPos = sprite->getYPos() - viewPort->getViewportWorldY();
+		int s2XPos = (sprite->getXPos() - viewPort->getViewportWorldX())+(sprite->getWidth() / 3);
+		int s2YPos = (sprite->getYPos() - viewPort->getViewportWorldY())+(sprite->getHeight() / 3);
 
-		Rectangle s1 = Rectangle(s1XPos, s1YPos, frameWidth, frameHeight);
-		Rectangle s2 = Rectangle(s2XPos, s2YPos, sprite->getWidth(), sprite->getHeight());
+		Rectangle s1 = Rectangle(s1XPos, s1YPos, frameWidth / 3, frameHeight / 3);
+		Rectangle s2 = Rectangle(s2XPos, s2YPos, sprite->getWidth() / 3 , sprite->getHeight() / 3);
 
-		/*if(s1.Bottom  < s2.Top)	 collided = false;
+		if(s1.Bottom  < s2.Top)	 collided = false;
 		if(s1.Top > s2.Bottom)	 collided = false;
 		if(s1.Right < s2.Left)	 collided = false;
-		if(s1.Left > s2.Right)	 collided = false;*/
+		if(s1.Left > s2.Right)	 collided = false;
 
-		if(s1XPos > 0 || s2XPos > 0 || s1YPos > 0 || s2YPos > 0)
-		{
-			if(s1.IntersectsWith(s2))
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}		
+		return collided;	
 	}
 
 void Sprite::draw()
@@ -166,15 +156,18 @@ void Sprite::draw(int newXPos, int newYPos)
 		}
 
 		// Draws the hit box on top of the sprite  (for debugging)
+		int s1XPos = (xPos - viewPort->getViewportWorldX()) + (frameWidth / 3);
+		int s1YPos = (yPos - viewPort->getViewportWorldY())  + (frameHeight / 3);
+
 		canvas->DrawRectangle
 		(
 			gcnew Pen(Color::Fuchsia), 
 			Rectangle
 			(
-				xPos - viewPort->getViewportWorldX(), 
-				yPos - viewPort->getViewportWorldY(), 
-				frameWidth, 
-				frameHeight
+				s1XPos, 
+				s1YPos, 
+				frameWidth / 3, 
+				frameHeight / 3
 			)
 		);
 		//canvas->DrawRectangle(gcnew Pen(Color::Fuchsia), hitbox);
@@ -293,6 +286,8 @@ void Sprite::die()
 	{
 		// NOT IMPLIMENTED YET
 		alive = false;
+		xMag = 0;
+		yMag = 0;
 	}
 
 void Sprite::stop()
