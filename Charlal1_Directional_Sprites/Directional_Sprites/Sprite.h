@@ -103,7 +103,7 @@ ref class Sprite
 		void erase(Color eraseColor);
 
 		bool isBoundsCollision();
-		bool collided(Sprite^ otherSprite);
+		bool collided(Sprite^ sprite);
 		void executeBoundsAction();
 
 

@@ -26,7 +26,7 @@ int SpriteList::length()
 	return count;
 }
 
-Sprite^ SpriteList::get(int item)
+Sprite^ SpriteList::get(int index)
 {
 	Sprite^ spriteWalker = head;
 
@@ -34,7 +34,8 @@ Sprite^ SpriteList::get(int item)
 
 	while(spriteWalker != nullptr)
 	{
-		if(item == count) return spriteWalker;
+		if(index == count) 
+			return spriteWalker;
 
 		count++;
 		
@@ -104,7 +105,9 @@ void SpriteList::update()
 	Sprite^ spriteWalker = head;		
 
 	while(spriteWalker != nullptr)
-	{				
+	{	
+		checkCollisions(spriteWalker);	
+
 		spriteWalker->move(viewport->getViewportWorldX(), viewport->getViewportWorldY());
 		spriteWalker->updateFrame();
 
@@ -132,6 +135,27 @@ void SpriteList::renderSprites(int vX, int vY)
 		// Move to next node
 		spriteWalker = spriteWalker->Next;
 	}
+}
+
+Sprite^ SpriteList::checkCollisions(Sprite^ sprite)
+{
+	Sprite^ spriteWalker = head;		
+
+	while(spriteWalker != nullptr)
+	{
+		bool hit = spriteWalker->collided(sprite);
+
+		if(hit)	
+		{
+			/*spriteWalker->setAction(DIE);
+			spriteWalker->executeBoundsAction();*/
+		}
+
+		// Move to next node
+		spriteWalker = spriteWalker->Next;
+	}
+
+	return nullptr;
 }
 
 void SpriteList::draw()

@@ -87,56 +87,33 @@ void Player::canSpriteMove(int viewportWorldX, int viewportWorldY)
 		}
 		
 		// for drawing hit box to the canvas
-		viewportSpriteX += 40;
-		viewportSpriteY += 60;
-
-		hitbox = Rectangle(viewportSpriteX, viewportSpriteY, 20,20);
-
-		//bool hit;
-		/*for(int x = 0; x < 20; x++)
-			bounds[x] = Point(viewportSpriteX + x, viewportSpriteY);*/
-
-			/*for(int y = 0; y < 10; y++)
-			{
-				bounds[x, y] = Point(viewportSpriteX + x, viewportSpriteY + y); 
-			}*/
-
-		/*for(int x = hitbox.X; x < hitbox.Right; x++)
-			for(int y = hitbox.Y; y < hitbox.Bottom; y++)
-			{
-				int newTilePosY = y / T_SIZE;
-				int newTilePosX = x / T_SIZE;
-
-				hit = (tileMap->isSolid(newTilePosY, newTilePosX));
-			}*/
-
-
-		/*boundsX = viewportSpriteX;
-		boundsY = viewportSpriteY;*/		
+		viewportSpriteX += spriteXPos;
+		viewportSpriteY += spriteYPos;		
+		boundsX = viewportSpriteX;
+		boundsY = viewportSpriteY;		
 		//**************************************************
 		
 		// Current pixel plus half framewidth puts pixel in 
 		// center of knight then devides to get tile position 
-		//int newTilePosY = (newSpriteYPos + spriteYPos) / T_SIZE;
-		//int newTilePosX = (newSpriteXPos + spriteXPos) / T_SIZE;
+		int newTilePosY = (newSpriteYPos + spriteYPos) / T_SIZE;
+		int newTilePosX = (newSpriteXPos + spriteXPos) / T_SIZE;
 
 		// Gets the new tile value from the map (look ahead)
-		//int tileValue = tileMap->getMapValue(newTilePosX, newTilePosY);
-
+		int tileValue = tileMap->getMapValue(newTilePosX, newTilePosY);
 		
-		//if(tileMap->isGrass(newTilePosY, newTilePosX)) // If the tile is grass change movement speed to 1
-		//{
-		//	xMag = 1;
-		//	yMag = 1;
-		//}
-		//
-		//if(tileMap->isCobblestone(newTilePosY, newTilePosX)) // If the tile is cobblestone change movement speed to 2
-		//{
-		//	xMag = 3;
-		//	yMag = 3;
-		//}		
+		if(tileMap->isGrass(newTilePosY, newTilePosX)) // If the tile is grass change movement speed to 1
+		{
+			xMag = 1;
+			yMag = 1;
+		}
 		
-		if(collision(hitbox)) // If the tile is not flowers apply new move position
+		if(tileMap->isCobblestone(newTilePosY, newTilePosX)) // If the tile is cobblestone change movement speed to 2
+		{
+			xMag = 3;
+			yMag = 3;
+		}		
+		
+		if(!tileMap->isSolid(newTilePosY, newTilePosX)) // If the tile is not flowers apply new move position
 		{			
 			xPos = newSpriteXPos;
 			yPos = newSpriteYPos;
