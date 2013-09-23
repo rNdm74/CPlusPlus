@@ -178,7 +178,7 @@ namespace Directional_Sprites {
 					//=================================================
 					// Create viewport
 					//=================================================
-					viewport = gcnew Viewport(0, 0, ClientRectangle.Width / T_SIZE, ClientRectangle.Height / T_SIZE, tileMap, dbGraphics);
+					viewport = gcnew Viewport(0, 0, 26, 19, tileMap, dbGraphics);
 
 					//=================================================
 					// Create spritelist

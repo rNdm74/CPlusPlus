@@ -17,8 +17,6 @@ using namespace System::Drawing;
 #define HALF 2
 #define WANDER_PROB 25
 #define SPEED 2
-#define V_COLS 21
-#define V_ROWS 15
 
 
 //=================================================
@@ -79,7 +77,9 @@ ref class Sprite
 
 		int boundsX;
 		int boundsY;
+
 		array<Point>^ bounds;
+
 		Rectangle hitbox;
 
 		long frameTime;
@@ -102,8 +102,11 @@ ref class Sprite
 		void setSpriteSheet();
 		void erase(Color eraseColor);
 
-		bool isBoundsCollision();		
+		bool isBoundsCollision();
+		bool collided(Sprite^ otherSprite);
 		void executeBoundsAction();
+
+
 		
 
 		void wrap();

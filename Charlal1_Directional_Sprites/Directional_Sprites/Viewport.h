@@ -2,8 +2,8 @@
 
 #include "TileMap.h"
 
-#define V_COLS 21
-#define V_ROWS 15
+#define V_COLS 26
+#define V_ROWS 19
 #define OFFSET 100
  
 ref class Viewport

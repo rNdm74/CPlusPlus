@@ -101,6 +101,16 @@ void Sprite::update()
 		// REDUNDANT
 	}
 
+bool Sprite::collided(Sprite^ otherSprite)
+	{
+		if(xPos + frameWidth  < otherSprite->getXPos())	 return true;
+		if(xPos + frameWidth  < otherSprite->getXPos())	 return true;
+		if(xPos + frameWidth  < otherSprite->getXPos())	 return true;
+		if(xPos + frameWidth  < otherSprite->getXPos())	 return true;
+
+		return nullptr;
+	}
+
 void Sprite::draw()
 	{
 		//=================================================
