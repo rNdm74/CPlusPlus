@@ -41,7 +41,7 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 		//=================================================
 		// Create viewport
 		//=================================================
-		viewport = gcnew Viewport(0, 0, V_COLS, V_ROWS, tileMap, dbGraphics);
+		viewport = gcnew Viewport(0, 0, N_COLS, N_ROWS, tileMap, dbGraphics);
 
 		//=================================================
 		// Create spritelist
@@ -50,28 +50,30 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 
 		Rectangle mapRect = tileMap->getMapBounds();
 
+		background = Image::FromFile("Images/bg.png");
+
 		//=================================================
 		// Create Player
 		//=================================================
-		/*knight = gcnew Player
+		knight = gcnew Player
 		(
 			tileMap,
 			WRAP,
 			dbGraphics,
 			gcnew array<String^>
 			{
-				"Knight Walk North 8.bmp",
-				"Knight Walk East 8.bmp",							
-				"Knight Walk South 8.bmp",
-				"Knight Walk West 8.bmp"
+				"p1_front.png",
+				"p1_front.png",							
+				"p1_front.png",
+				"p1_front.png"
 			},
-			KNIGHT_FRAMES,
+			1,
 			rGen,
-			Point(mapRect.Width / 2 - 50, mapRect.Height / 2 - 50),
+			Point(10, 610),
 			viewport
 		);
 		
-		knight->setWalking(false);*/
+		knight->setWalking(false);
 	
 		//=================================================
 		// Create NPCs
@@ -101,9 +103,41 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 
 		// Adds all game characters to the spritelist
 		for(int c = 0; c < chickens->Length; c++)
-			spriteList->add(chickens[c]);
+			spriteList->add(chickens[c]);*/
 
-		spriteList->add(knight);*/
+		spriteList->add(knight);
+	}
+
+void GameManager::keyDown(KeyEventArgs^  e)
+	{
+		 if(e->KeyCode==Keys::Up ||e->KeyCode==Keys::Down || e->KeyCode==Keys::Left || e->KeyCode==Keys::Right)
+			 knight->setWalking(true);
+
+
+		 if(e->KeyCode==Keys::Up)
+		 {
+			knight->setBearing(NORTH);
+		 }
+
+		 if(e->KeyCode==Keys::Down)
+		 {
+			knight->setBearing(SOUTH);
+		 }
+
+		 if(e->KeyCode==Keys::Right)
+		 {
+			knight->setBearing(EAST);
+		 }
+
+		 if(e->KeyCode==Keys::Left)
+		 {
+			 knight->setBearing(WEST);
+		 }
+	}
+
+void GameManager::keyUp(KeyEventArgs^  e)
+	{
+		knight->setWalking(false);
 	}
 
 void GameManager::updateGame()
@@ -111,14 +145,20 @@ void GameManager::updateGame()
 		//=================================================
 		// Move Player
 		//=================================================
+		knight->move(viewport->getViewportWorldX(), viewport->getViewportWorldY());
 
 		//=================================================
 		// Set Viewport Position on Player
 		//=================================================
+		int knightX = knight->getXPos() + (knight->getWidth() / 2);
+		int knightY = knight->getYPos() + (knight->getHeight() / 2);
+
+		viewport->moveRelativeToPlayer(knightX, knightY);
 		
 		//=================================================
 		// Updates Sprites Animation
 		//=================================================
+		spriteList->update();
 
 		//=================================================
 		// NPC AI
@@ -130,14 +170,17 @@ void GameManager::drawGame()
 		//=================================================
 		// Draw Background to Canvas 
 		//=================================================
+		dbGraphics->DrawImageUnscaledAndClipped(background, clientRectangle);
 
 		//=================================================
 		// Draw Viewport to Canvas 
 		//=================================================
+		viewport->viewportDraw(0, 0);
 
 		//=================================================
 		// Draw Sprites to Canvas
 		//=================================================
+		spriteList->renderSprites(viewport->getViewportWorldX(), viewport->getViewportWorldY());
 
 		//=================================================
 		// Make Buffer Visible 

@@ -5,5 +5,12 @@ ref class Player :
 public Sprite
 	{
 	public:
-		Player(void);
+		Player(TileMap^ startTileMap, EBoundsAction startAction, 
+			   Graphics^ startCanvas, array<String^>^ filenames, 
+			   int nFrames, Random^ startRgen, Point startPos, 
+			   Viewport^ startViewPort);
+
+		bool collision(Rectangle r);
+		virtual void move(int viewportWorldX, int viewportWorldY) override;
+		virtual void canSpriteMove(int viewportWorldX, int viewportWorldY) override;
 	};

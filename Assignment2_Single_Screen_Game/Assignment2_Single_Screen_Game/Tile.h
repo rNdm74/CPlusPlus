@@ -10,8 +10,7 @@ using namespace System::Drawing;
 public enum ETileType
 	{
 		SOLID = 0,
-		GRASS = 1,
-		COBBLESTONE = 2
+		LADDER = 1
 	};
 
 ref class Tile
@@ -21,9 +20,7 @@ private:
 	ETileType tileType;
 
 	bool solid;
-	bool breakable;
-	bool grass;
-	bool cobblestone;
+	bool climb;
 	
 
 public:
@@ -32,9 +29,7 @@ public:
 	ETileType getTileType() { return tileType; }
 
 	bool isSolid()			{ return solid; }
-	bool isBreakable()		{ return breakable; }
-	bool isGrass()			{ return grass; }
-	bool isCobblestone()	{ return cobblestone; }
+	bool isClimbable()		{ return climb; }
 
 	Bitmap^ getTileBitmap() { return tileBitmap; }
 };

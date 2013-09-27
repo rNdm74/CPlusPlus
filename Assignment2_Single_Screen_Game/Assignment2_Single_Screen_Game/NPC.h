@@ -5,5 +5,8 @@ ref class NPC :
 public Sprite
 	{
 	public:
-		NPC(void);
+		NPC(TileMap^ startTileMap, EBoundsAction startAction, 
+			   Graphics^ startCanvas, array<String^>^ filenames, 
+			   int nFrames, Random^ startRGen, Point startPos, 
+			   Viewport^ startViewPort);
 	};

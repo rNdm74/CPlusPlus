@@ -2,20 +2,20 @@
 #include "TileList.h"
 
 TileList::TileList()
-	{		
-		Bitmap^ flowerTile = gcnew Bitmap("Flower Tile 32.bmp");
-		Bitmap^ grassTile =  gcnew Bitmap("Dry Grass Tile 32.bmp");
-		Bitmap^ cobblestoneTile = gcnew Bitmap("Cobblestones Tile 32.bmp");		
+	{
+		tileBitmaps = gcnew array<Bitmap^>(7);
 
-		//===================================================================
-		// Populate array with tiles
-		//===================================================================
-		tiles = gcnew array<Tile^>
-		{			
-			gcnew Tile(flowerTile, SOLID),
-			gcnew Tile(grassTile, GRASS),
-			gcnew Tile(cobblestoneTile, COBBLESTONE)
-		};
+		for(int i = 0; i < tileBitmaps->Length; i++)
+		{
+			String^ file = "Images/" + i + ".png";
+			tileBitmaps[i] = gcnew Bitmap(file);
+			tileBitmaps[i]->MakeTransparent(Color::White);
+		}
+
+		tiles = gcnew array<Tile^>(tileBitmaps->Length);
+
+		for(int i = 0; i < tiles->Length; i++)
+			tiles[i] = gcnew Tile(tileBitmaps[i], SOLID);		
 	}
 
 Bitmap^ TileList::getTileBitmap(int index)

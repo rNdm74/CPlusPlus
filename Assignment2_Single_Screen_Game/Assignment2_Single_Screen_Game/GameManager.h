@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Player.h"
 #include "Sprite.h"
 #include "SpriteList.h"
 #include "TileMap.h"
@@ -41,11 +42,13 @@ ref class GameManager
 
 		Rectangle clientRectangle;
 
+		Player^ knight;
+
 	public:
 		GameManager(Graphics^ startCanvas, Rectangle clientRectangle);
 
-		void keyDown();
-		void keyUp();
+		void keyDown(KeyEventArgs^  e);
+		void keyUp(KeyEventArgs^  e);
 		void updateGame();
 		void drawGame();
 

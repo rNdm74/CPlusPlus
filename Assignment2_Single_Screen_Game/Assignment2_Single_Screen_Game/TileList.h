@@ -11,6 +11,7 @@ using namespace System::Drawing;
 ref class TileList
 	{
 	private:
+		array<Bitmap^>^ tileBitmaps;
 		array<Tile^>^ tiles;
 
 	public:
@@ -21,9 +22,7 @@ ref class TileList
 		ETileType getTileType(int index)		{ return tiles[index]->getTileType(); }
 
 		bool isSolid(int index)					{ return tiles[index]->isSolid(); }
-		bool isBreakable(int index)				{ return tiles[index]->isBreakable(); }
-		bool isGrass(int index)					{ return tiles[index]->isGrass(); }
-		bool isCobblestone(int index)			{ return tiles[index]->isCobblestone(); }
+		bool isClimbable(int index)				{ return tiles[index]->isClimbable(); }
 
 		void setTile(int index, Tile^ newTile)	{ tiles[index] = newTile;  }
 	};

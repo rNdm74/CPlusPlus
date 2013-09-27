@@ -11,11 +11,8 @@ Tile::Tile(Bitmap^ startTileBitmap, ETileType startTileType)
 		case SOLID:
 			solid = true;
 			break;
-		case GRASS:
-			grass = true;
-			break;
-		case COBBLESTONE:
-			cobblestone = true;
+		case LADDER:
+			climb = true;
 			break;
 	}
 }

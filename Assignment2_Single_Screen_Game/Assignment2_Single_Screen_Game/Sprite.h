@@ -16,7 +16,7 @@ using namespace System::Drawing;
 #define MAX_DIRECTIONS 4
 #define HALF 2
 #define WANDER_PROB 25
-#define SPEED 2
+#define SPEED 4
 
 
 //=================================================

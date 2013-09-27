@@ -60,28 +60,30 @@ namespace Assignment2_Single_Screen_Game {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-		this->components = (gcnew System::ComponentModel::Container());
-		this->clock = (gcnew System::Windows::Forms::Timer(this->components));
-		this->SuspendLayout();
-		// 
-		// clock
-		// 
-		this->clock->Enabled = true;
-		this->clock->Interval = 1;
-		this->clock->Tick += gcnew System::EventHandler(this, &FranticAlien::clock_Tick);
-		// 
-		// FranticAlien
-		// 
-		this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
-		this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-		this->BackColor = System::Drawing::Color::Black;
-		this->ClientSize = System::Drawing::Size(1008, 730);
-		this->Name = L"FranticAlien";
-		this->Text = L"Frantic Alien";
-		this->Load += gcnew System::EventHandler(this, &FranticAlien::FranticAlien_Load);
-		this->ResumeLayout(false);
+			this->components = (gcnew System::ComponentModel::Container());
+			this->clock = (gcnew System::Windows::Forms::Timer(this->components));
+			this->SuspendLayout();
+			// 
+			// clock
+			// 
+			this->clock->Enabled = true;
+			this->clock->Interval = 1;
+			this->clock->Tick += gcnew System::EventHandler(this, &FranticAlien::clock_Tick);
+			// 
+			// FranticAlien
+			// 
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->BackColor = System::Drawing::Color::Black;
+			this->ClientSize = System::Drawing::Size(1008, 730);
+			this->Name = L"FranticAlien";
+			this->Text = L"Frantic Alien";
+			this->Load += gcnew System::EventHandler(this, &FranticAlien::FranticAlien_Load);
+			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &FranticAlien::FranticAlien_KeyUp);
+			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &FranticAlien::FranticAlien_KeyDown);
+			this->ResumeLayout(false);
 
-			}
+		}
 #pragma endregion
 	private: System::Void clock_Tick(System::Object^  sender, System::EventArgs^  e) {
 					gManager->updateGame();
@@ -90,6 +92,13 @@ namespace Assignment2_Single_Screen_Game {
 	private: System::Void FranticAlien_Load(System::Object^  sender, System::EventArgs^  e) {
 					gManager = gcnew GameManager(CreateGraphics(), ClientRectangle);					
 				 }
-		};
+	private: System::Void FranticAlien_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+				 gManager->keyDown(e);
+			 }
+
+	private: System::Void FranticAlien_KeyUp(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+				 gManager->keyUp(e);
+			 }
+	};
 }
 

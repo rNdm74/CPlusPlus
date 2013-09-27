@@ -8,10 +8,7 @@ using namespace System::Windows::Forms;
 using namespace System::Data;
 using namespace System::Drawing;
 
-#define N_COLS 60	// X Tiles
-#define N_ROWS 30 	// Y tiles
-#define N_TILES 3	// Tiles array size
-#define T_SIZE 32	// Tile bitmap size
+
 
 ref class TileMap
 	{
@@ -44,9 +41,7 @@ ref class TileMap
 		ETileType getTileType(int row, int col)		{ return tiles->getTileType(tileMap[row, col]); }
 
 		bool isSolid(int row, int col)				{ return tiles->isSolid(tileMap[row, col]); }
-		bool isBreakable(int row, int col)			{ return tiles->isBreakable(tileMap[row, col]); }
-		bool isGrass(int row, int col)				{ return tiles->isGrass(tileMap[row, col]); }
-		bool isCobblestone(int row, int col)		{ return tiles->isCobblestone(tileMap[row, col]); }
+		bool isClimbable(int row, int col)			{ return tiles->isClimbable(tileMap[row, col]); }
 		
 		Bitmap^ getTileBitmap(int row, int col)		{ return tiles->getTileBitmap(tileMap[row, col]); }
 

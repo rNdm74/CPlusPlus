@@ -13,13 +13,16 @@ CSVReader::CSVReader()
 			// the reader will grab a line from the file
 			String^ line = reader->ReadLine();
 
-			// populates the items array with split results from the csv file
-			items = line->Split(',');
-
-			// populates tileMaps columns with each value from the items array
-			for (int col = 0; col < N_COLS; col++)
+			if(line != "")
 			{
-				tileMap[row, col] = (int::Parse(items[col])) - 1; // minus 1 to make map zero based
+				// populates the items array with split results from the csv file
+				items = line->Split(',');
+
+				// populates tileMaps columns with each value from the items array
+				for (int col = 0; col < N_COLS; col++)
+				{
+					tileMap[row, col] = (int::Parse(items[col])); // minus 1 to make map zero based
+				}
 			}
 		}		
 	}

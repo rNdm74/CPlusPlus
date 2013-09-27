@@ -8,9 +8,6 @@
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-#define N_COLS 60	// X Tiles
-#define N_ROWS 30 	// Y tiles
-
 ref class CSVReader
 	{
 	private:

@@ -306,7 +306,7 @@ void Sprite::updateFrame()
 		frameRectangle = Rectangle(currentFrame * frameWidth, 0, frameWidth, frameHeight);
 
 		// this is to slow down the frame animation so that the sprites have a more realistic movement
-		bool changeFrame = frameTime > 2;
+		bool changeFrame = frameTime > 1;
 
 		if(changeFrame && walking) 
 		{
