@@ -16,7 +16,7 @@ using namespace System::Drawing;
 #define MAX_DIRECTIONS 4
 #define HALF 2
 #define WANDER_PROB 25
-#define SPEED 4
+#define SPEED 5
 
 
 //=================================================
@@ -47,6 +47,8 @@ ref class Sprite
 		//=================================================
 		array<Bitmap^>^ spriteSheets;
 		array<Point>^ spriteDirection;
+		array<int, 2>^ sheetDataEast;
+		array<int, 2>^ sheetDataWest;
 
 		EBoundsAction action;
 		EBearing bearing;		
@@ -79,6 +81,7 @@ ref class Sprite
 		int boundsY;
 
 		array<Point>^ bounds;
+		array<Point>^ boundPoints;
 
 		Rectangle hitbox;
 

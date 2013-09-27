@@ -3,6 +3,17 @@
 
 TileList::TileList()
 	{
+		tileType = gcnew array<ETileType>
+		{
+			WALKABLE,
+			SOLID,
+			SOLID,
+			SOLID,
+			SOLID,
+			LADDER,
+			LADDER
+		};
+
 		tileBitmaps = gcnew array<Bitmap^>(7);
 
 		for(int i = 0; i < tileBitmaps->Length; i++)
@@ -15,7 +26,7 @@ TileList::TileList()
 		tiles = gcnew array<Tile^>(tileBitmaps->Length);
 
 		for(int i = 0; i < tiles->Length; i++)
-			tiles[i] = gcnew Tile(tileBitmaps[i], SOLID);		
+			tiles[i] = gcnew Tile(tileBitmaps[i], tileType[i]);		
 	}
 
 Bitmap^ TileList::getTileBitmap(int index)

@@ -29,6 +29,36 @@ Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction,
 			spriteSheets[i]->MakeTransparent(spriteSheets[i]->GetPixel(0,0));			
 		}
 
+		sheetDataEast = gcnew array<int, 2>
+		{
+			{0, 0, 72, 97},
+			{73, 0, 72, 97},
+			{146, 0, 72, 97},
+			{0, 98, 72, 97},
+			{73, 98, 72, 97},
+			{146, 98, 72, 97},
+			{219, 0, 72, 97},
+			{292, 0, 72, 97},
+			{219, 98, 72, 97},
+			{365, 0, 72, 97},
+			{292, 98, 72, 97}
+		};
+
+		sheetDataWest = gcnew array<int, 2>
+		{
+			{1,0,65,92},
+			{66,0,70,92},
+			{136,0,71,92},
+			{208,0,71,91},
+			{281,0,66,93},
+			{347,0,66,93},
+			{347,93,66,94},
+			{281,93,66,94},
+			{209,92,70,93},
+			{142,93,65,92},
+			{66,94,71,92}
+		};
+
 		//=================================================
 		// Init directional point array with values 
 		// that will move the sprite in specific directions
@@ -44,7 +74,7 @@ Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction,
 		//=================================================
 		// Initialize bearing with a random one
 		//=================================================
-		bearing = getRandomBearing();
+		bearing = EAST;
 
 
 		//=================================================
@@ -65,8 +95,8 @@ Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction,
 		// Gets the frame width and hight the sprites 
 		// frame being drawn to the screen
 		//=================================================
-		frameWidth = spriteSheets[bearing]->Width / frames;
-		frameHeight = spriteSheets[bearing]->Height;
+		//frameWidth = spriteSheets[bearing]->Width / frames;
+		//frameHeight = spriteSheets[bearing]->Height;
 
 
 		//=================================================
@@ -74,6 +104,9 @@ Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction,
 		//=================================================
 		xPos = startPos.X;
 		yPos = startPos.Y;
+		
+		bounds = gcnew array<Point>(4);
+		boundPoints = gcnew array<Point>(4);
 	}
 
 EBearing Sprite::getRandomBearing()
@@ -145,29 +178,83 @@ void Sprite::draw(int newXPos, int newYPos)
 		//=================================================
 		if(alive)
 		{
+			Bitmap^ cloneBitmap;
+
+			
+
+			System::Drawing::Imaging::PixelFormat format = spriteSheets[bearing]->PixelFormat;
+			cloneBitmap = spriteSheets[bearing]->Clone(frameRectangle, format);
+
+			if(bearing == WEST)
+			{
+				cloneBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);				
+			}
+
 			canvas->DrawImage
+			(
+				cloneBitmap,
+				newXPos,
+				newYPos
+			);
+
+
+
+			/*canvas->DrawImage
 			(
 				spriteSheets[bearing], 
 				newXPos, 
 				newYPos, 
 				frameRectangle, 
 				GraphicsUnit::Pixel
-			);
+			);*/
 		}
 
 		// Draws the hit box on top of the sprite  (for debugging)
-		int s1XPos = (xPos - viewPort->getViewportWorldX()) + (frameWidth / 3);
-		int s1YPos = (yPos - viewPort->getViewportWorldY())  + (frameHeight / 3);
+		/*int s1XPos = (xPos - viewPort->getViewportWorldX()) + (frameWidth / 3);
+		int s1YPos = (yPos - viewPort->getViewportWorldY())  + (frameHeight / 3);*/
 
 		canvas->DrawRectangle
 		(
 			gcnew Pen(Color::Fuchsia), 
 			Rectangle
 			(
-				s1XPos, 
-				s1YPos, 
-				frameWidth / 3, 
-				frameHeight / 3
+				bounds[0].X, 
+				bounds[0].Y, 
+				1, 
+				1
+			)
+		);
+		canvas->DrawRectangle
+		(
+			gcnew Pen(Color::Fuchsia), 
+			Rectangle
+			(
+				bounds[1].X, 
+				bounds[1].Y, 
+				1, 
+				1
+			)
+		);
+		canvas->DrawRectangle
+		(
+			gcnew Pen(Color::Fuchsia), 
+			Rectangle
+			(
+				bounds[2].X, 
+				bounds[2].Y, 
+				1, 
+				1
+			)
+		);
+		canvas->DrawRectangle
+		(
+			gcnew Pen(Color::Fuchsia), 
+			Rectangle
+			(
+				bounds[3].X, 
+				bounds[3].Y, 
+				1, 
+				1
 			)
 		);
 		//canvas->DrawRectangle(gcnew Pen(Color::Fuchsia), hitbox);
@@ -300,13 +387,24 @@ void Sprite::updateFrame()
 		//=================================================
 		// Update sprites frame is not standing
 		//=================================================
-		
+				
 		currentFrame %= frames; // c = c%f;
 
-		frameRectangle = Rectangle(currentFrame * frameWidth, 0, frameWidth, frameHeight);
+		//frameRectangle = Rectangle(currentFrame * frameWidth, 0, frameWidth, frameHeight);
 
+		frameWidth = sheetDataEast[currentFrame, 2];
+		frameHeight = sheetDataEast[currentFrame, 3];
+		
+		frameRectangle = Rectangle
+		(
+			sheetDataEast[currentFrame, 0],
+			sheetDataEast[currentFrame, 1],
+			sheetDataEast[currentFrame, 2],
+			sheetDataEast[currentFrame, 3]
+		);
+		
 		// this is to slow down the frame animation so that the sprites have a more realistic movement
-		bool changeFrame = frameTime > 1;
+		bool changeFrame = frameTime > 2;
 
 		if(changeFrame && walking) 
 		{
@@ -316,6 +414,8 @@ void Sprite::updateFrame()
 		}
 
 		frameTime++; // increase frame time
+
+		
 	}
 
 void Sprite::setSpriteSheet() 

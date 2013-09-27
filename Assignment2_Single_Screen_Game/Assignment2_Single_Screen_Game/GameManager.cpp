@@ -41,12 +41,12 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 		//=================================================
 		// Create viewport
 		//=================================================
-		viewport = gcnew Viewport(0, 0, N_COLS, N_ROWS, tileMap, dbGraphics);
+		foreground = gcnew Viewport(0, 0, N_COLS, N_ROWS, tileMap, dbGraphics);
 
 		//=================================================
 		// Create spritelist
 		//=================================================
-		spriteList = gcnew SpriteList(viewport);
+		spriteList = gcnew SpriteList(foreground);
 
 		Rectangle mapRect = tileMap->getMapBounds();
 
@@ -62,15 +62,15 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			dbGraphics,
 			gcnew array<String^>
 			{
-				"p1_front.png",
-				"p1_front.png",							
-				"p1_front.png",
-				"p1_front.png"
+				"Images/p3_spritesheet.png",
+				"Images/p3_spritesheet.png",							
+				"Images/p3_spritesheet.png",
+				"Images/p3_spritesheet.png"
 			},
-			1,
+			11,
 			rGen,
-			Point(10, 610),
-			viewport
+			Point(10, 608),
+			foreground
 		);
 		
 		knight->setWalking(false);
@@ -112,26 +112,25 @@ void GameManager::keyDown(KeyEventArgs^  e)
 	{
 		 if(e->KeyCode==Keys::Up ||e->KeyCode==Keys::Down || e->KeyCode==Keys::Left || e->KeyCode==Keys::Right)
 			 knight->setWalking(true);
-
-
+		 
 		 if(e->KeyCode==Keys::Up)
 		 {
 			knight->setBearing(NORTH);
 		 }
-
+		 
 		 if(e->KeyCode==Keys::Down)
 		 {
-			knight->setBearing(SOUTH);
+			knight->setBearing(SOUTH);	
 		 }
-
+		 
 		 if(e->KeyCode==Keys::Right)
 		 {
-			knight->setBearing(EAST);
+			knight->setBearing(EAST);	
 		 }
-
+		 
 		 if(e->KeyCode==Keys::Left)
 		 {
-			 knight->setBearing(WEST);
+			knight->setBearing(WEST);	
 		 }
 	}
 
@@ -145,7 +144,7 @@ void GameManager::updateGame()
 		//=================================================
 		// Move Player
 		//=================================================
-		knight->move(viewport->getViewportWorldX(), viewport->getViewportWorldY());
+		//knight->move(foreground->getViewportWorldX(), foreground->getViewportWorldY());
 
 		//=================================================
 		// Set Viewport Position on Player
@@ -153,7 +152,7 @@ void GameManager::updateGame()
 		int knightX = knight->getXPos() + (knight->getWidth() / 2);
 		int knightY = knight->getYPos() + (knight->getHeight() / 2);
 
-		viewport->moveRelativeToPlayer(knightX, knightY);
+		foreground->moveRelativeToPlayer(knightX, knightY);
 		
 		//=================================================
 		// Updates Sprites Animation
@@ -175,12 +174,12 @@ void GameManager::drawGame()
 		//=================================================
 		// Draw Viewport to Canvas 
 		//=================================================
-		viewport->viewportDraw(0, 0);
+		foreground->viewportDraw(0, 0);
 
 		//=================================================
 		// Draw Sprites to Canvas
 		//=================================================
-		spriteList->renderSprites(viewport->getViewportWorldX(), viewport->getViewportWorldY());
+		spriteList->renderSprites(foreground->getViewportWorldX(), foreground->getViewportWorldY());
 
 		//=================================================
 		// Make Buffer Visible 

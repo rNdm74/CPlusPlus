@@ -10,7 +10,8 @@ using namespace System::Drawing;
 public enum ETileType
 	{
 		SOLID = 0,
-		LADDER = 1
+		LADDER = 1,
+		WALKABLE = 2
 	};
 
 ref class Tile

@@ -21,9 +21,9 @@ void Player::move(int viewportWorldX, int viewportWorldY)
 			executeBoundsAction();				
 
 		if(walking)
-		{
 			canSpriteMove(viewportWorldX, viewportWorldY);
-		}
+
+		
 }
 
 bool Player::collision(Rectangle r)
@@ -44,78 +44,69 @@ bool Player::collision(Rectangle r)
 }
 
 void Player::canSpriteMove(int viewportWorldX, int viewportWorldY)
-{	
-		// Copies current position to new variable
-		int newSpriteXPos = xPos;
-		int newSpriteYPos = yPos;
+{
+	int col = xPos / T_SIZE;
+	int row = yPos / T_SIZE;
 
-		// Adds to the new variable this will see where the knight wants to move
-		newSpriteXPos += xMag * spriteDirection[bearing].X;
-		newSpriteYPos += yMag * spriteDirection[bearing].Y;
+	ETileType tileType = tileMap->getTileType(row, col);
 
-		// Brings new positon into the viewport area
-		int viewportSpriteX = newSpriteXPos - viewportWorldX;
-		int viewportSpriteY = newSpriteYPos - viewportWorldY;
+	if(checkCanMove(bearing, viewportWorldX, viewportWorldY))
+	{		
+		yPos += yMag * spriteDirection[bearing].Y;
+		xPos += xMag * spriteDirection[bearing].X;
+	}	
+}
 
-		//**************************************************
-		// Sets the detection point for the knight to tell what tile he is on
-		int spriteXPos;
-		int spriteYPos;
-		
-		// depending on the sprites bearing values are created 
-		// to position the hitbox on the sprite
-		// these values will create the box around the sprites feet
-		// hard coded at this stage will modifiy at a later date to be more generic
-		switch(bearing)
-		{
-			case NORTH:
-				spriteXPos = frameWidth / 2; 
-				spriteYPos = 60;				
-				break;
-			case EAST:
-				spriteXPos = frameWidth - 40;
-				spriteYPos = frameHeight - 30;
-				break;
-			case SOUTH:
-				spriteXPos = 40;
-				spriteYPos = frameHeight - 15;
-				break;
-			case WEST:
-				spriteXPos = 40;
-				spriteYPos = frameHeight - 30;
-				break;
-		}
-		
-		// for drawing hit box to the canvas
-		viewportSpriteX += spriteXPos;
-		viewportSpriteY += spriteYPos;		
-		boundsX = viewportSpriteX;
-		boundsY = viewportSpriteY;		
-		//**************************************************
-		
-		// Current pixel plus half framewidth puts pixel in 
-		// center of knight then devides to get tile position 
-		int newTilePosY = (newSpriteYPos + spriteYPos) / T_SIZE;
-		int newTilePosX = (newSpriteXPos + spriteXPos) / T_SIZE;
+bool Player::checkCanMove(EBearing spriteBearing, int viewportWorldX, int viewportWorldY)
+{
+	// Copies current position to new variable
+	int newSpriteXPos = xPos;
+	int newSpriteYPos = yPos;
 
-		// Gets the new tile value from the map (look ahead)
-		int tileValue = tileMap->getMapValue(newTilePosX, newTilePosY);
-		
-		//if(tileMap->isGrass(newTilePosY, newTilePosX)) // If the tile is grass change movement speed to 1
-		//{
-		//	xMag = 1;
-		//	yMag = 1;
-		//}
-		//
-		//if(tileMap->isCobblestone(newTilePosY, newTilePosX)) // If the tile is cobblestone change movement speed to 2
-		//{
-		//	xMag = 3;
-		//	yMag = 3;
-		//}		
-		
-		if(true) // If the tile is not flowers apply new move position
-		{			
-			xPos = newSpriteXPos;
-			yPos = newSpriteYPos;
-		}
+	// Adds to the new variable this will see where the knight wants to move
+	newSpriteXPos += xMag * spriteDirection[spriteBearing].X;
+	newSpriteYPos += yMag * spriteDirection[spriteBearing].Y;
+
+	// Brings new positon into the viewport area
+	int viewportSpriteX = newSpriteXPos - viewportWorldX;
+	int viewportSpriteY = newSpriteYPos - viewportWorldY;
+
+	//**************************************************
+	// Sets the detection point for the knight to tell what tile he is on
+	int spriteXPos;
+	int spriteYPos;	
+
+	bounds[0].X = viewportSpriteX + frameWidth / 5;
+	bounds[0].Y = (viewportSpriteY + frameHeight) - 1;
+	bounds[1].X = viewportSpriteX + frameWidth / 5;
+	bounds[1].Y = (viewportSpriteY + frameHeight) - 68;
+	bounds[2].X = (viewportSpriteX + frameWidth) - frameWidth / 5;
+	bounds[2].Y = (viewportSpriteY + frameHeight)- 68;
+	bounds[3].X = (viewportSpriteX + frameWidth) - frameWidth / 5;
+	bounds[3].Y = (viewportSpriteY + frameHeight) - 1;
+	
+
+	//**************************************************
+	boundPoints[0].X = (newSpriteXPos + frameWidth / 5) / T_SIZE;
+	boundPoints[0].Y = ((newSpriteYPos + frameHeight) - 1) / T_SIZE;
+	boundPoints[1].X = (newSpriteXPos + frameWidth / 5) / T_SIZE;
+	boundPoints[1].Y = ((newSpriteYPos + frameHeight) - 68) / T_SIZE;
+	boundPoints[2].X = ((newSpriteXPos + frameWidth) - frameWidth / 5) / T_SIZE;
+	boundPoints[2].Y = ((newSpriteYPos + frameHeight) - 68) / T_SIZE;
+	boundPoints[3].X = ((newSpriteXPos + frameWidth) - frameWidth / 5) / T_SIZE;;
+	boundPoints[3].Y = ((newSpriteYPos + frameHeight) - 1) / T_SIZE;
+
+	// Current pixel plus half framewidth puts pixel in 
+	// center of knight then devides to get tile position 
+	bool p1 = tileMap->isSolid(boundPoints[0].Y, boundPoints[0].X);
+	bool p2 = tileMap->isSolid(boundPoints[1].Y, boundPoints[1].X);
+	bool p3 = tileMap->isSolid(boundPoints[2].Y, boundPoints[2].X);
+	bool p4 = tileMap->isSolid(boundPoints[3].Y, boundPoints[3].X);
+
+	if(!p1 && !p2 && !p3 && !p4) // If the tile is not flowers apply new move position
+	{			
+		return true;
+	}
+
+	return false;
 }

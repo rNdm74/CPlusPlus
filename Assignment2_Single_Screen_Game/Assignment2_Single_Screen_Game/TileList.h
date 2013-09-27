@@ -13,6 +13,7 @@ ref class TileList
 	private:
 		array<Bitmap^>^ tileBitmaps;
 		array<Tile^>^ tiles;
+		array<ETileType>^ tileType;
 
 	public:
 		TileList();

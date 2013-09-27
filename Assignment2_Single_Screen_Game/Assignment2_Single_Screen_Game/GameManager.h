@@ -20,7 +20,7 @@
 ref class GameManager
 	{
 	private:
-		Viewport^ viewport;
+		Viewport^ foreground;
 
 		Graphics^ canvas;
 
