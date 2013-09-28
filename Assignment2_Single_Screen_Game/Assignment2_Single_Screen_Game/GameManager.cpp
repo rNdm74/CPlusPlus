@@ -62,10 +62,10 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			dbGraphics,
 			gcnew array<String^>
 			{
-				"Images/p3_spritesheet.png",
-				"Images/p3_spritesheet.png",							
-				"Images/p3_spritesheet.png",
-				"Images/p3_spritesheet.png"
+				"Images/player.png",
+				"Images/player.png",
+				"Images/player.png",
+				"Images/player.png"
 			},
 			11,
 			rGen,
@@ -78,32 +78,35 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 		//=================================================
 		// Create NPCs
 		//=================================================
-		/*chickens = gcnew array<Chicken^>(10);				
+		chickens = gcnew array<NPC^>(4);				
 
 		for(int c = 0; c < chickens->Length; c++)
 		{
-			chickens[c] = gcnew Chicken
+			int r = rGen->Next(1, 3);
+
+			chickens[c] = gcnew NPC
 			(
 				tileMap,
-				BOUNCE,
+				WRAP,
 				dbGraphics,
 				gcnew array<String^>
 				{
-					"Little Chicken Walk North 8.bmp",								
-					"Little Chicken Walk East 8.bmp",
-					"Little Chicken Walk South 8.bmp",
-					"Little Chicken Walk West 8.bmp"
+					"Images/enemy" + r + ".png",								
+					"Images/enemy" + r + ".png",
+					"Images/enemy" + r + ".png",
+					"Images/enemy" + r + ".png"
 				},
-				CHICKEN_FRAMES,
+				11,
 				rGen,
-				Point(rGen->Next(260, 800), rGen->Next(260, 300)),
-				viewport
+				Point(rGen->Next(0, 1024), 140 - 94),
+				foreground,
+				r
 			);
 		}
 
 		// Adds all game characters to the spritelist
 		for(int c = 0; c < chickens->Length; c++)
-			spriteList->add(chickens[c]);*/
+			spriteList->add(chickens[c]);
 
 		spriteList->add(knight);
 	}
@@ -161,7 +164,9 @@ void GameManager::updateGame()
 
 		//=================================================
 		// NPC AI
-		//=================================================		
+		//=================================================	
+		for(int c = 0; c < chickens->Length; c++)
+			chickens[c]->wander();
 	}
 
 void GameManager::drawGame()

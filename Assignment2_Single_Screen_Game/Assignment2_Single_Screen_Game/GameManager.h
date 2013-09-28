@@ -1,5 +1,6 @@
 #pragma once
 
+#include "NPC.h"
 #include "Player.h"
 #include "Sprite.h"
 #include "SpriteList.h"
@@ -43,6 +44,8 @@ ref class GameManager
 		Rectangle clientRectangle;
 
 		Player^ knight;
+
+		array<NPC^>^ chickens;
 
 	public:
 		GameManager(Graphics^ startCanvas, Rectangle clientRectangle);

@@ -29,36 +29,9 @@ Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction,
 			spriteSheets[i]->MakeTransparent(spriteSheets[i]->GetPixel(0,0));			
 		}
 
-		sheetDataEast = gcnew array<int, 2>
-		{
-			{0, 0, 72, 97},
-			{73, 0, 72, 97},
-			{146, 0, 72, 97},
-			{0, 98, 72, 97},
-			{73, 98, 72, 97},
-			{146, 98, 72, 97},
-			{219, 0, 72, 97},
-			{292, 0, 72, 97},
-			{219, 98, 72, 97},
-			{365, 0, 72, 97},
-			{292, 98, 72, 97}
-		};
+		
 
-		sheetDataWest = gcnew array<int, 2>
-		{
-			{1,0,65,92},
-			{66,0,70,92},
-			{136,0,71,92},
-			{208,0,71,91},
-			{281,0,66,93},
-			{347,0,66,93},
-			{347,93,66,94},
-			{281,93,66,94},
-			{209,92,70,93},
-			{142,93,65,92},
-			{66,94,71,92}
-		};
-
+		
 		//=================================================
 		// Init directional point array with values 
 		// that will move the sprite in specific directions
@@ -178,9 +151,7 @@ void Sprite::draw(int newXPos, int newYPos)
 		//=================================================
 		if(alive)
 		{
-			Bitmap^ cloneBitmap;
-
-			
+			Bitmap^ cloneBitmap;			
 
 			System::Drawing::Imaging::PixelFormat format = spriteSheets[bearing]->PixelFormat;
 			cloneBitmap = spriteSheets[bearing]->Clone(frameRectangle, format);
@@ -392,15 +363,15 @@ void Sprite::updateFrame()
 
 		//frameRectangle = Rectangle(currentFrame * frameWidth, 0, frameWidth, frameHeight);
 
-		frameWidth = sheetDataEast[currentFrame, 2];
-		frameHeight = sheetDataEast[currentFrame, 3];
+		frameWidth = sheetData[bearing, currentFrame, 2];
+		frameHeight = sheetData[bearing, currentFrame, 3];
 		
 		frameRectangle = Rectangle
 		(
-			sheetDataEast[currentFrame, 0],
-			sheetDataEast[currentFrame, 1],
-			sheetDataEast[currentFrame, 2],
-			sheetDataEast[currentFrame, 3]
+			sheetData[bearing, currentFrame, 0],
+			sheetData[bearing, currentFrame, 1],
+			sheetData[bearing, currentFrame, 2],
+			sheetData[bearing, currentFrame, 3]
 		);
 		
 		// this is to slow down the frame animation so that the sprites have a more realistic movement

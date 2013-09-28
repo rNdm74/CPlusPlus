@@ -11,10 +11,11 @@ TileList::TileList()
 			SOLID,
 			SOLID,
 			LADDER,
-			LADDER
+			LADDER,
+			SOLID
 		};
 
-		tileBitmaps = gcnew array<Bitmap^>(7);
+		tileBitmaps = gcnew array<Bitmap^>(8);
 
 		for(int i = 0; i < tileBitmaps->Length; i++)
 		{

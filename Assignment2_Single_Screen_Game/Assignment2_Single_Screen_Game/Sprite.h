@@ -15,7 +15,7 @@ using namespace System::Drawing;
 //=================================================
 #define MAX_DIRECTIONS 4
 #define HALF 2
-#define WANDER_PROB 25
+#define WANDER_PROB 100
 #define SPEED 5
 
 
@@ -29,6 +29,8 @@ public enum EBearing
 		SOUTH = 2,
 		WEST = 3
 	};
+
+
 
 public enum EBoundsAction
 	{
@@ -47,8 +49,7 @@ ref class Sprite
 		//=================================================
 		array<Bitmap^>^ spriteSheets;
 		array<Point>^ spriteDirection;
-		array<int, 2>^ sheetDataEast;
-		array<int, 2>^ sheetDataWest;
+		array<int, 3>^ sheetData;
 
 		EBoundsAction action;
 		EBearing bearing;		
