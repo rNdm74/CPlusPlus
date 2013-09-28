@@ -68,6 +68,8 @@ Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction,
 		// Gets the frame width and hight the sprites 
 		// frame being drawn to the screen
 		//=================================================
+		frameDelay = 2;
+		
 		//frameWidth = spriteSheets[bearing]->Width / frames;
 		//frameHeight = spriteSheets[bearing]->Height;
 
@@ -167,22 +169,7 @@ void Sprite::draw(int newXPos, int newYPos)
 				newXPos,
 				newYPos
 			);
-
-
-
-			/*canvas->DrawImage
-			(
-				spriteSheets[bearing], 
-				newXPos, 
-				newYPos, 
-				frameRectangle, 
-				GraphicsUnit::Pixel
-			);*/
 		}
-
-		// Draws the hit box on top of the sprite  (for debugging)
-		/*int s1XPos = (xPos - viewPort->getViewportWorldX()) + (frameWidth / 3);
-		int s1YPos = (yPos - viewPort->getViewportWorldY())  + (frameHeight / 3);*/
 
 		canvas->DrawRectangle
 		(
@@ -227,8 +214,7 @@ void Sprite::draw(int newXPos, int newYPos)
 				1, 
 				1
 			)
-		);
-		//canvas->DrawRectangle(gcnew Pen(Color::Fuchsia), hitbox);
+		);		
 	}
 
 void Sprite::erase(Color eraseColor)
@@ -368,14 +354,14 @@ void Sprite::updateFrame()
 		
 		frameRectangle = Rectangle
 		(
-			sheetData[bearing, currentFrame, 0],
-			sheetData[bearing, currentFrame, 1],
-			sheetData[bearing, currentFrame, 2],
-			sheetData[bearing, currentFrame, 3]
+			sheetData[bearing, currentFrame, 0], // XPOS
+			sheetData[bearing, currentFrame, 1], // YPOS
+			sheetData[bearing, currentFrame, 2], // WIDTH
+			sheetData[bearing, currentFrame, 3]	 // HEIGHT
 		);
 		
 		// this is to slow down the frame animation so that the sprites have a more realistic movement
-		bool changeFrame = frameTime > 2;
+		bool changeFrame = frameTime > frameDelay;
 
 		if(changeFrame && walking) 
 		{

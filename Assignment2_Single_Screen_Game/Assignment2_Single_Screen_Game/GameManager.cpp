@@ -46,11 +46,18 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 		//=================================================
 		// Create spritelist
 		//=================================================
+		
 		spriteList = gcnew SpriteList(foreground);
 
 		Rectangle mapRect = tileMap->getMapBounds();
 
 		background = Image::FromFile("Images/bg.png");
+
+		//
+		// Object map
+		//
+		objectMap = gcnew ObjectMap(reader->getObjectMap());
+
 
 		//=================================================
 		// Create Player
@@ -67,18 +74,28 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 				"Images/player.png",
 				"Images/player.png"
 			},
-			11,
+			9,
 			rGen,
-			Point(10, 608),
+			Point(0, 0),
 			foreground
 		);
+
+		knight->setStartPosition(objectMap->getSpawnPosition(PLAYER, knight->getHeight()));
 		
 		knight->setWalking(false);
 	
 		//=================================================
 		// Create NPCs
 		//=================================================
-		chickens = gcnew array<NPC^>(4);				
+		chickens = gcnew array<NPC^>(4);
+
+		array<int>^ spriteType = gcnew array<int>
+		{
+			ENEMY1, 
+			ENEMY2, 
+			ENEMY3, 
+			ENEMY4
+		};
 
 		for(int c = 0; c < chickens->Length; c++)
 		{
@@ -96,19 +113,66 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 					"Images/enemy" + r + ".png",
 					"Images/enemy" + r + ".png"
 				},
-				11,
+				9,
 				rGen,
-				Point(rGen->Next(0, 1024), 140 - 94),
+				Point(0,0),
 				foreground,
 				r
 			);
+
+			Point startPos = objectMap->getSpawnPosition(spriteType[c], chickens[c]->getHeight());
+
+			chickens[c]->setXPos(startPos.X);
+			chickens[c]->setYPos(startPos.Y);
+		}
+
+		flags = gcnew array<Item^>(3);
+
+		spriteType = gcnew array<int>
+		{
+			FLAG1, 
+			FLAG2, 
+			FLAG3
+		};
+
+		for(int c = 0; c < flags->Length; c++)
+		{
+			
+			flags[c] = gcnew Item
+			(
+				tileMap,
+				WRAP,
+				dbGraphics,
+				gcnew array<String^>
+				{
+					"Images/flag" + c + ".png",								
+					"Images/flag" + c + ".png",
+					"Images/flag" + c + ".png",
+					"Images/flag" + c + ".png"
+				},
+				2,
+				rGen,
+				Point(0,0),
+				foreground
+			);
+
+			Point startPos = objectMap->getSpawnPosition(spriteType[c], flags[c]->getHeight());
+
+			flags[c]->setXPos(startPos.X);
+			flags[c]->setYPos(startPos.Y);
 		}
 
 		// Adds all game characters to the spritelist
+		for(int c = 0; c < flags->Length; c++)
+			spriteList->add(flags[c]);
+
 		for(int c = 0; c < chickens->Length; c++)
-			spriteList->add(chickens[c]);
+			spriteList->add(chickens[c]);		
 
 		spriteList->add(knight);
+
+		score = 0;
+		lives = 3;
 	}
 
 void GameManager::keyDown(KeyEventArgs^  e)
@@ -161,6 +225,8 @@ void GameManager::updateGame()
 		// Updates Sprites Animation
 		//=================================================
 		spriteList->update();
+		score = spriteList->getScore();
+		lives = spriteList->getLives();
 
 		//=================================================
 		// NPC AI
@@ -185,6 +251,12 @@ void GameManager::drawGame()
 		// Draw Sprites to Canvas
 		//=================================================
 		spriteList->renderSprites(foreground->getViewportWorldX(), foreground->getViewportWorldY());
+
+		
+
+		dbGraphics->DrawString("Score: " + score.ToString(), gcnew Font("Microsoft Sans Serif", 12), Brushes::Black, 10, 10);
+
+		dbGraphics->DrawString("Lives: " + lives.ToString(), gcnew Font("Microsoft Sans Serif", 12), Brushes::Black, 500, 10);
 
 		//=================================================
 		// Make Buffer Visible 

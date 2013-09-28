@@ -7,6 +7,8 @@ ref class SpriteList
 	{
 	private:
 		Viewport^ viewport;
+		int score;
+		int lives;
 
 		Sprite^ head;
 		Sprite^ tail;
@@ -20,4 +22,7 @@ ref class SpriteList
 		Sprite^ checkCollisions(Sprite^ sprite);
 		void renderSprites(int vX, int vY);
 		void draw();
+
+		int getScore()	{ return score; }
+		int getLives()	{ return lives; }
 	};

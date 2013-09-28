@@ -20,6 +20,9 @@ NPC::NPC(TileMap^ startTileMap, EBoundsAction startAction,
 				setEnemyTwo();
 				break;
 		}
+
+		frameWidth = sheetData[bearing, currentFrame, 2];
+		frameHeight = sheetData[bearing, currentFrame, 3];
 	}
 
 void NPC::setEnemyOne()
@@ -90,6 +93,8 @@ void NPC::setEnemyOne()
 				{292, 98, 72, 97}
 			}
 		};
+
+	enemy = true;
 }
 
 void NPC::setEnemyTwo()
@@ -159,6 +164,8 @@ void NPC::setEnemyTwo()
 			{284,95,70,94}
 		}
 	};
+
+	enemy = true;
 }
 
 
@@ -223,9 +230,7 @@ bool NPC::checkCanMove(EBearing spriteBearing, int viewportWorldX, int viewportW
 
 	//**************************************************
 	// Sets the detection point for the knight to tell what tile he is on
-	int spriteXPos;
-	int spriteYPos;	
-
+	
 	bounds[0].X = viewportSpriteX + frameWidth / 5;
 	bounds[0].Y = (viewportSpriteY + frameHeight) - 1;
 	bounds[1].X = viewportSpriteX + frameWidth / 5;

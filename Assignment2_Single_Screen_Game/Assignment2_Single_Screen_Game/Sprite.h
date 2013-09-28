@@ -47,6 +47,10 @@ ref class Sprite
 		//=================================================
 		// Variables
 		//=================================================
+		bool player;
+		bool flag;
+		bool enemy;
+
 		array<Bitmap^>^ spriteSheets;
 		array<Point>^ spriteDirection;
 		array<int, 3>^ sheetData;
@@ -68,6 +72,7 @@ ref class Sprite
 
 		int currentFrame;
 		int frames;
+		int frameDelay;
 
 		int frameWidth;
 		int frameHeight;
@@ -80,6 +85,8 @@ ref class Sprite
 
 		int boundsX;
 		int boundsY;
+
+		Point startPosition;
 
 		array<Point>^ bounds;
 		array<Point>^ boundPoints;
@@ -119,7 +126,7 @@ ref class Sprite
 		virtual void move(int viewportWorldX, int viewportWorldY);
 
 		void wander();		
-		void updateFrame();	
+		virtual void updateFrame();	
 
 		void update();
 		void draw();
@@ -140,6 +147,9 @@ ref class Sprite
 		bool isAlive()					{ return alive; }
 		void setAlive(bool a)			{ alive = a; }
 
+		void setStartPosition(Point p)	{ startPosition = p; xPos = p.X; yPos = p.Y; }
+		void resetPosition()			{ xPos = startPosition.X; yPos = startPosition.Y; }
+
 		int getXPos()					{ return xPos; }
 		void setXPos(int x)				{ xPos = x; }
 
@@ -152,4 +162,8 @@ ref class Sprite
 		EBearing getRandomBearing();
 		EBearing getBearing()			{ return bearing; }
 		void setBearing(EBearing b)		{ bearing = b; }
+
+		bool isEnemy()					{ return enemy; }
+		bool isPlayer()					{ return player; }
+		bool isFlag()					{ return flag; }
 	};

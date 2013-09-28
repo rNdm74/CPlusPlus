@@ -3,7 +3,7 @@
 
 Viewport::Viewport(int startX, int startY, int startTilesWide, int startTilesHigh, TileMap^ startBackgroundMap, Graphics^ startCanvas)
 {
-	viewportWorldX = -70;
+	viewportWorldX = startX;
 	viewportWorldY = startY;
 	viewportTilesWide = startTilesWide;
 	viewportTilesHigh = startTilesHigh;

@@ -216,7 +216,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Item.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NPC.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ObjectMap.cpp"
 				>
 			</File>
 			<File
@@ -300,7 +308,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Item.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NPC.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ObjectMap.h"
 				>
 			</File>
 			<File

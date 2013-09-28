@@ -5,6 +5,9 @@ SpriteList::SpriteList(Viewport^ startViewport)
 	{
 		viewport = startViewport;
 
+		score = 0;
+		lives = 3;
+
 		head = nullptr;
 		tail = nullptr;
 	}
@@ -146,11 +149,23 @@ Sprite^ SpriteList::checkCollisions(Sprite^ sprite)
 		if(spriteWalker != sprite)
 		{
 			bool hit = spriteWalker->collided(sprite);
+			
+			bool player = spriteWalker->isPlayer(); 
+			bool flag = sprite->isFlag();
+			bool enemy = sprite->isEnemy();
 
-			if(hit)	
+			if(hit && player && flag)
 			{
-				//spriteWalker->setAction(DIE);
-				spriteWalker->executeBoundsAction();
+				remove(sprite);
+
+				score += 100;
+			}
+
+			if(hit && player && enemy)	
+			{
+				spriteWalker->resetPosition();
+
+				lives--;
 			}
 		}		
 

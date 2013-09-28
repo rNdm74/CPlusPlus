@@ -65,6 +65,11 @@ Player::Player(TileMap^ startTileMap, EBoundsAction startAction,
 				{292, 98, 72, 97}
 			}
 		};
+
+		frameWidth = sheetData[bearing, currentFrame, 2];
+		frameHeight = sheetData[bearing, currentFrame, 3];
+
+		player = true;
 	}
 
 void Player::move(int viewportWorldX, int viewportWorldY)
@@ -128,8 +133,7 @@ bool Player::checkCanMove(EBearing spriteBearing, int viewportWorldX, int viewpo
 
 	//**************************************************
 	// Sets the detection point for the knight to tell what tile he is on
-	int spriteXPos;
-	int spriteYPos;	
+	
 
 	bounds[0].X = viewportSpriteX + frameWidth / 5;
 	bounds[0].Y = (viewportSpriteY + frameHeight) - 1;
