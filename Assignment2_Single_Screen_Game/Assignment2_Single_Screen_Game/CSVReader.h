@@ -13,6 +13,8 @@ ref class CSVReader
 	private:
 		StreamReader^ reader;
 		array<String^>^ items;
+
+		array<int,2>^ coinMap;
 		array<int,2>^ objectMap;
 		array<int,2>^ tileMap;
 
@@ -20,7 +22,7 @@ ref class CSVReader
 	public:
 		CSVReader();
 
-
+		array<int,2>^ getCoinMap()	{ return coinMap; }
 		array<int,2>^ getObjectMap()	{ return objectMap; }
 		array<int,2>^ getTileMap()	{ return tileMap; }
 	};

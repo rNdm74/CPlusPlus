@@ -4,7 +4,8 @@
 CSVReader::CSVReader()
 	{
 		tileMap = populateMap("tilemap.csv");
-		objectMap = populateMap("objectmap.csv");		
+		objectMap = populateMap("objectmap.csv");	
+		coinMap = populateMap("coinmap.csv");
 	}
 
 array<int,2>^ CSVReader::populateMap(String^ filename)

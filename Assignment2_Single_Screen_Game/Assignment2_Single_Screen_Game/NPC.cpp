@@ -187,19 +187,15 @@ EBearing NPC::getRandomBearing()
 	//=================================================
 	// Return a random EBearing
 	//=================================================
-	int pick = rGen->Next(5);
+	int pick = rGen->Next(3);
 
 	switch(pick)
 	{	
 		case 0:
-			return NORTH;
+			return WEST;
 		case 1:
 			return EAST;
 		case 2:
-			return SOUTH;
-		case 3:
-			return WEST;
-		case 4:
 			return STAND;
 	}
 }

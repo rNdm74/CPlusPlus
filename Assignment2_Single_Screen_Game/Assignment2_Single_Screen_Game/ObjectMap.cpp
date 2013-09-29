@@ -1,9 +1,10 @@
 #include "StdAfx.h"
 #include "ObjectMap.h"
 
-ObjectMap::ObjectMap(array<int, 2>^ startObjectMap)
+ObjectMap::ObjectMap(array<int, 2>^ startObjectMap, array<int, 2>^ startCoinMap)
 {
 	objectMap = startObjectMap;	
+	coinsMap = startCoinMap;
 }
 
 Point ObjectMap::getSpawnPosition(int spriteType, int spriteHeight)

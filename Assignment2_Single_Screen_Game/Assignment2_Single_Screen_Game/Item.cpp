@@ -8,6 +8,10 @@ Item::Item(TileMap^ startTileMap, EBoundsAction startAction,
 	   : Sprite(startTileMap, startAction, startCanvas, filename, 
 				 nFrames, startRGen, startPos, startViewPort)
 {
+
+	coin = true;
+	flag = true;
+
 	sheetData = gcnew array<int, 3>
 		{
 			{
@@ -36,6 +40,4 @@ Item::Item(TileMap^ startTileMap, EBoundsAction startAction,
 	frameHeight = sheetData[bearing, currentFrame, 3];
 
 	frameDelay = 4;
-
-	flag = true;
 }

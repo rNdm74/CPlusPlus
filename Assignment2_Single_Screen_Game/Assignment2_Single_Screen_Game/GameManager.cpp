@@ -56,7 +56,7 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 		//
 		// Object map
 		//
-		objectMap = gcnew ObjectMap(reader->getObjectMap());
+		objectMap = gcnew ObjectMap(reader->getObjectMap(), reader->getCoinMap());
 
 
 		//=================================================
@@ -144,6 +144,10 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			flags[c]->setYPos(startPos.Y);
 		}
 
+		coins = gcnew array<Item^>(65);
+
+		//addCoinsToGame();
+		
 		// Adds all game characters to the spritelist
 		for(int c = 0; c < flags->Length; c++)
 			spriteList->add(flags[c]);
@@ -153,8 +157,52 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 
 		spriteList->add(knight);
 
-		score = 0;
+		flagCount = 0;
 		lives = 3;
+	}
+
+void GameManager::addCoinsToGame()
+	{
+		for(int c = 0; c < coins->Length; c++)
+		{
+			
+			coins[c] = gcnew Item
+			(
+				tileMap,
+				WRAP,
+				dbGraphics,
+				"Images/coinGold.png",	
+				2,
+				rGen,
+				Point(0,0),
+				foreground
+			);			
+		}
+
+		array<int, 2>^ coinsMap = objectMap->getCoinMap();
+
+		int count = 0;
+
+		for(int col = 0; col < N_COLS; col++)
+		{
+			for(int row = 0; row < N_ROWS; row++)
+			{
+				if(coinsMap[row, col] == COIN)
+				{
+					int xPos = (col * T_SIZE);
+					int yPos = ((row + 1) * T_SIZE) - coins[count]->getHeight();
+
+					coins[count]->setXPos(xPos);
+					coins[count]->setYPos(yPos);
+
+					count++;
+				}				
+			}
+		}
+		
+		for(int c = 0; c < coins->Length; c++)
+			spriteList->add(coins[c]);
+
 	}
 
 void GameManager::keyDown(KeyEventArgs^  e)
@@ -206,8 +254,19 @@ void GameManager::updateGame()
 		//=================================================
 		spriteList->update();
 
-		score = spriteList->getScore();
+		flagCount = spriteList->getFlags();
+
+		if(flagCount == 3)
+		{
+			tileMap->setMapValue(1, 9, 9);
+			addCoinsToGame();
+		}
+
 		lives = spriteList->getLives();
+
+		if(knight->isGameOver())
+			Application::Exit();
+
 
 		//=================================================
 		// NPC AI
@@ -233,7 +292,7 @@ void GameManager::drawGame()
 		//=================================================
 		spriteList->renderSprites(foreground->getViewportWorldX(), foreground->getViewportWorldY());		
 
-		dbGraphics->DrawString("Score: " + score.ToString(), gcnew Font("Microsoft Sans Serif", 12), Brushes::Black, 10, 10);
+		dbGraphics->DrawString("Flags: " + flagCount.ToString(), gcnew Font("Microsoft Sans Serif", 12), Brushes::Black, 10, 10);
 
 		dbGraphics->DrawString("Lives: " + lives.ToString(), gcnew Font("Microsoft Sans Serif", 12), Brushes::Black, 500, 10);
 

@@ -5,7 +5,7 @@ SpriteList::SpriteList(Viewport^ startViewport)
 	{
 		viewport = startViewport;
 
-		score = 0;
+		flags = 0;
 		lives = 3;
 
 		head = nullptr;
@@ -133,7 +133,9 @@ void SpriteList::renderSprites(int vX, int vY)
 		Rectangle vBounds = viewport->getViewportBounds();
 
 		//if(vBounds.Contains(vPosX, vPosY))
-		spriteWalker->draw(vPosX, vPosY);		
+
+		if(spriteWalker->getFrameRectangle().Width != 0)
+		  spriteWalker->draw(vPosX, vPosY);		
 
 		// Move to next node
 		spriteWalker = spriteWalker->Next;
@@ -158,7 +160,7 @@ Sprite^ SpriteList::checkCollisions(Sprite^ sprite)
 			{
 				remove(sprite);
 
-				score += 100;
+				flags += 1;				
 			}
 
 			if(hit && player && enemy)	

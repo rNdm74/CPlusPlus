@@ -7,17 +7,17 @@
 //
 // Constants
 //
-#define MAX_DIRECTIONS 5
-#define HALF 2
-#define WANDER_PROB 25
-#define SPEED 5
-#define N_COLS 15	// X Tiles
-#define N_ROWS 11 	// Y tiles
-#define N_TILES 7	// Tiles array size
-#define T_SIZE 70	// Tile bitmap size
-#define V_COLS 15
-#define V_ROWS 11
-#define OFFSET 100
+#define MAX_DIRECTIONS			5
+#define HALF					2
+#define WANDER_PROB				100
+#define SPEED					5
+#define N_COLS					15	// X Tiles
+#define N_ROWS					11 	// Y tiles
+#define N_TILES					10	// Tiles array size
+#define T_SIZE					70	// Tile bitmap size
+#define V_COLS					15
+#define V_ROWS					11
+#define OFFSET					100
 //
 //
 //
@@ -28,9 +28,10 @@ public enum ESprite
 	ENEMY2 = 3,
 	ENEMY3 = 4,
 	ENEMY4 = 5,
-	FLAG1 = 10,
-	FLAG2 = 11,
-	FLAG3 = 12
+	FLAG1  = 10,
+	FLAG2  = 11,
+	FLAG3  = 12,
+	COIN   = 13
 };
 //
 //
@@ -80,5 +81,6 @@ public enum ETileType
 {
 	SOLID = 0,
 	LADDER = 1,
-	WALKABLE = 2
+	WALKABLE = 2,
+	EXIT = 3
 };

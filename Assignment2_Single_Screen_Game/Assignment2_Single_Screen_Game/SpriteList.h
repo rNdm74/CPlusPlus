@@ -7,7 +7,7 @@ ref class SpriteList
 	{
 	private:
 		Viewport^ viewport;
-		int score;
+		int flags;
 		int lives;
 
 		Sprite^ head;
@@ -23,6 +23,6 @@ ref class SpriteList
 		void renderSprites(int vX, int vY);
 		void draw();
 
-		int getScore()	{ return score; }
+		int getFlags()	{ return flags; }
 		int getLives()	{ return lives; }
 	};

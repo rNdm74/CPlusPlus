@@ -52,8 +52,10 @@ ref class GameManager
 		array<NPC^>^ chickens;
 
 		array<Item^>^ flags;
+		array<Item^>^ coins;
 
-		int score;
+
+		int flagCount;
 		int lives;
 
 	public:
@@ -63,6 +65,8 @@ ref class GameManager
 		void keyUp(KeyEventArgs^  e);
 		void updateGame();
 		void drawGame();
+
+		void addCoinsToGame();
 
 		Player^ getPlayer()	{ return knight; }
 

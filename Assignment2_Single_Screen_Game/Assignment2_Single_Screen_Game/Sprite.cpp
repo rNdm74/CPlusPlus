@@ -132,7 +132,9 @@ void Sprite::draw(int newXPos, int newYPos)
 			Bitmap^ cloneBitmap;			
 
 			System::Drawing::Imaging::PixelFormat format = spriteSheet->PixelFormat;
+			
 			cloneBitmap = spriteSheet->Clone(frameRectangle, format);
+				
 
 			if(bearing == WEST)
 			{
@@ -239,6 +241,8 @@ void Sprite::canSpriteMove(int viewportWorldX, int viewportWorldY)
 	int row = (yPos / T_SIZE) + 1;
 
 	ETileType tileType = tileMap->getTileType(row, col);
+
+	gameover = (tileType == EXIT);
 
 	if(tileType == WALKABLE && bearing == EAST)
 	{
@@ -511,12 +515,14 @@ void Sprite::setBearing(EBearing b)
 					bearing = b;	
 				}
 				break;
+
 			case SOUTH:
 				if(getTileType(2) == LADDER)
 				{
 					bearing = b;	
 				}
 				break;
+
 			default:
 				bearing = b;
 				break;

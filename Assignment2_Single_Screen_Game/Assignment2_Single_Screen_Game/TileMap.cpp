@@ -43,7 +43,7 @@ void TileMap::setMapValue(int col, int row, int tileValue)
 		//===================================================================
 		// Return bitmap of a indexed tile
 		//===================================================================
-		tileMap[col, row] = tileValue;
+		tileMap[row, col] = tileValue;
 	}
 
 int TileMap::getMapValue(int col, int row)

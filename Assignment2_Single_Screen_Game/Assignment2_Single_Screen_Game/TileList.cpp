@@ -12,10 +12,12 @@ TileList::TileList()
 			SOLID,
 			LADDER,
 			LADDER,
-			SOLID
+			SOLID,
+			WALKABLE,
+			EXIT
 		};
 
-		tileBitmaps = gcnew array<Bitmap^>(8);
+		tileBitmaps = gcnew array<Bitmap^>(tileType->Length);
 
 		for(int i = 0; i < tileBitmaps->Length; i++)
 		{

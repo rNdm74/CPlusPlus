@@ -33,8 +33,10 @@ ref class Sprite
 		bool player;
 		bool flag;
 		bool enemy;
+		bool coin;
 		bool walking;
 		bool alive;
+		bool gameover;
 
 		Bitmap^ spriteSheet;
 
@@ -163,6 +165,8 @@ ref class Sprite
 		bool isEnemy()					{ return enemy; }
 		bool isPlayer()					{ return player; }
 		bool isFlag()					{ return flag; }
+		bool isCoin()					{ return coin; }
+		bool isGameOver()				{ return gameover; }
 
 #pragma endregion
 
