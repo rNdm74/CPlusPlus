@@ -6,7 +6,7 @@ public Sprite
 {
 public:
 	Item(TileMap^ startTileMap, EBoundsAction startAction, 
-			   Graphics^ startCanvas, array<String^>^ filenames, 
+			   Graphics^ startCanvas, String^ filename, 
 			   int nFrames, Random^ startRgen, Point startPos, 
 			   Viewport^ startViewPort);
 };

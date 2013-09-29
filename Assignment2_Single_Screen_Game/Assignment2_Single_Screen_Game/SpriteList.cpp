@@ -132,8 +132,8 @@ void SpriteList::renderSprites(int vX, int vY)
 		// if sprite is in viewport bounds draw
 		Rectangle vBounds = viewport->getViewportBounds();
 
-		if(vBounds.Contains(vPosX, vPosY))
-			spriteWalker->draw(vPosX, vPosY);		
+		//if(vBounds.Contains(vPosX, vPosY))
+		spriteWalker->draw(vPosX, vPosY);		
 
 		// Move to next node
 		spriteWalker = spriteWalker->Next;
@@ -183,7 +183,7 @@ void SpriteList::draw()
 	while(spriteWalker != nullptr)
 	{
 		// Draw pellets
-		spriteWalker->draw();
+		//spriteWalker->draw();
 
 		// Move to next node
 		spriteWalker = spriteWalker->Next;

@@ -2,7 +2,7 @@
 #include "Sprite.h"
 
 Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction, 
-			   Graphics^ startCanvas, array<String^>^ filenames, 
+			   Graphics^ startCanvas, String^ filename, 
 			   int nFrames, Random^ startRGen, Point startPos, 
 			   Viewport^ startViewPort)
 	{
@@ -16,22 +16,14 @@ Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction,
 		walking = true;
 		alive = true;
 
-		bounds = gcnew array<Point>(20);
 
 		//=================================================
 		// Create spritesheets from file names
 		//=================================================
-		spriteSheets = gcnew array<Bitmap^>(filenames->Length);
-		
-		for(int i = 0; i < filenames->Length; i++)
-		{
-			spriteSheets[i] = gcnew Bitmap(filenames[i]);
-			spriteSheets[i]->MakeTransparent(spriteSheets[i]->GetPixel(0,0));			
-		}
+		spriteSheet = gcnew Bitmap(filename);
+		spriteSheet->MakeTransparent(spriteSheet->GetPixel(0,0));
 
-		
 
-		
 		//=================================================
 		// Init directional point array with values 
 		// that will move the sprite in specific directions
@@ -42,19 +34,20 @@ Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction,
 		spriteDirection[EAST] = Point(1,0);
 		spriteDirection[SOUTH] = Point(0,1);
 		spriteDirection[WEST] = Point(-1,0);
+		spriteDirection[STAND] = Point(0,0);
 
 		
 		//=================================================
 		// Initialize bearing with a random one
 		//=================================================
-		bearing = EAST;
+		bearing = STAND;
 
 
 		//=================================================
 		// Set mag speed for the sprite
 		//=================================================
-		xMag = SPEED;
-		yMag = SPEED;
+		/*xMag = SPEED;
+		yMag = SPEED;*/
 
 
 		//=================================================
@@ -68,7 +61,7 @@ Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction,
 		// Gets the frame width and hight the sprites 
 		// frame being drawn to the screen
 		//=================================================
-		frameDelay = 2;
+		frameDelay = 1;
 		
 		//frameWidth = spriteSheets[bearing]->Width / frames;
 		//frameHeight = spriteSheets[bearing]->Height;
@@ -77,37 +70,34 @@ Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction,
 		//=================================================
 		// Set initial position
 		//=================================================
-		xPos = startPos.X;
-		yPos = startPos.Y;
+		/*xPos = startPos.X;
+		yPos = startPos.Y;*/
 		
 		bounds = gcnew array<Point>(4);
 		boundPoints = gcnew array<Point>(4);
 	}
 
-EBearing Sprite::getRandomBearing()
-	{
-		//=================================================
-		// Return a random EBearing
-		//=================================================
-		int pick = rGen->Next(MAX_DIRECTIONS);
 
-		switch(pick)
-		{
-			case 0:
-				return NORTH;
-			case 1:
-				return EAST;
-			case 2:
-				return SOUTH;
-			case 3:
-				return WEST;
-		}
-	}
 
-void Sprite::update()
-	{	
-		// REDUNDANT
-	}
+//void Sprite::update()
+//	{	
+//		// REDUNDANT
+//	}
+//void Sprite::draw()
+//	{
+//		//=================================================
+//		// Draw sprites frame to the screen
+//		// Its position is based on its worldX and worldY
+//		//=================================================
+//		canvas->DrawImage
+//		(
+//			spriteSheets[bearing], 
+//			xPos, 
+//			yPos, 
+//			frameRectangle, 
+//			GraphicsUnit::Pixel
+//		);		
+//	}
 
 bool Sprite::collided(Sprite^ sprite)
 	{
@@ -130,33 +120,19 @@ bool Sprite::collided(Sprite^ sprite)
 		return collided;	
 	}
 
-void Sprite::draw()
-	{
-		//=================================================
-		// Draw sprites frame to the screen
-		// Its position is based on its worldX and worldY
-		//=================================================
-		canvas->DrawImage
-		(
-			spriteSheets[bearing], 
-			xPos, 
-			yPos, 
-			frameRectangle, 
-			GraphicsUnit::Pixel
-		);		
-	}
+
 
 void Sprite::draw(int newXPos, int newYPos)
 	{
 		//=================================================
 		// Draw sprites frame to the screen
 		//=================================================
-		if(alive)
+		if(true)
 		{
 			Bitmap^ cloneBitmap;			
 
-			System::Drawing::Imaging::PixelFormat format = spriteSheets[bearing]->PixelFormat;
-			cloneBitmap = spriteSheets[bearing]->Clone(frameRectangle, format);
+			System::Drawing::Imaging::PixelFormat format = spriteSheet->PixelFormat;
+			cloneBitmap = spriteSheet->Clone(frameRectangle, format);
 
 			if(bearing == WEST)
 			{
@@ -170,6 +146,18 @@ void Sprite::draw(int newXPos, int newYPos)
 				newYPos
 			);
 		}
+
+		canvas->DrawRectangle
+		(
+			gcnew Pen(Color::Fuchsia), 
+			Rectangle
+			(
+				newXPos, 
+				newYPos, 
+				frameRectangle.Width, 
+				frameRectangle.Height
+			)
+		);
 
 		canvas->DrawRectangle
 		(
@@ -217,6 +205,8 @@ void Sprite::draw(int newXPos, int newYPos)
 		);		
 	}
 
+
+
 void Sprite::erase(Color eraseColor)
 	{
 		//=================================================
@@ -227,15 +217,136 @@ void Sprite::erase(Color eraseColor)
 		canvas->FillRectangle(brush, rect);
 	}
 
+
 void Sprite::move(int viewportWorldX, int viewportWorldY)
 	{
-		// OVERRIDDEN FUNCTION		
+		//=======================================================================
+		// If sprite can walk the xPosition and yPosition is incremented
+		// the a set magnitude, a direction is then applied to the magnitude 1, -1
+		// this will allow the sprite to move up, down, left and right
+		//=======================================================================
+		if(isBoundsCollision())
+			executeBoundsAction();				
+
+		if(walking)
+			canSpriteMove(viewportWorldX, viewportWorldY);	
 	}
 
+
 void Sprite::canSpriteMove(int viewportWorldX, int viewportWorldY)
+{
+	int col = (xPos + frameWidth / 2) / T_SIZE;
+	int row = (yPos / T_SIZE) + 1;
+
+	ETileType tileType = tileMap->getTileType(row, col);
+
+	if(tileType == WALKABLE && bearing == EAST)
 	{
-		// OVERRIDDEN FUNCTION
+		yPos = (row * T_SIZE) - (frameHeight - 70);
 	}
+	
+	if(tileType == LADDER && bearing == NORTH)
+	{
+		xPos = col * T_SIZE;
+	}
+
+	col = (xPos + frameWidth / 2) / T_SIZE;
+	row = (yPos + frameHeight + 5) / T_SIZE;
+
+	tileType = tileMap->getTileType(row, col);
+
+	
+	
+	
+	if(tileType == LADDER && bearing == SOUTH)
+	{
+		xPos = col * T_SIZE;
+	}
+					
+	if(checkCanMove(bearing, viewportWorldX, viewportWorldY))
+	{
+		yPos += yMag * spriteDirection[bearing].Y;
+		xPos += xMag * spriteDirection[bearing].X;	
+	}
+
+	if(xPos < 0)
+	{
+		executeBoundsAction();
+		xPos = 0;		
+	}
+
+	if(xPos > (boundsRect.Right - frameWidth) - 35)
+	{
+		executeBoundsAction();
+		xPos = (boundsRect.Right - frameWidth) - 35;		
+	}
+}
+
+bool Sprite::checkCanMove(EBearing spriteBearing, int viewportWorldX, int viewportWorldY)
+{
+	// Copies current position to new variable
+	int newSpriteXPos = xPos;
+	int newSpriteYPos = yPos;
+
+	// Adds to the new variable this will see where the knight wants to move
+	newSpriteXPos += xMag * spriteDirection[spriteBearing].X;
+	newSpriteYPos += yMag * spriteDirection[spriteBearing].Y;
+
+	// Brings new positon into the viewport area
+	int viewportSpriteX = newSpriteXPos - viewportWorldX;
+	int viewportSpriteY = newSpriteYPos - viewportWorldY;
+
+	//**************************************************
+	// Sets the detection point for the knight to tell what tile he is on
+	
+
+	bounds[0].X = viewportSpriteX; //+ frameWidth / 5;
+	bounds[0].Y = (viewportSpriteY + frameHeight) - 1;
+	bounds[1].X = viewportSpriteX; // + frameWidth / 5;
+	bounds[1].Y = (viewportSpriteY + frameHeight) - 70;
+	bounds[2].X = (viewportSpriteX + frameWidth);//; - frameWidth / 5;
+	bounds[2].Y = (viewportSpriteY + frameHeight)- 70;
+	bounds[3].X = (viewportSpriteX + frameWidth);//; - frameWidth / 5;
+	bounds[3].Y = (viewportSpriteY + frameHeight) - 1;
+	
+
+	//**************************************************
+	/*boundPoints[0].X = (newSpriteXPos + frameWidth / 5) / T_SIZE;
+	boundPoints[0].Y = ((newSpriteYPos + frameHeight) - 1) / T_SIZE;
+	boundPoints[1].X = (newSpriteXPos + frameWidth / 5) / T_SIZE;
+	boundPoints[1].Y = ((newSpriteYPos + frameHeight) - 70) / T_SIZE;
+	boundPoints[2].X = ((newSpriteXPos + frameWidth) - frameWidth / 5) / T_SIZE;
+	boundPoints[2].Y = ((newSpriteYPos + frameHeight) - 70) / T_SIZE;
+	boundPoints[3].X = ((newSpriteXPos + frameWidth) - frameWidth / 5) / T_SIZE;;
+	boundPoints[3].Y = ((newSpriteYPos + frameHeight) - 1) / T_SIZE;*/
+
+	boundPoints[0].X = (newSpriteXPos) / T_SIZE;
+	boundPoints[0].Y = ((newSpriteYPos + frameHeight) - 1) / T_SIZE;
+	boundPoints[1].X = (newSpriteXPos) / T_SIZE;
+	boundPoints[1].Y = ((newSpriteYPos + frameHeight) - 70) / T_SIZE;
+	boundPoints[2].X = ((newSpriteXPos + frameWidth)) / T_SIZE;
+	boundPoints[2].Y = ((newSpriteYPos + frameHeight) - 70) / T_SIZE;
+	boundPoints[3].X = ((newSpriteXPos + frameWidth)) / T_SIZE;;
+	boundPoints[3].Y = ((newSpriteYPos + frameHeight)-1) / T_SIZE;
+
+	// Current pixel plus half framewidth puts pixel in 
+	// center of knight then devides to get tile position 
+
+	if(boundPoints[0].Y < 11 && boundPoints[2].X < 15)
+	{
+		bool p1 = tileMap->isSolid(boundPoints[0].Y, boundPoints[0].X);
+		bool p2 = tileMap->isSolid(boundPoints[1].Y, boundPoints[1].X);
+		bool p3 = tileMap->isSolid(boundPoints[2].Y, boundPoints[2].X);
+		bool p4 = tileMap->isSolid(boundPoints[3].Y, boundPoints[3].X);
+
+		if(!p1 && !p2 && !p3 && !p4) // If the tile is not flowers apply new move position
+		{			
+			return true;
+		}
+	}
+
+	return false;
+}
 
 bool Sprite::isBoundsCollision()// should return info
 	{
@@ -246,7 +357,7 @@ bool Sprite::isBoundsCollision()// should return info
 		
 		bool hitLeft = xPos < boundsRect.Left;						// Check left
 
-		bool hitRight = xPos + frameWidth > boundsRect.Right;		// Check right
+		bool hitRight = xPos + frameWidth > boundsRect.Right - 35;		// Check right
 
 		bool hitTop = yPos < boundsRect.Top;						// Check top
 
@@ -278,6 +389,8 @@ void Sprite::executeBoundsAction()
 			    break;
 	    }
 	}
+
+
 
 void Sprite::wrap()
 	{
@@ -315,10 +428,10 @@ void Sprite::reverse()
 		// todo this we must add to our current bearing enumeration
 		// Then after we have added we must use modulo to wrap around 
 		// and the correct oposite direction is chosen
-		int newBearing = (bearing + (MAX_DIRECTIONS / HALF)) % MAX_DIRECTIONS; 
+		int newBearing = (bearing + (4 / HALF)) % 4; 
 
 		// If new bearing is in acceptable range
-		bool inRange = newBearing < MAX_DIRECTIONS && newBearing >= 0;
+		bool inRange = newBearing < 4 && newBearing >= 0;
 		
 		if(inRange) bearing = static_cast<EBearing>(newBearing);
 
@@ -329,15 +442,22 @@ void Sprite::reverse()
 void Sprite::die()
 	{
 		// NOT IMPLIMENTED YET
-		alive = false;
+		/*alive = false;
 		xMag = 0;
-		yMag = 0;
+		yMag = 0;*/
 	}
 
 void Sprite::stop()
 	{
 		// NOT IMPLIMENTED YET
+		if(bearing == WEST)
+			xPos = boundsRect.Left - 1;
+
+		if(bearing == EAST)
+			xPos = boundsRect.Right - frameWidth - 35;
 	}
+
+
 
 void Sprite::updateFrame()
 	{
@@ -349,15 +469,15 @@ void Sprite::updateFrame()
 
 		//frameRectangle = Rectangle(currentFrame * frameWidth, 0, frameWidth, frameHeight);
 
-		frameWidth = sheetData[bearing, currentFrame, 2];
-		frameHeight = sheetData[bearing, currentFrame, 3];
+		frameWidth = sheetData[bearing, currentFrame, WIDTH];
+		frameHeight = sheetData[bearing, currentFrame, HEIGHT];
 		
 		frameRectangle = Rectangle
 		(
-			sheetData[bearing, currentFrame, 0], // XPOS
-			sheetData[bearing, currentFrame, 1], // YPOS
-			sheetData[bearing, currentFrame, 2], // WIDTH
-			sheetData[bearing, currentFrame, 3]	 // HEIGHT
+			sheetData[bearing, currentFrame, X],			// XPOS
+			sheetData[bearing, currentFrame, Y],			// YPOS
+			sheetData[bearing, currentFrame, WIDTH],		// WIDTH
+			sheetData[bearing, currentFrame, HEIGHT]		// HEIGHT
 		);
 		
 		// this is to slow down the frame animation so that the sprites have a more realistic movement
@@ -370,9 +490,7 @@ void Sprite::updateFrame()
 			currentFrame++; // move to sprites next frame
 		}
 
-		frameTime++; // increase frame time
-
-		
+		frameTime++; // increase frame time		
 	}
 
 void Sprite::setSpriteSheet() 
@@ -380,11 +498,35 @@ void Sprite::setSpriteSheet()
 		// NOT IMPLIMENTED this will handle multiple spritesheets
 	}
 
-void Sprite::wander()
+
+
+
+void Sprite::setBearing(EBearing b)
 	{
-		//=================================================
-		// Depending on a specified probability 
-		// a random bearing is picked for the sprite
-		//=================================================
-		if(rGen->Next(WANDER_PROB) == 0) bearing = getRandomBearing();
+		switch(b)
+		{
+			case NORTH:
+				if(getTileType(-2) == LADDER)
+				{
+					bearing = b;	
+				}
+				break;
+			case SOUTH:
+				if(getTileType(2) == LADDER)
+				{
+					bearing = b;	
+				}
+				break;
+			default:
+				bearing = b;
+				break;
+		}		
+	}
+
+ETileType Sprite::getTileType(int offset)
+	{
+		int col = (xPos + (frameWidth / HALF)) / T_SIZE;
+		int row = (yPos + (frameHeight + offset)) / T_SIZE;
+
+		return tileMap->getTileType(row, col);
 	}

@@ -2,14 +2,18 @@
 #include "Item.h"
 
 Item::Item(TileMap^ startTileMap, EBoundsAction startAction, 
-			   Graphics^ startCanvas, array<String^>^ filenames, 
+			   Graphics^ startCanvas, String^ filename, 
 			   int nFrames, Random^ startRGen, Point startPos, 
 			   Viewport^ startViewPort)
-	   : Sprite(startTileMap, startAction, startCanvas, filenames, 
+	   : Sprite(startTileMap, startAction, startCanvas, filename, 
 				 nFrames, startRGen, startPos, startViewPort)
 {
 	sheetData = gcnew array<int, 3>
 		{
+			{
+				{0,0,70,70},
+				{70,0,70,70}
+			},
 			{
 				{0,0,70,70},
 				{70,0,70,70}

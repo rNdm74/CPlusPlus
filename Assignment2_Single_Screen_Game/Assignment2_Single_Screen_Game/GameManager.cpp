@@ -65,16 +65,10 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 		knight = gcnew Player
 		(
 			tileMap,
-			WRAP,
+			STOP,
 			dbGraphics,
-			gcnew array<String^>
-			{
-				"Images/player.png",
-				"Images/player.png",
-				"Images/player.png",
-				"Images/player.png"
-			},
-			9,
+			"Images/player.png",
+			11,
 			rGen,
 			Point(0, 0),
 			foreground
@@ -104,16 +98,10 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			chickens[c] = gcnew NPC
 			(
 				tileMap,
-				WRAP,
-				dbGraphics,
-				gcnew array<String^>
-				{
-					"Images/enemy" + r + ".png",								
-					"Images/enemy" + r + ".png",
-					"Images/enemy" + r + ".png",
-					"Images/enemy" + r + ".png"
-				},
-				9,
+				BOUNCE,
+				dbGraphics,				
+				"Images/enemy" + r + ".png",
+				11,
 				rGen,
 				Point(0,0),
 				foreground,
@@ -143,13 +131,7 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 				tileMap,
 				WRAP,
 				dbGraphics,
-				gcnew array<String^>
-				{
-					"Images/flag" + c + ".png",								
-					"Images/flag" + c + ".png",
-					"Images/flag" + c + ".png",
-					"Images/flag" + c + ".png"
-				},
+				"Images/flag" + c + ".png",	
 				2,
 				rGen,
 				Point(0,0),
@@ -179,23 +161,20 @@ void GameManager::keyDown(KeyEventArgs^  e)
 	{
 		 if(e->KeyCode==Keys::Up ||e->KeyCode==Keys::Down || e->KeyCode==Keys::Left || e->KeyCode==Keys::Right)
 			 knight->setWalking(true);
-		 
+		 		 
 		 if(e->KeyCode==Keys::Up)
 		 {
-			knight->setBearing(NORTH);
-		 }
-		 
-		 if(e->KeyCode==Keys::Down)
+			knight->setBearing(NORTH);			
+		 }		 
+		 else if(e->KeyCode==Keys::Down)
 		 {
 			knight->setBearing(SOUTH);	
-		 }
-		 
-		 if(e->KeyCode==Keys::Right)
+		 }		 
+		 else if(e->KeyCode==Keys::Right)
 		 {
 			knight->setBearing(EAST);	
-		 }
-		 
-		 if(e->KeyCode==Keys::Left)
+		 }		 
+		 else if(e->KeyCode==Keys::Left)
 		 {
 			knight->setBearing(WEST);	
 		 }
@@ -203,6 +182,7 @@ void GameManager::keyDown(KeyEventArgs^  e)
 
 void GameManager::keyUp(KeyEventArgs^  e)
 	{
+		knight->setBearing(STAND);
 		knight->setWalking(false);
 	}
 
@@ -225,6 +205,7 @@ void GameManager::updateGame()
 		// Updates Sprites Animation
 		//=================================================
 		spriteList->update();
+
 		score = spriteList->getScore();
 		lives = spriteList->getLives();
 
@@ -250,9 +231,7 @@ void GameManager::drawGame()
 		//=================================================
 		// Draw Sprites to Canvas
 		//=================================================
-		spriteList->renderSprites(foreground->getViewportWorldX(), foreground->getViewportWorldY());
-
-		
+		spriteList->renderSprites(foreground->getViewportWorldX(), foreground->getViewportWorldY());		
 
 		dbGraphics->DrawString("Score: " + score.ToString(), gcnew Font("Microsoft Sans Serif", 12), Brushes::Black, 10, 10);
 

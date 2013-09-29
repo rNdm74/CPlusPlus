@@ -86,16 +86,20 @@ namespace Assignment2_Single_Screen_Game {
 		}
 #pragma endregion
 	private: System::Void clock_Tick(System::Object^  sender, System::EventArgs^  e) {
-					gManager->updateGame();
-					gManager->drawGame();
-				 }
+				String^ xPos = gManager->getPlayer()->getXPos().ToString();
+				String^ yPos = gManager->getPlayer()->getYPos().ToString();
+
+				Text = "X:" + xPos + " " + "Y: " + yPos;
+				
+				gManager->updateGame();
+				gManager->drawGame();
+			 }
 	private: System::Void FranticAlien_Load(System::Object^  sender, System::EventArgs^  e) {
-					gManager = gcnew GameManager(CreateGraphics(), ClientRectangle);					
-				 }
+				gManager = gcnew GameManager(CreateGraphics(), ClientRectangle);					
+			 }
 	private: System::Void FranticAlien_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 				 gManager->keyDown(e);
 			 }
-
 	private: System::Void FranticAlien_KeyUp(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 				 gManager->keyUp(e);
 			 }

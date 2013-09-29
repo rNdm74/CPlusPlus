@@ -10,27 +10,15 @@
 #include "Viewport.h"
 #include "CsvReader.h"
 
-	/// <summary>
-	/// Summary for GameManager
-	///
-	///	   NOTE: The gamemanager will control all the classes that are required to 
-	///          run the game, the classes it will hold are:
-	///          SoundManager, FontManager, CSVReader, Viewport, SpriteList,
-	///          Sprite, TileMap, TileList, Tile.
-	///
-	/// </summary>
-
-public enum ESprite
-	{
-		PLAYER = 1,
-		ENEMY1 = 2,
-		ENEMY2 = 3,
-		ENEMY3 = 4,
-		ENEMY4 = 5,
-		FLAG1 = 10,
-		FLAG2 = 11,
-		FLAG3 = 12
-	};
+/// <summary>
+/// Summary for GameManager
+///
+///	   NOTE: The gamemanager will control all the classes that are required to 
+///          run the game, the classes it will hold are:
+///          SoundManager, FontManager, CSVReader, Viewport, SpriteList,
+///          Sprite, TileMap, TileList, Tile.
+///
+/// </summary>
 
 ref class GameManager
 	{
@@ -75,5 +63,7 @@ ref class GameManager
 		void keyUp(KeyEventArgs^  e);
 		void updateGame();
 		void drawGame();
+
+		Player^ getPlayer()	{ return knight; }
 
 	};

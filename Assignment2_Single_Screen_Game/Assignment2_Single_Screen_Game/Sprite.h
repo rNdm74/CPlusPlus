@@ -10,50 +10,40 @@ using namespace System::Windows::Forms;
 using namespace System::Data;
 using namespace System::Drawing;
 
-//=================================================
-// Constants
-//=================================================
-#define MAX_DIRECTIONS 4
-#define HALF 2
-#define WANDER_PROB 100
-#define SPEED 5
-
-
-//=================================================
-// Bearing
-//=================================================
-public enum EBearing
-	{
-		NORTH = 0,
-		EAST = 1,
-		SOUTH = 2,
-		WEST = 3
-	};
-
-
-
-public enum EBoundsAction
-	{
-		BOUNCE,
-		WRAP,
-		DIE,
-		STOP, 
-		WALK
-	};
+/// <summary>
+/// Summary for Sprite
+///
+/// WARNING: If you change the name of this class, you will need to change the
+///          'Resource File Name' property for the managed resource compiler tool
+///          associated with all .resx files this class depends on.  Otherwise,
+///          the designers will not be able to interact properly with localized
+///          resources associated with this form.
+/// </summary>
 
 ref class Sprite
 	{
 	protected:
-		//=================================================
-		// Variables
-		//=================================================
+
+#pragma region Variables
+		/// <summary>
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
+		/// </summary>
+
 		bool player;
 		bool flag;
 		bool enemy;
+		bool walking;
+		bool alive;
 
-		array<Bitmap^>^ spriteSheets;
-		array<Point>^ spriteDirection;
+		Bitmap^ spriteSheet;
+
 		array<int, 3>^ sheetData;
+
+		array<Point>^ spriteDirection;
+		
+		array<Point>^ boundPoints;
+		array<Point>^ bounds;		
 
 		EBoundsAction action;
 		EBearing bearing;		
@@ -64,15 +54,13 @@ ref class Sprite
 		Rectangle frameRectangle;
 		Rectangle boundsRect;
 
-		TileMap^ tileMap;
 		Viewport^ viewPort;
-
-		bool walking;
-		bool alive;
+		TileMap^ tileMap;		
 
 		int currentFrame;
-		int frames;
+		long frameTime;
 		int frameDelay;
+		int frames;
 
 		int frameWidth;
 		int frameHeight;
@@ -86,56 +74,66 @@ ref class Sprite
 		int boundsX;
 		int boundsY;
 
-		Point startPosition;
+		Point startPosition;		
 
-		array<Point>^ bounds;
-		array<Point>^ boundPoints;
-
-		Rectangle hitbox;
-
-		long frameTime;
+#pragma endregion
+	private:
+		ETileType getTileType(int offset);
 
 	public:
 		Sprite^ Next;
 
 	public:
-		//=================================================
+		//
 		// Construtor
-		//=================================================
+		//
 		Sprite(TileMap^ startTileMap, EBoundsAction startAction, 
-			   Graphics^ startCanvas,array<String^>^ filenames, 
+			   Graphics^ startCanvas, String^ filename, 
 			   int nFrames, Random^ startRgen, Point startPos, 
 			   Viewport^ startViewPort);
+		
+#pragma region Methods
+		/// <summary>
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
+		/// </summary>
 
-		//=================================================
-		// Methods
-		//=================================================	
 		void setSpriteSheet();
 		void erase(Color eraseColor);
-
+		// 
+		// collision check
+		//
 		bool isBoundsCollision();
 		bool collided(Sprite^ sprite);
-		void executeBoundsAction();		
-
-		void wrap();
-		void reverse();
-		void die();
-		void stop();
-
-		virtual void canSpriteMove(int viewportWorldX, int viewportWorldY);
-		virtual void move(int viewportWorldX, int viewportWorldY);
-
-		void wander();		
-		virtual void updateFrame();	
-
-		void update();
-		void draw();
+		//
+		// bounds action
+		//
+		void executeBoundsAction();	
+		void wrap();					
+		void reverse();					
+		void die();						
+		void stop();	
+		//
+		// 
+		//
+		void canSpriteMove(int viewportWorldX, int viewportWorldY);
+		bool checkCanMove(EBearing spriteBearing, int viewportWorldX, int viewportWorldY);
+		void move(int viewportWorldX, int viewportWorldY);				
+		void updateFrame();
+		//
+		// draw sprite
+		//
 		void draw(int newXPos, int newYPos);
 
-		//=================================================
-		// Gets and Sets
-		//=================================================
-		Rectangle getFrameRectangle()		{ return Rectangle(xPos, yPos, frameRectangle.Width, frameRectangle.Height); }
+#pragma endregion
+		
+#pragma region Gets/Sets
+		/// <summary>
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
+		/// </summary>
+
+		Rectangle getFrameRectangle()	{ return Rectangle(xPos, yPos, frameRectangle.Width, frameRectangle.Height); }
 		Rectangle getBoundsRectangle()	{ return boundsRect; }
 
 		EBoundsAction getAction()		{ return action; }
@@ -159,11 +157,13 @@ ref class Sprite
 		int getWidth()					{ return frameWidth; }
 		int getHeight()					{ return frameHeight; }
 		
-		EBearing getRandomBearing();
 		EBearing getBearing()			{ return bearing; }
-		void setBearing(EBearing b)		{ bearing = b; }
+		void setBearing(EBearing b);
 
 		bool isEnemy()					{ return enemy; }
 		bool isPlayer()					{ return player; }
 		bool isFlag()					{ return flag; }
+
+#pragma endregion
+
 	};

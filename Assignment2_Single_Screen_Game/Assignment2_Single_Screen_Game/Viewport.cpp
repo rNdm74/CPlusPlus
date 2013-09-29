@@ -89,6 +89,9 @@ void Viewport::viewportDraw(int playerWorldX, int playerWorldY)
 			canvas->DrawRectangle(gcnew Pen(Color::Black), screenX, screenY, T_SIZE, T_SIZE);
 		}
 	}
+
+	
+	canvas->DrawRectangle(gcnew Pen(Color::Bisque), backgroundMap->getMapBounds());
 }
 
 Rectangle Viewport::getViewportBounds()
