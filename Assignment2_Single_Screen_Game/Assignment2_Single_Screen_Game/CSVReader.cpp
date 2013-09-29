@@ -10,6 +10,16 @@ CSVReader::CSVReader()
 
 array<int,2>^ CSVReader::populateMap(String^ filename)
 {
+	/// <summary>
+	/// Takes the input of a CSV file and reads it line by line
+	///	with each line it is then split using a delimiter.
+	///
+	/// All of the lines from the CSV file are processed and populate
+	///	a 2-Dimensional array.
+	///
+	/// Once the file is read the populated array is then returned.
+	/// </summary>
+
 	array<int,2>^ map;
 
 	reader = gcnew StreamReader(filename);		
@@ -22,7 +32,7 @@ array<int,2>^ CSVReader::populateMap(String^ filename)
 		// the reader will grab a line from the file
 		String^ line = reader->ReadLine();
 
-		if(line != "")
+		if(line != "") // if there is something to read
 		{
 			// populates the items array with split results from the csv file
 			items = line->Split(',');

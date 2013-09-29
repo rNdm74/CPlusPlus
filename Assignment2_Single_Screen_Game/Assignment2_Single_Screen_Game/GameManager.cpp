@@ -62,7 +62,7 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 		//=================================================
 		// Create Player
 		//=================================================
-		knight = gcnew Player
+		player = gcnew Player
 		(
 			tileMap,
 			STOP,
@@ -74,14 +74,14 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			foreground
 		);
 
-		knight->setStartPosition(objectMap->getSpawnPosition(PLAYER, knight->getHeight()));
+		player->setStartPosition(objectMap->getSpawnPosition(PLAYER, player->getHeight()));
 		
-		knight->setWalking(false);
+		player->setWalking(false);
 	
 		//=================================================
 		// Create NPCs
 		//=================================================
-		chickens = gcnew array<NPC^>(4);
+		aliens = gcnew array<NPC^>(4);
 
 		array<int>^ spriteType = gcnew array<int>
 		{
@@ -91,11 +91,11 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			ENEMY4
 		};
 
-		for(int c = 0; c < chickens->Length; c++)
+		for(int i = 0; i < aliens->Length; i++)
 		{
 			int r = rGen->Next(1, 3);
 
-			chickens[c] = gcnew NPC
+			aliens[i] = gcnew NPC
 			(
 				tileMap,
 				BOUNCE,
@@ -108,10 +108,10 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 				r
 			);
 
-			Point startPos = objectMap->getSpawnPosition(spriteType[c], chickens[c]->getHeight());
+			Point startPos = objectMap->getSpawnPosition(spriteType[i], aliens[i]->getHeight());
 
-			chickens[c]->setXPos(startPos.X);
-			chickens[c]->setYPos(startPos.Y);
+			aliens[i]->setXPos(startPos.X);
+			aliens[i]->setYPos(startPos.Y);
 		}
 
 		flags = gcnew array<Item^>(3);
@@ -123,25 +123,25 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			FLAG3
 		};
 
-		for(int c = 0; c < flags->Length; c++)
+		for(int i = 0; i < flags->Length; i++)
 		{
 			
-			flags[c] = gcnew Item
+			flags[i] = gcnew Item
 			(
 				tileMap,
 				WRAP,
 				dbGraphics,
-				"Images/flag" + c + ".png",	
+				"Images/flag" + i + ".png",	
 				2,
 				rGen,
 				Point(0,0),
 				foreground
 			);
 
-			Point startPos = objectMap->getSpawnPosition(spriteType[c], flags[c]->getHeight());
+			Point startPos = objectMap->getSpawnPosition(spriteType[i], flags[i]->getHeight());
 
-			flags[c]->setXPos(startPos.X);
-			flags[c]->setYPos(startPos.Y);
+			flags[i]->setXPos(startPos.X);
+			flags[i]->setYPos(startPos.Y);
 		}
 
 		coins = gcnew array<Item^>(65);
@@ -149,13 +149,13 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 		//addCoinsToGame();
 		
 		// Adds all game characters to the spritelist
-		for(int c = 0; c < flags->Length; c++)
-			spriteList->add(flags[c]);
+		for(int i = 0; i < flags->Length; i++)
+			spriteList->add(flags[i]);
 
-		for(int c = 0; c < chickens->Length; c++)
-			spriteList->add(chickens[c]);		
+		for(int i = 0; i < aliens->Length; i++)
+			spriteList->add(aliens[i]);		
 
-		spriteList->add(knight);
+		spriteList->add(player);
 
 		flagCount = 0;
 		lives = 3;
@@ -163,10 +163,10 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 
 void GameManager::addCoinsToGame()
 	{
-		for(int c = 0; c < coins->Length; c++)
+		for(int i = 0; i < coins->Length; i++)
 		{
 			
-			coins[c] = gcnew Item
+			coins[i] = gcnew Item
 			(
 				tileMap,
 				WRAP,
@@ -200,38 +200,38 @@ void GameManager::addCoinsToGame()
 			}
 		}
 		
-		for(int c = 0; c < coins->Length; c++)
-			spriteList->add(coins[c]);
+		for(int i = 0; i < coins->Length; i++)
+			spriteList->add(coins[i]);
 
 	}
 
 void GameManager::keyDown(KeyEventArgs^  e)
 	{
 		 if(e->KeyCode==Keys::Up ||e->KeyCode==Keys::Down || e->KeyCode==Keys::Left || e->KeyCode==Keys::Right)
-			 knight->setWalking(true);
+			 player->setWalking(true);
 		 		 
 		 if(e->KeyCode==Keys::Up)
 		 {
-			knight->setBearing(NORTH);			
+			player->setBearing(NORTH);			
 		 }		 
 		 else if(e->KeyCode==Keys::Down)
 		 {
-			knight->setBearing(SOUTH);	
+			player->setBearing(SOUTH);	
 		 }		 
 		 else if(e->KeyCode==Keys::Right)
 		 {
-			knight->setBearing(EAST);	
+			player->setBearing(EAST);	
 		 }		 
 		 else if(e->KeyCode==Keys::Left)
 		 {
-			knight->setBearing(WEST);	
+			player->setBearing(WEST);	
 		 }
 	}
 
 void GameManager::keyUp(KeyEventArgs^  e)
 	{
-		knight->setBearing(STAND);
-		knight->setWalking(false);
+		player->setBearing(STAND);
+		player->setWalking(false);
 	}
 
 void GameManager::updateGame()
@@ -239,15 +239,15 @@ void GameManager::updateGame()
 		//=================================================
 		// Move Player
 		//=================================================
-		//knight->move(foreground->getViewportWorldX(), foreground->getViewportWorldY());
+		//player->move(foreground->getViewportWorldX(), foreground->getViewportWorldY());
 
 		//=================================================
 		// Set Viewport Position on Player
 		//=================================================
-		int knightX = knight->getXPos() + (knight->getWidth() / 2);
-		int knightY = knight->getYPos() + (knight->getHeight() / 2);
+		int playerX = player->getXPos() + (player->getWidth() / 2);
+		int playerY = player->getYPos() + (player->getHeight() / 2);
 
-		foreground->moveRelativeToPlayer(knightX, knightY);
+		foreground->moveRelativeToPlayer(playerX, playerY);
 		
 		//=================================================
 		// Updates Sprites Animation
@@ -264,15 +264,15 @@ void GameManager::updateGame()
 
 		lives = spriteList->getLives();
 
-		if(knight->isGameOver())
+		if(player->isGameOver())
 			Application::Exit();
 
 
 		//=================================================
 		// NPC AI
 		//=================================================	
-		for(int c = 0; c < chickens->Length; c++)
-			chickens[c]->wander();
+		for(int c = 0; c < aliens->Length; c++)
+			aliens[c]->wander();
 	}
 
 void GameManager::drawGame()

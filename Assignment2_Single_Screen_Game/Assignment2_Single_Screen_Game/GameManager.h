@@ -26,20 +26,17 @@ ref class GameManager
 		Viewport^ foreground;
 
 		Graphics^ canvas;
-
 		Graphics^ dbGraphics;
-
 		Bitmap^ dbBitmap;
 
 		Image^ background;
 
 		TileMap^ tileMap;
-
 		ObjectMap^ objectMap;
 		
 		SpriteList^ spriteList;
 				
-		bool collision;
+		
 
 		Random^ rGen;
 
@@ -47,16 +44,16 @@ ref class GameManager
 
 		Rectangle clientRectangle;
 
-		Player^ knight;
 
-		array<NPC^>^ chickens;
-
+		Player^ player;
+		array<NPC^>^ aliens;
 		array<Item^>^ flags;
 		array<Item^>^ coins;
 
-
 		int flagCount;
 		int lives;
+
+		//bool collision;
 
 	public:
 		GameManager(Graphics^ startCanvas, Rectangle clientRectangle);
@@ -68,6 +65,6 @@ ref class GameManager
 
 		void addCoinsToGame();
 
-		Player^ getPlayer()	{ return knight; }
+		Player^ getPlayer()	{ return player; }
 
 	};

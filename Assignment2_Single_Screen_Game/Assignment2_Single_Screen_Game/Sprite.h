@@ -116,7 +116,7 @@ ref class Sprite
 		void die();						
 		void stop();	
 		//
-		// 
+		// moving and updating sprite
 		//
 		void canSpriteMove(int viewportWorldX, int viewportWorldY);
 		bool checkCanMove(EBearing spriteBearing, int viewportWorldX, int viewportWorldY);
