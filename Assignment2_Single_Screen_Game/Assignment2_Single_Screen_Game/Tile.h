@@ -8,7 +8,7 @@ using namespace System::Data;
 using namespace System::Drawing;
 
 /// <summary>
-/// Summary for Sprite
+/// Summary for Tile
 ///
 ///	   Note: If you change the name of this class, you will need to change the
 ///          'Resource File Name' property for the managed resource compiler tool

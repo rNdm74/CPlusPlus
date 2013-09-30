@@ -9,7 +9,7 @@
 //
 #define MAX_DIRECTIONS			5
 #define HALF					2
-#define WANDER_PROB				25
+#define WANDER_PROB				20
 #define SPEED					5
 #define N_COLS					15	// X Tiles
 #define N_ROWS					11 	// Y tiles

@@ -9,13 +9,11 @@
 	using namespace System::Drawing;
 
 /// <summary>
-/// Summary for Sprite
+/// Summary for CSV Reader
 ///
-///	   Note: If you change the name of this class, you will need to change the
-///          'Resource File Name' property for the managed resource compiler tool
-///          associated with all .resx files this class depends on.  Otherwise,
-///          the designers will not be able to interact properly with localized
-///          resources associated with this form.
+///	   Note: The CSV Reader will read files outside of the program and load  
+///          into arrays to be used in the game.
+///
 /// </summary>
 
 ref class CSVReader

@@ -177,6 +177,9 @@ void NPC::wander()
 	//=================================================
 	if(rGen->Next(WANDER_PROB) == 0) 
 		setBearing(getRandomBearing());
+
+	if(!walking)
+		setBearing(getRandomBearing());
 }
 EBearing NPC::getRandomBearing()
 {

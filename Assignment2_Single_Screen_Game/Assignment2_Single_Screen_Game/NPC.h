@@ -1,6 +1,14 @@
 #pragma once
 #include "sprite.h"
 
+/// <summary>
+/// Summary for NPC
+///
+///	   Note: The NPC decends from the sprite class  
+///          the NPC wanders and has a start type
+///			 that a sprite does not have.
+///
+/// </summary>
 
 
 ref class NPC :

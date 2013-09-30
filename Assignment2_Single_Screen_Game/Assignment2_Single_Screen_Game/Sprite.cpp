@@ -185,8 +185,8 @@ void Sprite::move(int viewportWorldX, int viewportWorldY)
 		if(isBoundsCollision())
 			executeBoundsAction();				
 
-		if(walking)
-			canSpriteMove(viewportWorldX, viewportWorldY);	
+		canSpriteMove(viewportWorldX, viewportWorldY);
+				
 	}
 
 
@@ -196,8 +196,13 @@ void Sprite::canSpriteMove(int viewportWorldX, int viewportWorldY)
 					
 	if(checkCanMove(bearing, viewportWorldX, viewportWorldY))
 	{
+		walking = true;
 		yPos += yMag * spriteDirection[bearing].Y;
 		xPos += xMag * spriteDirection[bearing].X;	
+	}
+	else
+	{
+		walking = false;
 	}
 
 	// Stops going off the left side of the screen

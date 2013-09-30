@@ -233,123 +233,119 @@ void GameManager::keyDown(KeyEventArgs^  e)
 void GameManager::keyUp(KeyEventArgs^  e)
 	{
 		player->setBearing(STAND);
-		player->setWalking(false);
+		//player->setWalking(false);
 	}
 
 void GameManager::updateGame()
 	{
-		//=================================================
-		// Move Player
-		//=================================================
-		//player->move(foreground->getViewportWorldX(), foreground->getViewportWorldY());
-
-		//=================================================
-		// Set Viewport Position on Player
-		//=================================================
-		int playerX = player->getXPos() + (player->getWidth() / 2);
-		int playerY = player->getYPos() + (player->getHeight() / 2);
-
-		foreground->moveRelativeToPlayer(playerX, playerY);
-		
-		//=================================================
-		// Updates Sprites Animation
-		//=================================================
-		spriteList->update();
-
+		//
+		// Get hud information
+		//
 		flagCount = spriteList->getFlags();
 		coinCount = spriteList->getCoins();
 		score = spriteList->getScore();
 		lives = spriteList->getLives();
-
-		if(flagCount == 3)
-		{
-			spriteList->setFlags(0);
-
-			tileMap->setMapValue(1, 9, 9);
-
-			addCoinsToGame();						
-		}
-
-		
-
-		if(lives == 0)
-		{
-			player->setGameOver(true);
-
-			fileReader = gcnew StreamReader("data.dat");
-			String^ line = fileReader->ReadLine();
-			int temp = int::Parse(line);		
-			fileReader->Close();
-
-			if(temp < score)
-			{
-				fileWriter = gcnew StreamWriter("data.dat");
-				fileWriter->Write(score.ToString());
-				fileWriter->Close();
-			}
-
-			Application::Exit();
-		}
-		
-		if(player->isLevelWin())
-		{
-			
-			createGame();
-
-			spriteList->setScore(score);
-			spriteList->setLives(lives);
-
-			player->setLevelWin(false);
-		}
-			
-
-
-		//=================================================
+		//
+		// Set Viewport Position on Player
+		//
+		int playerX = player->getXPos() + (player->getWidth() / 2);
+		int playerY = player->getYPos() + (player->getHeight() / 2);
+		foreground->moveRelativeToPlayer(playerX, playerY);		
+		//
+		// Updates Sprites Animation
+		//
+		spriteList->update();		
+		//
+		// Game Phaze
+		//
+		checkGamePhaze();		
+		//
+		// Game Win
+		//
+		checkGameWin();				
+		//
+		// Game Over
+		//
+		checkGameOver();
+		//
 		// NPC AI
-		//=================================================	
+		//	
 		for(int c = 0; c < aliens->Length; c++)
 			aliens[c]->wander();
 	}
 
 void GameManager::drawGame()
-	{
-		//=================================================
+	{		
+		//
 		// Draw Background to Canvas 
-		//=================================================
-		/*imageOneX-=1;
-		imageTwoX-=1;
-
-		if(imageOneX <= -1024)
-		{
-			imageOneX = 1024;
-		}
-
-		if(imageTwoX <= -1024)
-		{
-			imageTwoX = 1024;
-		}*/
-
-		dbGraphics->DrawImageUnscaled(background, Rectangle(0, 0, 1027, 768));
-		//dbGraphics->DrawImageUnscaledAndClipped(background, Rectangle(imageTwoX, 0, 1024, 768));
-
-		//=================================================
-		// Draw Viewport to Canvas 
-		//=================================================
-		foreground->viewportDraw(0, 0);
-
-		//=================================================
-		// Draw Sprites to Canvas
-		//=================================================
-		spriteList->renderSprites(foreground->getViewportWorldX(), foreground->getViewportWorldY());		
-
+		//	
+		dbGraphics->DrawImageUnscaled(background, Rectangle(0, 0, clientRectangle.Width, clientRectangle.Height));
+		//
+		// Draw hud information 
+		//
 		dbGraphics->DrawString("Flags: " + flagCount.ToString(), gcnew Font("Microsoft Sans Serif", 16), Brushes::WhiteSmoke, 10, 10);
 		dbGraphics->DrawString("Coins: " + coinCount.ToString(), gcnew Font("Microsoft Sans Serif", 16), Brushes::WhiteSmoke, 110, 10);
 		dbGraphics->DrawString("Lives: " + lives.ToString(), gcnew Font("Microsoft Sans Serif", 16), Brushes::WhiteSmoke, 210, 10);
 		dbGraphics->DrawString("Score: " + score.ToString(), gcnew Font("Microsoft Sans Serif", 16), Brushes::WhiteSmoke, 310, 10);
 		dbGraphics->DrawString("HighScore: " + highscore.ToString(), gcnew Font("Microsoft Sans Serif", 16), Brushes::WhiteSmoke, 500, 10);
-
-		//=================================================
+		//
+		// Draw Viewport to Canvas 
+		//
+		foreground->viewportDraw(0, 0);
+		//
+		// Draw Sprites to Canvas
+		//
+		spriteList->renderSprites(foreground->getViewportWorldX(), foreground->getViewportWorldY());	
+		//
 		// Make Buffer Visible 
-		//=================================================
+		//
 		canvas->DrawImage(dbBitmap, clientRectangle);
 	}
+
+void GameManager::checkGamePhaze()
+{
+	if(flagCount == 3)
+	{
+		spriteList->setFlags(0);
+
+		tileMap->setMapValue(1, 9, 9);
+
+		addCoinsToGame();						
+	}
+}
+
+void GameManager::checkGameWin()
+{
+	if(player->isLevelWin())
+	{
+		
+		createGame();
+
+		spriteList->setScore(score);
+		spriteList->setLives(lives);
+
+		player->setLevelWin(false);
+	}
+}
+
+void GameManager::checkGameOver()
+{
+	if(lives == 0)
+	{
+		player->setGameOver(true);
+
+		fileReader = gcnew StreamReader("data.dat");
+		String^ line = fileReader->ReadLine();
+		int temp = int::Parse(line);		
+		fileReader->Close();
+
+		if(temp < score)
+		{
+			fileWriter = gcnew StreamWriter("data.dat");
+			fileWriter->Write(score.ToString());
+			fileWriter->Close();
+		}
+
+		Application::Exit();
+	}
+}

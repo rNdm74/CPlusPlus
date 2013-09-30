@@ -8,13 +8,11 @@ using namespace System::Data;
 using namespace System::Drawing;
 
 /// <summary>
-/// Summary for Sprite
+/// Summary for ObjectMap
 ///
-///	   Note: If you change the name of this class, you will need to change the
-///          'Resource File Name' property for the managed resource compiler tool
-///          associated with all .resx files this class depends on.  Otherwise,
-///          the designers will not be able to interact properly with localized
-///          resources associated with this form.
+///	   Note: The Object Map takes the maps loaded by the CSV Reader and then gets 
+///			 the item spawn position from the maps.
+///
 /// </summary>
 
 ref class ObjectMap

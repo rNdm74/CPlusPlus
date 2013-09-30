@@ -71,6 +71,10 @@ ref class GameManager
 		void updateGame();
 		void drawGame();
 
+		void checkGamePhaze();
+		void checkGameWin();
+		void checkGameOver();
+
 		void addCoinsToGame();
 
 		Player^ getPlayer()	{ return player; }
