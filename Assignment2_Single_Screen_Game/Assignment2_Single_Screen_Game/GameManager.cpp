@@ -146,23 +146,6 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 
 		coins = gcnew array<Item^>(65);
 
-		//addCoinsToGame();
-		
-		// Adds all game characters to the spritelist
-		for(int i = 0; i < flags->Length; i++)
-			spriteList->add(flags[i]);
-
-		for(int i = 0; i < aliens->Length; i++)
-			spriteList->add(aliens[i]);		
-
-		spriteList->add(player);
-
-		flagCount = 0;
-		lives = 3;
-	}
-
-void GameManager::addCoinsToGame()
-	{
 		for(int i = 0; i < coins->Length; i++)
 		{
 			
@@ -199,6 +182,25 @@ void GameManager::addCoinsToGame()
 				}				
 			}
 		}
+
+		//addCoinsToGame();
+		
+		// Adds all game characters to the spritelist
+		for(int i = 0; i < flags->Length; i++)
+			spriteList->add(flags[i]);
+
+		for(int i = 0; i < aliens->Length; i++)
+			spriteList->add(aliens[i]);		
+
+		spriteList->add(player);
+
+		flagCount = 0;
+		lives = 3;
+	}
+
+void GameManager::addCoinsToGame()
+	{
+		
 		
 		for(int i = 0; i < coins->Length; i++)
 			spriteList->add(coins[i]);
