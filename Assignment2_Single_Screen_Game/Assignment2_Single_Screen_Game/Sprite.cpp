@@ -4,7 +4,8 @@
 Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction, 
 			   Graphics^ startCanvas, String^ filename, 
 			   int nFrames, Random^ startRGen, Point startPos, 
-			   Viewport^ startViewPort, ESprite startSprite)
+			   Viewport^ startViewPort, ESprite startSprite,
+			   array<int,3>^ startMap)
 	{
 		tileMap = startTileMap;
 		action = startAction;
@@ -13,6 +14,7 @@ Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction,
 		rGen = startRGen;
 		viewPort = startViewPort;
 		boundsRect = tileMap->getMapBounds();
+		sheetData = startMap;
 		walking = true;
 		alive = true;
 		

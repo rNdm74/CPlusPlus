@@ -18,7 +18,8 @@ public Sprite
 		NPC(TileMap^ startTileMap, EBoundsAction startAction, 
 			   Graphics^ startCanvas, String^ filename, 
 			   int nFrames, Random^ startRGen, Point startPos, 
-			   Viewport^ startViewPort, ESprite startSprite, int startEnemyType);
+			   Viewport^ startViewPort, ESprite startSprite,
+			   int startEnemyType, array<int,3>^ startMap);
 
 		void setEnemyOne();
 		void setEnemyTwo();

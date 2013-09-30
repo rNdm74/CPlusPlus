@@ -46,7 +46,7 @@ void GameManager::createGame()
 		//
 		// Create the csv file reader
 		//
-		reader = gcnew CSVReader("tilemap.csv", "objectmap.csv", "coinmap.csv");
+		reader = gcnew CSVReader();
 		//
 		// Create tilemap
 		//
@@ -80,7 +80,8 @@ void GameManager::createGame()
 			rGen,
 			Point(0, 0),
 			foreground,
-			PLAYER
+			PLAYER,
+			reader->getPlayerMap()
 		);
 		player->setStartPosition(objectMap->getSpawnPosition(PLAYER, player->getHeight()));		
 		player->setWalking(false);	
@@ -112,7 +113,8 @@ void GameManager::createGame()
 				Point(0,0),
 				foreground,
 				ENEMY,
-				r
+				r,
+				(r == 1) ? reader->getPlayerMap() : reader->getAlienMap()
 			);
 
 			Point startPos = objectMap->getSpawnPosition(spriteType[i], aliens[i]->getHeight());
@@ -143,7 +145,8 @@ void GameManager::createGame()
 				rGen,
 				Point(0,0),
 				foreground,
-				FLAG
+				FLAG,
+				reader->getItemMap()
 			);
 
 			Point startPos = objectMap->getSpawnPosition(spriteType[i], flags[i]->getHeight());
@@ -167,7 +170,8 @@ void GameManager::createGame()
 				rGen,
 				Point(0,0),
 				foreground,
-				COIN
+				COIN,
+				reader->getItemMap()				
 			);			
 		}
 
