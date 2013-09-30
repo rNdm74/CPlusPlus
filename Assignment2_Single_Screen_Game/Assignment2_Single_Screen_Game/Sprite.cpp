@@ -4,7 +4,7 @@
 Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction, 
 			   Graphics^ startCanvas, String^ filename, 
 			   int nFrames, Random^ startRGen, Point startPos, 
-			   Viewport^ startViewPort)
+			   Viewport^ startViewPort, ESprite startSprite)
 	{
 		tileMap = startTileMap;
 		action = startAction;
@@ -15,13 +15,29 @@ Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction,
 		boundsRect = tileMap->getMapBounds();
 		walking = true;
 		alive = true;
-
+		
+		switch(startSprite)
+		{
+			case PLAYER:
+				player = true;
+				break;
+			case ENEMY:
+				enemy = true;
+				break;
+			case FLAG:
+				flag = true;
+				break;
+			case COIN:
+				coin = true;
+				break;
+		}
 
 		//=================================================
 		// Create spritesheets from file names
 		//=================================================
 		spriteSheet = gcnew Bitmap(filename);
 		spriteSheet->MakeTransparent(spriteSheet->GetPixel(0,0));
+		format = spriteSheet->PixelFormat;
 
 
 		//=================================================
@@ -127,84 +143,21 @@ void Sprite::draw(int newXPos, int newYPos)
 		//=================================================
 		// Draw sprites frame to the screen
 		//=================================================
-		if(true)
-		{
-			Bitmap^ cloneBitmap;			
 
-			System::Drawing::Imaging::PixelFormat format = spriteSheet->PixelFormat;
-			
-			cloneBitmap = spriteSheet->Clone(frameRectangle, format);
-				
+		if(alive)
+		{	
+			spriteBitmap = spriteSheet->Clone(frameRectangle, format);
 
-			if(bearing == WEST)
-			{
-				cloneBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);				
-			}
+			if(bearing == WEST)	
+				spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);	
 
 			canvas->DrawImage
 			(
-				cloneBitmap,
+				spriteBitmap,
 				newXPos,
 				newYPos
 			);
-		}
-
-		canvas->DrawRectangle
-		(
-			gcnew Pen(Color::Fuchsia), 
-			Rectangle
-			(
-				newXPos, 
-				newYPos, 
-				frameRectangle.Width, 
-				frameRectangle.Height
-			)
-		);
-
-		canvas->DrawRectangle
-		(
-			gcnew Pen(Color::Fuchsia), 
-			Rectangle
-			(
-				bounds[0].X, 
-				bounds[0].Y, 
-				1, 
-				1
-			)
-		);
-		canvas->DrawRectangle
-		(
-			gcnew Pen(Color::Fuchsia), 
-			Rectangle
-			(
-				bounds[1].X, 
-				bounds[1].Y, 
-				1, 
-				1
-			)
-		);
-		canvas->DrawRectangle
-		(
-			gcnew Pen(Color::Fuchsia), 
-			Rectangle
-			(
-				bounds[2].X, 
-				bounds[2].Y, 
-				1, 
-				1
-			)
-		);
-		canvas->DrawRectangle
-		(
-			gcnew Pen(Color::Fuchsia), 
-			Rectangle
-			(
-				bounds[3].X, 
-				bounds[3].Y, 
-				1, 
-				1
-			)
-		);		
+		}				
 	}
 
 
@@ -227,6 +180,8 @@ void Sprite::move(int viewportWorldX, int viewportWorldY)
 		// the a set magnitude, a direction is then applied to the magnitude 1, -1
 		// this will allow the sprite to move up, down, left and right
 		//=======================================================================
+		
+
 		if(isBoundsCollision())
 			executeBoundsAction();				
 
@@ -237,35 +192,7 @@ void Sprite::move(int viewportWorldX, int viewportWorldY)
 
 void Sprite::canSpriteMove(int viewportWorldX, int viewportWorldY)
 {
-	int col = (xPos + frameWidth / 2) / T_SIZE;
-	int row = (yPos / T_SIZE) + 1;
-
-	ETileType tileType = tileMap->getTileType(row, col);
-
-	gameover = (tileType == EXIT);
-
-	if(tileType == WALKABLE && bearing == EAST)
-	{
-		yPos = (row * T_SIZE) - (frameHeight - 70);
-	}
-	
-	if(tileType == LADDER && bearing == NORTH)
-	{
-		xPos = col * T_SIZE;
-	}
-
-	col = (xPos + frameWidth / 2) / T_SIZE;
-	row = (yPos + frameHeight + 5) / T_SIZE;
-
-	tileType = tileMap->getTileType(row, col);
-
-	
-	
-	
-	if(tileType == LADDER && bearing == SOUTH)
-	{
-		xPos = col * T_SIZE;
-	}
+	levelwin = (getTileType(35, -35) == EXIT);		
 					
 	if(checkCanMove(bearing, viewportWorldX, viewportWorldY))
 	{
@@ -273,83 +200,45 @@ void Sprite::canSpriteMove(int viewportWorldX, int viewportWorldY)
 		xPos += xMag * spriteDirection[bearing].X;	
 	}
 
-	if(xPos < 0)
+	// Stops going off the left side of the screen
+	if(xPos < 0) 
 	{
 		executeBoundsAction();
 		xPos = 0;		
 	}
 
-	if(xPos > (boundsRect.Right - frameWidth) - 35)
+	// Stops going off the right side of the screen
+	if(xPos > (boundsRect.Right - frameWidth) - 35) 
 	{
 		executeBoundsAction();
 		xPos = (boundsRect.Right - frameWidth) - 35;		
 	}
 }
 
+bool Sprite::checkTile(ETileType tileType)
+{
+	return (tileType == LADDER || tileType == WALKABLE || tileType == EXIT);
+}
+
 bool Sprite::checkCanMove(EBearing spriteBearing, int viewportWorldX, int viewportWorldY)
 {
-	// Copies current position to new variable
-	int newSpriteXPos = xPos;
-	int newSpriteYPos = yPos;
-
-	// Adds to the new variable this will see where the knight wants to move
-	newSpriteXPos += xMag * spriteDirection[spriteBearing].X;
-	newSpriteYPos += yMag * spriteDirection[spriteBearing].Y;
-
-	// Brings new positon into the viewport area
-	int viewportSpriteX = newSpriteXPos - viewportWorldX;
-	int viewportSpriteY = newSpriteYPos - viewportWorldY;
-
-	//**************************************************
-	// Sets the detection point for the knight to tell what tile he is on
-	
-
-	bounds[0].X = viewportSpriteX; //+ frameWidth / 5;
-	bounds[0].Y = (viewportSpriteY + frameHeight) - 1;
-	bounds[1].X = viewportSpriteX; // + frameWidth / 5;
-	bounds[1].Y = (viewportSpriteY + frameHeight) - 70;
-	bounds[2].X = (viewportSpriteX + frameWidth);//; - frameWidth / 5;
-	bounds[2].Y = (viewportSpriteY + frameHeight)- 70;
-	bounds[3].X = (viewportSpriteX + frameWidth);//; - frameWidth / 5;
-	bounds[3].Y = (viewportSpriteY + frameHeight) - 1;
-	
-
-	//**************************************************
-	/*boundPoints[0].X = (newSpriteXPos + frameWidth / 5) / T_SIZE;
-	boundPoints[0].Y = ((newSpriteYPos + frameHeight) - 1) / T_SIZE;
-	boundPoints[1].X = (newSpriteXPos + frameWidth / 5) / T_SIZE;
-	boundPoints[1].Y = ((newSpriteYPos + frameHeight) - 70) / T_SIZE;
-	boundPoints[2].X = ((newSpriteXPos + frameWidth) - frameWidth / 5) / T_SIZE;
-	boundPoints[2].Y = ((newSpriteYPos + frameHeight) - 70) / T_SIZE;
-	boundPoints[3].X = ((newSpriteXPos + frameWidth) - frameWidth / 5) / T_SIZE;;
-	boundPoints[3].Y = ((newSpriteYPos + frameHeight) - 1) / T_SIZE;*/
-
-	boundPoints[0].X = (newSpriteXPos) / T_SIZE;
-	boundPoints[0].Y = ((newSpriteYPos + frameHeight) - 1) / T_SIZE;
-	boundPoints[1].X = (newSpriteXPos) / T_SIZE;
-	boundPoints[1].Y = ((newSpriteYPos + frameHeight) - 70) / T_SIZE;
-	boundPoints[2].X = ((newSpriteXPos + frameWidth)) / T_SIZE;
-	boundPoints[2].Y = ((newSpriteYPos + frameHeight) - 70) / T_SIZE;
-	boundPoints[3].X = ((newSpriteXPos + frameWidth)) / T_SIZE;;
-	boundPoints[3].Y = ((newSpriteYPos + frameHeight)-1) / T_SIZE;
-
-	// Current pixel plus half framewidth puts pixel in 
-	// center of knight then devides to get tile position 
-
-	if(boundPoints[0].Y < 11 && boundPoints[2].X < 15)
+	switch(spriteBearing)
 	{
-		bool p1 = tileMap->isSolid(boundPoints[0].Y, boundPoints[0].X);
-		bool p2 = tileMap->isSolid(boundPoints[1].Y, boundPoints[1].X);
-		bool p3 = tileMap->isSolid(boundPoints[2].Y, boundPoints[2].X);
-		bool p4 = tileMap->isSolid(boundPoints[3].Y, boundPoints[3].X);
+		case NORTH:
+			return checkTile(getTileType(35, -75));	
 
-		if(!p1 && !p2 && !p3 && !p4) // If the tile is not flowers apply new move position
-		{			
+		case EAST:
+			return checkTile(getTileType(75, -35));
+
+		case SOUTH:
+			return checkTile(getTileType(35, 2));
+
+		case WEST:
+			return checkTile(getTileType(-2, -35));
+
+		case STAND:
 			return true;
-		}
 	}
-
-	return false;
 }
 
 bool Sprite::isBoundsCollision()// should return info
@@ -510,14 +399,28 @@ void Sprite::setBearing(EBearing b)
 		switch(b)
 		{
 			case NORTH:
-				if(getTileType(-2) == LADDER)
+				if(getTileType(35, -2) == LADDER)
 				{
 					bearing = b;	
 				}
 				break;
 
 			case SOUTH:
-				if(getTileType(2) == LADDER)
+				if(getTileType(35, 2) == LADDER)
+				{
+					bearing = b;	
+				}
+				break;
+
+			case EAST:
+				if(getTileType(75, -35) != SOLID)
+				{
+					bearing = b;	
+				}
+				break;
+
+			case WEST:
+				if(getTileType(-2, -35) != SOLID)
 				{
 					bearing = b;	
 				}
@@ -529,10 +432,22 @@ void Sprite::setBearing(EBearing b)
 		}		
 	}
 
-ETileType Sprite::getTileType(int offset)
+ETileType Sprite::getTileType(int offsetX, int offsetY)
 	{
-		int col = (xPos + (frameWidth / HALF)) / T_SIZE;
-		int row = (yPos + (frameHeight + offset)) / T_SIZE;
+		int col = (xPos + offsetX) / T_SIZE;
+		int row = (yPos + (frameHeight + offsetY)) / T_SIZE;
 
-		return tileMap->getTileType(row, col);
+		ETileType tileType = tileMap->getTileType(row, col);
+		
+		if(tileType == LADDER && (bearing == NORTH || bearing == SOUTH))
+		{
+			xPos = col * T_SIZE;
+		}
+
+		if(tileType == WALKABLE && (bearing == WEST || bearing == EAST))
+		{
+			yPos = (row * T_SIZE) - (frameHeight - 70);
+		}
+
+		return tileType;
 	}

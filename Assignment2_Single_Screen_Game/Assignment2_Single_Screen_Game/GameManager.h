@@ -30,6 +30,8 @@ ref class GameManager
 		Bitmap^ dbBitmap;
 
 		Image^ background;
+		int imageOneX;
+		int imageTwoX;
 
 		TileMap^ tileMap;
 		ObjectMap^ objectMap;
@@ -51,15 +53,21 @@ ref class GameManager
 		array<Item^>^ coins;
 
 		int flagCount;
+		int coinCount;
 		int lives;
 
-		//bool collision;
+		int score;
+		int highscore;
+
+		StreamReader^ fileReader;
+		StreamWriter^ fileWriter;
 
 	public:
 		GameManager(Graphics^ startCanvas, Rectangle clientRectangle);
 
 		void keyDown(KeyEventArgs^  e);
 		void keyUp(KeyEventArgs^  e);
+		void createGame();
 		void updateGame();
 		void drawGame();
 

@@ -33,9 +33,9 @@ ref class CSVReader
 		array<int,2>^ populateMap(String^ filename);
 
 	public:
-		CSVReader();
+		CSVReader(String^ tileMapFileName, String^ objectMapFileName, String^ coinMapFileName);
 
-		array<int,2>^ getCoinMap()	{ return coinMap; }
+		array<int,2>^ getCoinMap()		{ return coinMap; }
 		array<int,2>^ getObjectMap()	{ return objectMap; }
-		array<int,2>^ getTileMap()	{ return tileMap; }
+		array<int,2>^ getTileMap()		{ return tileMap; }
 	};

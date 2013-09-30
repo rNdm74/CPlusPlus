@@ -4,9 +4,9 @@
 Player::Player(TileMap^ startTileMap, EBoundsAction startAction, 
 			   Graphics^ startCanvas, String^ filename, 
 			   int nFrames, Random^ startRGen, Point startPos, 
-			   Viewport^ startViewPort)
+			   Viewport^ startViewPort, ESprite startSprite)
 	   : Sprite(startTileMap, startAction, startCanvas, filename, 
-				 nFrames, startRGen, startPos, startViewPort)
+				 nFrames, startRGen, startPos, startViewPort, startSprite)
 	{
 		xMag = 8;
 		yMag = 10;
@@ -82,8 +82,6 @@ Player::Player(TileMap^ startTileMap, EBoundsAction startAction,
 
 		frameWidth = sheetData[bearing, currentFrame, WIDTH];
 		frameHeight = sheetData[bearing, currentFrame, HEIGHT];
-
-		player = true;
 	}
 
 

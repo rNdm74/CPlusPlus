@@ -4,14 +4,10 @@
 Item::Item(TileMap^ startTileMap, EBoundsAction startAction, 
 			   Graphics^ startCanvas, String^ filename, 
 			   int nFrames, Random^ startRGen, Point startPos, 
-			   Viewport^ startViewPort)
+			   Viewport^ startViewPort, ESprite startSprite)
 	   : Sprite(startTileMap, startAction, startCanvas, filename, 
-				 nFrames, startRGen, startPos, startViewPort)
+				 nFrames, startRGen, startPos, startViewPort, startSprite)
 {
-
-	coin = true;
-	flag = true;
-
 	sheetData = gcnew array<int, 3>
 		{
 			{

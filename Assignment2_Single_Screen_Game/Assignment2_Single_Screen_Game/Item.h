@@ -8,5 +8,5 @@ public:
 	Item(TileMap^ startTileMap, EBoundsAction startAction, 
 			   Graphics^ startCanvas, String^ filename, 
 			   int nFrames, Random^ startRgen, Point startPos, 
-			   Viewport^ startViewPort);
+			   Viewport^ startViewPort, ESprite startSprite);
 };

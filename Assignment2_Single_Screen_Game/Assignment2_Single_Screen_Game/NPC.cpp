@@ -4,9 +4,9 @@
 NPC::NPC(TileMap^ startTileMap, EBoundsAction startAction, 
 			   Graphics^ startCanvas, String^ filename, 
 			   int nFrames, Random^ startRGen, Point startPos, 
-			   Viewport^ startViewPort, int startEnemyType)
+			   Viewport^ startViewPort, ESprite startSprite, int startEnemyType)
     : Sprite(startTileMap, startAction, startCanvas, filename, 
-				 nFrames, startRGen, startPos, startViewPort)
+				 nFrames, startRGen, startPos, startViewPort, startSprite)
 	{
 		xMag = 6;
 		yMag = 6;
@@ -29,7 +29,7 @@ void NPC::setEnemyOne()
 {
 	sheetData = gcnew array<int, 3>
 		{
-			{
+			{ // North
 				{438,92,67,97},
 				{438,92,67,97},
 				{438,92,67,97},
@@ -42,7 +42,7 @@ void NPC::setEnemyOne()
 				{438,92,67,97},
 				{438,92,67,97}
 			},
-			{
+			{ // East
 				{0, 0, 72, 97},
 				{73, 0, 72, 97},
 				{146, 0, 72, 97},
@@ -55,20 +55,20 @@ void NPC::setEnemyOne()
 				{365, 0, 72, 97},
 				{292, 98, 72, 97}
 			},
-			{
-				{438,93,67,94},
-				{438,93,67,94},
-				{438,93,67,94},
-				{438,93,67,94},
-				{438,93,67,94},
-				{438,93,67,94},
-				{438,93,67,94},
-				{438,93,67,94},
-				{438,93,67,94},
-				{438,93,67,94},
-				{438,93,67,94}
+			{ // South
+				{365,98,69,97},
+				{365,98,69,97},
+				{365,98,69,97},
+				{365,98,69,97},
+				{365,98,69,97},
+				{365,98,69,97},
+				{365,98,69,97},
+				{365,98,69,97},
+				{365,98,69,97},
+				{365,98,69,97},
+				{365,98,69,97}
 			},
-			{
+			{ // West
 				{0, 0, 72, 97},
 				{73, 0, 72, 97},
 				{146, 0, 72, 97},
@@ -95,15 +95,26 @@ void NPC::setEnemyOne()
 				{67, 191, 66, 97 }
 			}
 		};
-
-	enemy = true;
 }
 
 void NPC::setEnemyTwo()
 {
 	sheetData = gcnew array<int, 3>
 	{
-		{
+		{ // North
+			{423 ,95 ,66 ,94},
+			{423 ,95 ,66 ,94},
+			{423 ,95 ,66 ,94},
+			{423 ,95 ,66 ,94},
+			{423 ,95 ,66 ,94},
+			{423 ,95 ,66 ,94},
+			{423 ,95 ,66 ,94},
+			{423 ,95 ,66 ,94},
+			{423 ,95 ,66 ,94},
+			{423 ,95 ,66 ,94},
+			{423 ,95 ,66 ,94},
+		},
+		{ // East
 			{0,0,70,94},
 			{71,0,70,94},
 			{142,0,70,94},
@@ -116,33 +127,20 @@ void NPC::setEnemyTwo()
 			{355,0,70,94},
 			{284,95,70,94}
 		},
-		{
-			{0,0,70,94},
-			{71,0,70,94},
-			{142,0,70,94},
-			{0,95,70,94},
-			{71,95,70,94},
-			{142,95,70,94},
-			{213,0,70,94},
-			{284,0,70,94},
-			{213,95,70,94},
-			{355,0,70,94},
-			{284,95,70,94}
+		{ // South
+			{355,95,67 ,94},
+			{355,95,67 ,94},
+			{355,95,67 ,94},
+			{355,95,67 ,94},
+			{355,95,67 ,94},
+			{355,95,67 ,94},
+			{355,95,67 ,94},
+			{355,95,67 ,94},
+			{355,95,67 ,94},
+			{355,95,67 ,94},
+			{355,95,67 ,94}
 		},
-		{
-			{0,0,70,94},
-			{71,0,70,94},
-			{142,0,70,94},
-			{0,95,70,94},
-			{71,95,70,94},
-			{142,95,70,94},
-			{213,0,70,94},
-			{284,0,70,94},
-			{213,95,70,94},
-			{355,0,70,94},
-			{284,95,70,94}
-		},
-		{
+		{  // West
 			{0,0,70,94},
 			{71,0,70,94},
 			{142,0,70,94},
@@ -169,8 +167,6 @@ void NPC::setEnemyTwo()
 			{67, 188, 66, 94 }
 		}
 	};
-
-	enemy = true;
 }
 
 void NPC::wander()
@@ -187,7 +183,7 @@ EBearing NPC::getRandomBearing()
 	//=================================================
 	// Return a random EBearing
 	//=================================================
-	int pick = rGen->Next(3);
+	int pick = rGen->Next(4);
 
 	switch(pick)
 	{	
@@ -196,6 +192,10 @@ EBearing NPC::getRandomBearing()
 		case 1:
 			return EAST;
 		case 2:
-			return STAND;
+			return NORTH;
+		case 3:
+			return SOUTH;
+		/*case 4:
+			return STAND;*/
 	}
 }

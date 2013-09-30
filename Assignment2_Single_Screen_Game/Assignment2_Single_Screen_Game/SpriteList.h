@@ -17,7 +17,10 @@ ref class SpriteList
 	{
 	private:
 		Viewport^ viewport;
+
+		int score;
 		int flags;
+		int coins;
 		int lives;
 
 		Sprite^ head;
@@ -33,6 +36,12 @@ ref class SpriteList
 		void renderSprites(int vX, int vY);
 		void draw();
 
-		int getFlags()	{ return flags; }
-		int getLives()	{ return lives; }
+		int getScore()			{ return score; }
+		void setScore(int s)	{ score = s; }
+		int getCoins()			{ return coins; }
+		int getLives()			{ return lives; }
+		void setLives(int l)	{ lives = l; }
+		int getFlags()			{ return flags; }
+		void setFlags(int f)	{ flags = f; }
+		
 	};

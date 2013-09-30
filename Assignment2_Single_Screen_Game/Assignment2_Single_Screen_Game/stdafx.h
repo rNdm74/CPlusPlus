@@ -9,7 +9,7 @@
 //
 #define MAX_DIRECTIONS			5
 #define HALF					2
-#define WANDER_PROB				100
+#define WANDER_PROB				25
 #define SPEED					5
 #define N_COLS					15	// X Tiles
 #define N_ROWS					11 	// Y tiles
@@ -18,19 +18,22 @@
 #define V_COLS					15
 #define V_ROWS					11
 #define OFFSET					100
+#define ALIEN_ONE				2
+#define ALIEN_TWO				3
+#define ALIEN_THREE				4
+#define ALIEN_FOUR				5
+#define RED_FLAG				10
+#define BLUE_FLAG				11
+#define YELLOW_FLAG				12
+
 //
 //
 //
 public enum ESprite
 {
 	PLAYER = 1,
-	ENEMY1 = 2,
-	ENEMY2 = 3,
-	ENEMY3 = 4,
-	ENEMY4 = 5,
-	FLAG1  = 10,
-	FLAG2  = 11,
-	FLAG3  = 12,
+	ENEMY  = 2,
+	FLAG   = 3,
 	COIN   = 13
 };
 //

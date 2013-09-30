@@ -9,6 +9,7 @@ using namespace System::Collections;
 using namespace System::Windows::Forms;
 using namespace System::Data;
 using namespace System::Drawing;
+using namespace System::Drawing::Imaging;
 
 /// <summary>
 /// Summary for Sprite
@@ -37,8 +38,11 @@ ref class Sprite
 		bool walking;
 		bool alive;
 		bool gameover;
+		bool levelwin;
 
 		Bitmap^ spriteSheet;
+		Bitmap^ spriteBitmap;
+		PixelFormat format;
 
 		array<int, 3>^ sheetData;
 
@@ -80,7 +84,7 @@ ref class Sprite
 
 #pragma endregion
 	private:
-		ETileType getTileType(int offset);
+		ETileType getTileType(int offsetX, int offsetY);
 
 	public:
 		Sprite^ Next;
@@ -92,7 +96,7 @@ ref class Sprite
 		Sprite(TileMap^ startTileMap, EBoundsAction startAction, 
 			   Graphics^ startCanvas, String^ filename, 
 			   int nFrames, Random^ startRgen, Point startPos, 
-			   Viewport^ startViewPort);
+			   Viewport^ startViewPort, ESprite startSprite);
 		
 #pragma region Methods
 		/// <summary>
@@ -118,6 +122,8 @@ ref class Sprite
 		//
 		// moving and updating sprite
 		//
+		
+		bool checkTile(ETileType tileType);
 		void canSpriteMove(int viewportWorldX, int viewportWorldY);
 		bool checkCanMove(EBearing spriteBearing, int viewportWorldX, int viewportWorldY);
 		void move(int viewportWorldX, int viewportWorldY);				
@@ -167,6 +173,9 @@ ref class Sprite
 		bool isFlag()					{ return flag; }
 		bool isCoin()					{ return coin; }
 		bool isGameOver()				{ return gameover; }
+		void setGameOver(bool g)		{ gameover = g; }
+		bool isLevelWin()				{ return levelwin; }
+		void setLevelWin(bool l)		{ levelwin = l; }
 
 #pragma endregion
 

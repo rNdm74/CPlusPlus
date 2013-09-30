@@ -5,6 +5,7 @@ SpriteList::SpriteList(Viewport^ startViewport)
 	{
 		viewport = startViewport;
 
+		coins = 0;
 		flags = 0;
 		lives = 3;
 
@@ -108,8 +109,9 @@ void SpriteList::update()
 	Sprite^ spriteWalker = head;		
 
 	while(spriteWalker != nullptr)
-	{	
-		checkCollisions(spriteWalker);	
+	{
+		if(spriteWalker->isPlayer())
+			checkCollisions(spriteWalker);	
 
 		spriteWalker->move(viewport->getViewportWorldX(), viewport->getViewportWorldY());
 		spriteWalker->updateFrame();
@@ -152,20 +154,32 @@ Sprite^ SpriteList::checkCollisions(Sprite^ sprite)
 		{
 			bool hit = spriteWalker->collided(sprite);
 			
-			bool player = spriteWalker->isPlayer(); 
-			bool flag = sprite->isFlag();
-			bool enemy = sprite->isEnemy();
+			bool player = sprite->isPlayer(); 
+			bool flag = spriteWalker->isFlag();
+			bool coin = spriteWalker->isCoin();
+			bool enemy = spriteWalker->isEnemy();
+
+			if(hit && player && coin)
+			{
+				remove(spriteWalker);
+
+				coins++;
+
+				score += 250;
+			}
 
 			if(hit && player && flag)
 			{
-				remove(sprite);
+				remove(spriteWalker);
 
-				flags += 1;				
+				flags++;	
+
+				score += 1000;
 			}
 
 			if(hit && player && enemy)	
 			{
-				spriteWalker->resetPosition();
+				sprite->resetPosition();
 
 				lives--;
 			}

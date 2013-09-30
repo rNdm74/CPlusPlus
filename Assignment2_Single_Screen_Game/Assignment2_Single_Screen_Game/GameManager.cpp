@@ -3,65 +3,73 @@
 
 GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 	{
-		//=================================================
-		// Create the csv file reader
-		//=================================================
-		reader = gcnew CSVReader();
-
-		//=================================================
-		// Create canvas from form
-		//================================================= 
-		canvas = startCanvas;
-
-		//=================================================
-		// Client viewable screen bounds
-		//=================================================
-		clientRectangle = startClientRectangle;
-
-		//=================================================
-		// Create graphics size of the screen
-		//=================================================
-		dbBitmap = gcnew Bitmap(clientRectangle.Width, clientRectangle.Height);
-		 
-		//=================================================
-		// Grab its Graphics
-		//=================================================
-		dbGraphics = Graphics::FromImage(dbBitmap);
-		
-		//=================================================
-		// Create random
-		//=================================================
-		rGen = gcnew Random();
-
-		//=================================================
-		// Create background
-		//=================================================
-		tileMap = gcnew TileMap(dbGraphics, reader->getTileMap());
-
-		//=================================================
-		// Create viewport
-		//=================================================
-		foreground = gcnew Viewport(0, 0, N_COLS, N_ROWS, tileMap, dbGraphics);
-
-		//=================================================
-		// Create spritelist
-		//=================================================
-		
-		spriteList = gcnew SpriteList(foreground);
-
-		Rectangle mapRect = tileMap->getMapBounds();
-
-		background = Image::FromFile("Images/bg.png");
-
 		//
-		// Object map
+		// Create canvas from form
+		//
+		canvas = startCanvas;
+		//
+		// Client viewable screen bounds
+		//
+		clientRectangle = startClientRectangle;
+		//
+		// Create graphics size of the screen
+		//
+		dbBitmap = gcnew Bitmap(clientRectangle.Width, clientRectangle.Height);		 
+		//
+		// Grab its Graphics
+		//
+		dbGraphics = Graphics::FromImage(dbBitmap);		
+		//
+		// Create random
+		//
+		rGen = gcnew Random();
+		//
+		// Create game
+		//
+		createGame();		
+	}
+
+void GameManager::addCoinsToGame()
+	{	
+		for(int i = 0; i < coins->Length; i++)
+		{
+			spriteList->add(coins[i]);
+		}
+	}
+
+void GameManager::createGame()
+	{
+		fileReader = gcnew StreamReader("data.dat");
+		String^ line = fileReader->ReadLine();
+		highscore = int::Parse(line);		
+		fileReader->Close();
+		//
+		// Create the csv file reader
+		//
+		reader = gcnew CSVReader("tilemap.csv", "objectmap.csv", "coinmap.csv");
+		//
+		// Create tilemap
+		//
+		tileMap = gcnew TileMap(dbGraphics, reader->getTileMap());
+		//
+		// Create objectmap
 		//
 		objectMap = gcnew ObjectMap(reader->getObjectMap(), reader->getCoinMap());
-
-
-		//=================================================
+		//
+		// Create viewport
+		//
+		foreground = gcnew Viewport(0, 0, N_COLS, N_ROWS, tileMap, dbGraphics);
+		//
+		// Create viewport
+		//
+		background = Image::FromFile("Images/bg.png");		
+		//
+		// Create spritelist
+		//
+		spriteList = gcnew SpriteList(foreground);
+		//
 		// Create Player
-		//=================================================
+		//
 		player = gcnew Player
 		(
 			tileMap,
@@ -71,24 +79,22 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			11,
 			rGen,
 			Point(0, 0),
-			foreground
+			foreground,
+			PLAYER
 		);
-
-		player->setStartPosition(objectMap->getSpawnPosition(PLAYER, player->getHeight()));
-		
-		player->setWalking(false);
-	
-		//=================================================
+		player->setStartPosition(objectMap->getSpawnPosition(PLAYER, player->getHeight()));		
+		player->setWalking(false);	
+		//
 		// Create NPCs
-		//=================================================
+		//
 		aliens = gcnew array<NPC^>(4);
 
 		array<int>^ spriteType = gcnew array<int>
 		{
-			ENEMY1, 
-			ENEMY2, 
-			ENEMY3, 
-			ENEMY4
+			ALIEN_ONE, 
+			ALIEN_TWO, 
+			ALIEN_THREE, 
+			ALIEN_FOUR
 		};
 
 		for(int i = 0; i < aliens->Length; i++)
@@ -105,6 +111,7 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 				rGen,
 				Point(0,0),
 				foreground,
+				ENEMY,
 				r
 			);
 
@@ -118,9 +125,9 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 
 		spriteType = gcnew array<int>
 		{
-			FLAG1, 
-			FLAG2, 
-			FLAG3
+			RED_FLAG, 
+			BLUE_FLAG, 
+			YELLOW_FLAG
 		};
 
 		for(int i = 0; i < flags->Length; i++)
@@ -135,7 +142,8 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 				2,
 				rGen,
 				Point(0,0),
-				foreground
+				foreground,
+				FLAG
 			);
 
 			Point startPos = objectMap->getSpawnPosition(spriteType[i], flags[i]->getHeight());
@@ -158,7 +166,8 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 				2,
 				rGen,
 				Point(0,0),
-				foreground
+				foreground,
+				COIN
 			);			
 		}
 
@@ -183,8 +192,8 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			}
 		}
 
-		//addCoinsToGame();
 		
+				
 		// Adds all game characters to the spritelist
 		for(int i = 0; i < flags->Length; i++)
 			spriteList->add(flags[i]);
@@ -194,17 +203,8 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 
 		spriteList->add(player);
 
-		flagCount = 0;
-		lives = 3;
-	}
-
-void GameManager::addCoinsToGame()
-	{
-		
-		
-		for(int i = 0; i < coins->Length; i++)
-			spriteList->add(coins[i]);
-
+		imageOneX = 0;
+		imageTwoX = 1024;
 	}
 
 void GameManager::keyDown(KeyEventArgs^  e)
@@ -257,17 +257,51 @@ void GameManager::updateGame()
 		spriteList->update();
 
 		flagCount = spriteList->getFlags();
+		coinCount = spriteList->getCoins();
+		score = spriteList->getScore();
+		lives = spriteList->getLives();
 
 		if(flagCount == 3)
 		{
+			spriteList->setFlags(0);
+
 			tileMap->setMapValue(1, 9, 9);
-			addCoinsToGame();
+
+			addCoinsToGame();						
 		}
 
-		lives = spriteList->getLives();
+		
 
-		if(player->isGameOver())
+		if(lives == 0)
+		{
+			player->setGameOver(true);
+
+			fileReader = gcnew StreamReader("data.dat");
+			String^ line = fileReader->ReadLine();
+			int temp = int::Parse(line);		
+			fileReader->Close();
+
+			if(temp < score)
+			{
+				fileWriter = gcnew StreamWriter("data.dat");
+				fileWriter->Write(score.ToString());
+				fileWriter->Close();
+			}
+
 			Application::Exit();
+		}
+		
+		if(player->isLevelWin())
+		{
+			
+			createGame();
+
+			spriteList->setScore(score);
+			spriteList->setLives(lives);
+
+			player->setLevelWin(false);
+		}
+			
 
 
 		//=================================================
@@ -282,7 +316,21 @@ void GameManager::drawGame()
 		//=================================================
 		// Draw Background to Canvas 
 		//=================================================
-		dbGraphics->DrawImageUnscaledAndClipped(background, clientRectangle);
+		/*imageOneX-=1;
+		imageTwoX-=1;
+
+		if(imageOneX <= -1024)
+		{
+			imageOneX = 1024;
+		}
+
+		if(imageTwoX <= -1024)
+		{
+			imageTwoX = 1024;
+		}*/
+
+		dbGraphics->DrawImageUnscaled(background, Rectangle(0, 0, 1027, 768));
+		//dbGraphics->DrawImageUnscaledAndClipped(background, Rectangle(imageTwoX, 0, 1024, 768));
 
 		//=================================================
 		// Draw Viewport to Canvas 
@@ -294,9 +342,11 @@ void GameManager::drawGame()
 		//=================================================
 		spriteList->renderSprites(foreground->getViewportWorldX(), foreground->getViewportWorldY());		
 
-		dbGraphics->DrawString("Flags: " + flagCount.ToString(), gcnew Font("Microsoft Sans Serif", 12), Brushes::Black, 10, 10);
-
-		dbGraphics->DrawString("Lives: " + lives.ToString(), gcnew Font("Microsoft Sans Serif", 12), Brushes::Black, 500, 10);
+		dbGraphics->DrawString("Flags: " + flagCount.ToString(), gcnew Font("Microsoft Sans Serif", 16), Brushes::WhiteSmoke, 10, 10);
+		dbGraphics->DrawString("Coins: " + coinCount.ToString(), gcnew Font("Microsoft Sans Serif", 16), Brushes::WhiteSmoke, 110, 10);
+		dbGraphics->DrawString("Lives: " + lives.ToString(), gcnew Font("Microsoft Sans Serif", 16), Brushes::WhiteSmoke, 210, 10);
+		dbGraphics->DrawString("Score: " + score.ToString(), gcnew Font("Microsoft Sans Serif", 16), Brushes::WhiteSmoke, 310, 10);
+		dbGraphics->DrawString("HighScore: " + highscore.ToString(), gcnew Font("Microsoft Sans Serif", 16), Brushes::WhiteSmoke, 500, 10);
 
 		//=================================================
 		// Make Buffer Visible 

@@ -1,11 +1,11 @@
 #include "StdAfx.h"
 #include "CSVReader.h"
 
-CSVReader::CSVReader()
+CSVReader::CSVReader(String^ tileMapFileName, String^ objectMapFileName, String^ coinMapFileName)
 	{
-		tileMap = populateMap("tilemap.csv");
-		objectMap = populateMap("objectmap.csv");	
-		coinMap = populateMap("coinmap.csv");
+		tileMap = populateMap(tileMapFileName);
+		objectMap = populateMap(objectMapFileName);	
+		coinMap = populateMap(coinMapFileName);
 	}
 
 array<int,2>^ CSVReader::populateMap(String^ filename)
