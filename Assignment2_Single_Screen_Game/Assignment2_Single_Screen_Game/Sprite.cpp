@@ -159,10 +159,36 @@ void Sprite::move(int viewportWorldX, int viewportWorldY)
 			executeBoundsAction();
 	}
 
+bool Sprite::collectCoin()
+{
+	ETileType tileType = getTileType(35, -35);
+
+	if(tileType == COIN)
+	{
+		int col = (xPos + 35) / T_SIZE;
+		int row = (yPos + (frameHeight + -35)) / T_SIZE;
+
+		tileMap->setMapValue(col, row, 0);
+
+		return true;
+	}
+
+	if(tileType == LADDER_COIN)
+	{
+		int col = (xPos + 35) / T_SIZE;
+		int row = (yPos + (frameHeight + -35)) / T_SIZE;
+
+		tileMap->setMapValue(col, row, 5);
+
+		return true;
+	}
+
+	return false;
+}
 
 void Sprite::canSpriteMove(int viewportWorldX, int viewportWorldY)
 {
-	levelwin = (getTileType(35, -35) == EXIT);
+	levelwin = (getTileType(35, -35) == EXIT);		
 
 	walking = isTileCollision(bearing, viewportWorldX, viewportWorldY);
 					
@@ -175,7 +201,21 @@ void Sprite::canSpriteMove(int viewportWorldX, int viewportWorldY)
 
 bool Sprite::checkTile(ETileType tileType)
 {
-	return (tileType == LADDER || tileType == WALKABLE || tileType == EXIT);
+	switch(tileType)
+	{
+		case LADDER:
+			return true;
+		case WALKABLE:
+			return true;
+		case EXIT:
+			return true;
+		case LADDER_COIN:
+			return true;
+		case COIN:
+			return true;
+		default:
+			return false;
+	}	
 }
 
 bool Sprite::isTileCollision(EBearing spriteBearing, int viewportWorldX, int viewportWorldY)
@@ -304,7 +344,7 @@ void Sprite::stop()
 			xPos = boundsRect.Left; // clamps sprite 
 
 		if(bearing == EAST)
-			xPos = (boundsRect.Right - frameWidth) - 35; // clamps sprite
+			xPos = (boundsRect.Right - frameWidth) - 40; // clamps sprite
 	}
 
 
@@ -356,14 +396,14 @@ void Sprite::setBearing(EBearing b)
 		switch(b)
 		{
 			case NORTH:
-				if(getTileType(35, -2) == LADDER)
+				if(getTileType(35, -2) == LADDER || getTileType(35, -2) == LADDER_COIN)
 				{
 					bearing = b;	
 				}
 				break;
 
 			case SOUTH:
-				if(getTileType(35, 2) == LADDER)
+				if(getTileType(35, 2) == LADDER || getTileType(35, 2) == LADDER_COIN)
 				{
 					bearing = b;	
 				}
@@ -396,12 +436,12 @@ ETileType Sprite::getTileType(int offsetX, int offsetY)
 
 		ETileType tileType = tileMap->getTileType(row, col);
 		
-		if(tileType == LADDER && (bearing == NORTH || bearing == SOUTH))
+		if((tileType == LADDER_COIN || tileType == LADDER) && (bearing == NORTH || bearing == SOUTH))
 		{
 			xPos = col * T_SIZE;
 		}
 
-		if(tileType == WALKABLE && (bearing == WEST || bearing == EAST))
+		if((tileType == COIN ||tileType == WALKABLE) && (bearing == WEST || bearing == EAST))
 		{
 			yPos = (row * T_SIZE) - (frameHeight - 70);
 		}

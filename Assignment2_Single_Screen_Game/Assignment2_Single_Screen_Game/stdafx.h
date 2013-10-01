@@ -33,8 +33,8 @@ public enum ESprite
 {
 	PLAYER = 1,
 	ENEMY  = 2,
-	FLAG   = 3,
-	COIN   = 13
+	FLAG   = 3
+	//COIN   = 13
 };
 //
 //
@@ -85,5 +85,7 @@ public enum ETileType
 	SOLID = 0,
 	LADDER = 1,
 	WALKABLE = 2,
-	EXIT = 3
+	EXIT = 3,
+	LADDER_COIN = 4,
+	COIN = 5
 };

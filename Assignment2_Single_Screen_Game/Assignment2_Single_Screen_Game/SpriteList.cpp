@@ -159,6 +159,16 @@ Sprite^ SpriteList::checkCollisions(Sprite^ sprite)
 			bool coin = spriteWalker->isCoin();
 			bool enemy = spriteWalker->isEnemy();
 
+			if(player)
+			{
+				if(sprite->collectCoin())
+				{
+					coins++;
+
+					score += 50;
+				}				
+			}
+
 			if(hit && player && coin)
 			{
 				remove(spriteWalker);
@@ -174,7 +184,7 @@ Sprite^ SpriteList::checkCollisions(Sprite^ sprite)
 
 				flags++;	
 
-				score += 1000;
+				score += 100;
 			}
 
 			if(hit && player && enemy)	

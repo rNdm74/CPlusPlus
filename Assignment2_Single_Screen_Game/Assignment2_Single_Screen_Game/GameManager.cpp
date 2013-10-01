@@ -26,14 +26,26 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 		//
 		// Create game
 		//
-		createGame();		
+		createGame();	
 	}
 
 void GameManager::addCoinsToGame()
 	{	
-		for(int i = 0; i < coins->Length; i++)
+		/*for(int i = 0; i < coins->Length; i++)
 		{
 			spriteList->add(coins[i]);
+		}*/
+		array<int, 2>^ coinMap = reader->getCoinMap();
+
+		for(int col = 0; col < N_COLS; col++)
+		{
+			for(int row = 0; row < N_ROWS; row++)
+			{
+				int coin = coinMap[row, col];
+
+				if(coin != 0)
+					tileMap->setMapValue(col, row, coin);
+			}
 		}
 	}
 
@@ -163,7 +175,7 @@ void GameManager::createGame()
 			flags[i]->setYPos(startPos.Y);
 		}
 
-		coins = gcnew array<Sprite^>(65);
+		/*coins = gcnew array<Sprite^>(65);
 
 		for(int i = 0; i < coins->Length; i++)
 		{
@@ -184,9 +196,9 @@ void GameManager::createGame()
 				0,
 				0
 			);			
-		}
+		}*/
 
-		array<int, 2>^ coinsMap = objectMap->getCoinMap();
+		/*array<int, 2>^ coinsMap = objectMap->getCoinMap();
 
 		int count = 0;
 
@@ -205,7 +217,7 @@ void GameManager::createGame()
 					count++;
 				}				
 			}
-		}
+		}*/
 				
 		// Adds all game characters to the spritelist
 		for(int i = 0; i < flags->Length; i++)

@@ -115,6 +115,7 @@ ref class Sprite
 		//
 		// moving and updating sprite
 		//		
+		bool collectCoin();
 		bool checkTile(ETileType tileType);
 		void canSpriteMove(int viewportWorldX, int viewportWorldY);
 		bool isTileCollision(EBearing spriteBearing, int viewportWorldX, int viewportWorldY);

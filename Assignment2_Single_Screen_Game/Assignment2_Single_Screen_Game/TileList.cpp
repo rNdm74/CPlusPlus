@@ -14,7 +14,9 @@ TileList::TileList()
 			LADDER,
 			SOLID,
 			WALKABLE,
-			EXIT
+			EXIT,
+			LADDER_COIN,
+			COIN
 		};
 
 		tileBitmaps = gcnew array<Bitmap^>(tileType->Length);

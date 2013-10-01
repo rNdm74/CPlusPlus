@@ -14,5 +14,8 @@ Tile::Tile(Bitmap^ startTileBitmap, ETileType startTileType)
 		case LADDER:
 			climb = true;
 			break;
+		case LADDER_COIN:
+			climb = true;
+			break;
 	}
 }
