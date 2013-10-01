@@ -85,11 +85,11 @@ ref class Sprite
 		//
 		// Construtor
 		//
-		Sprite(TileMap^ startTileMap, EBoundsAction startAction, 
-			   Graphics^ startCanvas, String^ filename, 
-			   int nFrames, Random^ startRgen, Point startPos, 
-			   Viewport^ startViewPort, ESprite startSprite,
-			   array<int,3>^ startMap, int startXMag, int startYMag, int startFrameDelay);
+		Sprite(TileMap^ startTileMap, Viewport^ startViewPort, 
+			   EBoundsAction startAction, ESprite startSprite,
+			   Graphics^ startCanvas, String^ filename,
+			   Random^ startRgen, array<int,3>^ startMap, 
+			   int startXMag, int startYMag, int startFrameDelay);
 		
 #pragma region Methods
 		/// <summary>

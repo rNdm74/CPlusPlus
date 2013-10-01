@@ -1,16 +1,15 @@
 #include "StdAfx.h"
 #include "Sprite.h"
 
-Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction, 
-			   Graphics^ startCanvas, String^ filename, 
-			   int nFrames, Random^ startRGen, Point startPos, 
-			   Viewport^ startViewPort, ESprite startSprite,
-			   array<int,3>^ startMap, int startXMag, int startYMag, int startFrameDelay)
+Sprite::Sprite(TileMap^ startTileMap, Viewport^ startViewPort, 
+			   EBoundsAction startAction, ESprite startSprite,
+			   Graphics^ startCanvas, String^ filename,
+			   Random^ startRGen, array<int,3>^ startMap, 
+			   int startXMag, int startYMag, int startFrameDelay)
 	{
 		tileMap = startTileMap;
 		action = startAction;
 		canvas = startCanvas;
-		frames = nFrames;
 		rGen = startRGen;
 		viewPort = startViewPort;
 		boundsRect = tileMap->getMapBounds();
@@ -73,7 +72,7 @@ Sprite::Sprite(TileMap^ startTileMap, EBoundsAction startAction,
 		// look of all the sprites used in the game and that all 
 		// will not start with the same frame animation
 		//=================================================
-		currentFrame = rGen->Next(frames-1);// minus 1 to keep in bounds
+		currentFrame = rGen->Next(sheetData->GetLength(1));// minus 1 to keep in bounds
 
 		//=================================================
 		// Gets the frame width and hight the sprites 
@@ -355,7 +354,7 @@ void Sprite::updateFrame()
 		// Update sprites frame is not standing
 		//=================================================
 				
-		currentFrame %= frames; // c = c%f;
+		currentFrame %= sheetData->GetLength(1); // c = c%f;
 
 		//frameRectangle = Rectangle(currentFrame * frameWidth, 0, frameWidth, frameHeight);
 

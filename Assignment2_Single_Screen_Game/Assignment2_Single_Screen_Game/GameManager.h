@@ -62,13 +62,17 @@ ref class GameManager
 
 		void keyDown(KeyEventArgs^  e);
 		void keyUp(KeyEventArgs^  e);
-		void createGame();
+		
+		
 		void updateGame();
 		void drawGame();
 
 		void checkGamePhaze();
 		void checkGameWin();
 		void checkGameOver();
+
+		void initializeGame();
+		void initializeObjectsPositons();
 
 		void addCoinsToGame();
 

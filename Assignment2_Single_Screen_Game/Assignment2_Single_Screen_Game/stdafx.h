@@ -7,6 +7,18 @@
 //
 // Constants
 //
+#define PLAYER_X_MAG			8
+#define PLAYER_Y_MAG			10
+#define ALIEN_X_MAG				6
+#define ALIEN_Y_MAG				6
+#define FLAG_X_MAG				0
+#define FLAG_Y_MAG				0
+#define FRAME_DELAY				1
+#define FLAG_FRAME_DELAY		4
+
+#define N_FLAG					3
+#define N_ALIENS				4
+
 #define MAX_DIRECTIONS			5
 #define HALF					2
 #define WANDER_PROB				20
