@@ -1,14 +1,12 @@
 #pragma once
 
-#include "NPC.h"
-#include "Item.h"
-#include "Player.h"
 #include "Sprite.h"
 #include "SpriteList.h"
 #include "TileMap.h"
 #include "ObjectMap.h"
 #include "Viewport.h"
 #include "CsvReader.h"
+
 
 /// <summary>
 /// Summary for GameManager
@@ -30,15 +28,13 @@ ref class GameManager
 		Bitmap^ dbBitmap;
 
 		Image^ background;
-		int imageOneX;
-		int imageTwoX;
 
 		TileMap^ tileMap;
 		ObjectMap^ objectMap;
 		
 		SpriteList^ spriteList;
 				
-		
+		bool gameover;
 
 		Random^ rGen;
 
@@ -46,11 +42,10 @@ ref class GameManager
 
 		Rectangle clientRectangle;
 
-
-		Player^ player;
-		array<NPC^>^ aliens;
-		array<Item^>^ flags;
-		array<Item^>^ coins;
+		Sprite^ player;
+		array<Sprite^>^ aliens;
+		array<Sprite^>^ flags;
+		array<Sprite^>^ coins;
 
 		int flagCount;
 		int coinCount;
@@ -77,6 +72,9 @@ ref class GameManager
 
 		void addCoinsToGame();
 
-		Player^ getPlayer()	{ return player; }
+		Sprite^ getPlayer()	{ return player; }
+		bool isGameOver()	{ return gameover; }
+		String^ getHighScore()	{ return highscore.ToString(); }
+		String^ getScore()		{ return score.ToString(); }
 
 	};

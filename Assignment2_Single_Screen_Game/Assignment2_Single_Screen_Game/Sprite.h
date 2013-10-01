@@ -45,9 +45,6 @@ ref class Sprite
 		array<int, 3>^ sheetData;
 
 		array<Point>^ spriteDirection;
-		
-		array<Point>^ boundPoints;
-		array<Point>^ bounds;		
 
 		EBoundsAction action;
 		EBearing bearing;		
@@ -75,9 +72,6 @@ ref class Sprite
 		int xMag;
 		int yMag;
 
-		int boundsX;
-		int boundsY;
-
 		Point startPosition;		
 
 #pragma endregion
@@ -95,7 +89,7 @@ ref class Sprite
 			   Graphics^ startCanvas, String^ filename, 
 			   int nFrames, Random^ startRgen, Point startPos, 
 			   Viewport^ startViewPort, ESprite startSprite,
-			   array<int,3>^ startMap);
+			   array<int,3>^ startMap, int startXMag, int startYMag, int startFrameDelay);
 		
 #pragma region Methods
 		/// <summary>
@@ -120,17 +114,21 @@ ref class Sprite
 		void stop();	
 		//
 		// moving and updating sprite
-		//
-		
+		//		
 		bool checkTile(ETileType tileType);
 		void canSpriteMove(int viewportWorldX, int viewportWorldY);
-		bool checkCanMove(EBearing spriteBearing, int viewportWorldX, int viewportWorldY);
+		bool isTileCollision(EBearing spriteBearing, int viewportWorldX, int viewportWorldY);
 		void move(int viewportWorldX, int viewportWorldY);				
 		void updateFrame();
 		//
 		// draw sprite
 		//
 		void draw(int newXPos, int newYPos);
+		//
+		// ai sprite
+		//
+		void wander();
+		EBearing getRandomBearing();
 
 #pragma endregion
 		

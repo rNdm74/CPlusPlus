@@ -70,7 +70,7 @@ void GameManager::createGame()
 		//
 		// Create Player
 		//
-		player = gcnew Player
+		player = gcnew Sprite
 		(
 			tileMap,
 			STOP,
@@ -81,14 +81,17 @@ void GameManager::createGame()
 			Point(0, 0),
 			foreground,
 			PLAYER,
-			reader->getPlayerMap()
+			reader->getPlayerMap(),
+			8,
+			10,
+			1
 		);
 		player->setStartPosition(objectMap->getSpawnPosition(PLAYER, player->getHeight()));		
 		player->setWalking(false);	
 		//
 		// Create NPCs
 		//
-		aliens = gcnew array<NPC^>(4);
+		aliens = gcnew array<Sprite^>(4);
 
 		array<int>^ spriteType = gcnew array<int>
 		{
@@ -102,7 +105,7 @@ void GameManager::createGame()
 		{
 			int r = rGen->Next(1, 3);
 
-			aliens[i] = gcnew NPC
+			aliens[i] = gcnew Sprite
 			(
 				tileMap,
 				BOUNCE,
@@ -113,8 +116,10 @@ void GameManager::createGame()
 				Point(0,0),
 				foreground,
 				ENEMY,
-				r,
-				(r == 1) ? reader->getPlayerMap() : reader->getAlienMap()
+				(r == 1) ? reader->getPlayerMap() : reader->getAlienMap(),
+				6,
+				6,
+				1
 			);
 
 			Point startPos = objectMap->getSpawnPosition(spriteType[i], aliens[i]->getHeight());
@@ -123,7 +128,7 @@ void GameManager::createGame()
 			aliens[i]->setYPos(startPos.Y);
 		}
 
-		flags = gcnew array<Item^>(3);
+		flags = gcnew array<Sprite^>(3);
 
 		spriteType = gcnew array<int>
 		{
@@ -135,7 +140,7 @@ void GameManager::createGame()
 		for(int i = 0; i < flags->Length; i++)
 		{
 			
-			flags[i] = gcnew Item
+			flags[i] = gcnew Sprite
 			(
 				tileMap,
 				WRAP,
@@ -146,7 +151,10 @@ void GameManager::createGame()
 				Point(0,0),
 				foreground,
 				FLAG,
-				reader->getItemMap()
+				reader->getItemMap(),
+				0,
+				0,
+				4
 			);
 
 			Point startPos = objectMap->getSpawnPosition(spriteType[i], flags[i]->getHeight());
@@ -155,12 +163,12 @@ void GameManager::createGame()
 			flags[i]->setYPos(startPos.Y);
 		}
 
-		coins = gcnew array<Item^>(65);
+		coins = gcnew array<Sprite^>(65);
 
 		for(int i = 0; i < coins->Length; i++)
 		{
 			
-			coins[i] = gcnew Item
+			coins[i] = gcnew Sprite
 			(
 				tileMap,
 				WRAP,
@@ -171,7 +179,10 @@ void GameManager::createGame()
 				Point(0,0),
 				foreground,
 				COIN,
-				reader->getItemMap()				
+				reader->getItemMap(),
+				0,
+				0,
+				0
 			);			
 		}
 
@@ -195,8 +206,6 @@ void GameManager::createGame()
 				}				
 			}
 		}
-
-		
 				
 		// Adds all game characters to the spritelist
 		for(int i = 0; i < flags->Length; i++)
@@ -206,9 +215,6 @@ void GameManager::createGame()
 			spriteList->add(aliens[i]);		
 
 		spriteList->add(player);
-
-		imageOneX = 0;
-		imageTwoX = 1024;
 	}
 
 void GameManager::keyDown(KeyEventArgs^  e)
@@ -287,11 +293,11 @@ void GameManager::drawGame()
 		//
 		// Draw hud information 
 		//
-		dbGraphics->DrawString("Flags: " + flagCount.ToString(), gcnew Font("Microsoft Sans Serif", 16), Brushes::WhiteSmoke, 10, 10);
-		dbGraphics->DrawString("Coins: " + coinCount.ToString(), gcnew Font("Microsoft Sans Serif", 16), Brushes::WhiteSmoke, 110, 10);
-		dbGraphics->DrawString("Lives: " + lives.ToString(), gcnew Font("Microsoft Sans Serif", 16), Brushes::WhiteSmoke, 210, 10);
-		dbGraphics->DrawString("Score: " + score.ToString(), gcnew Font("Microsoft Sans Serif", 16), Brushes::WhiteSmoke, 310, 10);
-		dbGraphics->DrawString("HighScore: " + highscore.ToString(), gcnew Font("Microsoft Sans Serif", 16), Brushes::WhiteSmoke, 500, 10);
+		dbGraphics->DrawString("Flags: " + flagCount.ToString(), gcnew Font("Comic Sans MS", 16), Brushes::WhiteSmoke, 10, 10);
+		dbGraphics->DrawString("Coins: " + coinCount.ToString(), gcnew Font("Comic Sans MS", 16), Brushes::WhiteSmoke, 110, 10);
+		dbGraphics->DrawString("Lives: " + lives.ToString(), gcnew Font("Comic Sans MS", 16), Brushes::WhiteSmoke, 210, 10);
+		dbGraphics->DrawString("Score: " + score.ToString(), gcnew Font("Comic Sans MS", 16), Brushes::WhiteSmoke, 310, 10);
+		dbGraphics->DrawString("HighScore: " + highscore.ToString(), gcnew Font("Comic Sans MS", 16), Brushes::WhiteSmoke, 500, 10);
 		//
 		// Draw Viewport to Canvas 
 		//
@@ -321,8 +327,7 @@ void GameManager::checkGamePhaze()
 void GameManager::checkGameWin()
 {
 	if(player->isLevelWin())
-	{
-		
+	{		
 		createGame();
 
 		spriteList->setScore(score);
@@ -336,7 +341,9 @@ void GameManager::checkGameOver()
 {
 	if(lives == 0)
 	{
+		
 		player->setGameOver(true);
+		gameover = player->isGameOver();
 
 		fileReader = gcnew StreamReader("data.dat");
 		String^ line = fileReader->ReadLine();
@@ -348,8 +355,6 @@ void GameManager::checkGameOver()
 			fileWriter = gcnew StreamWriter("data.dat");
 			fileWriter->Write(score.ToString());
 			fileWriter->Close();
-		}
-
-		Application::Exit();
+		}		
 	}
 }
