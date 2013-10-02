@@ -140,7 +140,7 @@
 		//=======================================================================	
 		
 
-		canSpriteMove(viewportWorldX, viewportWorldY);	
+		canSpriteMove(viewportWorldX, viewportWorldY);
 
 		if(isBoundsCollision())
 			executeBoundsAction();
@@ -250,6 +250,7 @@
 	//
 #pragma endregion
 
+
 #pragma region Sprite Actions
 	//
 	//
@@ -321,8 +322,7 @@
 		// If new bearing is in acceptable range
 		bool inRange = newBearing < 4 && newBearing >= 0;
 		
-		if(inRange) bearing = static_cast<EBearing>(newBearing);
-
+		if(inRange) bearing = static_cast<EBearing>(newBearing);		
 		// if illegal direction bearing unchanged 
 		// throwing exception is more appropriate	
 	}
@@ -487,8 +487,8 @@
 		if(rGen->Next(WANDER_PROB) == 0) 
 			setBearing(getRandomBearing());
 
-		if(!walking)
-			setBearing(getRandomBearing());
+		if(!walking);
+			//setBearing(getRandomBearing());
 	}
 	//
 	//
