@@ -7,7 +7,6 @@
 #include "Viewport.h"
 #include "CsvReader.h"
 
-
 /// <summary>
 /// Summary for GameManager
 ///
@@ -20,6 +19,9 @@
 
 ref class GameManager
 	{
+
+#pragma region Variables
+
 	private:
 		Viewport^ foreground;
 
@@ -57,8 +59,15 @@ ref class GameManager
 		StreamReader^ fileReader;
 		StreamWriter^ fileWriter;
 
+#pragma endregion
+
+#pragma region Constructor
+
 	public:
 		GameManager(Graphics^ startCanvas, Rectangle clientRectangle);
+#pragma endregion
+
+#pragma region Methods
 
 		void keyDown(KeyEventArgs^  e);
 		void keyUp(KeyEventArgs^  e);
@@ -76,9 +85,15 @@ ref class GameManager
 
 		void addCoinsToGame();
 
-		Sprite^ getPlayer()	{ return player; }
-		bool isGameOver()	{ return gameover; }
+#pragma endregion
+
+#pragma region Gets/Sets
+
+		Sprite^ getPlayer()		{ return player; }
+		bool isGameOver()		{ return gameover; }
 		String^ getHighScore()	{ return highscore.ToString(); }
 		String^ getScore()		{ return score.ToString(); }
+
+#pragma endregion
 
 	};

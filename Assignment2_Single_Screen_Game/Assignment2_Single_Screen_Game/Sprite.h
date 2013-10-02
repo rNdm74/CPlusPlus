@@ -45,6 +45,7 @@ ref class Sprite
 		array<int, 3>^ sheetData;
 
 		array<Point>^ spriteDirection;
+		array<Point>^ offsets;
 
 		EBoundsAction action;
 		EBearing bearing;		
@@ -75,8 +76,9 @@ ref class Sprite
 		Point startPosition;		
 
 #pragma endregion
+
 	private:
-		ETileType getTileType(int offsetX, int offsetY);
+		ETileType getTileType(Point offset);
 
 	public:
 		Sprite^ Next;
@@ -100,12 +102,12 @@ ref class Sprite
 		void setSpriteSheet();
 		void erase(Color eraseColor);
 		// 
-		// collision check
+		// Collision check
 		//
 		bool isBoundsCollision();
 		bool collided(Sprite^ sprite);
 		//
-		// bounds action
+		// Bounds action
 		//
 		void executeBoundsAction();	
 		void wrap();					
@@ -113,20 +115,19 @@ ref class Sprite
 		void die();						
 		void stop();	
 		//
-		// moving and updating sprite
+		// Moving and updating sprite
 		//		
 		bool collectCoin();
-		bool checkTile(ETileType tileType);
-		void canSpriteMove(int viewportWorldX, int viewportWorldY);
-		bool isTileCollision(EBearing spriteBearing, int viewportWorldX, int viewportWorldY);
+		bool isTileWalkable(ETileType tileType);
+		void canSpriteMove(int viewportWorldX, int viewportWorldY);		
 		void move(int viewportWorldX, int viewportWorldY);				
 		void updateFrame();
 		//
-		// draw sprite
+		// Draw sprite
 		//
 		void draw(int newXPos, int newYPos);
 		//
-		// ai sprite
+		// AI sprite
 		//
 		void wander();
 		EBearing getRandomBearing();
@@ -137,43 +138,35 @@ ref class Sprite
 		/// <summary>
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
-		/// </summary>
+		/// </summary>		
+		
+		void setStartPosition(Point p)	{ startPosition = p; xPos = p.X; yPos = p.Y; }
+		void resetPosition()			{ xPos = startPosition.X; yPos = startPosition.Y; }		
+		void setBearing(EBearing b);
+		void setAction(EBoundsAction a)	{ action = a; }
+		void setWalking(bool w)			{ walking = w; }		
+		void setAlive(bool a)			{ alive = a; }
+		void setXPos(int x)				{ xPos = x; }
+		void setYPos(int y)				{ yPos = y; }
+		void setGameOver(bool g)		{ gameover = g; }
+		void setLevelWin(bool l)		{ levelwin = l; }
 
 		Rectangle getFrameRectangle()	{ return Rectangle(xPos, yPos, frameRectangle.Width, frameRectangle.Height); }
 		Rectangle getBoundsRectangle()	{ return boundsRect; }
-
 		EBoundsAction getAction()		{ return action; }
-		void setAction(EBoundsAction a)	{ action = a; }
-
-		bool isWalking()				{ return walking; }
-		void setWalking(bool w)			{ walking = w; }
-
-		bool isAlive()					{ return alive; }
-		void setAlive(bool a)			{ alive = a; }
-
-		void setStartPosition(Point p)	{ startPosition = p; xPos = p.X; yPos = p.Y; }
-		void resetPosition()			{ xPos = startPosition.X; yPos = startPosition.Y; }
-
-		int getXPos()					{ return xPos; }
-		void setXPos(int x)				{ xPos = x; }
-
-		int getYPos()					{ return yPos; }
-		void setYPos(int y)				{ yPos = y; }
-
-		int getWidth()					{ return frameWidth; }
-		int getHeight()					{ return frameHeight; }
-		
 		EBearing getBearing()			{ return bearing; }
-		void setBearing(EBearing b);
-
+		int getXPos()					{ return xPos; }
+		int getYPos()					{ return yPos; }
+		int getWidth()					{ return frameWidth; }
+		int getHeight()					{ return frameHeight; }		
+		bool isWalking()				{ return walking; }
+		bool isAlive()					{ return alive; }
 		bool isEnemy()					{ return enemy; }
 		bool isPlayer()					{ return player; }
 		bool isFlag()					{ return flag; }
 		bool isCoin()					{ return coin; }
-		bool isGameOver()				{ return gameover; }
-		void setGameOver(bool g)		{ gameover = g; }
-		bool isLevelWin()				{ return levelwin; }
-		void setLevelWin(bool l)		{ levelwin = l; }
+		bool isGameOver()				{ return gameover; }		
+		bool isLevelWin()				{ return levelwin; }		
 
 #pragma endregion
 
