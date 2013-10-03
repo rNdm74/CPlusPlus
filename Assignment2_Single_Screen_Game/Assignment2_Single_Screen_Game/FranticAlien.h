@@ -340,11 +340,11 @@ namespace Assignment2_Single_Screen_Game {
 		// 
 		// FranticAlien
 		//
-		private: System::Void FranticAlien_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
-			gManager->keyDown(e);
+		private: System::Void FranticAlien_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {			
+			gManager->keyDown(e->KeyCode);
 		}			 
 		private: System::Void FranticAlien_KeyUp(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
-			gManager->keyUp(e);
+			gManager->keyUp(e->KeyCode);
 		}
 		// 
 		// FranticAlien

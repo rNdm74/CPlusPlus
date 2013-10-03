@@ -3,43 +3,39 @@
 
 #pragma region Constructor
 
-	Sprite::Sprite(TileMap^ startTileMap, Viewport^ startViewPort, 
-				   EBoundsAction startAction, ESprite startSprite,
-				   Graphics^ startCanvas, String^ filename,
-				   Random^ startRGen, array<int,3>^ startMap, 
-				   int startXMag, int startYMag, int startFrameDelay)
+	Sprite::Sprite
+		(
+			Graphics^ startCanvas, 
+			Viewport^ startViewPort, 
+			CSVReader^ startReader, 
+			TileMap^ startTileMap,
+			EAction startAction,
+			Random^ startRGen, 
+			int startObjectNumber, 
+			int startXMag, 
+			int startYMag, 
+			int startFrameDelay,
+			String^ startFilename,
+			Rectangle startTileMapBounds
+		)
 		{
-			tileMap = startTileMap;
-			action = startAction;
 			canvas = startCanvas;
-			rGen = startRGen;
 			viewPort = startViewPort;
-			boundsRect = tileMap->getMapBounds();
-			sheetData = startMap;		
-			walking = true;
-			alive = true;
-			//
-			//
-			//
-			switch(startSprite)
-			{
-				case PLAYER:
-					player = true;
-					break;
-				case ENEMY:
-					enemy = true;
-					break;
-				case FLAG:
-					flag = true;
-					break;
-				case COIN:
-					coin = true;
-					break;
-			}
+			tileMap = startTileMap;
+			action = startAction;			
+			rGen = startRGen;
+			objectNumber = startObjectNumber;
+			xMag = startXMag;
+			yMag = startYMag;
+			frameDelay = startFrameDelay;
+			spriteSheetData = startReader->getSpriteSheetData(startObjectNumber);
+			tileMapBounds = startTileMapBounds;
+			bearing = STAND;
+			lives = N_LIVES;					
 			//
 			// Create spritesheets from file names
 			//
-			spriteSheet = gcnew Bitmap(filename);
+			spriteSheet = gcnew Bitmap(startFilename);
 			spriteSheet->MakeTransparent(spriteSheet->GetPixel(0,0));
 			format = spriteSheet->PixelFormat;
 			//
@@ -53,95 +49,114 @@
 			spriteDirection[WEST] = Point(-1,0);
 			spriteDirection[STAND] = Point(0,0);
 			//
+			// Collision offsets
 			//
-			//
-			offsets = gcnew array<Point>(MAX_DIRECTIONS);
-			offsets[NORTH] = Point(35, -75);
-			offsets[EAST] = Point(75, -35);
-			offsets[SOUTH] = Point(35, 2);
-			offsets[WEST] = Point(-2, -35);
-			offsets[STAND] = Point(35,-35);			
-			//
-			// Initialize bearing with a random one
-			//
-			bearing = STAND;
-			//
-			// Set mag speed for the sprite
-			//
-			xMag = startXMag;
-			yMag = startYMag;
+			collisionOffsets = gcnew array<Point>(MAX_DIRECTIONS);
+			collisionOffsets[NORTH] = Point(35, -75);
+			collisionOffsets[EAST] = Point(75, -35);
+			collisionOffsets[SOUTH] = Point(35, 2);
+			collisionOffsets[WEST] = Point(-2, -35);
+			collisionOffsets[STAND] = Point(35,-35);	
 			//
 			// Picks a random frame to be drawn this creates a random
 			// look of all the sprites used in the game and that all 
 			// will not start with the same frame animation
 			//
-			currentFrame = rGen->Next(sheetData->GetLength(1));// minus 1 to keep in bounds
+			currentFrame = rGen->Next(spriteSheetData->GetLength(1));// minus 1 to keep in bounds			
 			//
-			// Gets the frame width and hight the sprites 
-			// frame being drawn to the screen
+			// Sprites Width and Height based on bearing 
 			//
-			frameDelay = startFrameDelay;
+			frameWidth = spriteSheetData[bearing, currentFrame, WIDTH];
+			frameHeight = spriteSheetData[bearing, currentFrame, HEIGHT];
 			//
+			// Creates sprites frame to be drawn
 			//
-			//
-			frameWidth = sheetData[bearing, currentFrame, WIDTH];
-			frameHeight = sheetData[bearing, currentFrame, HEIGHT];
+			spriteFrame = Rectangle
+			(
+				spriteSheetData[bearing, currentFrame, X],					// XPOS
+				spriteSheetData[bearing, currentFrame, Y],					// YPOS
+				spriteSheetData[bearing, currentFrame, WIDTH],				// WIDTH
+				spriteSheetData[bearing, currentFrame, HEIGHT]				// HEIGHT
+			);
 		}
 
 #pragma endregion
 
 
-#pragma region Draw, Erase, Move
+#pragma region Draw_Move_Update
 	//
 	//
 	//
 	void Sprite::draw(int newXPos, int newYPos)
 	{
-		//=================================================
+		//
 		// Draw sprites frame to the screen
-		//=================================================
-
-		if(alive)
-		{	
-			spriteBitmap = spriteSheet->Clone(frameRectangle, format);
-
-			if(bearing == WEST)	
-				spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);	
-
-			canvas->DrawImage
-			(
-				spriteBitmap,
-				newXPos,
-				newYPos
-			);
-		}				
+		//
+		spriteBitmap = spriteSheet->Clone(spriteFrame, format);
+		//
+		// Flips image on the X axis based on direction
+		//
+		if(bearing == WEST)	spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);	
+		//
+		// Draws bitmap to the screen
+		//
+		canvas->DrawImage
+		(
+			spriteBitmap,
+			newXPos,
+			newYPos
+		);						
 	}
 	//
 	//
 	//
-	void Sprite::erase(Color eraseColor)
+	void Sprite::clamp(int col, int row)
 	{
-		//=================================================
-		// Draw coloured rectangle over sprite
-		//=================================================
-		Brush^ brush = gcnew SolidBrush(eraseColor);
-		Rectangle rect = Rectangle(xPos, yPos, frameRectangle.Width, frameRectangle.Height);
-		canvas->FillRectangle(brush, rect);
+		ETileType tileType = tileMap->getTileType(row, col);
+		//
+		// Clamps to tile xPos
+		//
+		if((tileType == LADDER_COIN || tileType == LADDER) && (bearing == NORTH || bearing == SOUTH))
+		{
+			xPos = col * T_SIZE;
+		}
+		//
+		// Clamps to tile yPos
+		//
+		if((tileType == COIN ||tileType == WALKABLE) && (bearing == WEST || bearing == EAST))
+		{
+			yPos = (row * T_SIZE) - (frameHeight - T_SIZE);
+		}
 	}
 	//
 	//
 	//
 	void Sprite::move(int viewportWorldX, int viewportWorldY)
 	{
-		//=======================================================================
+		//
 		// If sprite can walk the xPosition and yPosition is incremented
 		// the a set magnitude, a direction is then applied to the magnitude 1, -1
 		// this will allow the sprite to move up, down, left and right
-		//=======================================================================	
-		
+		//	
+		int col = (xPos + collisionOffsets[bearing].X) / T_SIZE;
+		int row = (yPos + (frameHeight + collisionOffsets[bearing].Y)) / T_SIZE;			
+		//
+		// Set sprite walking 
+		//
+		walking = (tileMap->isWalkable(row, col) || tileMap->isCoin(row, col));		
+		//
+		// If sprite is walking move then clamp to column  || row
+		//
+		if(walking)
+		{
+			yPos += yMag * spriteDirection[bearing].Y;
+			xPos += xMag * spriteDirection[bearing].X;
 
-		canSpriteMove(viewportWorldX, viewportWorldY);
-
+			clamp(col, row);
+		}
+		//
+		//
+		//
 		if(isBoundsCollision())
 			executeBoundsAction();
 	}
@@ -150,21 +165,24 @@
 	//
 	void Sprite::updateFrame()
 	{
-		//=================================================
+		//
 		// Update sprites frame is not standing
-		//=================================================
-				
-		currentFrame %= sheetData->GetLength(1);					// c = c%f;
-		
-		frameWidth = sheetData[bearing, currentFrame, WIDTH];		//
-		frameHeight = sheetData[bearing, currentFrame, HEIGHT];		//
-		
-		frameRectangle = Rectangle
+		//				
+		currentFrame %= spriteSheetData->GetLength(1);			
+		//
+		// Sets frame width and height based on spritesheet bearing
+		//
+		frameWidth = spriteSheetData[bearing, currentFrame, WIDTH];		
+		frameHeight = spriteSheetData[bearing, currentFrame, HEIGHT];	
+		//
+		// Sets spriteframe to based on bearing, current frame to be drawn
+		//
+		spriteFrame = Rectangle
 		(
-			sheetData[bearing, currentFrame, X],					// XPOS
-			sheetData[bearing, currentFrame, Y],					// YPOS
-			sheetData[bearing, currentFrame, WIDTH],				// WIDTH
-			sheetData[bearing, currentFrame, HEIGHT]				// HEIGHT
+			spriteSheetData[bearing, currentFrame, X],					
+			spriteSheetData[bearing, currentFrame, Y],					
+			spriteSheetData[bearing, currentFrame, WIDTH],				
+			spriteSheetData[bearing, currentFrame, HEIGHT]			
 		);
 		//
 		// This is to slow down the frame animation 
@@ -172,19 +190,32 @@
 		//		
 		if(walking && frameTime > frameDelay) 
 		{
-			frameTime = 0;											// resets frame time
+			frameTime = 0;												// resets frame time
 
-			currentFrame++;											// move to sprites next frame
+			currentFrame++;												// move to sprites next frame
 		}
 
-		frameTime++;												// increase frame time		
+		frameTime++;													// increase frame time		
 	}
 	//
 	//
 	//
 #pragma endregion
 
-#pragma region Check Collisions
+
+#pragma region Sprite checks
+	//
+	//
+	//
+	bool Sprite::isLevelWin()
+	{
+		int col = (xPos + collisionOffsets[STAND].X) / T_SIZE;
+		int row = (yPos + (frameHeight + collisionOffsets[STAND].Y)) / T_SIZE;
+
+		ETileType tileType = tileMap->getTileType(row, col);
+
+		return tileType == EXIT;
+	}
 	//
 	//
 	//
@@ -210,38 +241,20 @@
 	}
 	//
 	//
-	//
-	void Sprite::canSpriteMove(int viewportWorldX, int viewportWorldY)
-	{
-		walking = isTileWalkable(getTileType(offsets[bearing]));
-						
-		if(walking)
-		{
-			yPos += yMag * spriteDirection[bearing].Y;
-			xPos += xMag * spriteDirection[bearing].X;	
-		}
-
-		ETileType tileType = getTileType(offsets[STAND]);
-
-		levelwin = (tileType == EXIT);			
-	}	
-	//
-	//
-	//	
+	//		
 	bool Sprite::isBoundsCollision()// should return info
 	{
-		//=======================================================================
+		//
 		// checks the top, right, bottom and left side of the sprite
 		// if outside of the specified area an action is triggered
-		//======================================================================= 
-		
-		bool hitLeft = xPos < boundsRect.Left;										// Check left
+		//		
+		bool hitLeft = xPos < tileMapBounds.Left;										// Check left
 
-		bool hitRight = xPos + frameWidth > boundsRect.Right - (T_SIZE / HALF);		// Check right
+		bool hitRight = xPos + frameWidth > tileMapBounds.Right - T_SIZE / HALF;		// Check right
 
-		bool hitTop = yPos < boundsRect.Top;										// Check top
+		bool hitTop = yPos < tileMapBounds.Top;											// Check top
 
-		bool hitBottom = yPos + frameHeight > boundsRect.Bottom;					// Check bottom
+		bool hitBottom = yPos + frameHeight > tileMapBounds.Bottom;						// Check bottom
 
 		return ( hitLeft || hitRight || hitTop || hitBottom );	
 	}
@@ -257,24 +270,27 @@
 	//
 	void Sprite::executeBoundsAction()
 	{
-		//=======================================================================
+		//
 		// Depending on the selected action of a sprite, a function will be
 		// called that will force the sprite to do a specific action 
 		// e.g. wrap around the screen or bounce off an object
-		//=======================================================================
+		//
 		switch(action)
 		{
 			case BOUNCE:
-				reverse();	// Reverse sprites direction
+				bounce();			// Reverse sprites direction
 				break;
 			case WRAP:
-				wrap();		// Allows sprite wrap the screen e.g. right side to the left
+				wrap();				// Allows sprite wrap the screen e.g. right side to the left
 				break;
 			case DIE:
-				die();		// Sprite dies
+				die();				// Sprite dies
+				break;
+			case COLLECT_COIN:
+				coin();				// Sprite collects coin
 				break;
 			case STOP:
-				stop();		//Stop the sprite from moving
+				stop();				// Stop the sprite from moving
 				break;
 		}
 	}
@@ -289,7 +305,7 @@
 		{
 			case NORTH:
 				// puts sprite on the south side on the screen
-				yPos = tileMap->getMapBounds().Height - frameWidth; 				
+				yPos = tileMap->getBounds().Height - frameWidth; 				
 			break;
 
 			case EAST:
@@ -304,12 +320,12 @@
 
 			case WEST:
 				// puts sprite on the east side of the screen
-				xPos = tileMap->getMapBounds().Width - frameWidth;
+				xPos = tileMap->getBounds().Width - frameWidth;
 			break;
 		}
 	}
 
-	void Sprite::reverse()
+	void Sprite::bounce()
 	{
 		// Reverse direction for bounce, modulo required for wrap around
 		// Current bearings + half total directions mod max number directions)
@@ -324,64 +340,48 @@
 		
 		if(inRange) bearing = static_cast<EBearing>(newBearing);		
 		// if illegal direction bearing unchanged 
-		// throwing exception is more appropriate	
+		// throwing exception is more appropriate			
 	}
 
 	void Sprite::die()
-	{
-		// NOT IMPLIMENTED YET
-		/*alive = false;
-		xMag = 0;
-		yMag = 0;*/
+	{		
+		resetPosition(); // set hurt image
+
+		coins = 0;
+
+		lives--;
+
+		action = STOP;
+	}
+
+	void Sprite::coin()
+	{		
+		coins++;
+
+		score += 50;
+
+		action = STOP;
 	}
 
 	void Sprite::stop()
 	{
 		if(bearing == WEST)
-			xPos = boundsRect.Left; // clamps sprite 
+			xPos = tileMapBounds.Left; // clamps sprite 
 
 		if(bearing == EAST)
-			xPos = (boundsRect.Right - frameWidth) - (T_SIZE / 2); // clamps sprite
+			xPos = (tileMapBounds.Right - frameWidth) - (T_SIZE / 2); // clamps sprite
 	}
 
 #pragma endregion
 
 
-#pragma region Tile Methods
-	//
-	//
-	//
-	bool Sprite::isTileWalkable(ETileType tileType)
-	{
-		switch(tileType)
-		{
-			case LADDER:
-				return true;
-			case WALKABLE:
-				return true;
-			case EXIT:
-				return true;
-			case LADDER_COIN:
-				return true;
-			case COIN:
-				return true;
-			case SOLID:
-				return false;
-		}	
-	}	
-	//
-	//
-	//
-	void Sprite::setSpriteSheet() 
-	{		
-		// NOT IMPLIMENTED this will handle multiple spritesheets
-	}
+#pragma region Tile Methods	
 	//
 	//
 	//
 	void Sprite::setBearing(EBearing newBearing)
 	{
-		ETileType tileType = getTileType(offsets[newBearing]);
+		ETileType tileType = getTileType(collisionOffsets[newBearing]);
 
 		switch(newBearing)
 		{
@@ -424,25 +424,9 @@
 	ETileType Sprite::getTileType(Point offset)
 	{
 		int col = (xPos + offset.X) / T_SIZE;
-		int row = (yPos + (frameHeight + offset.Y)) / T_SIZE;
-
-		ETileType tileType = tileMap->getTileType(row, col);
-		//
-		// Clamps sprite to tile xPos
-		//
-		if((tileType == LADDER_COIN || tileType == LADDER) && (bearing == NORTH || bearing == SOUTH))
-		{
-			xPos = col * T_SIZE;
-		}
-		//
-		// Clamps sprite to tile yPos
-		//
-		if((tileType == COIN ||tileType == WALKABLE) && (bearing == WEST || bearing == EAST))
-		{
-			yPos = (row * T_SIZE) - (frameHeight - T_SIZE);
-		}
-				
-		return tileType;
+		int row = (yPos + (frameHeight + offset.Y)) / T_SIZE;		
+						
+		return tileMap->getTileType(row, col);
 	}
 	//
 	//
@@ -456,10 +440,10 @@
 	//
 	bool Sprite::collectCoin()
 	{
-		ETileType tileType = getTileType(offsets[STAND]);
+		ETileType tileType = getTileType(collisionOffsets[STAND]);
 
-		int col = (xPos + offsets[STAND].X) / T_SIZE;
-		int row = (yPos + (frameHeight + offsets[STAND].Y)) / T_SIZE;
+		int col = (xPos + collisionOffsets[STAND].X) / T_SIZE;
+		int row = (yPos + (frameHeight + collisionOffsets[STAND].Y)) / T_SIZE;
 
 		if(tileType == COIN)
 		{
@@ -480,24 +464,23 @@
 
 	void Sprite::wander()
 	{
-		//=================================================
+		//
 		// Depending on a specified probability 
 		// a random bearing is picked for the sprite
-		//=================================================
+		//
 		if(rGen->Next(WANDER_PROB) == 0) 
 			setBearing(getRandomBearing());
 
-		if(!walking);
-			//setBearing(getRandomBearing());
+		if(!walking) setBearing(getRandomBearing());
 	}
 	//
 	//
 	//
 	EBearing Sprite::getRandomBearing()
 	{
-		//=================================================
+		//
 		// Return a random EBearing
-		//=================================================
+		//
 		int pick = rGen->Next(4);
 
 		switch(pick)
@@ -510,8 +493,6 @@
 				return NORTH;
 			case 3:
 				return SOUTH;
-			/*case 4:
-				return STAND;*/
 		}
 	}
 

@@ -7,7 +7,7 @@ SpriteList::SpriteList(Viewport^ startViewport)
 
 		coins = 0;
 		flags = 0;
-		lives = 3;
+		lives = N_LIVES;
 
 		head = nullptr;
 		tail = nullptr;
@@ -110,11 +110,9 @@ void SpriteList::update()
 
 	while(spriteWalker != nullptr)
 	{
-		if(spriteWalker->isPlayer())
-			checkCollisions(spriteWalker);	
-
-		spriteWalker->move(viewport->getViewportWorldX(), viewport->getViewportWorldY());
 		spriteWalker->updateFrame();
+
+		spriteWalker->move(viewport->getViewportWorldX(), viewport->getViewportWorldY());		
 
 		// Move to next node
 		spriteWalker = spriteWalker->Next;
@@ -132,63 +130,96 @@ void SpriteList::renderSprites(int vX, int vY)
 		int vPosY = spriteWalker->getYPos() - vY;
 
 		// if sprite is in viewport bounds draw
-		Rectangle vBounds = viewport->getViewportBounds();
-
-		//if(vBounds.Contains(vPosX, vPosY))
-
-		if(spriteWalker->getFrameRectangle().Width != 0)
-		  spriteWalker->draw(vPosX, vPosY);		
+		spriteWalker->draw(vPosX, vPosY);		
 
 		// Move to next node
 		spriteWalker = spriteWalker->Next;
 	}
 }
 
-Sprite^ SpriteList::checkCollisions(Sprite^ sprite)
+void SpriteList::pickupItem(Sprite^ otherSprite)
 {
 	Sprite^ spriteWalker = head;		
 
 	while(spriteWalker != nullptr)
 	{
-		if(spriteWalker != sprite)
+		if(spriteWalker->collided(otherSprite))
 		{
-			bool hit = spriteWalker->collided(sprite);			
-			bool player = sprite->isPlayer(); 
-			bool flag = spriteWalker->isFlag();
-			bool enemy = spriteWalker->isEnemy();
-			
-			if(player)
-			{
-				if(sprite->collectCoin())
-				{
-					coins++;
+			remove(spriteWalker);
 
-					score += 50;
-				}				
-			}
+			flags++;	
 
-			if(hit && player && flag)
-			{
-				remove(spriteWalker);
-
-				flags++;	
-
-				score += 100;
-			}
-
-			if(hit && player && enemy)	
-			{
-				sprite->resetPosition();
-
-				lives--;
-			}
-		}		
+			score += 100;
+		}
 
 		// Move to next node
 		spriteWalker = spriteWalker->Next;
 	}
+}
 
-	return nullptr;
+void SpriteList::collectCoin()
+{
+	Sprite^ spriteWalker = head;		
+
+	while(spriteWalker != nullptr)
+	{
+		if(spriteWalker->collectCoin())
+		{
+			spriteWalker->setAction(COLLECT_COIN);
+			spriteWalker->executeBoundsAction();	
+		}
+
+		// Move to next node
+		spriteWalker = spriteWalker->Next;
+	}
+}
+
+void SpriteList::checkCollisions(Sprite^ otherSprite)
+{
+	Sprite^ spriteWalker = head;		
+
+	while(spriteWalker != nullptr)
+	{
+		if(spriteWalker->collided(otherSprite))	
+		{
+			otherSprite->setAction(DIE);
+			otherSprite->executeBoundsAction();
+		}				
+
+		// Move to next node
+		spriteWalker = spriteWalker->Next;
+	}
+}
+
+void SpriteList::setSpritePositions(ObjectMap^ objectMap)
+{
+	Sprite^ spriteWalker = head;		
+
+	while(spriteWalker != nullptr)
+	{
+		Point startPos = objectMap->getSpawnPosition(spriteWalker->getObjectNumber(), spriteWalker->getHeight());
+
+		spriteWalker->setStartPosition(startPos);
+		spriteWalker->setXPos(startPos.X);
+		spriteWalker->setYPos(startPos.Y);
+
+		// Move to next node
+		spriteWalker = spriteWalker->Next;
+	}
+}
+
+void SpriteList::spriteAI()
+{		
+	Sprite^ spriteWalker = head;		
+
+	while(spriteWalker != nullptr)
+	{
+		// Draw pellets
+		spriteWalker->wander();
+
+		// Move to next node
+		spriteWalker = spriteWalker->Next;
+	}
 }
 
 void SpriteList::draw()

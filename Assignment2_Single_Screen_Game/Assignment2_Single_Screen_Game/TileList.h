@@ -1,4 +1,6 @@
 #pragma once
+
+#include "Constants.h"
 #include "Tile.h"
 
 using namespace System;
@@ -34,6 +36,9 @@ ref class TileList
 
 		bool isSolid(int index)					{ return tiles[index]->isSolid(); }
 		bool isClimbable(int index)				{ return tiles[index]->isClimbable(); }
+		bool isWalkable(int index)				{ return tiles[index]->isWalkable(); }
+		bool isCoin(int index)					{ return tiles[index]->isCoin(); }
+		bool isExit(int index)					{ return tiles[index]->isExit(); }
 
 		void setTile(int index, Tile^ newTile)	{ tiles[index] = newTile;  }
 	};

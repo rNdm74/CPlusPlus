@@ -1,9 +1,33 @@
 #include "StdAfx.h"
 #include "CSVReader.h"
 
-CSVReader::CSVReader()
+CSVReader::CSVReader(Random^ startRGen)
 	{
+		rGen = startRGen;
 	}
+
+array<int,3>^ CSVReader::getSpriteSheetData(int startObjectNumber)
+{
+	switch(startObjectNumber)
+	{
+		case PLAYER:
+			return getPlayerMap();;
+		case ALIEN_ONE:
+			return getPlayerMap();
+		case ALIEN_TWO:
+			return getAlienMap();
+		case ALIEN_THREE:
+			return getPlayerMap();
+		case ALIEN_FOUR:
+			return getAlienMap();
+		case RED_FLAG:
+			return getItemMap();
+		case BLUE_FLAG:
+			return getItemMap();
+		case YELLOW_FLAG:
+			return getItemMap();
+	}
+}
 
 
 array<int,2>^ CSVReader::getMap(String^ filename)

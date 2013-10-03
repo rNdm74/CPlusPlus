@@ -29,6 +29,10 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 		//
 		rGen = gcnew Random();
 		//
+		// Font for game
+		//
+		font = gcnew Font("Comic Sans MS", 16);
+		//
 		// Create game with objects
 		//
 		initializeGame();
@@ -40,46 +44,18 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 #pragma endregion
 
 
-#pragma region Game Phaze Checks
+#pragma region Game Initialization
 		/// <summary>
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
 		/// </summary>
 		void GameManager::initializeObjectsPositons()
 		{
-			player->setStartPosition(objectMap->getSpawnPosition(PLAYER, player->getHeight()));		
-			player->setWalking(false);
+			playerList->setSpritePositions(objectMap);
+			
+			alienList->setSpritePositions(objectMap);
 
-			array<int>^ spriteType = gcnew array<int>
-			{
-				ALIEN_ONE, 
-				ALIEN_TWO, 
-				ALIEN_THREE, 
-				ALIEN_FOUR
-			};
-
-			for(int i = 0; i < aliens->Length; i++)
-			{
-				Point startPos = objectMap->getSpawnPosition(spriteType[i], aliens[i]->getHeight());
-
-				aliens[i]->setXPos(startPos.X);
-				aliens[i]->setYPos(startPos.Y);
-			}
-
-			spriteType = gcnew array<int>
-			{
-				RED_FLAG, 
-				BLUE_FLAG, 
-				YELLOW_FLAG
-			};
-
-			for(int i = 0; i < flags->Length; i++)
-			{
-				Point startPos = objectMap->getSpawnPosition(spriteType[i], flags[i]->getHeight());
-
-				flags[i]->setXPos(startPos.X);
-				flags[i]->setYPos(startPos.Y);
-			}
+			flagList->setSpritePositions(objectMap);			
 		}
 		/// <summary>
 		/// Required method for Designer support - do not modify
@@ -94,7 +70,7 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			//
 			// Create the csv file reader
 			//
-			reader = gcnew CSVReader();
+			reader = gcnew CSVReader(rGen);
 			//
 			// Create tilemap
 			//
@@ -108,84 +84,89 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			//
 			foreground = gcnew Viewport(0, 0, N_COLS, N_ROWS, tileMap, dbGraphics);
 			//
-			// Create viewport
+			// Create Background Image
 			//
-			background = Image::FromFile("Images/bg.png");		
+			background = Image::FromFile("Images/bg.png");
 			//
-			// Create spritelist
+			// Create Spritelists
 			//
-			spriteList = gcnew SpriteList(foreground);
+			alienList = gcnew SpriteList(foreground);
+			flagList = gcnew SpriteList(foreground);
+			playerList = gcnew SpriteList(foreground);
 			//
 			// Create Player
 			//
-			player = gcnew Sprite
+			playerList->add
 			(
-				tileMap, 
-				foreground,
-				STOP, 
-				PLAYER,
-				dbGraphics, 
-				"Images/player.png",
-				rGen, 
-				reader->getPlayerMap(),
-				PLAYER_X_MAG, 
-				PLAYER_Y_MAG, 
-				FRAME_DELAY
-			);			
-			//
-			// Create NPCs
-			//
-			aliens = gcnew array<Sprite^>(N_ALIENS);		
-			for(int i = 0; i < aliens->Length; i++)
-			{
-				int alien = rGen->Next(1, 3); // random for different aliens
-
-				aliens[i] = gcnew Sprite
+				gcnew Sprite
 				(
-					tileMap,
+					dbGraphics,
 					foreground,
-					BOUNCE,
-					ENEMY,
-					dbGraphics,				
-					"Images/enemy" + alien + ".png",
-					rGen,
-					(alien == 1) ? reader->getPlayerMap() : reader->getAlienMap(),
-					ALIEN_X_MAG,
-					ALIEN_Y_MAG,
-					FRAME_DELAY
-				);			
-			}
+					reader,
+					tileMap,					
+					STOP,
+					rGen, 
+					PLAYER,
+					PLAYER_X_MAG, 
+					PLAYER_Y_MAG, 
+					FRAME_DELAY,
+					PLAYER_FILENAME,
+					tileMap->getBounds()
+				)	
+			);	
+
+			player = playerList->get(0);
+			//
+			// Create Aliens
+			//
+			for(int alien = ALIEN_ONE; alien <= ALIEN_FOUR; alien++)		
+			{
+				alienList->add
+				(
+					gcnew Sprite
+					(
+						dbGraphics,
+						foreground,
+						reader,
+						tileMap,						
+						STOP,
+						rGen,
+						alien,
+						ALIEN_X_MAG,
+						ALIEN_Y_MAG,
+						FRAME_DELAY,
+						"Images/enemy"+ alien +".png",
+						tileMap->getBounds()
+					)
+				);
+			}			
 			//
 			// Create Flags
 			//
-			flags = gcnew array<Sprite^>(N_FLAG);		
-			for(int i = 0; i < flags->Length; i++)
-			{			
-				flags[i] = gcnew Sprite
+			for(int flag = RED_FLAG; flag < YELLOW_FLAG + 1; flag++)		
+			{
+				flagList->add
 				(
-					tileMap,
-					foreground,
-					STOP,
-					FLAG,
-					dbGraphics,
-					"Images/flag" + i + ".png",
-					rGen,
-					reader->getItemMap(),
-					FLAG_X_MAG,
-					FLAG_Y_MAG,
-					FLAG_FRAME_DELAY
-				);			
-			}
+					gcnew Sprite
+					(
+						dbGraphics,
+						foreground,
+						reader,
+						tileMap,						
+						STOP,						
+						rGen,
+						flag,
+						FLAG_X_MAG,
+						FLAG_Y_MAG,
+						FLAG_FRAME_DELAY,
+						"Images/flag"+ flag +".png",
+						tileMap->getBounds()						
+					)
+				);	
+			}			
 			//				
-			// Adds all game characters to the spritelist
-			//
-			for(int i = 0; i < flags->Length; i++)		// FLAGS
-				spriteList->add(flags[i]);			
-
-			for(int i = 0; i < aliens->Length; i++)		// ALIENS
-				spriteList->add(aliens[i]);			
-
-			spriteList->add(player);					// PLAYER
+			// 
+			//				
 		}
 #pragma endregion
 
@@ -195,21 +176,21 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
 		/// </summary>
-		void GameManager::keyDown(KeyEventArgs^  e)
+		void GameManager::keyDown(Keys code)
 		{
-			 if(e->KeyCode==Keys::Up)
+			 if(code==Keys::Up)
 				player->setBearing(NORTH); // Move player up	
 			 
-			 if(e->KeyCode==Keys::Down)
+			 if(code==Keys::Down)
 				player->setBearing(SOUTH); // Move player down	
 			 
-			 if(e->KeyCode==Keys::Right)
+			 if(code==Keys::Right)
 				player->setBearing(EAST);  // Move player right
 			 
-			 if(e->KeyCode==Keys::Left)
+			 if(code==Keys::Left)
 				player->setBearing(WEST);  // Move player left
 		}
-		void GameManager::keyUp(KeyEventArgs^  e)
+		void GameManager::keyUp(Keys code)
 		{
 			player->setBearing(STAND);     // Make player stand
 		}
@@ -226,24 +207,36 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			//
 			// Get hud information
 			//
-			flagCount = spriteList->getFlags();
-			coinCount = spriteList->getCoins();
-			score = spriteList->getScore();
-			lives = spriteList->getLives();
+			flagCount = flagList->getFlags();
+			coinCount = player->getCoins();
+			score = player->getScore() + flagList->getScore();
+			lives = player->getLives();
 			//
 			// Set Viewport Position on Player
+			// 
+			int playerX = player->getXPos() + (player->getWidth() / HALF);
+			int playerY = player->getYPos() + (player->getHeight() / HALF);
+			foreground->moveRelativeToPlayer(playerX, playerY);	
 			//
-			int playerX = player->getXPos() + (player->getWidth() / 2);
-			int playerY = player->getYPos() + (player->getHeight() / 2);
-			foreground->moveRelativeToPlayer(playerX, playerY);		
+			// Alien AI
+			//	
+			alienList->spriteAI();
+			//
+			// Collision Checks
+			//
+			alienList->checkCollisions(player);
+			flagList->pickupItem(player);
+			playerList->collectCoin();
 			//
 			// Updates Sprites Animation
 			//
-			spriteList->update();		
+			flagList->update();
+			alienList->update();
+			playerList->update();
 			//
 			// Game Phaze
 			//
-			checkGamePhaze();		
+			checkGamePhase();		
 			//
 			// Game Win
 			//
@@ -253,10 +246,8 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			//
 			checkGameOver();
 			//
-			// NPC AI
-			//	
-			for(int c = 0; c < aliens->Length; c++)
-				aliens[c]->wander();
+			//
+			//			
 		}
 		/// <summary>
 		/// Required method for Designer support - do not modify
@@ -271,11 +262,11 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			//
 			// Draw hud information 
 			//
-			dbGraphics->DrawString("Flags: " + flagCount.ToString(), gcnew Font("Comic Sans MS", 16), Brushes::WhiteSmoke, 10, 10);
-			dbGraphics->DrawString("Coins: " + coinCount.ToString(), gcnew Font("Comic Sans MS", 16), Brushes::WhiteSmoke, 110, 10);
-			dbGraphics->DrawString("Lives: " + lives.ToString(), gcnew Font("Comic Sans MS", 16), Brushes::WhiteSmoke, 210, 10);
-			dbGraphics->DrawString("Score: " + score.ToString(), gcnew Font("Comic Sans MS", 16), Brushes::WhiteSmoke, 310, 10);
-			dbGraphics->DrawString("HighScore: " + highscore.ToString(), gcnew Font("Comic Sans MS", 16), Brushes::WhiteSmoke, 500, 10);
+			dbGraphics->DrawString("Score: " + score.ToString(), font, Brushes::WhiteSmoke, 10, 10);
+			dbGraphics->DrawString("Flags: " + flagCount.ToString(), font, Brushes::WhiteSmoke, 370, 10);
+			dbGraphics->DrawString("Coins: " + coinCount.ToString(), font, Brushes::WhiteSmoke, 470, 10);
+			dbGraphics->DrawString("Lives: " + lives.ToString(), font, Brushes::WhiteSmoke, 570, 10);			
+			dbGraphics->DrawString("High Score: " + highscore.ToString(), font, Brushes::WhiteSmoke, 800, 10);
 			//
 			// Draw Viewport to Canvas 
 			//
@@ -283,7 +274,9 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			//
 			// Draw Sprites to Canvas
 			//
-			spriteList->renderSprites(foreground->getViewportWorldX(), foreground->getViewportWorldY());	
+			flagList->renderSprites(foreground->getViewportWorldX(), foreground->getViewportWorldY());
+			alienList->renderSprites(foreground->getViewportWorldX(), foreground->getViewportWorldY());
+			playerList->renderSprites(foreground->getViewportWorldX(), foreground->getViewportWorldY());
 			//
 			// Make Buffer Visible 
 			//
@@ -292,16 +285,16 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 #pragma endregion
 
 
-#pragma region Game Phaze Checks
+#pragma region Game Phase Checks
 		/// <summary>
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
 		/// </summary>
-		void GameManager::checkGamePhaze()
+		void GameManager::checkGamePhase()
 		{
 			if(flagCount == 3)					// All flags have been collected
 			{
-				spriteList->setFlags(0);		// Reset Flags
+				flagList->setFlags(0);			// Reset Flags must have to pick up coins
 
 				tileMap->setMapValue(1, 9, 9);	// Shows exit post
 
@@ -320,8 +313,11 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 				initializeGame();				// Create a game
 				initializeObjectsPositons();	// Positions sprites on screen
 
-				spriteList->setScore(score);	// Set current score to new game
-				spriteList->setLives(lives);	// Set current lives to new game
+				flagList->setFlags(flagCount);
+
+				player->setCoins(coinCount);
+				player->setScore(score);		// Set current score to new game
+				player->setLives(lives);		// Set current lives to new game
 
 				player->setLevelWin(false);		// Resets level win 
 			}

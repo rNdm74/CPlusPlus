@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Constants.h"
+#include "ObjectMap.h"
 #include "Sprite.h"
 #include "Viewport.h"
 
@@ -30,16 +32,23 @@ ref class SpriteList
 		void add(Sprite^ newGameObject);
 		void remove(Sprite^ gameObjectToDelete);
 		void update();
-		Sprite^ checkCollisions(Sprite^ sprite);
+
+		void pickupItem(Sprite^ otherSprite);
+		void collectCoin();
+		void checkCollisions(Sprite^ otherSprite);
+		void setSpritePositions(ObjectMap^ objectMap);
+		void spriteAI();
 		void renderSprites(int vX, int vY);
 		void draw();
 
 		int getScore()			{ return score; }
-		void setScore(int s)	{ score = s; }
 		int getCoins()			{ return coins; }
 		int getLives()			{ return lives; }
-		void setLives(int l)	{ lives = l; }
 		int getFlags()			{ return flags; }
+
+		void setScore(int s)	{ score = s; }
+		void setCoins(int c)	{ coins = c; }	
+		void setLives(int l)	{ lives = l; }		
 		void setFlags(int f)	{ flags = f; }
 		
 	};

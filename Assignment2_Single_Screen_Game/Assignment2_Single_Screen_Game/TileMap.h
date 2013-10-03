@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Constants.h"
 #include "TileList.h"
 
 using namespace System;
@@ -51,8 +52,11 @@ ref class TileMap
 
 		bool isSolid(int row, int col)				{ return tiles->isSolid(tileMap[row, col]); }
 		bool isClimbable(int row, int col)			{ return tiles->isClimbable(tileMap[row, col]); }
+		bool isWalkable(int row, int col)			{ return tiles->isWalkable(tileMap[row, col]); }
+		bool isCoin(int row, int col)				{ return tiles->isCoin(tileMap[row, col]); }
+		bool isExit(int row, int col)				{ return tiles->isExit(tileMap[row, col]); }
 		
 		Bitmap^ getTileBitmap(int row, int col)		{ return tiles->getTileBitmap(tileMap[row, col]); }
 
-		Rectangle getMapBounds()					{ return Rectangle(0, 0, T_SIZE * N_COLS, T_SIZE * N_ROWS); }
+		Rectangle getBounds()					{ return Rectangle(0, 0, T_SIZE * N_COLS, T_SIZE * N_ROWS); }
 	};

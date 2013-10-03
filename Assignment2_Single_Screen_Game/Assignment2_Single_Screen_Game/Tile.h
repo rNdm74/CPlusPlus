@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Constants.h"
+
 using namespace System;
 using namespace System::ComponentModel;
 using namespace System::Collections;
@@ -25,6 +27,9 @@ private:
 
 	bool solid;
 	bool climb;
+	bool walkable;
+	bool coin;
+	bool exit;
 	
 
 public:
@@ -34,6 +39,9 @@ public:
 
 	bool isSolid()			{ return solid; }
 	bool isClimbable()		{ return climb; }
+	bool isWalkable()		{ return walkable; }
+	bool isCoin()			{ return coin; }
+	bool isExit()			{ return exit; }
 
 	Bitmap^ getTileBitmap() { return tileBitmap; }
 };

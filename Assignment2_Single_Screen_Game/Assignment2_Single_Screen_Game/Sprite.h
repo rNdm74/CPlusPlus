@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CsvReader.h"
+#include "Constants.h"
 #include "TileMap.h"
 #include "ViewPort.h"
 
@@ -29,35 +31,39 @@ ref class Sprite
 		/// the contents of this method with the code editor.
 		/// </summary>
 
-		bool player;
-		bool flag;
-		bool enemy;
-		bool coin;
+		//bool player;
+		//bool flag;
+		//bool enemy;
+		//bool coin;
 		bool walking;
 		bool alive;
 		bool gameover;
 		bool levelwin;
 
+		int lives;
+		int coins;
+		int score;
+
 		Bitmap^ spriteSheet;
 		Bitmap^ spriteBitmap;
 		PixelFormat format;
 
-		array<int, 3>^ sheetData;
-
+		array<int, 3>^ spriteSheetData;
 		array<Point>^ spriteDirection;
-		array<Point>^ offsets;
+		array<Point>^ collisionOffsets;
 
-		EBoundsAction action;
+		EAction action;
 		EBearing bearing;		
 
 		Graphics^ canvas;		
 		Random^ rGen;
 		
-		Rectangle frameRectangle;
-		Rectangle boundsRect;
+		Rectangle spriteFrame;
+		Rectangle tileMapBounds;
 
 		Viewport^ viewPort;
-		TileMap^ tileMap;		
+		TileMap^ tileMap;
+		String^ filename;
 
 		int currentFrame;
 		long frameTime;
@@ -73,6 +79,8 @@ ref class Sprite
 		int xMag;
 		int yMag;
 
+		int objectNumber;
+
 		Point startPosition;		
 
 #pragma endregion
@@ -87,20 +95,27 @@ ref class Sprite
 		//
 		// Construtor
 		//
-		Sprite(TileMap^ startTileMap, Viewport^ startViewPort, 
-			   EBoundsAction startAction, ESprite startSprite,
-			   Graphics^ startCanvas, String^ filename,
-			   Random^ startRgen, array<int,3>^ startMap, 
-			   int startXMag, int startYMag, int startFrameDelay);
+		Sprite
+		(
+			Graphics^ startCanvas, 
+			Viewport^ startViewPort, 
+			CSVReader^ startReader, 
+			TileMap^ startTileMap,
+			EAction startAction,
+			Random^ startRGen, 
+			int startObjectNumber, 
+			int startXMag, 
+			int startYMag, 
+			int startFrameDelay,
+			String^ startFilename,
+			Rectangle startTileMapBounds
+		);
 		
 #pragma region Methods
 		/// <summary>
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
 		/// </summary>
-
-		void setSpriteSheet();
-		void erase(Color eraseColor);
 		// 
 		// Collision check
 		//
@@ -111,15 +126,14 @@ ref class Sprite
 		//
 		void executeBoundsAction();	
 		void wrap();					
-		void reverse();					
-		void die();						
+		void bounce();					
+		void die();	
+		void coin();
 		void stop();	
 		//
 		// Moving and updating sprite
 		//		
-		bool collectCoin();
-		bool isTileWalkable(ETileType tileType);
-		void canSpriteMove(int viewportWorldX, int viewportWorldY);		
+		void clamp(int col, int row);		
 		void move(int viewportWorldX, int viewportWorldY);				
 		void updateFrame();
 		//
@@ -129,6 +143,7 @@ ref class Sprite
 		//
 		// AI sprite
 		//
+		bool collectCoin();
 		void wander();
 		EBearing getRandomBearing();
 
@@ -141,32 +156,42 @@ ref class Sprite
 		/// </summary>		
 		
 		void setStartPosition(Point p)	{ startPosition = p; xPos = p.X; yPos = p.Y; }
-		void resetPosition()			{ xPos = startPosition.X; yPos = startPosition.Y; }		
+		void resetPosition()			{ xPos = startPosition.X; yPos = startPosition.Y; }
+
 		void setBearing(EBearing b);
-		void setAction(EBoundsAction a)	{ action = a; }
+		void setAction(EAction a)		{ action = a; }
 		void setWalking(bool w)			{ walking = w; }		
 		void setAlive(bool a)			{ alive = a; }
-		void setXPos(int x)				{ xPos = x; }
-		void setYPos(int y)				{ yPos = y; }
 		void setGameOver(bool g)		{ gameover = g; }
 		void setLevelWin(bool l)		{ levelwin = l; }
 
-		Rectangle getFrameRectangle()	{ return Rectangle(xPos, yPos, frameRectangle.Width, frameRectangle.Height); }
-		Rectangle getBoundsRectangle()	{ return boundsRect; }
-		EBoundsAction getAction()		{ return action; }
+		void setXPos(int x)				{ xPos = x; }
+		void setYPos(int y)				{ yPos = y; }
+		
+		void setLives(int l)			{ lives = l; }
+		void setCoins(int c)			{ coins = c; }
+		void setScore(int s)			{ score = s; }
+		
+
+		Rectangle getSpriteFrame()		{ return Rectangle(xPos, yPos, spriteFrame.Width, spriteFrame.Height); }
+		Rectangle getTileMapBounds()	{ return tileMapBounds; }
+		EAction getAction()				{ return action; }
 		EBearing getBearing()			{ return bearing; }
+
+		int getObjectNumber()			{ return objectNumber; }
+		int getWidth()					{ return frameWidth; }
+		int getHeight()					{ return frameHeight; }	
 		int getXPos()					{ return xPos; }
 		int getYPos()					{ return yPos; }
-		int getWidth()					{ return frameWidth; }
-		int getHeight()					{ return frameHeight; }		
+		
+		int getLives()					{ return lives; }
+		int getCoins()					{ return coins; }
+		int getScore()					{ return score; }
+
 		bool isWalking()				{ return walking; }
 		bool isAlive()					{ return alive; }
-		bool isEnemy()					{ return enemy; }
-		bool isPlayer()					{ return player; }
-		bool isFlag()					{ return flag; }
-		bool isCoin()					{ return coin; }
 		bool isGameOver()				{ return gameover; }		
-		bool isLevelWin()				{ return levelwin; }		
+		bool isLevelWin();		
 
 #pragma endregion
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Constants.h"
+
 using namespace System;
 using namespace System::ComponentModel;
 using namespace System::Collections;

@@ -1,11 +1,14 @@
 #pragma once
 
+#include "Constants.h"
 #include "Sprite.h"
 #include "SpriteList.h"
 #include "TileMap.h"
 #include "ObjectMap.h"
 #include "Viewport.h"
 #include "CsvReader.h"
+
+using namespace System::Windows::Forms;
 
 /// <summary>
 /// Summary for GameManager
@@ -30,13 +33,13 @@ ref class GameManager
 		Bitmap^ dbBitmap;
 
 		Image^ background;
-
+		
 		TileMap^ tileMap;
 		ObjectMap^ objectMap;
 		
-		SpriteList^ spriteList;
-				
-		bool gameover;
+		SpriteList^ alienList;
+		SpriteList^ flagList;
+		SpriteList^ playerList;
 
 		Random^ rGen;
 
@@ -45,19 +48,19 @@ ref class GameManager
 		Rectangle clientRectangle;
 
 		Sprite^ player;
-		array<Sprite^>^ aliens;
-		array<Sprite^>^ flags;
-		array<Sprite^>^ coins;
 
 		int flagCount;
 		int coinCount;
 		int lives;
-
 		int score;
 		int highscore;
 
+		bool gameover;
+
 		StreamReader^ fileReader;
 		StreamWriter^ fileWriter;
+
+		Font^ font;
 
 #pragma endregion
 
@@ -69,14 +72,13 @@ ref class GameManager
 
 #pragma region Methods
 
-		void keyDown(KeyEventArgs^  e);
-		void keyUp(KeyEventArgs^  e);
-		
+		void keyDown(Keys code);
+		void keyUp(Keys code);		
 		
 		void updateGame();
 		void drawGame();
 
-		void checkGamePhaze();
+		void checkGamePhase();
 		void checkGameWin();
 		void checkGameOver();
 

@@ -8,14 +8,17 @@ Tile::Tile(Bitmap^ startTileBitmap, ETileType startTileType)
 
 	switch(tileType)
 	{
-		case SOLID:
-			solid = true;
-			break;
 		case LADDER:
 			climb = true;
-			break;
+		case WALKABLE:
+			walkable = true;
+		case EXIT:
+			exit = true;
 		case LADDER_COIN:
 			climb = true;
-			break;
+		case COIN:
+			coin = true;
+		case SOLID:
+			solid = true;
 	}
 }
