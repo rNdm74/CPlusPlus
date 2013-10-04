@@ -86,7 +86,11 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			//
 			// Create Background Image
 			//
-			background = Image::FromFile("Images/bg.png");
+			background = Image::FromFile("Images/playscreen.png");
+			//
+			//
+			//
+			lives = N_LIVES;
 			//
 			// Create Spritelists
 			//
@@ -110,7 +114,7 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 					PLAYER_X_MAG, 
 					PLAYER_Y_MAG, 
 					FRAME_DELAY,
-					PLAYER_FILENAME,
+					"Images/player.png",
 					tileMap->getBounds()
 				)	
 			);	
@@ -129,7 +133,7 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 						foreground,
 						reader,
 						tileMap,						
-						STOP,
+						BOUNCE,
 						rGen,
 						alien,
 						ALIEN_X_MAG,
@@ -143,7 +147,7 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			//
 			// Create Flags
 			//
-			for(int flag = RED_FLAG; flag < YELLOW_FLAG + 1; flag++)		
+			for(int flag = BLUE_FLAG; flag < GREEN_FLAG + 1; flag++)		
 			{
 				flagList->add
 				(
@@ -166,7 +170,7 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			}			
 			//				
 			// 
-			//				
+			//			
 		}
 #pragma endregion
 
@@ -207,16 +211,17 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			//
 			// Get hud information
 			//
-			flagCount = flagList->getFlags();
+			flag = flagList->getFlag();
+			flagCount = flagList->getFlagCount();
 			coinCount = player->getCoins();
 			score = player->getScore() + flagList->getScore();
 			lives = player->getLives();
 			//
 			// Set Viewport Position on Player
 			// 
-			int playerX = player->getXPos() + (player->getWidth() / HALF);
-			int playerY = player->getYPos() + (player->getHeight() / HALF);
-			foreground->moveRelativeToPlayer(playerX, playerY);	
+			//int playerX = player->getXPos() + (player->getWidth() / HALF);
+			//int playerY = player->getYPos() + (player->getHeight() / HALF);
+			//foreground->moveRelativeToPlayer(playerX, playerY);	
 			//
 			// Alien AI
 			//	
@@ -258,15 +263,7 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			//
 			// Draw Background to Canvas 
 			//	
-			dbGraphics->DrawImageUnscaled(background, Rectangle(0, 0, clientRectangle.Width, clientRectangle.Height));
-			//
-			// Draw hud information 
-			//
-			dbGraphics->DrawString("Score: " + score.ToString(), font, Brushes::WhiteSmoke, 10, 10);
-			dbGraphics->DrawString("Flags: " + flagCount.ToString(), font, Brushes::WhiteSmoke, 370, 10);
-			dbGraphics->DrawString("Coins: " + coinCount.ToString(), font, Brushes::WhiteSmoke, 470, 10);
-			dbGraphics->DrawString("Lives: " + lives.ToString(), font, Brushes::WhiteSmoke, 570, 10);			
-			dbGraphics->DrawString("High Score: " + highscore.ToString(), font, Brushes::WhiteSmoke, 800, 10);
+			dbGraphics->DrawImageUnscaled(background, 0, 0, clientRectangle.Width, clientRectangle.Height);
 			//
 			// Draw Viewport to Canvas 
 			//
@@ -274,9 +271,12 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			//
 			// Draw Sprites to Canvas
 			//
-			flagList->renderSprites(foreground->getViewportWorldX(), foreground->getViewportWorldY());
-			alienList->renderSprites(foreground->getViewportWorldX(), foreground->getViewportWorldY());
-			playerList->renderSprites(foreground->getViewportWorldX(), foreground->getViewportWorldY());
+			//flagList->renderSprites(foreground->getViewportWorldX(), foreground->getViewportWorldY());
+			//alienList->renderSprites(foreground->getViewportWorldX(), foreground->getViewportWorldY());
+			//playerList->renderSprites(foreground->getViewportWorldX(), foreground->getViewportWorldY());
+			flagList->draw();
+			alienList->draw();
+			playerList->draw();
 			//
 			// Make Buffer Visible 
 			//
@@ -292,11 +292,12 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 		/// </summary>
 		void GameManager::checkGamePhase()
 		{
-			if(flagCount == 3)					// All flags have been collected
+			if(flagCount == 4)					// All flags have been collected
 			{
-				flagList->setFlags(0);			// Reset Flags must have to pick up coins
+				flagList->setFlagCount(0);		// Reset Flags must have to pick up coins
+				flagList->setFlag(0);
 
-				tileMap->setMapValue(1, 9, 9);	// Shows exit post
+				tileMap->setMapValue(4, 9, 9);	// Shows exit post
 
 				addCoinsToGame();				// Makes coins visible					
 			}
@@ -309,12 +310,24 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 		void GameManager::checkGameWin()
 		{
 			if(player->isLevelWin())			// Level has been won
-			{		
+			{
+				level++;
+
+				delete fileReader;
+				delete reader;
+				delete tileMap;
+				delete objectMap;
+				delete foreground;
+				delete background;
+				delete alienList;
+				delete flagList;
+				delete playerList;
+
 				initializeGame();				// Create a game
 				initializeObjectsPositons();	// Positions sprites on screen
 
-				flagList->setFlags(flagCount);
-
+				flagList->setFlag(flag);
+				flagList->setFlagCount(flagCount);
 				player->setCoins(coinCount);
 				player->setScore(score);		// Set current score to new game
 				player->setLives(lives);		// Set current lives to new game
@@ -338,6 +351,8 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 					fileWriter = gcnew StreamWriter("data.dat");	// Open file
 					fileWriter->Write(score.ToString());			// Write to score
 					fileWriter->Close();							// Close file
+
+					delete fileWriter;
 				}		
 			}
 		}

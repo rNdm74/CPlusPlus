@@ -11,7 +11,7 @@ array<int,3>^ CSVReader::getSpriteSheetData(int startObjectNumber)
 	switch(startObjectNumber)
 	{
 		case PLAYER:
-			return getPlayerMap();;
+			return getPlayerMap();
 		case ALIEN_ONE:
 			return getPlayerMap();
 		case ALIEN_TWO:
@@ -20,11 +20,13 @@ array<int,3>^ CSVReader::getSpriteSheetData(int startObjectNumber)
 			return getPlayerMap();
 		case ALIEN_FOUR:
 			return getAlienMap();
-		case RED_FLAG:
+		case ORANGE_FLAG:
 			return getItemMap();
 		case BLUE_FLAG:
 			return getItemMap();
 		case YELLOW_FLAG:
+			return getItemMap();
+		case GREEN_FLAG:
 			return getItemMap();
 	}
 }
@@ -69,6 +71,8 @@ array<int,2>^ CSVReader::getMap(String^ filename)
 
 	reader->Close();
 
+	delete reader;
+
 	return map;
 }
 
@@ -110,6 +114,8 @@ array<int,3>^ CSVReader::getMap(String^ filename, int dim0, int dim1, int dim2)
 	}	
 
 	reader->Close();
+
+	delete reader;
 
 	return map;
 }

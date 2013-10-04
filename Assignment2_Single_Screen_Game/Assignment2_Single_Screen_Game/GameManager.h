@@ -27,6 +27,9 @@ ref class GameManager
 
 	private:
 		Viewport^ foreground;
+		Rectangle clientRectangle;
+
+		CSVReader^ reader;
 
 		Graphics^ canvas;
 		Graphics^ dbGraphics;
@@ -40,20 +43,17 @@ ref class GameManager
 		SpriteList^ alienList;
 		SpriteList^ flagList;
 		SpriteList^ playerList;
+		Sprite^ player;
 
 		Random^ rGen;
 
-		CSVReader^ reader;
-
-		Rectangle clientRectangle;
-
-		Sprite^ player;
-
+		int flag;
 		int flagCount;
 		int coinCount;
 		int lives;
 		int score;
 		int highscore;
+		int level;
 
 		bool gameover;
 
@@ -94,7 +94,11 @@ ref class GameManager
 		Sprite^ getPlayer()		{ return player; }
 		bool isGameOver()		{ return gameover; }
 		String^ getHighScore()	{ return highscore.ToString(); }
-		String^ getScore()		{ return score.ToString(); }
+		String^ getScore()		{ return score.ToString(); }		
+		String^ getCoins()		{ return coinCount.ToString(); }
+		int getLives()			{ return lives; }
+		int getFlag()			{ return flag; }
+
 
 #pragma endregion
 

@@ -29,13 +29,14 @@
 			yMag = startYMag;
 			frameDelay = startFrameDelay;
 			spriteSheetData = startReader->getSpriteSheetData(startObjectNumber);
+			filename = startFilename;
 			tileMapBounds = startTileMapBounds;
 			bearing = STAND;
 			lives = N_LIVES;					
 			//
 			// Create spritesheets from file names
 			//
-			spriteSheet = gcnew Bitmap(startFilename);
+			spriteSheet = gcnew Bitmap(filename);
 			spriteSheet->MakeTransparent(spriteSheet->GetPixel(0,0));
 			format = spriteSheet->PixelFormat;
 			//
@@ -92,7 +93,7 @@
 		//
 		// Draw sprites frame to the screen
 		//
-		spriteBitmap = spriteSheet->Clone(spriteFrame, format);
+		Bitmap^ spriteBitmap = spriteSheet->Clone(spriteFrame, format);
 		//
 		// Flips image on the X axis based on direction
 		//
@@ -105,7 +106,31 @@
 			spriteBitmap,
 			newXPos,
 			newYPos
-		);						
+		);	
+
+		delete spriteBitmap;
+	}
+	//
+	//
+	//
+	void Sprite::draw()
+	{
+		//
+		// Draw sprites frame to the screen
+		//
+		Bitmap^ spriteBitmap = spriteSheet->Clone(spriteFrame, format);
+		//
+		// Flips image on the X axis based on direction
+		//
+		if(bearing == WEST)	spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);	
+		//
+		// Draws bitmap to the screen
+		//
+		canvas->DrawImage(spriteBitmap,	xPos, yPos);	
+		//
+		// Clean up bitmap
+		//
+		delete spriteBitmap;
 	}
 	//
 	//

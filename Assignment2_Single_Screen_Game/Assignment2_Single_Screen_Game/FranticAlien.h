@@ -43,20 +43,24 @@ namespace Assignment2_Single_Screen_Game {
 	private: System::Windows::Forms::Timer^  clock;
 
 	private: System::ComponentModel::IContainer^  components;
+
 	private: System::Windows::Forms::PictureBox^  background;
-	private: System::Windows::Forms::PictureBox^  player;
-	private: System::Windows::Forms::PictureBox^  alien1;
-	private: System::Windows::Forms::PictureBox^  alien2;
-	private: System::Windows::Forms::PictureBox^  logo;
-	
-	private: System::Windows::Forms::Button^  play_button;
+	private: System::Windows::Forms::PictureBox^  coinshud;	
+	private: System::Windows::Forms::PictureBox^  lives;
 
-    private: System::Windows::Forms::Label^  gameover_label;	
-	private: System::Windows::Forms::Label^  high_score_label;
+	private: System::Windows::Forms::PictureBox^  blueflag;
+	private: System::Windows::Forms::PictureBox^  orangeflag;
+	private: System::Windows::Forms::PictureBox^  yellowflag;
+	private: System::Windows::Forms::PictureBox^  greenflag;
+
+    private: System::Windows::Forms::Label^  gameover_label;
+	private: System::Windows::Forms::Label^  highscorelabel;
 	private: System::Windows::Forms::Label^  highscore;
-	private: System::Windows::Forms::Label^  score_label;
+	private: System::Windows::Forms::Label^  scorelabel;
 	private: System::Windows::Forms::Label^  score;
+	private: System::Windows::Forms::Label^  coins;
 
+	private: System::Windows::Forms::Button^  play_button;
 	private: System::Windows::Forms::Button^  restart_button;
 	private: System::Windows::Forms::Button^  quit_button;	
 
@@ -79,22 +83,27 @@ namespace Assignment2_Single_Screen_Game {
 			this->clock = (gcnew System::Windows::Forms::Timer(this->components));
 			this->play_button = (gcnew System::Windows::Forms::Button());
 			this->background = (gcnew System::Windows::Forms::PictureBox());
-			this->high_score_label = (gcnew System::Windows::Forms::Label());
-			this->score_label = (gcnew System::Windows::Forms::Label());
 			this->gameover_label = (gcnew System::Windows::Forms::Label());
-			this->score = (gcnew System::Windows::Forms::Label());
-			this->highscore = (gcnew System::Windows::Forms::Label());
 			this->restart_button = (gcnew System::Windows::Forms::Button());
 			this->quit_button = (gcnew System::Windows::Forms::Button());
-			this->player = (gcnew System::Windows::Forms::PictureBox());
-			this->alien1 = (gcnew System::Windows::Forms::PictureBox());
-			this->alien2 = (gcnew System::Windows::Forms::PictureBox());
-			this->logo = (gcnew System::Windows::Forms::PictureBox());
+			this->coinshud = (gcnew System::Windows::Forms::PictureBox());
+			this->blueflag = (gcnew System::Windows::Forms::PictureBox());
+			this->lives = (gcnew System::Windows::Forms::PictureBox());
+			this->highscorelabel = (gcnew System::Windows::Forms::Label());
+			this->scorelabel = (gcnew System::Windows::Forms::Label());
+			this->coins = (gcnew System::Windows::Forms::Label());
+			this->score = (gcnew System::Windows::Forms::Label());
+			this->highscore = (gcnew System::Windows::Forms::Label());
+			this->orangeflag = (gcnew System::Windows::Forms::PictureBox());
+			this->yellowflag = (gcnew System::Windows::Forms::PictureBox());
+			this->greenflag = (gcnew System::Windows::Forms::PictureBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->background))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->player))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->alien1))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->alien2))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->logo))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->coinshud))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->blueflag))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->lives))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->orangeflag))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->yellowflag))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->greenflag))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// clock
@@ -129,76 +138,23 @@ namespace Assignment2_Single_Screen_Game {
 			this->background->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"background.Image")));
 			this->background->Location = System::Drawing::Point(0, 0);
 			this->background->Name = L"background";
-			this->background->Size = System::Drawing::Size(1008, 730);
+			this->background->Size = System::Drawing::Size(1018, 740);
 			this->background->TabIndex = 1;
 			this->background->TabStop = false;
-			// 
-			// high_score_label
-			// 
-			this->high_score_label->AutoSize = true;
-			this->high_score_label->BackColor = System::Drawing::Color::Transparent;
-			this->high_score_label->Font = (gcnew System::Drawing::Font(L"Comic Sans MS", 24, System::Drawing::FontStyle::Bold));
-			this->high_score_label->ForeColor = System::Drawing::Color::White;
-			this->high_score_label->ImageAlign = System::Drawing::ContentAlignment::MiddleLeft;
-			this->high_score_label->Location = System::Drawing::Point(363, 316);
-			this->high_score_label->Name = L"high_score_label";
-			this->high_score_label->Size = System::Drawing::Size(245, 45);
-			this->high_score_label->TabIndex = 4;
-			this->high_score_label->Text = L"HIGH SCORE:";
-			this->high_score_label->Visible = false;
-			// 
-			// score_label
-			// 
-			this->score_label->AutoSize = true;
-			this->score_label->BackColor = System::Drawing::Color::Transparent;
-			this->score_label->Font = (gcnew System::Drawing::Font(L"Comic Sans MS", 24, System::Drawing::FontStyle::Bold));
-			this->score_label->ForeColor = System::Drawing::Color::White;
-			this->score_label->Location = System::Drawing::Point(334, 380);
-			this->score_label->Name = L"score_label";
-			this->score_label->Size = System::Drawing::Size(274, 45);
-			this->score_label->TabIndex = 5;
-			this->score_label->Text = L"PLAYER SCORE:";
-			this->score_label->Visible = false;
 			// 
 			// gameover_label
 			// 
 			this->gameover_label->AutoSize = true;
 			this->gameover_label->BackColor = System::Drawing::Color::Transparent;
-			this->gameover_label->Font = (gcnew System::Drawing::Font(L"Comic Sans MS", 24, System::Drawing::FontStyle::Bold));
+			this->gameover_label->Font = (gcnew System::Drawing::Font(L"Comic Sans MS", 26.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
 			this->gameover_label->ForeColor = System::Drawing::Color::White;
-			this->gameover_label->Location = System::Drawing::Point(407, 238);
+			this->gameover_label->Location = System::Drawing::Point(399, 246);
 			this->gameover_label->Name = L"gameover_label";
-			this->gameover_label->Size = System::Drawing::Size(201, 45);
+			this->gameover_label->Size = System::Drawing::Size(219, 49);
 			this->gameover_label->TabIndex = 3;
 			this->gameover_label->Text = L"GAMEOVER";
 			this->gameover_label->Visible = false;
-			// 
-			// score
-			// 
-			this->score->AutoSize = true;
-			this->score->BackColor = System::Drawing::Color::Transparent;
-			this->score->Font = (gcnew System::Drawing::Font(L"Comic Sans MS", 24, System::Drawing::FontStyle::Bold));
-			this->score->ForeColor = System::Drawing::Color::White;
-			this->score->Location = System::Drawing::Point(614, 380);
-			this->score->Name = L"score";
-			this->score->Size = System::Drawing::Size(40, 45);
-			this->score->TabIndex = 8;
-			this->score->Text = L"0";
-			this->score->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
-			this->score->Visible = false;
-			// 
-			// highscore
-			// 
-			this->highscore->AutoSize = true;
-			this->highscore->BackColor = System::Drawing::Color::Transparent;
-			this->highscore->Font = (gcnew System::Drawing::Font(L"Comic Sans MS", 24, System::Drawing::FontStyle::Bold));
-			this->highscore->ForeColor = System::Drawing::Color::White;
-			this->highscore->Location = System::Drawing::Point(614, 316);
-			this->highscore->Name = L"highscore";
-			this->highscore->Size = System::Drawing::Size(40, 45);
-			this->highscore->TabIndex = 9;
-			this->highscore->Text = L"0";
-			this->highscore->Visible = false;
 			// 
 			// restart_button
 			// 
@@ -241,83 +197,187 @@ namespace Assignment2_Single_Screen_Game {
 			this->quit_button->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &FranticAlien::button_MouseDown);
 			this->quit_button->MouseEnter += gcnew System::EventHandler(this, &FranticAlien::button_MouseEnter);
 			// 
-			// player
+			// coinshud
 			// 
-			this->player->BackColor = System::Drawing::Color::Transparent;
-			this->player->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"player.Image")));
-			this->player->Location = System::Drawing::Point(140, 478);
-			this->player->Name = L"player";
-			this->player->Size = System::Drawing::Size(66, 92);
-			this->player->SizeMode = System::Windows::Forms::PictureBoxSizeMode::AutoSize;
-			this->player->TabIndex = 12;
-			this->player->TabStop = false;
+			this->coinshud->BackColor = System::Drawing::Color::Transparent;
+			this->coinshud->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"coinshud.Image")));
+			this->coinshud->Location = System::Drawing::Point(500, 5);
+			this->coinshud->Name = L"coinshud";
+			this->coinshud->Size = System::Drawing::Size(35, 35);
+			this->coinshud->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->coinshud->TabIndex = 12;
+			this->coinshud->TabStop = false;
 			// 
-			// alien1
+			// blueflag
 			// 
-			this->alien1->BackColor = System::Drawing::Color::Transparent;
-			this->alien1->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"alien1.Image")));
-			this->alien1->Location = System::Drawing::Point(751, 478);
-			this->alien1->Name = L"alien1";
-			this->alien1->Size = System::Drawing::Size(66, 92);
-			this->alien1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::AutoSize;
-			this->alien1->TabIndex = 13;
-			this->alien1->TabStop = false;
+			this->blueflag->BackColor = System::Drawing::Color::Transparent;
+			this->blueflag->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"blueflag.Image")));
+			this->blueflag->Location = System::Drawing::Point(299, 5);
+			this->blueflag->Name = L"blueflag";
+			this->blueflag->Size = System::Drawing::Size(35, 35);
+			this->blueflag->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->blueflag->TabIndex = 13;
+			this->blueflag->TabStop = false;
+			this->blueflag->Visible = false;
 			// 
-			// alien2
+			// lives
 			// 
-			this->alien2->BackColor = System::Drawing::Color::Transparent;
-			this->alien2->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"alien2.Image")));
-			this->alien2->Location = System::Drawing::Point(832, 478);
-			this->alien2->Name = L"alien2";
-			this->alien2->Size = System::Drawing::Size(66, 92);
-			this->alien2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::AutoSize;
-			this->alien2->TabIndex = 14;
-			this->alien2->TabStop = false;
+			this->lives->BackColor = System::Drawing::Color::Transparent;
+			this->lives->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"lives.Image")));
+			this->lives->Location = System::Drawing::Point(459, 5);
+			this->lives->Name = L"lives";
+			this->lives->Size = System::Drawing::Size(35, 35);
+			this->lives->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->lives->TabIndex = 14;
+			this->lives->TabStop = false;
 			// 
-			// logo
+			// highscorelabel
 			// 
-			this->logo->BackColor = System::Drawing::Color::Transparent;
-			this->logo->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"logo.Image")));
-			this->logo->Location = System::Drawing::Point(217, 286);
-			this->logo->Name = L"logo";
-			this->logo->Size = System::Drawing::Size(587, 109);
-			this->logo->SizeMode = System::Windows::Forms::PictureBoxSizeMode::AutoSize;
-			this->logo->TabIndex = 15;
-			this->logo->TabStop = false;
+			this->highscorelabel->AutoSize = true;
+			this->highscorelabel->BackColor = System::Drawing::Color::Transparent;
+			this->highscorelabel->Font = (gcnew System::Drawing::Font(L"Comic Sans MS", 26.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->highscorelabel->ForeColor = System::Drawing::Color::White;
+			this->highscorelabel->ImageAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->highscorelabel->Location = System::Drawing::Point(671, -3);
+			this->highscorelabel->Name = L"highscorelabel";
+			this->highscorelabel->Size = System::Drawing::Size(166, 49);
+			this->highscorelabel->TabIndex = 15;
+			this->highscorelabel->Text = L"HSCORE";
+			// 
+			// scorelabel
+			// 
+			this->scorelabel->AutoSize = true;
+			this->scorelabel->BackColor = System::Drawing::Color::Transparent;
+			this->scorelabel->Font = (gcnew System::Drawing::Font(L"Comic Sans MS", 26.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->scorelabel->ForeColor = System::Drawing::Color::White;
+			this->scorelabel->ImageAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->scorelabel->Location = System::Drawing::Point(0, -3);
+			this->scorelabel->Name = L"scorelabel";
+			this->scorelabel->Size = System::Drawing::Size(139, 49);
+			this->scorelabel->TabIndex = 16;
+			this->scorelabel->Text = L"SCORE";
+			// 
+			// coins
+			// 
+			this->coins->AutoSize = true;
+			this->coins->BackColor = System::Drawing::Color::Transparent;
+			this->coins->Font = (gcnew System::Drawing::Font(L"Comic Sans MS", 26.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->coins->ForeColor = System::Drawing::Color::White;
+			this->coins->Location = System::Drawing::Point(541, -3);
+			this->coins->Name = L"coins";
+			this->coins->Size = System::Drawing::Size(43, 49);
+			this->coins->TabIndex = 17;
+			this->coins->Text = L"0";
+			this->coins->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
+			// score
+			// 
+			this->score->AutoSize = true;
+			this->score->BackColor = System::Drawing::Color::Transparent;
+			this->score->Font = (gcnew System::Drawing::Font(L"Comic Sans MS", 26.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->score->ForeColor = System::Drawing::Color::White;
+			this->score->Location = System::Drawing::Point(145, -3);
+			this->score->Name = L"score";
+			this->score->Size = System::Drawing::Size(148, 49);
+			this->score->TabIndex = 20;
+			this->score->Text = L"000000";
+			this->score->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
+			// highscore
+			// 
+			this->highscore->AutoSize = true;
+			this->highscore->BackColor = System::Drawing::Color::Transparent;
+			this->highscore->Font = (gcnew System::Drawing::Font(L"Comic Sans MS", 26.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->highscore->ForeColor = System::Drawing::Color::White;
+			this->highscore->Location = System::Drawing::Point(843, -3);
+			this->highscore->Name = L"highscore";
+			this->highscore->Size = System::Drawing::Size(169, 49);
+			this->highscore->TabIndex = 21;
+			this->highscore->Text = L"0000000";
+			// 
+			// orangeflag
+			// 
+			this->orangeflag->BackColor = System::Drawing::Color::Transparent;
+			this->orangeflag->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"orangeflag.Image")));
+			this->orangeflag->Location = System::Drawing::Point(377, 5);
+			this->orangeflag->Name = L"orangeflag";
+			this->orangeflag->Size = System::Drawing::Size(35, 35);
+			this->orangeflag->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->orangeflag->TabIndex = 22;
+			this->orangeflag->TabStop = false;
+			this->orangeflag->Visible = false;
+			// 
+			// yellowflag
+			// 
+			this->yellowflag->BackColor = System::Drawing::Color::Transparent;
+			this->yellowflag->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"yellowflag.Image")));
+			this->yellowflag->Location = System::Drawing::Point(418, 5);
+			this->yellowflag->Name = L"yellowflag";
+			this->yellowflag->Size = System::Drawing::Size(35, 35);
+			this->yellowflag->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->yellowflag->TabIndex = 23;
+			this->yellowflag->TabStop = false;
+			this->yellowflag->Visible = false;
+			// 
+			// greenflag
+			// 
+			this->greenflag->BackColor = System::Drawing::Color::Transparent;
+			this->greenflag->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"greenflag.Image")));
+			this->greenflag->Location = System::Drawing::Point(340, 5);
+			this->greenflag->Name = L"greenflag";
+			this->greenflag->Size = System::Drawing::Size(35, 35);
+			this->greenflag->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->greenflag->TabIndex = 24;
+			this->greenflag->TabStop = false;
+			this->greenflag->Visible = false;
 			// 
 			// FranticAlien
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
-			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::None;
 			this->BackColor = System::Drawing::Color::Black;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"$this.BackgroundImage")));
-			this->ClientSize = System::Drawing::Size(1008, 730);
-			this->Controls->Add(this->gameover_label);
+			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
+			this->ClientSize = System::Drawing::Size(1018, 740);
+			this->Controls->Add(this->greenflag);
+			this->Controls->Add(this->yellowflag);
+			this->Controls->Add(this->orangeflag);
 			this->Controls->Add(this->score);
-			this->Controls->Add(this->score_label);
 			this->Controls->Add(this->highscore);
-			this->Controls->Add(this->high_score_label);
-			this->Controls->Add(this->logo);
-			this->Controls->Add(this->alien2);
-			this->Controls->Add(this->alien1);
-			this->Controls->Add(this->player);
+			this->Controls->Add(this->coins);
+			this->Controls->Add(this->scorelabel);
+			this->Controls->Add(this->highscorelabel);
+			this->Controls->Add(this->lives);
+			this->Controls->Add(this->blueflag);
+			this->Controls->Add(this->coinshud);
+			this->Controls->Add(this->gameover_label);
 			this->Controls->Add(this->quit_button);
 			this->Controls->Add(this->restart_button);
 			this->Controls->Add(this->play_button);
 			this->Controls->Add(this->background);
+			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedDialog;
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^  >(resources->GetObject(L"$this.Icon")));
 			this->MaximizeBox = false;
+			this->MaximumSize = System::Drawing::Size(1024, 769);
 			this->MinimizeBox = false;
+			this->MinimumSize = System::Drawing::Size(1024, 769);
 			this->Name = L"FranticAlien";
 			this->SizeGripStyle = System::Windows::Forms::SizeGripStyle::Hide;
+			this->StartPosition = System::Windows::Forms::FormStartPosition::Manual;
 			this->Text = L"Frantic Alien";
 			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &FranticAlien::FranticAlien_KeyUp);
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &FranticAlien::FranticAlien_KeyDown);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->background))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->player))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->alien1))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->alien2))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->logo))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->coinshud))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->blueflag))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->lives))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->orangeflag))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->yellowflag))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->greenflag))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -331,14 +391,14 @@ namespace Assignment2_Single_Screen_Game {
 		/// </summary>			 
 		private: System::Void clock_Tick(System::Object^  sender, System::EventArgs^  e) {
 			// 
-			// FranticAlien
+			// Game Clock Cycle, checks is the game is over updates game then draws to window
 			//
 			isGameOver(gManager->isGameOver());
 			gManager->updateGame();
 			gManager->drawGame();
 		}
 		// 
-		// FranticAlien
+		// Key Up and Key Down Handlers
 		//
 		private: System::Void FranticAlien_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {			
 			gManager->keyDown(e->KeyCode);
@@ -347,7 +407,7 @@ namespace Assignment2_Single_Screen_Game {
 			gManager->keyUp(e->KeyCode);
 		}
 		// 
-		// FranticAlien
+		// Mouse Handlers
 		//
 		private: System::Void button_MouseLeave(System::Object^  sender, System::EventArgs^  e) {
 			Button^ button = safe_cast<Button^>(sender); 
@@ -362,7 +422,7 @@ namespace Assignment2_Single_Screen_Game {
 			button->ForeColor = Color::DeepSkyBlue;
 		}
 		// 
-		// FranticAlien
+		// Button Handlers
 		//
 		private: System::Void quit_button_Click(System::Object^  sender, System::EventArgs^  e) {
 			Application::Exit();
@@ -374,7 +434,7 @@ namespace Assignment2_Single_Screen_Game {
 			createGame();				 
 		}
 		// 
-		// FranticAlien
+		// Game Over
 		//
 		private: System::Void isGameOver(bool gameover)
 		{
@@ -383,40 +443,56 @@ namespace Assignment2_Single_Screen_Game {
 				clock->Enabled = !clock->Enabled;
 
 				background->Visible = gameover;
-				player->Visible = gameover;
-				alien1->Visible = gameover;
-				alien2->Visible = gameover;
 
 				gameover_label->Visible = gameover;
 				restart_button->Visible = gameover;
 				quit_button->Visible = gameover;						
 				
 				highscore->Text = gManager->getHighScore();
-				high_score_label->Visible = gameover;
 				highscore->Visible = gameover;
 				
 				score->Text = gManager->getScore();
-				score_label->Visible = gameover;
 				score->Visible = gameover;
+			}
+			else
+			{
+				highscore->Text = gManager->getHighScore();
+				score->Text = gManager->getScore();
+				coins->Text = gManager->getCoins();
+
+				lives->Image = Image::FromFile("Images/lives" + gManager->getLives() + ".png");
+
+				switch(gManager->getFlag())
+				{
+					case ORANGE_FLAG:
+						orangeflag->Visible = true;										
+						break;
+					case BLUE_FLAG:					
+						blueflag->Visible = true;
+						break;
+					case YELLOW_FLAG:
+						yellowflag->Visible = true;
+						break;
+					case GREEN_FLAG:
+						greenflag->Visible = true;
+						break;	
+					case 0:
+						orangeflag->Visible = false;
+						blueflag->Visible = false;
+						yellowflag->Visible = false;
+						greenflag->Visible = false;
+						break;
+				}
 			}
 		}
 		// 
-		// FranticAlien
+		// Create New Game
 		//
 		private: System::Void createGame()
 		{
-			 background->Visible = false;
-			 logo->Visible = false;
-			 player->Visible = false;
-			 alien1->Visible = false;
-			 alien2->Visible = false;
+			 delete gManager;
 
-			 high_score_label->Visible = false;
-			 highscore->Visible = false;
-			
-			 score_label->Visible = false;
-			 score->Visible = false;
-			 
+			 background->Visible = false;			 
 			 play_button->Visible = false;
 			 gameover_label->Visible = false;
 			 restart_button->Visible = false;

@@ -18,7 +18,6 @@ Point ObjectMap::getSpawnPosition(int spriteType, int spriteHeight)
 				int xPos = (col * T_SIZE);
 				int yPos = ((row + 1) * T_SIZE) - spriteHeight; // +1 so the the correct row is picked
 
-
 				return Point(xPos, yPos);
 			}
 		}

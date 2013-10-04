@@ -42,5 +42,5 @@ ref class CSVReader
 
 		array<int,3>^ getPlayerMap()	{ return getMap("playermap.csv", 5, 11, 4); }
 		array<int,3>^ getAlienMap()		{ return getMap("alienmap.csv", 5, 11, 4); }
-		array<int,3>^ getItemMap()		{ return getMap("flagMap.csv", 5, 2, 4); }
+		array<int,3>^ getItemMap()		{ return getMap("flagmap.csv", 5, 4, 4); }
 	};

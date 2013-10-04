@@ -12,7 +12,7 @@
 //
 //
 #define FRAME_DELAY				1
-#define FLAG_FRAME_DELAY		4
+#define FLAG_FRAME_DELAY		3
 //
 //
 //
@@ -42,25 +42,15 @@
 //
 //
 //
-#define PLAYER_FILENAME			"Images/player.png"
-#define ALIEN_ONE_FILENAME		"Images/enemy1.png"
-#define ALIEN_TWO_FILENAME		"Images/enemy2.png"
-#define ALIEN_THREE_FILENAME	"Images/enemy1.png"
-#define ALIEN_FOUR_FILENAME		"Images/enemy2.png"
-#define RED_FLAG_FILENAME		"Images/flag0.png"
-#define BLUE_FLAG_FILENAME		"Images/flag1.png"
-#define YELLOW_FLAG_FILENAME	"Images/flag2.png"
-//
-//
-//
 #define PLAYER					1
 #define ALIEN_ONE				2
 #define ALIEN_TWO				3
 #define ALIEN_THREE				4
 #define ALIEN_FOUR				5
-#define RED_FLAG				10
-#define BLUE_FLAG				11
+#define BLUE_FLAG				10
+#define ORANGE_FLAG				11
 #define YELLOW_FLAG				12
+#define GREEN_FLAG				13
 //
 //
 //

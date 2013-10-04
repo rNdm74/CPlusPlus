@@ -4,9 +4,10 @@
 SpriteList::SpriteList(Viewport^ startViewport)
 	{
 		viewport = startViewport;
-
-		coins = 0;
-		flags = 0;
+		score = 000000;
+		coins = 000000;
+		flag = 0;
+		flagCount = 0;
 		lives = N_LIVES;
 
 		head = nullptr;
@@ -147,7 +148,11 @@ void SpriteList::pickupItem(Sprite^ otherSprite)
 		{
 			remove(spriteWalker);
 
-			flags++;	
+			String^ name = spriteWalker->getFilename()->Substring(11,2);
+
+			flag = int::Parse(name);
+
+			flagCount++;
 
 			score += 100;
 		}
@@ -229,7 +234,7 @@ void SpriteList::draw()
 	while(spriteWalker != nullptr)
 	{
 		// Draw pellets
-		//spriteWalker->draw();
+		spriteWalker->draw();
 
 		// Move to next node
 		spriteWalker = spriteWalker->Next;

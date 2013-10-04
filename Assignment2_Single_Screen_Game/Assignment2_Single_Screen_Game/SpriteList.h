@@ -19,7 +19,8 @@ ref class SpriteList
 		Viewport^ viewport;
 
 		int score;
-		int flags;
+		int flag;
+		int flagCount;
 		int coins;
 		int lives;
 
@@ -41,14 +42,16 @@ ref class SpriteList
 		void renderSprites(int vX, int vY);
 		void draw();
 
-		int getScore()			{ return score; }
-		int getCoins()			{ return coins; }
-		int getLives()			{ return lives; }
-		int getFlags()			{ return flags; }
+		int getScore()				{ return score; }
+		int getCoins()				{ return coins; }
+		int getLives()				{ return lives; }
+		int getFlag()				{ return flag; }
+		int getFlagCount()			{ return flagCount; }
 
-		void setScore(int s)	{ score = s; }
-		void setCoins(int c)	{ coins = c; }	
-		void setLives(int l)	{ lives = l; }		
-		void setFlags(int f)	{ flags = f; }
+		void setScore(int s)		{ score = s; }
+		void setCoins(int c)		{ coins = c; }	
+		void setLives(int l)		{ lives = l; }		
+		void setFlag(int f)			{ flag = f; }
+		void setFlagCount(int f)	{ flagCount = f; }
 		
 	};

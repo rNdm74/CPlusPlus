@@ -45,7 +45,7 @@ ref class Sprite
 		int score;
 
 		Bitmap^ spriteSheet;
-		Bitmap^ spriteBitmap;
+		
 		PixelFormat format;
 
 		array<int, 3>^ spriteSheetData;
@@ -140,6 +140,7 @@ ref class Sprite
 		// Draw sprite
 		//
 		void draw(int newXPos, int newYPos);
+		void draw();
 		//
 		// AI sprite
 		//
@@ -177,6 +178,7 @@ ref class Sprite
 		Rectangle getTileMapBounds()	{ return tileMapBounds; }
 		EAction getAction()				{ return action; }
 		EBearing getBearing()			{ return bearing; }
+		String^ getFilename()			{ return filename; }
 
 		int getObjectNumber()			{ return objectNumber; }
 		int getWidth()					{ return frameWidth; }
