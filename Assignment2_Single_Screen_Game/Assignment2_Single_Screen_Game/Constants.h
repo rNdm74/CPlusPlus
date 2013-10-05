@@ -13,12 +13,17 @@
 //
 #define FRAME_DELAY				1
 #define FLAG_FRAME_DELAY		3
+#define HURT_DELAY				100
+#define DELAY					20
 //
 //
 //
 #define N_LIVES					3
-#define N_FLAG					3
+#define N_FLAGS					4
 #define N_ALIENS				4
+#define N_DIRECTIONS			4
+#define N_LEVELS				15
+#define START_LEVEL				1
 //
 //
 //
@@ -33,12 +38,19 @@
 #define N_ROWS					11 	// Y tiles
 #define N_TILES					10	// Tiles array size
 #define T_SIZE					70	// Tile bitmap size
-#define V_COLS					15
-#define V_ROWS					11
+#define V_COLS					15	// Viewport columns
+#define V_ROWS					11  // Viewport rows
+//
+//
+//
+#define BONUS_COINS				150
+#define COIN_PICKUP				50
+#define FLAG_PICKUP				500
 //
 //
 //
 #define OFFSET					100
+#define PERCENTAGE				3
 //
 //
 //
@@ -54,6 +66,21 @@
 //
 //
 //
+#define EXIT_COL				4
+#define EXIT_ROW				9
+#define EXIT_TILE				9
+#define LADDER_TILE				5
+#define DEFAULT_TILE			0
+//
+//
+//
+#define DATAFILE				"data.dat"
+#define BACKGROUND				"Images/playscreen.png"
+#define THE_END					"THE END"
+
+//
+//
+//
 public enum EFrame
 {
 	X,
@@ -62,7 +89,7 @@ public enum EFrame
 	HEIGHT
 };
 //
-// Bearing
+// 
 //
 public enum EState
 {
@@ -74,7 +101,7 @@ public enum EState
 	HURT
 };
 //
-// BoundsAction
+// 
 //
 public enum EAction
 {

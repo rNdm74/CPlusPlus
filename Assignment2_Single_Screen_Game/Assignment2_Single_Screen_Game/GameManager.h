@@ -4,16 +4,16 @@
 #include "Sprite.h"
 #include "SpriteList.h"
 #include "TileMap.h"
-#include "SpawnMap.h"
+#include "MapManager.h"
 #include "Viewport.h"
-#include "CsvReader.h"
+#include "FileReader.h"
 
 using namespace System::Windows::Forms;
 
 /// <summary>
 /// Summary for GameManager
 ///
-///	   NOTE: The gamemanager will control all the classes that are required to 
+///	   NOTE: The game manager will control all the classes that are required to 
 ///          run the game, the classes it will hold are:
 ///          SoundManager, FontManager, CSVReader, Viewport, SpriteList,
 ///          Sprite, TileMap, TileList, Tile.
@@ -29,7 +29,7 @@ ref class GameManager
 		Viewport^ foreground;
 		Rectangle clientRectangle;
 
-		CSVReader^ reader;
+		FileReader^ reader;
 
 		Graphics^ canvas;
 		Graphics^ dbGraphics;
@@ -38,7 +38,7 @@ ref class GameManager
 		Image^ background;
 		
 		TileMap^ tileMap;
-		SpawnMap^ spawnMap;
+		MapManager^ mManager;
 		
 		SpriteList^ alienList;
 		SpriteList^ flagList;
@@ -60,8 +60,6 @@ ref class GameManager
 
 		StreamReader^ fileReader;
 		StreamWriter^ fileWriter;
-
-		Font^ font;
 
 #pragma endregion
 
@@ -94,6 +92,7 @@ ref class GameManager
 		bool isGameOver()		{ return gameover; }
 		bool isLevelOver()		{ return levelover; }
 		
+		int getLevel()			{ return level; }
 		int getHighScore()		{ return highscore; }
 		int getScore()			{ return score; }		
 		int getCoins()			{ return coinCount; }
@@ -102,6 +101,7 @@ ref class GameManager
 		int getFlag()			{ return flag; }
 
 		void setScore(int s)	{ player->setScore(s); }
+		void setLevel(int l)	{ level = l; }
 
 
 #pragma endregion

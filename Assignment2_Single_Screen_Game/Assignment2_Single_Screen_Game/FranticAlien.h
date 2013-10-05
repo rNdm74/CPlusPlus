@@ -2,7 +2,6 @@
 
 #include "GameManager.h"
 
-
 namespace Assignment2_Single_Screen_Game {
 
 	using namespace System;
@@ -15,11 +14,11 @@ namespace Assignment2_Single_Screen_Game {
 	/// <summary>
 	/// Summary for FranticAlien
 	///
-	/// WARNING: If you change the name of this class, you will need to change the
-	///          'Resource File Name' property for the managed resource compiler tool
-	///          associated with all .resx files this class depends on.  Otherwise,
-	///          the designers will not be able to interact properly with localized
-	///          resources associated with this form.
+	/// NOTE:	 Frantic alien is a single screen game where the player controls
+	///			 a alien where collecting flags and coins while evading other aliens. 
+	///			 The goal is to collect all the flags and return to the exit tile 
+	///			 before loosing all the lives allocated. 
+	///
 	/// </summary>
 	public ref class FranticAlien : public System::Windows::Forms::Form
 	{
@@ -40,6 +39,8 @@ namespace Assignment2_Single_Screen_Game {
 				delete components;
 			}
 		}
+#pragma region Form Components
+
 	private: System::Windows::Forms::Timer^  clock;
 
 	private: System::ComponentModel::IContainer^  components;
@@ -62,7 +63,9 @@ namespace Assignment2_Single_Screen_Game {
 
 	private: System::Windows::Forms::Button^  play_button;
 	private: System::Windows::Forms::Button^  restart_button;
-	private: System::Windows::Forms::Button^  quit_button;	
+	private: System::Windows::Forms::Button^  quit_button;
+
+ #pragma endregion
 
 
 	private:
@@ -402,6 +405,7 @@ namespace Assignment2_Single_Screen_Game {
 			gManager->drawGame();
 
 			checkGameState();
+			updateGameHud();
 		}
 		// 
 		// Key Up and Key Down Handlers
@@ -434,98 +438,116 @@ namespace Assignment2_Single_Screen_Game {
 			Application::Exit();
 		}
 		private: System::Void restart_button_Click(System::Object^  sender, System::EventArgs^  e) {
-			createGame();
+			createNewGame();
 		}
 		private: System::Void play_button_Click(System::Object^  sender, System::EventArgs^  e) {
-			createGame();				 
+			createNewGame();				 
 		}
+#pragma endregion
+
+#pragma region Methods
 		// 
-		// Game Over
+		// Checks if a level is complete or if the game is over
 		//
 		private: System::Void checkGameState()
 		{
+			if(gManager->isLevelOver()) 
+				updateGameScore();
+
 			if(gManager->isGameOver())
-			{
-				clock->Enabled = !clock->Enabled;
-				background->Visible = true;
-				gameover_label->Visible = true;
-				restart_button->Visible = true;
-				quit_button->Visible = true;
-			}
-			else
-			{
-				updateHud();
-			}
-			
-			if(gManager->isLevelOver())
-			{
-				clock->Enabled = !clock->Enabled;
+				showGameOverScreen();
+		}
+		// 
+		// 
+		//
+		private: System::Void createNewGame()
+		{
+			 delete gManager;													// Cleanup
 
-				int scoreCount = int::Parse(score->Text);
-				int coinCount = int::Parse(coins->Text);
+			 background->Visible = false;										// Hides picturebox
+			 play_button->Visible = false;										// Hides button
+			 gameover_label->Visible = false;									// Hides button
+			 restart_button->Visible = false;									// Hides button
+			 quit_button->Visible = false;										// Hides button	
 
-				for(coinCount; coinCount >= 0; coinCount--)
-				{
-					scoreCount += 150;
+			 gManager = gcnew GameManager(CreateGraphics(), ClientRectangle);	// Hides button
 
-					score->Text = String::Format("{0:000000}", scoreCount);
-					score->Refresh();
-					coins->Text = String::Format("{0:000}", coinCount);
-					coins->Refresh();
+			 clock->Enabled = !clock->Enabled;									// Starts the timer
 
-					System::Threading::Thread::Sleep(20);
-				}
-
-				gManager->setScore(scoreCount);
+			 Focus();															// Gives the form focus
+		}
+		//
+		//
+		//
+		private: System::Void showGameOverScreen()
+		{
+			 clock->Enabled = !clock->Enabled;									// Stops the timer			 
 				
-				clock->Enabled = !clock->Enabled;
-			}
+			 if(gManager->getLevel() >= N_LEVELS)								// If player has completed all levels 
+				gameover_label->Text = THE_END;									// Change gameover label text
+
+			 background->Visible = true;										// Shows picturebox
+			 gameover_label->Visible = true;									// Shows button
+			 restart_button->Visible = true;									// Shows button
+			 quit_button->Visible = true;										// Shows button
+		}
+		//
+		//
+		//
+		private: System::Void updateGameScore()
+		{
+			 clock->Enabled = !clock->Enabled;									// Stops the timer
+
+			 int currentScore = int::Parse(score->Text);						// Gets current score
+			 int coinsCollected = int::Parse(coins->Text);						// Gets collected coins
+
+			 for(coinsCollected; coinsCollected >= 0; coinsCollected--)			// Loops through collected coins
+			 {
+				currentScore += BONUS_COINS;									// Appends to currentScore
+
+				score->Text = String::Format("{0:000000}", currentScore);		// Changes score label with formatting
+				score->Refresh();												// Shows changes										
+				coins->Text = String::Format("{0:000}", coinsCollected);		// Changes coin label with formatting
+				coins->Refresh();												// Shows changes
+
+				System::Threading::Thread::Sleep(DELAY);						// Sleeps so player can see (effect)
+			 }
+
+			 gManager->setScore(currentScore);									// Makes score changes permanent 
+				
+			 clock->Enabled = !clock->Enabled;									// Re-enables timer
 		}
 		// 
-		// Create New Game
+		// Updates all hud information when the game is being played
 		//
-		private: System::Void createGame()
+		private: System::Void updateGameHud()
 		{
-			 delete gManager;
-
-			 background->Visible = false;			 
-			 play_button->Visible = false;
-			 gameover_label->Visible = false;
-			 restart_button->Visible = false;
-			 quit_button->Visible = false;	
-
-			 gManager = gcnew GameManager(CreateGraphics(), ClientRectangle);
-
-			 clock->Enabled = !clock->Enabled;
-
-			 Focus();
-		}
-		// 
-		// Create New Game
-		//
-		private: System::Void updateHud()
-		{
+			 // Updates labels: Highscore, Score, Coins with applied formating
 			 highscore->Text = String::Format("{0:000000}", gManager->getHighScore());
 			 score->Text = String::Format("{0:000000}", gManager->getScore());
 			 coins->Text = String::Format("{0:000}", gManager->getCoins());
 
-			 lives->Image = Image::FromFile("Images/lives" + gManager->getLives() + ".png");
+			 // Changes heart image to show if player has lost a life
+			 if(gManager->getLives() >=0)
+				lives->Image = Image::FromFile("Images/lives" + gManager->getLives() + ".png");
 
-			 int flag = gManager->getFlag();
+			 // Shows which flag has been collected by player
+			 int flag = gManager->getFlag();									// Gets the flag number
 
+			 // Tests which flag and makes it visible in the hud
 			 if(flag == ORANGE_FLAG)
-				 orangeflag->Visible = true;
- 
+				 orangeflag->Visible = true; 
 			 if(flag == BLUE_FLAG)
 				 blueflag->Visible = true;
-
 			 if(flag == YELLOW_FLAG)
 				 yellowflag->Visible = true;
-
 			 if(flag == GREEN_FLAG)
 				 greenflag->Visible = true;
 
-			 if(flag == 0)
+			 // Flag reset value ZERO 
+			 // Used if level is complete or game is restarted
+			 // Hides all flags
+			 if(flag == 0)														
 			 {
 				 orangeflag->Visible = false;
 				 blueflag->Visible = false;
@@ -533,7 +555,8 @@ namespace Assignment2_Single_Screen_Game {
 				 greenflag->Visible = false;
 			 }
 		}
-#pragma endregion
+ #pragma endregion
+
 };
 }
 

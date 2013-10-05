@@ -11,7 +11,9 @@ Viewport::Viewport(int startX, int startY, int startTilesWide, int startTilesHig
 	canvas = startCanvas;
 	move = true;
 }
-
+//
+// Checks if the viewport can move
+//
 void Viewport::canViewportMove(int xMove, int yMove)
 {
 	//converts back into pixels
@@ -27,7 +29,9 @@ void Viewport::canViewportMove(int xMove, int yMove)
 
 	
 }
-
+//
+// If scrolling tilemap the viewport will move based on the player
+//
 void Viewport::moveRelativeToPlayer(int playerWorldX, int playerWorldY)
 {
 	// Creates a point that the view port will be drawn to based on the players position
@@ -61,8 +65,9 @@ void Viewport::moveRelativeToPlayer(int playerWorldX, int playerWorldY)
 	if(playerWorldY < OFFSET)
 		viewportWorldY = 0;	
 }
-
-
+//
+// Draws the tilemap to the form
+//
 void Viewport::viewportDraw(int playerWorldX, int playerWorldY)
 {
 	// converts viewport world location to tile
@@ -85,13 +90,10 @@ void Viewport::viewportDraw(int playerWorldX, int playerWorldY)
 			int screenX = (col - startTileColumn) * T_SIZE - offsetX;
 			int screenY = (row - startTileRow) * T_SIZE - offsetY;
 
-			canvas->DrawImage(tileBitmap, screenX, screenY);	
-			//canvas->DrawRectangle(gcnew Pen(Color::Black), screenX, screenY, T_SIZE, T_SIZE);
+			// Draws tile to the screen
+			canvas->DrawImage(tileBitmap, screenX, screenY);
 		}
 	}
-
-	
-	//canvas->DrawRectangle(gcnew Pen(Color::Bisque), backgroundMap->getMapBounds());
 }
 
 Rectangle Viewport::getViewportBounds()

@@ -11,13 +11,11 @@ using namespace System::Data;
 using namespace System::Drawing;
 
 /// <summary>
-/// Summary for Sprite
+/// Summary for TileMap
 ///
-///	   Note: If you change the name of this class, you will need to change the
-///          'Resource File Name' property for the managed resource compiler tool
-///          associated with all .resx files this class depends on.  Otherwise,
-///          the designers will not be able to interact properly with localized
-///          resources associated with this form.
+///	   Note: The Tile map manages all the tiles that are drawn to the screen
+///			 It also is the start of a chain of flags that are used 
+///			 to access the different tile types
 /// </summary>
 
 ref class TileMap
@@ -40,23 +38,22 @@ ref class TileMap
 	public:
 		TileMap(Graphics^ panelCanvas, array<int, 2>^ startTileMap);
 
-		void generateTileMap();		
+		void generateTileMap();	// Redundant	
 
 		void drawTileMap();
 
 		void setMapValue(int col, int row, int tileValue);
+		int getMapValue(int col, int row);		
 
-		int getMapValue(int col, int row);
-
-		ETileType getTileType(int row, int col)		{ return tiles->getTileType(tileMap[row, col]); }
-
+		// Flags chain
 		bool isSolid(int row, int col)				{ return tiles->isSolid(tileMap[row, col]); }
 		bool isClimbable(int row, int col)			{ return tiles->isClimbable(tileMap[row, col]); }
 		bool isWalkable(int row, int col)			{ return tiles->isWalkable(tileMap[row, col]); }
 		bool isCoin(int row, int col)				{ return tiles->isCoin(tileMap[row, col]); }
 		bool isExit(int row, int col)				{ return tiles->isExit(tileMap[row, col]); }
-		
+
+		ETileType getTileType(int row, int col)		{ return tiles->getTileType(tileMap[row, col]); }		
 		Bitmap^ getTileBitmap(int row, int col)		{ return tiles->getTileBitmap(tileMap[row, col]); }
 
-		Rectangle getBounds()					{ return Rectangle(0, 0, T_SIZE * N_COLS, T_SIZE * N_ROWS); }
+		Rectangle getBounds()						{ return Rectangle(0, 0, T_SIZE * N_COLS, T_SIZE * N_ROWS); }
 	};

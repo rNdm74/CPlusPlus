@@ -4,8 +4,6 @@
 SpriteList::SpriteList(Viewport^ startViewport)
 	{
 		viewport = startViewport;
-		score = 000000;
-		coins = 000000;
 		lives = N_LIVES;
 
 		head = nullptr;
@@ -150,9 +148,11 @@ void SpriteList::pickupItem(Sprite^ otherSprite)
 
 			flagCount++;													// Adds to flag count
 
-			score += 100;													// Increase score
+			score += FLAG_PICKUP;											// Increase score
 
 			remove(spriteWalker);											// Remove flag from list
+
+			delete name;
 		}
 
 		// Move to next node
@@ -183,7 +183,7 @@ void SpriteList::checkCollisions(Sprite^ otherSprite)
 
 	while(spriteWalker != nullptr)
 	{
-		if(!otherSprite->isAlive())
+		if(otherSprite->isAlive() == false)
 			otherSprite->hurt();
 
 		if(spriteWalker->collided(otherSprite))	
@@ -197,13 +197,13 @@ void SpriteList::checkCollisions(Sprite^ otherSprite)
 	}
 }
 
-void SpriteList::setSpritePositions(SpawnMap^ spawnMap)
+void SpriteList::setSpritePositions(MapManager^ mManager)
 {
 	Sprite^ spriteWalker = head;		
 
 	while(spriteWalker != nullptr)
 	{
-		Point startPos = spawnMap->getSpawnPosition(spriteWalker->getObjectNumber(), spriteWalker->getHeight());
+		Point startPos = mManager->getSpawnPosition(spriteWalker->getObjectNumber(), spriteWalker->getHeight());
 
 		spriteWalker->setStartPosition(startPos);
 		spriteWalker->setXPos(startPos.X);

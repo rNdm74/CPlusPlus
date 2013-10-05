@@ -204,7 +204,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CSVReader.cpp"
+				RelativePath=".\FileReader.cpp"
 				>
 			</File>
 			<File
@@ -216,11 +216,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SoundManager.cpp"
+				RelativePath=".\MapManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\SpawnMap.cpp"
+				RelativePath=".\SoundManager.cpp"
 				>
 			</File>
 			<File
@@ -278,7 +278,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CSVReader.h"
+				RelativePath=".\FileReader.h"
 				>
 			</File>
 			<File
@@ -300,15 +300,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MapManager.h"
+				>
+			</File>
+			<File
 				RelativePath=".\resource.h"
 				>
 			</File>
 			<File
 				RelativePath=".\SoundManager.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SpawnMap.h"
 				>
 			</File>
 			<File

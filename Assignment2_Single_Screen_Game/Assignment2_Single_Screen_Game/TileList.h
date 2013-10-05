@@ -13,11 +13,8 @@ using namespace System::Drawing;
 /// <summary>
 /// Summary for Sprite
 ///
-///	   Note: If you change the name of this class, you will need to change the
-///          'Resource File Name' property for the managed resource compiler tool
-///          associated with all .resx files this class depends on.  Otherwise,
-///          the designers will not be able to interact properly with localized
-///          resources associated with this form.
+///	   Note: Holds an array that is used by the tilemap
+///
 /// </summary>
 
 ref class TileList

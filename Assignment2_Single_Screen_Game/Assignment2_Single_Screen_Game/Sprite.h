@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CsvReader.h"
+#include "FileReader.h"
 #include "Constants.h"
 #include "TileMap.h"
 #include "ViewPort.h"
@@ -16,25 +16,17 @@ using namespace System::Drawing::Imaging;
 /// <summary>
 /// Summary for Sprite
 ///
-/// WARNING: The Sprite class controls all the information that is required to 
-///          use a sprite in the game.
+/// NOTE:	The Sprite class controls all the information that is required to 
+///         use a sprite in the game.
 ///
 /// </summary>
 
 ref class Sprite
 	{
+#pragma region Variables
+
 	protected:
 
-#pragma region Variables
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-
-		//bool player;
-		//bool flag;
-		//bool enemy;
-		//bool coin;
 		bool walking;
 		bool alive;
 		bool gameover;
@@ -94,14 +86,11 @@ ref class Sprite
 		Sprite^ Next;
 
 	public:
-		//
-		// Construtor
-		//
 		Sprite
 		(
 			Graphics^ startCanvas, 
 			Viewport^ startViewPort, 
-			CSVReader^ startReader, 
+			FileReader^ startReader, 
 			TileMap^ startTileMap,
 			EAction startAction,
 			Random^ startRGen, 
@@ -114,10 +103,7 @@ ref class Sprite
 		);
 		
 #pragma region Methods
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
+
 		// 
 		// Collision check
 		//
@@ -150,15 +136,14 @@ ref class Sprite
 		bool collectCoin();
 		void wander();
 		EState getRandomState();
+		//
+		//
+		//
 
 #pragma endregion
 		
 #pragma region Gets/Sets
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>		
-		
+
 		void setStartPosition(Point p)	{ startPosition = p; xPos = p.X; yPos = p.Y; }
 		void resetPosition()			{ xPos = startPosition.X; yPos = startPosition.Y; }
 
@@ -199,5 +184,4 @@ ref class Sprite
 		bool isLevelWin();		
 
 #pragma endregion
-
 	};

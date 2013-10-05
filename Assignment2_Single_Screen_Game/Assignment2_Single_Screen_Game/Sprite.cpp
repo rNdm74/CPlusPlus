@@ -7,7 +7,7 @@
 		(
 			Graphics^ startCanvas, 
 			Viewport^ startViewPort, 
-			CSVReader^ startReader, 
+			FileReader^ startReader, 
 			TileMap^ startTileMap,
 			EAction startAction,
 			Random^ startRGen, 
@@ -31,8 +31,7 @@
 			spriteSheetData = startReader->getSpriteSheetData(startObjectNumber);
 			filename = startFilename;
 			tileMapBounds = startTileMapBounds;
-			state = STAND;			
-			lives = N_LIVES;
+			state = STAND;	
 			alive = true;
 			//
 			// Create spritesheets from file names
@@ -55,18 +54,18 @@
 			// Collision offsets
 			//
 			collisionOffsets = gcnew array<Point>(MAX_DIRECTIONS);
-			collisionOffsets[NORTH] = Point(35, -75);
-			collisionOffsets[EAST] = Point(75, -35);
-			collisionOffsets[SOUTH] = Point(35, 2);
-			collisionOffsets[WEST] = Point(-2, -35);
-			collisionOffsets[STAND] = Point(35,-35);
-			collisionOffsets[HURT] = Point(35,-35);
+			collisionOffsets[NORTH] = Point(35, -75);						// Topside
+			collisionOffsets[EAST] = Point(75, -35);						// Rightside
+			collisionOffsets[SOUTH] = Point(35, 2);							// Bottomside
+			collisionOffsets[WEST] = Point(-2, -35);						// Leftside
+			collisionOffsets[STAND] = Point(35,-35);						// Center
+			collisionOffsets[HURT] = Point(35,-35);							// Center
 			//
 			// Picks a random frame to be drawn this creates a random
 			// look of all the sprites used in the game and that all 
 			// will not start with the same frame animation
 			//
-			currentFrame = rGen->Next(spriteSheetData->GetLength(1));// minus 1 to keep in bounds			
+			currentFrame = rGen->Next(spriteSheetData->GetLength(1));		// 1 is the array dimension			
 			//
 			// Sprites Width and Height based on state 
 			//
@@ -100,7 +99,7 @@
 		//
 		// Flips image on the X axis based on direction
 		//
-		if(state == WEST)	spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);	
+		if(state == WEST) spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);	
 		//
 		// Draws bitmap to the screen
 		//
@@ -125,7 +124,7 @@
 		//
 		// Flips image on the X axis based on direction
 		//
-		if(state == WEST)	spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);	
+		if(state == WEST) spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);	
 		//
 		// Draws bitmap to the screen
 		//
@@ -143,7 +142,7 @@
 		ETileType tileType = tileMap->getTileType(row, col);
 		//
 		// Clamps to tile xPos
-		//
+		//		
 		if((tileType == LADDER_COIN || tileType == LADDER) && (state == NORTH || state == SOUTH))
 		{
 			xPos = col * T_SIZE; // Converts col back to pixels
@@ -171,19 +170,25 @@
 		//
 		// Set sprite walking 
 		//
-		walking = (tileMap->isWalkable(row, col) || tileMap->isCoin(row, col));		
+		walking = (tileMap->isWalkable(row, col)  || 
+				   tileMap->isCoin(row, col)	  || 
+				   tileMap->isClimbable(row, col) ||
+				   tileMap->getTileType(row, col) == EXIT);		
 		//
 		// If sprite is walking move then clamp to column  || row
 		//
 		if(walking)
 		{
+			// Move sprite
 			yPos += yMag * spriteDirection[state].Y;
-			xPos += xMag * spriteDirection[state].X;
+			xPos += xMag * spriteDirection[state].X; 
 
+			// Clamp sprite to col and row
 			clamp(col, row);
 		}
 		//
-		//
+		//	Executes the set action for a sprite on a bounds collsion
+		//	the bounds collision is primarily the form window rectangle
 		//
 		if(isBoundsCollision())
 			executeBoundsAction();
@@ -204,10 +209,11 @@
 		frameHeight = spriteSheetData[state, currentFrame, HEIGHT];	
 		//
 		// Sets spriteframe to based on state, current frame to be drawn
+		// The state is the sprite STATE e.g. NORTH, SOUTH, HURT etc
 		//
 		spriteFrame = Rectangle
 		(
-			spriteSheetData[state, currentFrame, X],					
+			spriteSheetData[state, currentFrame, X],						
 			spriteSheetData[state, currentFrame, Y],					
 			spriteSheetData[state, currentFrame, WIDTH],				
 			spriteSheetData[state, currentFrame, HEIGHT]			
@@ -237,51 +243,54 @@
 	//
 	void Sprite::hurt()
 	{
-		if(hurtTime > 50)
+		if(hurtTime > HURT_DELAY)
 		{
 			alive = true;
+			state = STAND;
 			hurtTime = 0;
 		}
 		
 		hurtTime++;
 	}
 	//
-	//
+	// If the sprite crosses the exit tile it will return true
 	//
 	bool Sprite::isLevelWin()
 	{
+		// Gets the current tiles col and row
 		int col = (xPos + collisionOffsets[STAND].X) / T_SIZE;
 		int row = (yPos + (frameHeight + collisionOffsets[STAND].Y)) / T_SIZE;
 
-		ETileType tileType = tileMap->getTileType(row, col);
-
-		return tileType == EXIT;
+		// return if tile is equal to the EXIT tile
+		return tileMap->getTileType(row, col) == EXIT;
 	}
 	//
+	// Checks if another sprite has collided with this sprite
 	//
-	//
-	bool Sprite::collided(Sprite^ sprite)
+	bool Sprite::collided(Sprite^ otherSprite)
 	{
+		bool collided = true;
+		
 		if(alive)
 		{
-			bool collided = true;
+			// Offsets X Y rectangle
+			int s1XPos = (xPos - viewPort->getViewportWorldX()) + (frameWidth / PERCENTAGE);
+			int s1YPos = (yPos - viewPort->getViewportWorldY())  + (frameHeight / PERCENTAGE);
+			int s2XPos = (otherSprite->getXPos() - viewPort->getViewportWorldX()) + (otherSprite->getWidth() / PERCENTAGE);
+			int s2YPos = (otherSprite->getYPos() - viewPort->getViewportWorldY()) + (otherSprite->getHeight() / PERCENTAGE);
 
-			int s1XPos = (xPos - viewPort->getViewportWorldX()) + (frameWidth / 3);
-			int s1YPos = (yPos - viewPort->getViewportWorldY())  + (frameHeight / 3);
+			// Creates 2 rectangles based from offsets
+			Rectangle s1 = Rectangle(s1XPos, s1YPos, frameWidth / PERCENTAGE, frameHeight / PERCENTAGE);
+			Rectangle s2 = Rectangle(s2XPos, s2YPos, otherSprite->getWidth() / PERCENTAGE , otherSprite->getHeight() / PERCENTAGE);
 
-			int s2XPos = (sprite->getXPos() - viewPort->getViewportWorldX())+(sprite->getWidth() / 3);
-			int s2YPos = (sprite->getYPos() - viewPort->getViewportWorldY())+(sprite->getHeight() / 3);
-
-			Rectangle s1 = Rectangle(s1XPos, s1YPos, frameWidth / 3, frameHeight / 3);
-			Rectangle s2 = Rectangle(s2XPos, s2YPos, sprite->getWidth() / 3 , sprite->getHeight() / 3);
-
+			// Runs checks
 			if(s1.Bottom  < s2.Top)	 collided = false;
 			if(s1.Top > s2.Bottom)	 collided = false;
 			if(s1.Right < s2.Left)	 collided = false;
-			if(s1.Left > s2.Right)	 collided = false;
-
-			return collided;
+			if(s1.Left > s2.Right)	 collided = false;			
 		}			
+
+		return collided;
 	}
 	//
 	//
@@ -377,10 +386,10 @@
 		// todo this we must add to our current state enumeration
 		// Then after we have added we must use modulo to wrap around 
 		// and the correct oposite direction is chosen
-		int newState = (state + (4 / HALF)) % 4; 
+		int newState = (state + (N_DIRECTIONS / HALF)) % N_DIRECTIONS; 
 
 		// If new state is in acceptable range
-		bool inRange = newState < 4 && newState >= 0;
+		bool inRange = newState < N_DIRECTIONS && newState >= 0;
 		
 		if(inRange) state = static_cast<EState>(newState);		
 		// if illegal direction state unchanged 
@@ -388,35 +397,34 @@
 	}
 
 	void Sprite::die()
-	{		
-		//resetPosition(); // set hurt image
-		if(alive) lives--;
+	{
+		if(alive) lives--;		// Takes away life need as to many lives will be taken away 
 
-		alive = false;
+		alive = false;			// Sprite is not alive
+		
+		coins = 0;				// Player looses all collected coins
 
-		state = HURT;
+		state = HURT;			// For show sprite is hurt
 
-		coins = 0;
-
-		action = STOP;
+		action = STOP;			// Set back to default action
 	}
 
 	void Sprite::coin()
 	{		
-		coins++;
+		coins++;				// Picks up a coin
 
-		score += 50;
+		score += COIN_PICKUP;	// Appends to score
 
-		action = STOP;
+		action = STOP;			// Set back to default action
 	}
 
 	void Sprite::stop()
 	{
 		if(state == WEST)
-			xPos = tileMapBounds.Left; // clamps sprite 
+			xPos = tileMapBounds.Left;										// clamps sprite 
 
 		if(state == EAST)
-			xPos = (tileMapBounds.Right - frameWidth) - (T_SIZE / 2); // clamps sprite
+			xPos = (tileMapBounds.Right - frameWidth) - (T_SIZE / HALF);	// clamps sprite
 	}
 
 #pragma endregion
@@ -424,54 +432,32 @@
 
 #pragma region Tile Methods	
 	//
-	//
+	//	Stops the sprite from trying to move when is it not wanted to
 	//
 	void Sprite::setState(EState newState)
 	{
 		if(alive)
 		{
-			ETileType tileType = getTileType(collisionOffsets[newState]);
+			int col = (xPos + collisionOffsets[newState].X) / T_SIZE;
+			int row = (yPos + (frameHeight + collisionOffsets[newState].Y)) / T_SIZE;
 
-		switch(newState)
-		{
-			case NORTH:
-				if(tileType == LADDER || tileType == LADDER_COIN || tileType == WALKABLE)
-				{
-					state = newState;	
-				}
-				break;
+			// Sets flag conditions
+			bool moveNorth = newState == NORTH && tileMap->isClimbable(row, col) || tileMap->isWalkable(row, col);
+			bool moveSouth = newState == SOUTH && tileMap->isClimbable(row, col);
+			bool moveWest  = newState == WEST  && !tileMap->isSolid(row, col);
+			bool moveEast  = newState == EAST  && !tileMap->isSolid(row, col);
+			bool stand	   = newState == STAND;	
 
-			case SOUTH:
-				if(tileType == LADDER || tileType == LADDER_COIN)
-				{
-					state = newState;	
-				}
-				break;
-
-			case EAST:
-				if(tileType != SOLID)
-				{
-					state = newState;	
-				}
-				break;
-
-			case WEST:
-				if(tileType != SOLID)
-				{
-					state = newState;	
-				}
-				break;
-
-			case STAND:
+			// Only update state is these conditions are true
+			if(moveNorth || moveSouth || moveWest || moveEast || stand) 
+			{
 				state = newState;
-				break;
-		}
-		}
-
-						
+			}
+		}						
 	}
 	//
-	//
+	// Queries the tilemap to get type of tile
+	// sprite is currently on based on offsets
 	//
 	ETileType Sprite::getTileType(Point offset)
 	{
@@ -488,41 +474,48 @@
 
 #pragma region Additional
 	//
-	//
+	// Changes a coin tile to its default tile, 
+	// the return is required for the score to be updated 
 	//
 	bool Sprite::collectCoin()
 	{
+		// Gets the current tile
 		ETileType tileType = getTileType(collisionOffsets[STAND]);
 
+		// Gets the current col and row
 		int col = (xPos + collisionOffsets[STAND].X) / T_SIZE;
 		int row = (yPos + (frameHeight + collisionOffsets[STAND].Y)) / T_SIZE;
 
+		// Reset COIN tile
 		if(tileType == COIN)
 		{
-			tileMap->setMapValue(col, row, 0);
+			tileMap->setMapValue(col, row, DEFAULT_TILE);
 
 			return true;
 		}
 
+		// Reset LADDER_COIN tile
 		if(tileType == LADDER_COIN)
 		{
-			tileMap->setMapValue(col, row, 5);
+			tileMap->setMapValue(col, row, LADDER_TILE);
 
 			return true;
 		}
 
+		// No coin has been collected
 		return false;
 	}
 
 	void Sprite::wander()
 	{
-		//
 		// Depending on a specified probability 
 		// a random state is picked for the sprite
-		//
 		if(rGen->Next(WANDER_PROB) == 0) 
 			setState(getRandomState());
 
+		// If the sprite reaches
+		// the top or bottom of a ladder 
+		// sets a new direction
 		if(!walking) 
 			setState(getRandomState());
 	}
@@ -534,7 +527,7 @@
 		//
 		// Return a random EState
 		//
-		int pick = rGen->Next(4);
+		int pick = rGen->Next(N_DIRECTIONS);
 
 		switch(pick)
 		{	

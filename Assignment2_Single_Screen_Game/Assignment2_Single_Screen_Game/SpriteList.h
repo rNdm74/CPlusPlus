@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Constants.h"
-#include "SpawnMap.h"
+#include "MapManager.h"
 #include "Sprite.h"
 #include "Viewport.h"
 
@@ -37,7 +37,7 @@ ref class SpriteList
 		void pickupItem(Sprite^ otherSprite);
 		void collectCoin();
 		void checkCollisions(Sprite^ otherSprite);
-		void setSpritePositions(SpawnMap^ spawnMap);
+		void setSpritePositions(MapManager^ mManager);
 		void spriteAI();
 		void renderSprites(int vX, int vY);
 		void draw();
