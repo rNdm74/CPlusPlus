@@ -22,9 +22,9 @@
 //
 //
 //
-#define MAX_DIRECTIONS			5
+#define MAX_DIRECTIONS			6
 #define HALF					2
-#define WANDER_PROB				20
+#define WANDER_PROB				30
 #define SPEED					5
 //
 //
@@ -64,13 +64,14 @@ public enum EFrame
 //
 // Bearing
 //
-public enum EBearing
+public enum EState
 {
 	NORTH,
 	EAST,
 	SOUTH,
 	WEST,
-	STAND
+	STAND,
+	HURT
 };
 //
 // BoundsAction

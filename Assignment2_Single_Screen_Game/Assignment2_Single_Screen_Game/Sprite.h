@@ -53,7 +53,7 @@ ref class Sprite
 		array<Point>^ collisionOffsets;
 
 		EAction action;
-		EBearing bearing;		
+		EState state;		
 
 		Graphics^ canvas;		
 		Random^ rGen;
@@ -65,8 +65,10 @@ ref class Sprite
 		TileMap^ tileMap;
 		String^ filename;
 
+		long hurtTime;
+
 		int currentFrame;
-		long frameTime;
+		int frameTime;
 		int frameDelay;
 		int frames;
 
@@ -119,6 +121,7 @@ ref class Sprite
 		// 
 		// Collision check
 		//
+		void hurt();
 		bool isBoundsCollision();
 		bool collided(Sprite^ sprite);
 		//
@@ -146,7 +149,7 @@ ref class Sprite
 		//
 		bool collectCoin();
 		void wander();
-		EBearing getRandomBearing();
+		EState getRandomState();
 
 #pragma endregion
 		
@@ -159,7 +162,7 @@ ref class Sprite
 		void setStartPosition(Point p)	{ startPosition = p; xPos = p.X; yPos = p.Y; }
 		void resetPosition()			{ xPos = startPosition.X; yPos = startPosition.Y; }
 
-		void setBearing(EBearing b);
+		void setState(EState s);
 		void setAction(EAction a)		{ action = a; }
 		void setWalking(bool w)			{ walking = w; }		
 		void setAlive(bool a)			{ alive = a; }
@@ -177,7 +180,7 @@ ref class Sprite
 		Rectangle getSpriteFrame()		{ return Rectangle(xPos, yPos, spriteFrame.Width, spriteFrame.Height); }
 		Rectangle getTileMapBounds()	{ return tileMapBounds; }
 		EAction getAction()				{ return action; }
-		EBearing getBearing()			{ return bearing; }
+		EState getState()				{ return state; }
 		String^ getFilename()			{ return filename; }
 
 		int getObjectNumber()			{ return objectNumber; }

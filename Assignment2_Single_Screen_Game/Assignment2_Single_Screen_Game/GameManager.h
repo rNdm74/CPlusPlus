@@ -4,7 +4,7 @@
 #include "Sprite.h"
 #include "SpriteList.h"
 #include "TileMap.h"
-#include "ObjectMap.h"
+#include "SpawnMap.h"
 #include "Viewport.h"
 #include "CsvReader.h"
 
@@ -38,7 +38,7 @@ ref class GameManager
 		Image^ background;
 		
 		TileMap^ tileMap;
-		ObjectMap^ objectMap;
+		SpawnMap^ spawnMap;
 		
 		SpriteList^ alienList;
 		SpriteList^ flagList;
@@ -56,6 +56,7 @@ ref class GameManager
 		int level;
 
 		bool gameover;
+		bool levelover;
 
 		StreamReader^ fileReader;
 		StreamWriter^ fileWriter;
@@ -78,14 +79,12 @@ ref class GameManager
 		void updateGame();
 		void drawGame();
 
-		void checkGamePhase();
-		void checkGameWin();
-		void checkGameOver();
+		void checkLevelPhase();
+		void checkLevelWin();
+		void checkLevelOver();
 
 		void initializeGame();
 		void initializeObjectsPositons();
-
-		void addCoinsToGame();
 
 #pragma endregion
 
@@ -93,11 +92,16 @@ ref class GameManager
 
 		Sprite^ getPlayer()		{ return player; }
 		bool isGameOver()		{ return gameover; }
-		String^ getHighScore()	{ return highscore.ToString(); }
-		String^ getScore()		{ return score.ToString(); }		
-		String^ getCoins()		{ return coinCount.ToString(); }
+		bool isLevelOver()		{ return levelover; }
+		
+		int getHighScore()		{ return highscore; }
+		int getScore()			{ return score; }		
+		int getCoins()			{ return coinCount; }
+
 		int getLives()			{ return lives; }
 		int getFlag()			{ return flag; }
+
+		void setScore(int s)	{ player->setScore(s); }
 
 
 #pragma endregion

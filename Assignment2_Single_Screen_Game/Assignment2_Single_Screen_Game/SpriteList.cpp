@@ -6,8 +6,6 @@ SpriteList::SpriteList(Viewport^ startViewport)
 		viewport = startViewport;
 		score = 000000;
 		coins = 000000;
-		flag = 0;
-		flagCount = 0;
 		lives = N_LIVES;
 
 		head = nullptr;
@@ -144,17 +142,17 @@ void SpriteList::pickupItem(Sprite^ otherSprite)
 
 	while(spriteWalker != nullptr)
 	{
-		if(spriteWalker->collided(otherSprite))
+		if(spriteWalker->collided(otherSprite))								// If collision between sprites
 		{
-			remove(spriteWalker);
+			String^ name = spriteWalker->getFilename()->Substring(11,2);	// Gets the item number from filename
 
-			String^ name = spriteWalker->getFilename()->Substring(11,2);
+			flag = int::Parse(name);										// Sets flag that is picked up
 
-			flag = int::Parse(name);
+			flagCount++;													// Adds to flag count
 
-			flagCount++;
+			score += 100;													// Increase score
 
-			score += 100;
+			remove(spriteWalker);											// Remove flag from list
 		}
 
 		// Move to next node
@@ -185,6 +183,9 @@ void SpriteList::checkCollisions(Sprite^ otherSprite)
 
 	while(spriteWalker != nullptr)
 	{
+		if(!otherSprite->isAlive())
+			otherSprite->hurt();
+
 		if(spriteWalker->collided(otherSprite))	
 		{
 			otherSprite->setAction(DIE);
@@ -196,13 +197,13 @@ void SpriteList::checkCollisions(Sprite^ otherSprite)
 	}
 }
 
-void SpriteList::setSpritePositions(ObjectMap^ objectMap)
+void SpriteList::setSpritePositions(SpawnMap^ spawnMap)
 {
 	Sprite^ spriteWalker = head;		
 
 	while(spriteWalker != nullptr)
 	{
-		Point startPos = objectMap->getSpawnPosition(spriteWalker->getObjectNumber(), spriteWalker->getHeight());
+		Point startPos = spawnMap->getSpawnPosition(spriteWalker->getObjectNumber(), spriteWalker->getHeight());
 
 		spriteWalker->setStartPosition(startPos);
 		spriteWalker->setXPos(startPos.X);
@@ -219,8 +220,9 @@ void SpriteList::spriteAI()
 
 	while(spriteWalker != nullptr)
 	{
-		// Draw pellets
-		spriteWalker->wander();
+		// Make sprites wander
+		if(!spriteWalker->isBoundsCollision())
+			spriteWalker->wander();
 
 		// Move to next node
 		spriteWalker = spriteWalker->Next;

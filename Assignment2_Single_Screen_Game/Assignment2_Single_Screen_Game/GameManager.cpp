@@ -33,6 +33,10 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 		//
 		font = gcnew Font("Comic Sans MS", 16);
 		//
+		// S
+		//
+		//lives = N_LIVES;
+		//
 		// Create game with objects
 		//
 		initializeGame();
@@ -51,11 +55,11 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 		/// </summary>
 		void GameManager::initializeObjectsPositons()
 		{
-			playerList->setSpritePositions(objectMap);
+			playerList->setSpritePositions(spawnMap);
 			
-			alienList->setSpritePositions(objectMap);
+			alienList->setSpritePositions(spawnMap);
 
-			flagList->setSpritePositions(objectMap);			
+			flagList->setSpritePositions(spawnMap);			
 		}
 		/// <summary>
 		/// Required method for Designer support - do not modify
@@ -63,6 +67,21 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 		/// </summary>
 		void GameManager::initializeGame()
 		{
+			//
+			// Clean up
+			//
+			delete fileReader;
+			delete reader;
+			delete tileMap;
+			delete spawnMap;
+			delete foreground;
+			delete background;
+			delete alienList;
+			delete flagList;
+			delete playerList;
+			//
+			// Get highscore from saved file
+			//
 			fileReader = gcnew StreamReader("data.dat");
 			String^ line = fileReader->ReadLine();
 			highscore = int::Parse(line);		
@@ -78,7 +97,7 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			//
 			// Create objectmap
 			//
-			objectMap = gcnew ObjectMap(reader->getObjectMap(), reader->getCoinMap());
+			spawnMap = gcnew SpawnMap(reader->getSpawnMap(), reader->getCoinMap());
 			//
 			// Create viewport
 			//
@@ -86,11 +105,7 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			//
 			// Create Background Image
 			//
-			background = Image::FromFile("Images/playscreen.png");
-			//
-			//
-			//
-			lives = N_LIVES;
+			background = Image::FromFile("Images/playscreen.png");			
 			//
 			// Create Spritelists
 			//
@@ -183,20 +198,20 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 		void GameManager::keyDown(Keys code)
 		{
 			 if(code==Keys::Up)
-				player->setBearing(NORTH); // Move player up	
+				player->setState(NORTH); // Move player up	
 			 
 			 if(code==Keys::Down)
-				player->setBearing(SOUTH); // Move player down	
+				player->setState(SOUTH); // Move player down	
 			 
 			 if(code==Keys::Right)
-				player->setBearing(EAST);  // Move player right
+				player->setState(EAST);  // Move player right
 			 
 			 if(code==Keys::Left)
-				player->setBearing(WEST);  // Move player left
+				player->setState(WEST);  // Move player left
 		}
 		void GameManager::keyUp(Keys code)
 		{
-			player->setBearing(STAND);     // Make player stand
+			player->setState(STAND);     // Make player stand
 		}
 #pragma endregion
 
@@ -209,19 +224,14 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 		void GameManager::updateGame()
 		{
 			//
-			// Get hud information
+			// Update hud information
 			//
+			lives = player->getLives();
 			flag = flagList->getFlag();
 			flagCount = flagList->getFlagCount();
 			coinCount = player->getCoins();
 			score = player->getScore() + flagList->getScore();
-			lives = player->getLives();
-			//
-			// Set Viewport Position on Player
-			// 
-			//int playerX = player->getXPos() + (player->getWidth() / HALF);
-			//int playerY = player->getYPos() + (player->getHeight() / HALF);
-			//foreground->moveRelativeToPlayer(playerX, playerY);	
+			if(score > highscore) highscore = score;			
 			//
 			// Alien AI
 			//	
@@ -239,25 +249,22 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			alienList->update();
 			playerList->update();
 			//
-			// Game Phaze
+			// Game Phase
 			//
-			checkGamePhase();		
+			checkLevelPhase();		
 			//
 			// Game Win
 			//
-			checkGameWin();				
+			checkLevelWin();				
 			//
 			// Game Over
 			//
-			checkGameOver();
+			checkLevelOver();
 			//
 			//
 			//			
 		}
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
+		
 		void GameManager::drawGame()
 		{		
 			//
@@ -271,9 +278,6 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			//
 			// Draw Sprites to Canvas
 			//
-			//flagList->renderSprites(foreground->getViewportWorldX(), foreground->getViewportWorldY());
-			//alienList->renderSprites(foreground->getViewportWorldX(), foreground->getViewportWorldY());
-			//playerList->renderSprites(foreground->getViewportWorldX(), foreground->getViewportWorldY());
 			flagList->draw();
 			alienList->draw();
 			playerList->draw();
@@ -287,92 +291,78 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 
 #pragma region Game Phase Checks
 		/// <summary>
-		/// Required method for Designer support - do not modify
+		/// Checks the three main phases in the game
 		/// the contents of this method with the code editor.
 		/// </summary>
-		void GameManager::checkGamePhase()
+		//
+		//
+		//
+		void GameManager::checkLevelPhase()
 		{
-			if(flagCount == 4)					// All flags have been collected
+			//
+			// Required method for Designer support - do not modify
+			// the contents of this method with the code editor.
+			//
+			if(flagCount == 4)										// All flags have been collected
 			{
-				flagList->setFlagCount(0);		// Reset Flags must have to pick up coins
+				flagList->setFlagCount(0);							// Reset Flags must have to pick up coins
+				//flagList->setFlag(0);								// Sets Flag number to 0 for reset on level win				
+				spawnMap->addCoinsToGame(tileMap);					// Makes coins visible					
+				tileMap->setMapValue(4, 9, 9);						// Shows exit post
+			}
+		}
+		//
+		//
+		//	
+		void GameManager::checkLevelWin()
+		{
+			//
+			// Checks if a game is won, if player has won 
+			// Make a new game and transfers current lives 
+			// and score to new game
+			//
+			levelover = player->isLevelWin();						// Level has been won
+
+			if(levelover)								
+			{				 
+				initializeGame();									// Create a game
+				initializeObjectsPositons();						// Positions sprites on screen
+
 				flagList->setFlag(0);
-
-				tileMap->setMapValue(4, 9, 9);	// Shows exit post
-
-				addCoinsToGame();				// Makes coins visible					
-			}
-		}
-		/// <summary>
-		/// Checks if a game is won, if player has won 
-		/// Make a new game and transfers current lives 
-		/// and score to new game
-		/// </summary>
-		void GameManager::checkGameWin()
-		{
-			if(player->isLevelWin())			// Level has been won
-			{
-				level++;
-
-				delete fileReader;
-				delete reader;
-				delete tileMap;
-				delete objectMap;
-				delete foreground;
-				delete background;
-				delete alienList;
-				delete flagList;
-				delete playerList;
-
-				initializeGame();				// Create a game
-				initializeObjectsPositons();	// Positions sprites on screen
-
-				flagList->setFlag(flag);
 				flagList->setFlagCount(flagCount);
-				player->setCoins(coinCount);
-				player->setScore(score);		// Set current score to new game
-				player->setLives(lives);		// Set current lives to new game
+				player->setCoins(0);				
 
-				player->setLevelWin(false);		// Resets level win 
+				player->setLevelWin(false);							// Resets level win												
 			}
 		}
-		/// <summary>
-		/// The check game over method checks is the game is over
-		/// If the game is over sets a flag and records the highscore
-		/// </summary>
-		void GameManager::checkGameOver()
+		//
+		//
+		//		
+		void GameManager::checkLevelOver()
 		{
+			//
+			// The check game over method checks is the game is over
+			// If the game is over sets a flag and records the highscore
+			//
 			if(lives == 0)											// All lives lost
-			{		
-				player->setGameOver(true);							// Sets gameover to true
-				gameover = player->isGameOver();					// Game over is set				
-				
-				if(score > highscore)								// If playerscore is greater write to file				
+			{	
+				if(score >= highscore)								// If playerscore is greater write to file				
 				{
 					fileWriter = gcnew StreamWriter("data.dat");	// Open file
 					fileWriter->Write(score.ToString());			// Write to score
 					fileWriter->Close();							// Close file
 
 					delete fileWriter;
-				}		
-			}
-		}
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		void GameManager::addCoinsToGame()
-		{			
-			array<int, 2>^ coinMap = reader->getCoinMap();
+				}	
 
-			for(int col = 0; col < N_COLS; col++)
-			{
-				for(int row = 0; row < N_ROWS; row++)
+				if(player->isAlive())
 				{
-					int coin = coinMap[row, col];
-
-					if(coin != 0)
-						tileMap->setMapValue(col, row, coin);
+					gameover = true;								// Game over is set		
+					player->setGameOver(gameover);					// Sets gameover to true
 				}
 			}
 		}
+		//
+		//
+		//		
 #pragma endregion

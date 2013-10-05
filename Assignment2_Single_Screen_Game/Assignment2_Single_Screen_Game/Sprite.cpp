@@ -31,8 +31,9 @@
 			spriteSheetData = startReader->getSpriteSheetData(startObjectNumber);
 			filename = startFilename;
 			tileMapBounds = startTileMapBounds;
-			bearing = STAND;
-			lives = N_LIVES;					
+			state = STAND;			
+			lives = N_LIVES;
+			alive = true;
 			//
 			// Create spritesheets from file names
 			//
@@ -49,6 +50,7 @@
 			spriteDirection[SOUTH] = Point(0,1);
 			spriteDirection[WEST] = Point(-1,0);
 			spriteDirection[STAND] = Point(0,0);
+			spriteDirection[HURT] = Point(0,0);
 			//
 			// Collision offsets
 			//
@@ -57,7 +59,8 @@
 			collisionOffsets[EAST] = Point(75, -35);
 			collisionOffsets[SOUTH] = Point(35, 2);
 			collisionOffsets[WEST] = Point(-2, -35);
-			collisionOffsets[STAND] = Point(35,-35);	
+			collisionOffsets[STAND] = Point(35,-35);
+			collisionOffsets[HURT] = Point(35,-35);
 			//
 			// Picks a random frame to be drawn this creates a random
 			// look of all the sprites used in the game and that all 
@@ -65,19 +68,19 @@
 			//
 			currentFrame = rGen->Next(spriteSheetData->GetLength(1));// minus 1 to keep in bounds			
 			//
-			// Sprites Width and Height based on bearing 
+			// Sprites Width and Height based on state 
 			//
-			frameWidth = spriteSheetData[bearing, currentFrame, WIDTH];
-			frameHeight = spriteSheetData[bearing, currentFrame, HEIGHT];
+			frameWidth = spriteSheetData[state, currentFrame, WIDTH];
+			frameHeight = spriteSheetData[state, currentFrame, HEIGHT];
 			//
 			// Creates sprites frame to be drawn
 			//
 			spriteFrame = Rectangle
 			(
-				spriteSheetData[bearing, currentFrame, X],					// XPOS
-				spriteSheetData[bearing, currentFrame, Y],					// YPOS
-				spriteSheetData[bearing, currentFrame, WIDTH],				// WIDTH
-				spriteSheetData[bearing, currentFrame, HEIGHT]				// HEIGHT
+				spriteSheetData[state, currentFrame, X],					// XPOS
+				spriteSheetData[state, currentFrame, Y],					// YPOS
+				spriteSheetData[state, currentFrame, WIDTH],				// WIDTH
+				spriteSheetData[state, currentFrame, HEIGHT]				// HEIGHT
 			);
 		}
 
@@ -97,7 +100,7 @@
 		//
 		// Flips image on the X axis based on direction
 		//
-		if(bearing == WEST)	spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);	
+		if(state == WEST)	spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);	
 		//
 		// Draws bitmap to the screen
 		//
@@ -122,7 +125,7 @@
 		//
 		// Flips image on the X axis based on direction
 		//
-		if(bearing == WEST)	spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);	
+		if(state == WEST)	spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);	
 		//
 		// Draws bitmap to the screen
 		//
@@ -141,16 +144,16 @@
 		//
 		// Clamps to tile xPos
 		//
-		if((tileType == LADDER_COIN || tileType == LADDER) && (bearing == NORTH || bearing == SOUTH))
+		if((tileType == LADDER_COIN || tileType == LADDER) && (state == NORTH || state == SOUTH))
 		{
-			xPos = col * T_SIZE;
+			xPos = col * T_SIZE; // Converts col back to pixels
 		}
 		//
 		// Clamps to tile yPos
 		//
-		if((tileType == COIN ||tileType == WALKABLE) && (bearing == WEST || bearing == EAST))
+		if((tileType == COIN ||tileType == WALKABLE) && (state == WEST || state == EAST))
 		{
-			yPos = (row * T_SIZE) - (frameHeight - T_SIZE);
+			yPos = (row * T_SIZE) - (frameHeight - T_SIZE); // Converts row back to pixels
 		}
 	}
 	//
@@ -163,8 +166,8 @@
 		// the a set magnitude, a direction is then applied to the magnitude 1, -1
 		// this will allow the sprite to move up, down, left and right
 		//	
-		int col = (xPos + collisionOffsets[bearing].X) / T_SIZE;
-		int row = (yPos + (frameHeight + collisionOffsets[bearing].Y)) / T_SIZE;			
+		int col = (xPos + collisionOffsets[state].X) / T_SIZE;
+		int row = (yPos + (frameHeight + collisionOffsets[state].Y)) / T_SIZE;			
 		//
 		// Set sprite walking 
 		//
@@ -174,8 +177,8 @@
 		//
 		if(walking)
 		{
-			yPos += yMag * spriteDirection[bearing].Y;
-			xPos += xMag * spriteDirection[bearing].X;
+			yPos += yMag * spriteDirection[state].Y;
+			xPos += xMag * spriteDirection[state].X;
 
 			clamp(col, row);
 		}
@@ -195,19 +198,19 @@
 		//				
 		currentFrame %= spriteSheetData->GetLength(1);			
 		//
-		// Sets frame width and height based on spritesheet bearing
+		// Sets frame width and height based on spritesheet state
 		//
-		frameWidth = spriteSheetData[bearing, currentFrame, WIDTH];		
-		frameHeight = spriteSheetData[bearing, currentFrame, HEIGHT];	
+		frameWidth = spriteSheetData[state, currentFrame, WIDTH];		
+		frameHeight = spriteSheetData[state, currentFrame, HEIGHT];	
 		//
-		// Sets spriteframe to based on bearing, current frame to be drawn
+		// Sets spriteframe to based on state, current frame to be drawn
 		//
 		spriteFrame = Rectangle
 		(
-			spriteSheetData[bearing, currentFrame, X],					
-			spriteSheetData[bearing, currentFrame, Y],					
-			spriteSheetData[bearing, currentFrame, WIDTH],				
-			spriteSheetData[bearing, currentFrame, HEIGHT]			
+			spriteSheetData[state, currentFrame, X],					
+			spriteSheetData[state, currentFrame, Y],					
+			spriteSheetData[state, currentFrame, WIDTH],				
+			spriteSheetData[state, currentFrame, HEIGHT]			
 		);
 		//
 		// This is to slow down the frame animation 
@@ -232,6 +235,19 @@
 	//
 	//
 	//
+	void Sprite::hurt()
+	{
+		if(hurtTime > 50)
+		{
+			alive = true;
+			hurtTime = 0;
+		}
+		
+		hurtTime++;
+	}
+	//
+	//
+	//
 	bool Sprite::isLevelWin()
 	{
 		int col = (xPos + collisionOffsets[STAND].X) / T_SIZE;
@@ -246,23 +262,26 @@
 	//
 	bool Sprite::collided(Sprite^ sprite)
 	{
-		bool collided = true;
+		if(alive)
+		{
+			bool collided = true;
 
-		int s1XPos = (xPos - viewPort->getViewportWorldX()) + (frameWidth / 3);
-		int s1YPos = (yPos - viewPort->getViewportWorldY())  + (frameHeight / 3);
+			int s1XPos = (xPos - viewPort->getViewportWorldX()) + (frameWidth / 3);
+			int s1YPos = (yPos - viewPort->getViewportWorldY())  + (frameHeight / 3);
 
-		int s2XPos = (sprite->getXPos() - viewPort->getViewportWorldX())+(sprite->getWidth() / 3);
-		int s2YPos = (sprite->getYPos() - viewPort->getViewportWorldY())+(sprite->getHeight() / 3);
+			int s2XPos = (sprite->getXPos() - viewPort->getViewportWorldX())+(sprite->getWidth() / 3);
+			int s2YPos = (sprite->getYPos() - viewPort->getViewportWorldY())+(sprite->getHeight() / 3);
 
-		Rectangle s1 = Rectangle(s1XPos, s1YPos, frameWidth / 3, frameHeight / 3);
-		Rectangle s2 = Rectangle(s2XPos, s2YPos, sprite->getWidth() / 3 , sprite->getHeight() / 3);
+			Rectangle s1 = Rectangle(s1XPos, s1YPos, frameWidth / 3, frameHeight / 3);
+			Rectangle s2 = Rectangle(s2XPos, s2YPos, sprite->getWidth() / 3 , sprite->getHeight() / 3);
 
-		if(s1.Bottom  < s2.Top)	 collided = false;
-		if(s1.Top > s2.Bottom)	 collided = false;
-		if(s1.Right < s2.Left)	 collided = false;
-		if(s1.Left > s2.Right)	 collided = false;
+			if(s1.Bottom  < s2.Top)	 collided = false;
+			if(s1.Top > s2.Bottom)	 collided = false;
+			if(s1.Right < s2.Left)	 collided = false;
+			if(s1.Left > s2.Right)	 collided = false;
 
-		return collided;	
+			return collided;
+		}			
 	}
 	//
 	//
@@ -324,9 +343,9 @@
 	//
 	void Sprite::wrap()
 	{
-		// Depending on what bearing the sprite is when called 
+		// Depending on what state the sprite is when called 
 		// the players position is changed to wrap around the screen
-		switch(bearing)
+		switch(state)
 		{
 			case NORTH:
 				// puts sprite on the south side on the screen
@@ -353,28 +372,31 @@
 	void Sprite::bounce()
 	{
 		// Reverse direction for bounce, modulo required for wrap around
-		// Current bearings + half total directions mod max number directions)
+		// Current states + half total directions mod max number directions)
 		// This is to reverse the direction of our sprite, 
-		// todo this we must add to our current bearing enumeration
+		// todo this we must add to our current state enumeration
 		// Then after we have added we must use modulo to wrap around 
 		// and the correct oposite direction is chosen
-		int newBearing = (bearing + (4 / HALF)) % 4; 
+		int newState = (state + (4 / HALF)) % 4; 
 
-		// If new bearing is in acceptable range
-		bool inRange = newBearing < 4 && newBearing >= 0;
+		// If new state is in acceptable range
+		bool inRange = newState < 4 && newState >= 0;
 		
-		if(inRange) bearing = static_cast<EBearing>(newBearing);		
-		// if illegal direction bearing unchanged 
+		if(inRange) state = static_cast<EState>(newState);		
+		// if illegal direction state unchanged 
 		// throwing exception is more appropriate			
 	}
 
 	void Sprite::die()
 	{		
-		resetPosition(); // set hurt image
+		//resetPosition(); // set hurt image
+		if(alive) lives--;
+
+		alive = false;
+
+		state = HURT;
 
 		coins = 0;
-
-		lives--;
 
 		action = STOP;
 	}
@@ -390,10 +412,10 @@
 
 	void Sprite::stop()
 	{
-		if(bearing == WEST)
+		if(state == WEST)
 			xPos = tileMapBounds.Left; // clamps sprite 
 
-		if(bearing == EAST)
+		if(state == EAST)
 			xPos = (tileMapBounds.Right - frameWidth) - (T_SIZE / 2); // clamps sprite
 	}
 
@@ -404,44 +426,49 @@
 	//
 	//
 	//
-	void Sprite::setBearing(EBearing newBearing)
+	void Sprite::setState(EState newState)
 	{
-		ETileType tileType = getTileType(collisionOffsets[newBearing]);
+		if(alive)
+		{
+			ETileType tileType = getTileType(collisionOffsets[newState]);
 
-		switch(newBearing)
+		switch(newState)
 		{
 			case NORTH:
 				if(tileType == LADDER || tileType == LADDER_COIN || tileType == WALKABLE)
 				{
-					bearing = newBearing;	
+					state = newState;	
 				}
 				break;
 
 			case SOUTH:
 				if(tileType == LADDER || tileType == LADDER_COIN)
 				{
-					bearing = newBearing;	
+					state = newState;	
 				}
 				break;
 
 			case EAST:
 				if(tileType != SOLID)
 				{
-					bearing = newBearing;	
+					state = newState;	
 				}
 				break;
 
 			case WEST:
 				if(tileType != SOLID)
 				{
-					bearing = newBearing;	
+					state = newState;	
 				}
 				break;
 
 			case STAND:
-				bearing = newBearing;
+				state = newState;
 				break;
-		}		
+		}
+		}
+
+						
 	}
 	//
 	//
@@ -491,20 +518,21 @@
 	{
 		//
 		// Depending on a specified probability 
-		// a random bearing is picked for the sprite
+		// a random state is picked for the sprite
 		//
 		if(rGen->Next(WANDER_PROB) == 0) 
-			setBearing(getRandomBearing());
+			setState(getRandomState());
 
-		if(!walking) setBearing(getRandomBearing());
+		if(!walking) 
+			setState(getRandomState());
 	}
 	//
 	//
 	//
-	EBearing Sprite::getRandomBearing()
+	EState Sprite::getRandomState()
 	{
 		//
-		// Return a random EBearing
+		// Return a random EState
 		//
 		int pick = rGen->Next(4);
 

@@ -216,11 +216,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ObjectMap.cpp"
+				RelativePath=".\SoundManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\SoundManager.cpp"
+				RelativePath=".\SpawnMap.cpp"
 				>
 			</File>
 			<File
@@ -300,15 +300,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ObjectMap.h"
-				>
-			</File>
-			<File
 				RelativePath=".\resource.h"
 				>
 			</File>
 			<File
 				RelativePath=".\SoundManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SpawnMap.h"
 				>
 			</File>
 			<File

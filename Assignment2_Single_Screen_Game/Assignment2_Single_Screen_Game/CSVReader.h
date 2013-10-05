@@ -37,10 +37,10 @@ ref class CSVReader
 		array<int,3>^ getSpriteSheetData(int startObjectNumber);
 		
 		array<int,2>^ getCoinMap()		{ return getMap("coinmap.csv"); }
-		array<int,2>^ getObjectMap()	{ return getMap("objectmap.csv"); }
+		array<int,2>^ getSpawnMap()		{ return getMap("spawnmap.csv"); }
 		array<int,2>^ getTileMap()		{ return getMap("tilemap.csv"); }
 
-		array<int,3>^ getPlayerMap()	{ return getMap("playermap.csv", 5, 11, 4); }
+		array<int,3>^ getPlayerMap()	{ return getMap("playermap.csv", 6, 11, 4); }
 		array<int,3>^ getAlienMap()		{ return getMap("alienmap.csv", 5, 11, 4); }
 		array<int,3>^ getItemMap()		{ return getMap("flagmap.csv", 5, 4, 4); }
 	};
