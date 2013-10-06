@@ -7,6 +7,9 @@
 #include "MapManager.h"
 #include "Viewport.h"
 #include "FileReader.h"
+#include "SoundManager.h"
+
+
 
 using namespace System::Windows::Forms;
 
@@ -26,19 +29,19 @@ ref class GameManager
 #pragma region Variables
 
 	private:
-		Viewport^ foreground;
+		Viewport^ viewport;
 		Rectangle clientRectangle;
 
 		FileReader^ reader;
 
-		Graphics^ canvas;
+		Graphics^ formCanvas;
 		Graphics^ dbGraphics;
 		Bitmap^ dbBitmap;
 
 		Image^ background;
 		
 		TileMap^ tileMap;
-		MapManager^ mManager;
+		MapManager^ mManager;		
 		
 		SpriteList^ alienList;
 		SpriteList^ flagList;
@@ -55,11 +58,13 @@ ref class GameManager
 		int highscore;
 		int level;
 
-		bool gameover;
 		bool levelover;
+		bool levelwin;
 
 		StreamReader^ fileReader;
 		StreamWriter^ fileWriter;
+
+		SoundManager^ sManager;
 
 #pragma endregion
 
@@ -69,7 +74,7 @@ ref class GameManager
 		Sprite^ Create(int type);
 
 	public:
-		GameManager(Graphics^ startCanvas, Rectangle clientRectangle);
+		GameManager(Graphics^ startCanvas, Rectangle clientRectangle, SoundManager^ soundManager);
 
 #pragma endregion
 
@@ -93,8 +98,8 @@ ref class GameManager
 #pragma region Gets/Sets
 
 		Sprite^ getPlayer()		{ return player; }
-		bool isGameOver()		{ return gameover; }
 		bool isLevelOver()		{ return levelover; }
+		bool isLevelWin()		{ return levelwin; }
 		
 		int getLevel()			{ return level; }
 		int getHighScore()		{ return highscore; }

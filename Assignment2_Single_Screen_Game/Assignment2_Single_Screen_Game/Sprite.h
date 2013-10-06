@@ -4,6 +4,8 @@
 #include "Constants.h"
 #include "TileMap.h"
 #include "ViewPort.h"
+#include "SoundManager.h"
+
 
 using namespace System;
 using namespace System::ComponentModel;
@@ -31,6 +33,7 @@ ref class Sprite
 		bool alive;
 		bool gameover;
 		bool levelwin;
+		bool hurtSound;
 
 		int lives;
 		int coins;
@@ -75,7 +78,7 @@ ref class Sprite
 
 		int objectNumber;
 
-		Point startPosition;		
+		Point startPosition;
 
 #pragma endregion
 
@@ -107,7 +110,7 @@ ref class Sprite
 		// 
 		// Collision check
 		//
-		void hurt();
+		void hurt(SoundManager^ sManager);
 		bool isBoundsCollision();
 		bool collided(Sprite^ sprite);
 		//
@@ -156,6 +159,8 @@ ref class Sprite
 
 		void setXPos(int x)				{ xPos = x; }
 		void setYPos(int y)				{ yPos = y; }
+		void setXMag(int xM)			{ xMag = xM; }
+		void setYMag(int yM)			{ yMag = yM; }
 		
 		void setLives(int l)			{ lives = l; }
 		void setCoins(int c)			{ coins = c; }

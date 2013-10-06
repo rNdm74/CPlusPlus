@@ -6,16 +6,20 @@
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
 		/// </summary>
-GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
+GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle, SoundManager^ soundManager)
 	{
 		//
 		// Create canvas from form
 		//
-		canvas = startCanvas;
+		formCanvas = startCanvas;
 		//
 		// Client viewable screen bounds
 		//
 		clientRectangle = startClientRectangle;
+		//
+		// Game sounds
+		//
+		sManager = soundManager;
 		//
 		// Create graphics size of the screen
 		//
@@ -23,7 +27,7 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 		//
 		// Grab its Graphics
 		//
-		dbGraphics = Graphics::FromImage(dbBitmap);		
+		dbGraphics = Graphics::FromImage(dbBitmap);	
 		//
 		// Create random
 		//
@@ -74,7 +78,7 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			delete reader;
 			delete tileMap;
 			delete mManager;
-			delete foreground;
+			delete viewport;
 			delete background;
 			delete alienList;
 			delete flagList;
@@ -101,7 +105,7 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			//
 			// Create viewport
 			//
-			foreground = gcnew Viewport(0, 0, N_COLS, N_ROWS, tileMap, dbGraphics);
+			viewport = gcnew Viewport(0, 0, N_COLS, N_ROWS, tileMap, dbGraphics);
 			//
 			// Create Background Image
 			//
@@ -109,9 +113,9 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			//
 			// Create Spritelists
 			//
-			alienList = gcnew SpriteList(foreground);
-			flagList = gcnew SpriteList(foreground);
-			playerList = gcnew SpriteList(foreground);
+			alienList = gcnew SpriteList(viewport);
+			flagList = gcnew SpriteList(viewport);
+			playerList = gcnew SpriteList(viewport);
 			//
 			// Create Player
 			//
@@ -135,12 +139,15 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 
 Sprite^ GameManager::Create(int type)
 {
+	//
+	// 
+	//
 	if(type == PLAYER)
 	{
 		return gcnew Sprite
 		(
 			dbGraphics,
-			foreground,
+			viewport,
 			reader,
 			tileMap,					
 			STOP,
@@ -153,13 +160,15 @@ Sprite^ GameManager::Create(int type)
 			tileMap->getBounds()
 		);
 	}
-
+	//
+	//
+	//
 	if(type == ALIEN_ONE || type == ALIEN_TWO || type == ALIEN_THREE || type == ALIEN_FOUR)
 	{
 		return gcnew Sprite
 		(
 			dbGraphics,
-			foreground,
+			viewport,
 			reader,
 			tileMap,						
 			BOUNCE,
@@ -172,13 +181,15 @@ Sprite^ GameManager::Create(int type)
 			tileMap->getBounds()
 		);
 	}
-
+	//
+	//
+	//
 	if(type == BLUE_FLAG || type == ORANGE_FLAG || type == YELLOW_FLAG || type == GREEN_FLAG)
 	{
 		return gcnew Sprite
 		(
-			dbGraphics,
-			foreground,
+			dbGraphics,						// 
+			viewport,
 			reader,
 			tileMap,						
 			STOP,						
@@ -244,9 +255,9 @@ Sprite^ GameManager::Create(int type)
 			//
 			// Collision Checks
 			//
-			alienList->checkCollisions(player);
-			flagList->pickupItem(player);
-			playerList->collectCoin();
+			alienList->checkCollisions(player, sManager);
+			flagList->pickupItem(player, sManager);
+			playerList->collectCoin(sManager);
 			//
 			// Updates Sprites Animation
 			//
@@ -272,7 +283,7 @@ Sprite^ GameManager::Create(int type)
 		/// <summary>
 		/// Draws all game components to an off screen canvas.
 		/// The components are drawn in order: 
-		/// background, foreground, sprites, form
+		/// background, viewport, sprites, form
 		/// Once all drawn to the canvas it is then 
 		/// drawn to the main form canvas.
 		/// </summary>		
@@ -285,7 +296,7 @@ Sprite^ GameManager::Create(int type)
 			//
 			// Draw Viewport to Canvas 
 			//
-			foreground->viewportDraw(0, 0);
+			viewport->viewportDraw(0, 0);
 			//
 			// Draw Sprites to Canvas
 			//
@@ -295,7 +306,7 @@ Sprite^ GameManager::Create(int type)
 			//
 			// Make Buffer Visible 
 			//
-			canvas->DrawImage(dbBitmap, clientRectangle);
+			formCanvas->DrawImage(dbBitmap, clientRectangle);
 		}
 #pragma endregion
 
@@ -312,6 +323,7 @@ Sprite^ GameManager::Create(int type)
 			//
 			if(flagCount == N_FLAGS)									// All flags have been collected
 			{
+				alienList->setSpritesMagnitudes(11, 12);
 				flagList->setFlagCount(0);								// Reset Flags must have to pick up coins		
 				mManager->addCoinsToGame(tileMap);						// Makes coins visible					
 				tileMap->setMapValue(EXIT_COL, EXIT_ROW, EXIT_TILE);	// Shows exit post
@@ -328,10 +340,10 @@ Sprite^ GameManager::Create(int type)
 			// a new game is initialized, the
 			// flag value, flag count and coins collected are reset
 			//
-			levelover = player->isLevelWin();							// Level has been won			 
+			levelwin = player->isLevelWin();							// Level has been won			 
 
-			if(levelover)								
-			{
+			if(levelwin)								
+			{	
 				level++;												// Changes to next level
 
 				if(level <= N_LEVELS)
@@ -359,7 +371,9 @@ Sprite^ GameManager::Create(int type)
 			//
 			if(level > N_LEVELS || lives == 0)						// All lives lost or max level reached
 			{
-				gameover = true;									// Game over is set
+				sManager->levelOver->PlaySync();						//Play level win sound here
+
+				levelover = true;									// Game over is set
 
 				if(score >= highscore)								// If playerscore is greater write to file				
 				{

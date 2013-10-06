@@ -124,7 +124,7 @@
   <data name="background.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAABAAAAAMACAYAAAC6uhUNAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
-        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAADsEAAA7BAbiRa+0AAP+WSURBVHhe7P2FWxxJ1P4PP3/A
+        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAADr4AAA6+AepCscAAAP+WSURBVHhe7P2FWxxJ1P4PP3/A
         7/0+z8IYDoO7WyAOcXeXjbvLJtnNWmwjG9nYxt0VIsTd3d2IC3GX+61TPU2aTg8MgdimuK5Peqbq1Onq
         np7Afarq1P/ojc4QCAQCgUAgEAgEAoFA8N9GBAAEAoFAIBAIBAKBQCD4DhABAIFAIBAIBAKBQCAQCL4D
         RABAIBAIBAKBQCAQCASC7wARABAIBAKBQCAQCAQCgeA7QAQABAKBQCAQCAQCgUAg+A4QAQCBQCAQCAQC
@@ -7493,7 +7493,7 @@
   <data name="coinshud.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAC8AAAAvCAYAAABzJ5OsAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vgAADr4B6kKxwAAABQBJREFUaEPtmr+LVUcUx69W28XSTlJaBVubgKWNRUoLi20DaSyFVNb+Ca4xggTC
+        vAAADrwBlbxySQAABQBJREFUaEPtmr+LVUcUx69W28XSTlJaBVubgKWNRUoLi20DaSyFVNb+Ca4xggTC
         I4UaVlFUjO5mkydGkyguZpNFRTGPDYsoQcb53Dcze2bm3B/z9q5pMvCFfffOnPOdmTPnnDl3qyHa8lfV
         p3fOVF/cWahOW1xrwWn6LZ2tPnFD/5tmSRxZWqhGFhMLMwMYN2LiTuTON7fCTxIi2wLydnQSbLVVNE4V
         g/H5PWZ18YB5dvuw2bg/3wje04/+mhyL8eAmtXSm+jJVtPL1nPnj6kHzZvW4MU9PFoNxjEdOInti9R1z
@@ -7542,7 +7542,7 @@
   <data name="lives.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADUAAAAtCAYAAAAOYyOGAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vgAADr4B6kKxwAAABBZJREFUaEPlmV9KHEEQxr1BTiARBEEQZJ1dFP+iKKKIOUKOkCN4hBwhRBMIgRDI
+        vAAADrwBlbxySQAABBZJREFUaEPlmV9KHEEQxr1BTiARBEEQZJ1dFP+iKKKIOUKOkCN4hBwhRBMIgRDI
         S14Ckpe85MG85CGSsEQkwRCUkANM+jfbNanprV1nd3t2N6TgQx2nq+vr/rq6umeirD1JkvvHSfLopF4/
         c0gtuP/fuJ+nJ0ny4HmS3PFNTTtuNDZK+UuSl2X8lTYc4dAHa3bcDQT9tFa7691l5genab1/G47r9Yeh
         v57Mj2RfnWv4ATk6qdXm3c9T/b9+IP58mOWNEQ6dvVhcTN+uraXN3d309+Ghicu9vfT95mb6ammp0NZC

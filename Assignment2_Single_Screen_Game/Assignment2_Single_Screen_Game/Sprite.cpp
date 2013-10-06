@@ -54,12 +54,12 @@
 			// Collision offsets
 			//
 			collisionOffsets = gcnew array<Point>(MAX_DIRECTIONS);
-			collisionOffsets[NORTH] = Point(35, -75);						// Topside
-			collisionOffsets[EAST] = Point(75, -35);						// Rightside
-			collisionOffsets[SOUTH] = Point(35, 2);							// Bottomside
-			collisionOffsets[WEST] = Point(-2, -35);						// Leftside
-			collisionOffsets[STAND] = Point(35,-35);						// Center
-			collisionOffsets[HURT] = Point(35,-35);							// Center
+			collisionOffsets[NORTH] = Point(NORTH_X, NORTH_Y);						
+			collisionOffsets[EAST] =  Point(EAST_X, EAST_Y);						
+			collisionOffsets[SOUTH] = Point(SOUTH_X, SOUTH_Y);						
+			collisionOffsets[WEST] =  Point(WEST_X, WEST_Y);						
+			collisionOffsets[STAND] = Point(CENTER_X, CENTER_Y);					
+			collisionOffsets[HURT] =  Point(CENTER_X, CENTER_Y);					
 			//
 			// Picks a random frame to be drawn this creates a random
 			// look of all the sprites used in the game and that all 
@@ -241,13 +241,24 @@
 	//
 	//
 	//
-	void Sprite::hurt()
+	void Sprite::hurt(SoundManager^ sManager)
 	{
-		if(hurtTime > HURT_DELAY)
+		if(!alive && !hurtSound)
+		{			
+			sManager->playerHurt->Play();			// play hurt sound here
+
+			hurtSound = true;
+		}
+		//
+		// Gives time for the player to not be hurt 
+		// for a period of time
+		//
+		if(hurtTime > HURT_DELAY) 
 		{
+			hurtSound = false;
 			alive = true;
 			state = STAND;
-			hurtTime = 0;
+			hurtTime = 0;			
 		}
 		
 		hurtTime++;

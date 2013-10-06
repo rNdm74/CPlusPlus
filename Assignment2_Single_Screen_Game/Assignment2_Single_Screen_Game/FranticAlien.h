@@ -54,7 +54,7 @@ namespace Assignment2_Single_Screen_Game {
 	private: System::Windows::Forms::PictureBox^  yellowflag;
 	private: System::Windows::Forms::PictureBox^  greenflag;
 
-    private: System::Windows::Forms::Label^  gameover_label;
+
 	private: System::Windows::Forms::Label^  highscorelabel;
 	private: System::Windows::Forms::Label^  highscore;
 	private: System::Windows::Forms::Label^  scorelabel;
@@ -62,7 +62,6 @@ namespace Assignment2_Single_Screen_Game {
 	private: System::Windows::Forms::Label^  coins;
 
 	private: System::Windows::Forms::Button^  play_button;
-	private: System::Windows::Forms::Button^  restart_button;
 	private: System::Windows::Forms::Button^  quit_button;
 
  #pragma endregion
@@ -73,7 +72,7 @@ namespace Assignment2_Single_Screen_Game {
 		/// Required designer variable.
 		/// </summary>
 		GameManager^ gManager;
-
+		SoundManager^ sManager;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -87,8 +86,6 @@ namespace Assignment2_Single_Screen_Game {
 			this->clock = (gcnew System::Windows::Forms::Timer(this->components));
 			this->play_button = (gcnew System::Windows::Forms::Button());
 			this->background = (gcnew System::Windows::Forms::PictureBox());
-			this->gameover_label = (gcnew System::Windows::Forms::Label());
-			this->restart_button = (gcnew System::Windows::Forms::Button());
 			this->quit_button = (gcnew System::Windows::Forms::Button());
 			this->coinshud = (gcnew System::Windows::Forms::PictureBox());
 			this->blueflag = (gcnew System::Windows::Forms::PictureBox());
@@ -146,42 +143,6 @@ namespace Assignment2_Single_Screen_Game {
 			this->background->Size = System::Drawing::Size(1018, 740);
 			this->background->TabIndex = 1;
 			this->background->TabStop = false;
-			// 
-			// gameover_label
-			// 
-			this->gameover_label->AutoSize = true;
-			this->gameover_label->BackColor = System::Drawing::Color::Transparent;
-			this->gameover_label->Font = (gcnew System::Drawing::Font(L"Comic Sans MS", 27.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
-			this->gameover_label->ForeColor = System::Drawing::Color::OrangeRed;
-			this->gameover_label->Location = System::Drawing::Point(399, 246);
-			this->gameover_label->Name = L"gameover_label";
-			this->gameover_label->Size = System::Drawing::Size(229, 52);
-			this->gameover_label->TabIndex = 3;
-			this->gameover_label->Text = L"GAMEOVER";
-			this->gameover_label->Visible = false;
-			// 
-			// restart_button
-			// 
-			this->restart_button->BackColor = System::Drawing::Color::Transparent;
-			this->restart_button->FlatAppearance->BorderSize = 0;
-			this->restart_button->FlatAppearance->MouseDownBackColor = System::Drawing::Color::Transparent;
-			this->restart_button->FlatAppearance->MouseOverBackColor = System::Drawing::Color::Transparent;
-			this->restart_button->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->restart_button->Font = (gcnew System::Drawing::Font(L"Comic Sans MS", 26.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
-			this->restart_button->ForeColor = System::Drawing::Color::White;
-			this->restart_button->Location = System::Drawing::Point(26, 645);
-			this->restart_button->Name = L"restart_button";
-			this->restart_button->Size = System::Drawing::Size(199, 51);
-			this->restart_button->TabIndex = 10;
-			this->restart_button->Text = L"RESTART";
-			this->restart_button->UseVisualStyleBackColor = false;
-			this->restart_button->Visible = false;
-			this->restart_button->MouseLeave += gcnew System::EventHandler(this, &FranticAlien::button_MouseLeave);
-			this->restart_button->Click += gcnew System::EventHandler(this, &FranticAlien::restart_button_Click);
-			this->restart_button->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &FranticAlien::button_MouseDown);
-			this->restart_button->MouseEnter += gcnew System::EventHandler(this, &FranticAlien::button_MouseEnter);
 			// 
 			// quit_button
 			// 
@@ -361,9 +322,7 @@ namespace Assignment2_Single_Screen_Game {
 			this->Controls->Add(this->highscorelabel);
 			this->Controls->Add(this->lives);
 			this->Controls->Add(this->blueflag);
-			this->Controls->Add(this->gameover_label);
 			this->Controls->Add(this->quit_button);
-			this->Controls->Add(this->restart_button);
 			this->Controls->Add(this->play_button);
 			this->Controls->Add(this->background);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedDialog;
@@ -376,6 +335,7 @@ namespace Assignment2_Single_Screen_Game {
 			this->SizeGripStyle = System::Windows::Forms::SizeGripStyle::Hide;
 			this->StartPosition = System::Windows::Forms::FormStartPosition::Manual;
 			this->Text = L"Frantic Alien";
+			this->Load += gcnew System::EventHandler(this, &FranticAlien::FranticAlien_Load);
 			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &FranticAlien::FranticAlien_KeyUp);
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &FranticAlien::FranticAlien_KeyDown);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->background))->EndInit();
@@ -387,23 +347,22 @@ namespace Assignment2_Single_Screen_Game {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->greenflag))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
-
 		}
 #pragma endregion
 
 #pragma region Form Controls
 		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>			 
-		private: System::Void clock_Tick(System::Object^  sender, System::EventArgs^  e) {
-			// 
-			// Game Clock Cycle, checks is the game is over updates game then draws to window
-			//
-			
+		/// Controls events 
+		/// </summary>	
+		private: System::Void FranticAlien_Load(System::Object^  sender, System::EventArgs^  e) {
+			sManager = gcnew SoundManager();
+		}
+		// 
+		// Game Clock Cycle, checks is the game is over updates game then draws to window
+		//
+		private: System::Void clock_Tick(System::Object^  sender, System::EventArgs^  e) {						
 			gManager->updateGame();
 			gManager->drawGame();
-
 			checkGameState();
 			updateGameHud();
 		}
@@ -437,11 +396,8 @@ namespace Assignment2_Single_Screen_Game {
 		private: System::Void quit_button_Click(System::Object^  sender, System::EventArgs^  e) {
 			Application::Exit();
 		}
-		private: System::Void restart_button_Click(System::Object^  sender, System::EventArgs^  e) {
-			createNewGame();
-		}
 		private: System::Void play_button_Click(System::Object^  sender, System::EventArgs^  e) {
-			createNewGame();				 
+			playNewGame();				 
 		}
 #pragma endregion
 
@@ -451,58 +407,59 @@ namespace Assignment2_Single_Screen_Game {
 		//
 		private: System::Void checkGameState()
 		{
-			if(gManager->isLevelOver()) 
+			if(gManager->isLevelWin()) 
 				updateGameScore();
 
-			if(gManager->isGameOver())
-				showGameOverScreen();
+			if(gManager->isLevelOver())
+				showLevelOverScreen();
+		}
+		// 
+		// Checks if a level is complete or if the game is over
+		//
+		private: System::Void toggleFormControls()
+		{
+			background->Visible = !background->Visible;							// Hides picturebox
+			play_button->Visible = !play_button->Visible;						// Hides button
+			quit_button->Visible = !quit_button->Visible;						// Hides button
 		}
 		// 
 		// 
 		//
-		private: System::Void createNewGame()
+		private: System::Void playNewGame()
 		{
 			 delete gManager;													// Cleanup
 
-			 background->Visible = false;										// Hides picturebox
-			 play_button->Visible = false;										// Hides button
-			 gameover_label->Visible = false;									// Hides button
-			 restart_button->Visible = false;									// Hides button
-			 quit_button->Visible = false;										// Hides button	
+			 toggleFormControls();
 
-			 gManager = gcnew GameManager(CreateGraphics(), ClientRectangle);	// Hides button
+			 gManager = gcnew GameManager(CreateGraphics(), ClientRectangle, sManager);	// Creates a new game
 
 			 clock->Enabled = !clock->Enabled;									// Starts the timer
 
-			 Focus();															// Gives the form focus
+			 Focus();															// Gives the form focus			 
 		}
 		//
+		// Stops the game shows displays the menu
 		//
-		//
-		private: System::Void showGameOverScreen()
+		private: System::Void showLevelOverScreen()
 		{
-			 clock->Enabled = !clock->Enabled;									// Stops the timer			 
-				
-			 if(gManager->getLevel() >= N_LEVELS)								// If player has completed all levels 
-				gameover_label->Text = THE_END;									// Change gameover label text
+			 toggleFormControls();
 
-			 background->Visible = true;										// Shows picturebox
-			 gameover_label->Visible = true;									// Shows button
-			 restart_button->Visible = true;									// Shows button
-			 quit_button->Visible = true;										// Shows button
+			 clock->Enabled = !clock->Enabled;									// Stops the timer
 		}
 		//
-		//
+		// Takes the collected coins that adds them to the players score
 		//
 		private: System::Void updateGameScore()
-		{
+		{			 
 			 clock->Enabled = !clock->Enabled;									// Stops the timer
 
 			 int currentScore = int::Parse(score->Text);						// Gets current score
 			 int coinsCollected = int::Parse(coins->Text);						// Gets collected coins
 
 			 for(coinsCollected; coinsCollected >= 0; coinsCollected--)			// Loops through collected coins
-			 {
+			 {				
+				sManager->collectCoin->Play();									// Play collected coins sound here
+
 				currentScore += BONUS_COINS;									// Appends to currentScore
 
 				score->Text = String::Format("{0:000000}", currentScore);		// Changes score label with formatting
@@ -514,7 +471,7 @@ namespace Assignment2_Single_Screen_Game {
 			 }
 
 			 gManager->setScore(currentScore);									// Makes score changes permanent 
-				
+
 			 clock->Enabled = !clock->Enabled;									// Re-enables timer
 		}
 		// 

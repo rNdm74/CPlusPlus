@@ -2,10 +2,23 @@
 //
 // Constants
 //
-#define PLAYER_X_MAG			8
-#define PLAYER_Y_MAG			10
-#define ALIEN_X_MAG				6
-#define ALIEN_Y_MAG				6
+#define NORTH_X				    35
+#define	NORTH_Y			       -75	
+#define SOUTH_X					35
+#define	SOUTH_Y					2
+#define EAST_X					75
+#define	EAST_Y				   -35
+#define WEST_X				   -2
+#define	WEST_Y				   -35
+#define CENTER_X				35
+#define	CENTER_Y			   -35
+//
+//
+//
+#define PLAYER_X_MAG			10
+#define PLAYER_Y_MAG			11
+#define ALIEN_X_MAG				8
+#define ALIEN_Y_MAG				8
 #define FLAG_X_MAG				0
 #define FLAG_Y_MAG				0
 //
@@ -14,7 +27,7 @@
 #define FRAME_DELAY				1
 #define FLAG_FRAME_DELAY		3
 #define HURT_DELAY				100
-#define DELAY					20
+#define DELAY					30
 //
 //
 //
@@ -51,18 +64,6 @@
 //
 #define OFFSET					100
 #define PERCENTAGE				3
-//
-//
-//
-//#define PLAYER					1
-//#define ALIEN_ONE				2
-//#define ALIEN_TWO				3
-//#define ALIEN_THREE				4
-//#define ALIEN_FOUR				5
-//#define BLUE_FLAG				10
-//#define ORANGE_FLAG				11
-//#define YELLOW_FLAG				12
-//#define GREEN_FLAG				13
 //
 //
 //

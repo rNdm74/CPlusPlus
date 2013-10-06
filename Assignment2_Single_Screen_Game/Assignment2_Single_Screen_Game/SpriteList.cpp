@@ -4,6 +4,7 @@
 SpriteList::SpriteList(Viewport^ startViewport)
 	{
 		viewport = startViewport;
+
 		lives = N_LIVES;
 
 		head = nullptr;
@@ -134,14 +135,16 @@ void SpriteList::renderSprites(int vX, int vY)
 	}
 }
 
-void SpriteList::pickupItem(Sprite^ otherSprite)
+void SpriteList::pickupItem(Sprite^ otherSprite, SoundManager^ sManager)
 {
 	Sprite^ spriteWalker = head;		
 
 	while(spriteWalker != nullptr)
 	{
 		if(spriteWalker->collided(otherSprite))								// If collision between sprites
-		{
+		{			
+			sManager->collectFlag->Play();									// play collect flag sound here
+
 			String^ name = spriteWalker->getFilename()->Substring(11,2);	// Gets the item number from filename
 
 			flag = int::Parse(name);										// Sets flag that is picked up
@@ -160,14 +163,16 @@ void SpriteList::pickupItem(Sprite^ otherSprite)
 	}
 }
 
-void SpriteList::collectCoin()
+void SpriteList::collectCoin(SoundManager^ sManager)
 {
 	Sprite^ spriteWalker = head;		
 
 	while(spriteWalker != nullptr)
 	{
 		if(spriteWalker->collectCoin())
-		{
+		{			
+			sManager->collectCoin->Play();				// Collect coin sound here
+
 			spriteWalker->setAction(COLLECT_COIN);
 			spriteWalker->executeBoundsAction();	
 		}
@@ -177,17 +182,19 @@ void SpriteList::collectCoin()
 	}
 }
 
-void SpriteList::checkCollisions(Sprite^ otherSprite)
+void SpriteList::checkCollisions(Sprite^ otherSprite, SoundManager^ sManager)
 {
 	Sprite^ spriteWalker = head;		
 
 	while(spriteWalker != nullptr)
 	{
 		if(otherSprite->isAlive() == false)
-			otherSprite->hurt();
+		{			
+			otherSprite->hurt(sManager);
+		}
 
 		if(spriteWalker->collided(otherSprite))	
-		{
+		{			
 			otherSprite->setAction(DIE);
 			otherSprite->executeBoundsAction();
 		}				
@@ -208,6 +215,20 @@ void SpriteList::setSpritePositions(MapManager^ mManager)
 		spriteWalker->setStartPosition(startPos);
 		spriteWalker->setXPos(startPos.X);
 		spriteWalker->setYPos(startPos.Y);
+
+		// Move to next node
+		spriteWalker = spriteWalker->Next;
+	}
+}
+
+void SpriteList::setSpritesMagnitudes(int newXMag, int newYMag)
+{
+	Sprite^ spriteWalker = head;		
+
+	while(spriteWalker != nullptr)
+	{		
+		spriteWalker->setXMag(newXMag);
+		spriteWalker->setYMag(newYMag);
 
 		// Move to next node
 		spriteWalker = spriteWalker->Next;

@@ -20,6 +20,7 @@ private:
 
 	TileMap^ backgroundMap;
 	Graphics^ canvas;
+	
 
 	bool move;
 	int directionX;

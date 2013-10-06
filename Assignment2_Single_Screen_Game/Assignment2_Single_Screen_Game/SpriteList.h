@@ -4,6 +4,9 @@
 #include "MapManager.h"
 #include "Sprite.h"
 #include "Viewport.h"
+#include "SoundManager.h"
+
+using namespace System;
 
 /// <summary>
 /// Summary for SpriteList
@@ -26,6 +29,7 @@ ref class SpriteList
 
 		Sprite^ head;
 		Sprite^ tail;
+
 	public:
 		SpriteList(Viewport^ startViewport);
 		int length();
@@ -34,10 +38,11 @@ ref class SpriteList
 		void remove(Sprite^ gameObjectToDelete);
 		void update();
 
-		void pickupItem(Sprite^ otherSprite);
-		void collectCoin();
-		void checkCollisions(Sprite^ otherSprite);
+		void pickupItem(Sprite^ otherSprite, SoundManager^ sManager);
+		void collectCoin(SoundManager^ sManager);
+		void checkCollisions(Sprite^ otherSprite, SoundManager^ sManager);
 		void setSpritePositions(MapManager^ mManager);
+		void setSpritesMagnitudes(int newXMag, int newYMag);
 		void spriteAI();
 		void renderSprites(int vX, int vY);
 		void draw();
@@ -52,6 +57,6 @@ ref class SpriteList
 		void setCoins(int c)		{ coins = c; }	
 		void setLives(int l)		{ lives = l; }		
 		void setFlag(int f)			{ flag = f; }
-		void setFlagCount(int f)	{ flagCount = f; }
+		void setFlagCount(int fc)	{ flagCount = fc; }
 		
 	};
