@@ -54,15 +54,15 @@
 //
 //
 //
-#define PLAYER					1
-#define ALIEN_ONE				2
-#define ALIEN_TWO				3
-#define ALIEN_THREE				4
-#define ALIEN_FOUR				5
-#define BLUE_FLAG				10
-#define ORANGE_FLAG				11
-#define YELLOW_FLAG				12
-#define GREEN_FLAG				13
+//#define PLAYER					1
+//#define ALIEN_ONE				2
+//#define ALIEN_TWO				3
+//#define ALIEN_THREE				4
+//#define ALIEN_FOUR				5
+//#define BLUE_FLAG				10
+//#define ORANGE_FLAG				11
+//#define YELLOW_FLAG				12
+//#define GREEN_FLAG				13
 //
 //
 //
@@ -77,7 +77,21 @@
 #define DATAFILE				"data.dat"
 #define BACKGROUND				"Images/playscreen.png"
 #define THE_END					"THE END"
-
+//
+//
+//
+public enum ESprite
+{
+	PLAYER		= 1,
+	ALIEN_ONE	= 2,
+	ALIEN_TWO	= 3,
+	ALIEN_THREE	= 4,
+	ALIEN_FOUR	= 5,
+	BLUE_FLAG	= 10,
+	ORANGE_FLAG	= 11,
+	YELLOW_FLAG	= 12,
+	GREEN_FLAG	= 13
+};
 //
 //
 //

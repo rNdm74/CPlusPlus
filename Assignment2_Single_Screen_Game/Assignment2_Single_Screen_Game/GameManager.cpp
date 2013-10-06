@@ -115,79 +115,83 @@ GameManager::GameManager(Graphics^ startCanvas, Rectangle startClientRectangle)
 			//
 			// Create Player
 			//
-			playerList->add
-			(
-				gcnew Sprite
-				(
-					dbGraphics,
-					foreground,
-					reader,
-					tileMap,					
-					STOP,
-					rGen, 
-					PLAYER,
-					PLAYER_X_MAG, 
-					PLAYER_Y_MAG, 
-					FRAME_DELAY,
-					"Images/player.png",
-					tileMap->getBounds()
-				)	
-			);	
-			
+			playerList->add(Create(PLAYER));				
 			player = playerList->get(0);	// Gets the player from his list
 			player->setLives(lives);		// passes currents lives to player
 			//
 			// Create Aliens
 			//
-			for(int alien = ALIEN_ONE; alien <= ALIEN_FOUR; alien++)		
-			{
-				alienList->add
-				(
-					gcnew Sprite
-					(
-						dbGraphics,
-						foreground,
-						reader,
-						tileMap,						
-						BOUNCE,
-						rGen,
-						alien,
-						ALIEN_X_MAG,
-						ALIEN_Y_MAG,
-						FRAME_DELAY,
-						"Images/enemy"+ alien +".png",
-						tileMap->getBounds()
-					)
-				);
-			}			
+			for(int alien = ALIEN_ONE; alien <= ALIEN_FOUR; alien++)
+				alienList->add(Create(alien));
 			//
 			// Create Flags
 			//
-			for(int flag = BLUE_FLAG; flag < GREEN_FLAG + 1; flag++)		
-			{
-				flagList->add
-				(
-					gcnew Sprite
-					(
-						dbGraphics,
-						foreground,
-						reader,
-						tileMap,						
-						STOP,						
-						rGen,
-						flag,
-						FLAG_X_MAG,
-						FLAG_Y_MAG,
-						FLAG_FRAME_DELAY,
-						"Images/flag"+ flag +".png",
-						tileMap->getBounds()						
-					)
-				);	
-			}			
+			for(int flag = BLUE_FLAG; flag <= GREEN_FLAG; flag++)
+				flagList->add(Create(flag));	
 			//				
 			// 
 			//			
 		}
+
+Sprite^ GameManager::Create(int type)
+{
+	if(type == PLAYER)
+	{
+		return gcnew Sprite
+		(
+			dbGraphics,
+			foreground,
+			reader,
+			tileMap,					
+			STOP,
+			rGen, 
+			PLAYER,
+			PLAYER_X_MAG, 
+			PLAYER_Y_MAG, 
+			FRAME_DELAY,
+			"Images/player.png",
+			tileMap->getBounds()
+		);
+	}
+
+	if(type == ALIEN_ONE || type == ALIEN_TWO || type == ALIEN_THREE || type == ALIEN_FOUR)
+	{
+		return gcnew Sprite
+		(
+			dbGraphics,
+			foreground,
+			reader,
+			tileMap,						
+			BOUNCE,
+			rGen,
+			type,
+			ALIEN_X_MAG,
+			ALIEN_Y_MAG,
+			FRAME_DELAY,
+			"Images/enemy" + type + ".png",
+			tileMap->getBounds()
+		);
+	}
+
+	if(type == BLUE_FLAG || type == ORANGE_FLAG || type == YELLOW_FLAG || type == GREEN_FLAG)
+	{
+		return gcnew Sprite
+		(
+			dbGraphics,
+			foreground,
+			reader,
+			tileMap,						
+			STOP,						
+			rGen,
+			type,
+			FLAG_X_MAG,
+			FLAG_Y_MAG,
+			FLAG_FRAME_DELAY,
+			"Images/flag"+ type +".png",
+			tileMap->getBounds()						
+		);
+	}
+}
 #pragma endregion
 
 

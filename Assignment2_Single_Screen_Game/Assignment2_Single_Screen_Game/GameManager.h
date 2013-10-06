@@ -65,8 +65,12 @@ ref class GameManager
 
 #pragma region Constructor
 
+	private:
+		Sprite^ Create(int type);
+
 	public:
 		GameManager(Graphics^ startCanvas, Rectangle clientRectangle);
+
 #pragma endregion
 
 #pragma region Methods
@@ -79,10 +83,10 @@ ref class GameManager
 
 		void checkLevelPhase();
 		void checkLevelWin();
-		void checkLevelOver();
+		void checkLevelOver();		
 
 		void initializeGame();
-		void initializeObjectsPositons();
+		void initializeObjectsPositons();	
 
 #pragma endregion
 
