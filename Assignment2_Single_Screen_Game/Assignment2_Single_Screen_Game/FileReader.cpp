@@ -1,9 +1,8 @@
 #include "StdAfx.h"
 #include "FileReader.h"
 
-FileReader::FileReader(Random^ startRGen)
-	{
-		rGen = startRGen;
+FileReader::FileReader()
+	{		
 	}
 
 array<int,3>^ FileReader::getSpriteSheetData(int startObjectNumber)
@@ -48,9 +47,9 @@ array<int,2>^ FileReader::getMap(String^ filename)
 	/// Once the file is read the populated array is then returned.
 	/// </summary>
 
-	reader = gcnew StreamReader(filename);		
+	StreamReader^ reader = gcnew StreamReader(filename);
 
-	map2D = gcnew array<int,2>(N_ROWS, N_COLS);
+	array<int,2>^ map2D = gcnew array<int,2>(N_ROWS, N_COLS);
 
 	// while there is something to read		
 	for (int row = 0; !reader->EndOfStream; row++)
@@ -61,7 +60,7 @@ array<int,2>^ FileReader::getMap(String^ filename)
 		if(line != "") // if there is something to read
 		{
 			// populates the items array with split results from the csv file
-			items = line->Split(',');
+			array<String^>^ items = line->Split(',');
 
 			// populates tileMaps columns with each value from the items array
 			for (int col = 0; col < N_COLS; col++)
@@ -74,7 +73,6 @@ array<int,2>^ FileReader::getMap(String^ filename)
 	}
 
 	reader->Close();
-
 	
 	delete reader;	// Clean up
 
@@ -94,9 +92,9 @@ array<int,3>^ FileReader::getMap(String^ filename, int dim0, int dim1, int dim2)
 	/// Once the file is read the populated array is then returned.
 	/// </summary>
 
-	reader = gcnew StreamReader(filename);		
+	StreamReader^ reader = gcnew StreamReader(filename);		
 
-	map3D = gcnew array<int,3>(dim0, dim1, dim2);	
+	array<int,3>^ map3D = gcnew array<int,3>(dim0, dim1, dim2);	
 	
 	for(int dim0 = 0; dim0 < map3D->GetLength(0); dim0++) // Sprite state
 	{
@@ -106,7 +104,7 @@ array<int,3>^ FileReader::getMap(String^ filename, int dim0, int dim1, int dim2)
 
 			if(line != "")
 			{
-				items = line->Split(',');
+				array<String^>^ items = line->Split(',');
 
 				for(int dim2 = 0; dim2 < map3D->GetLength(2); dim2++) // X, Y, WIDTH, HEIGHT
 				{

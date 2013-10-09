@@ -71,7 +71,7 @@ ref class GameManager
 #pragma region Constructor
 
 	private:
-		Sprite^ Create(int type);
+		Sprite^ Create(EAction action, int type, int xMag, int yMag, int frameDelay);
 
 	public:
 		GameManager(Graphics^ startCanvas, Rectangle clientRectangle, SoundManager^ soundManager);
@@ -109,9 +109,10 @@ ref class GameManager
 		int getLives()			{ return lives; }
 		int getFlag()			{ return flag; }
 
-		void setScore(int s)	{ player->setScore(s); }
+		void setScore(int s)	{ player->setScore(s); }		
 		void setLevel(int l)	{ level = l; }
-
+		void setLives(int l)	{ lives = l; }
+		void setFlag(int f)		{ flag = f; }
 
 #pragma endregion
 

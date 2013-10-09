@@ -255,8 +255,8 @@
 		//
 		if(hurtTime > HURT_DELAY) 
 		{
-			hurtSound = false;
-			alive = true;
+			hurtSound = !hurtSound;
+			alive = !alive;
 			state = STAND;
 			hurtTime = 0;			
 		}
@@ -285,14 +285,25 @@
 		if(alive)
 		{
 			// Offsets X Y rectangle
-			int s1XPos = (xPos - viewPort->getViewportWorldX()) + (frameWidth / PERCENTAGE);
-			int s1YPos = (yPos - viewPort->getViewportWorldY())  + (frameHeight / PERCENTAGE);
-			int s2XPos = (otherSprite->getXPos() - viewPort->getViewportWorldX()) + (otherSprite->getWidth() / PERCENTAGE);
-			int s2YPos = (otherSprite->getYPos() - viewPort->getViewportWorldY()) + (otherSprite->getHeight() / PERCENTAGE);
+			int offsetX = frameWidth / PERCENTAGE;
+			int offsetY = frameHeight / PERCENTAGE;
 
 			// Creates 2 rectangles based from offsets
-			Rectangle s1 = Rectangle(s1XPos, s1YPos, frameWidth / PERCENTAGE, frameHeight / PERCENTAGE);
-			Rectangle s2 = Rectangle(s2XPos, s2YPos, otherSprite->getWidth() / PERCENTAGE , otherSprite->getHeight() / PERCENTAGE);
+			Rectangle s1 = Rectangle
+			(
+				xPos + offsetX, 
+				yPos + offsetY, 
+				frameWidth - offsetX, 
+				frameHeight - offsetY
+			);
+
+			Rectangle s2 = Rectangle
+			(
+				otherSprite->getXPos() + offsetX, 
+				otherSprite->getYPos() + offsetY, 
+				otherSprite->getWidth() - offsetX, 
+				otherSprite->getHeight() - offsetY
+			);
 
 			// Runs checks
 			if(s1.Bottom  < s2.Top)	 collided = false;
@@ -409,13 +420,16 @@
 
 	void Sprite::die()
 	{
+		//
+		// 
+		//
 		if(alive) lives--;		// Takes away life need as to many lives will be taken away 
 
 		alive = false;			// Sprite is not alive
 		
 		coins = 0;				// Player looses all collected coins
 
-		state = HURT;			// For show sprite is hurt
+		state = HURT;			// For effect that the sprite is hurt
 
 		action = STOP;			// Set back to default action
 	}
@@ -453,13 +467,17 @@
 			int row = (yPos + (frameHeight + collisionOffsets[newState].Y)) / T_SIZE;
 
 			// Sets flag conditions
-			bool moveNorth = newState == NORTH && tileMap->isClimbable(row, col) || tileMap->isWalkable(row, col);
-			bool moveSouth = newState == SOUTH && tileMap->isClimbable(row, col);
-			bool moveWest  = newState == WEST  && !tileMap->isSolid(row, col);
-			bool moveEast  = newState == EAST  && !tileMap->isSolid(row, col);
+			bool climbable = tileMap->isClimbable(row, col);
+			bool walkable  = tileMap->isWalkable(row, col);
+			bool solid	   = tileMap->isSolid(row, col);
+
+			bool moveNorth = newState == NORTH && climbable || walkable;
+			bool moveSouth = newState == SOUTH && climbable;
+			bool moveWest  = newState == WEST  && !solid;
+			bool moveEast  = newState == EAST  && !solid;
 			bool stand	   = newState == STAND;	
 
-			// Only update state is these conditions are true
+			// Only update state (move) if these conditions are true
 			if(moveNorth || moveSouth || moveWest || moveEast || stand) 
 			{
 				state = newState;
@@ -490,15 +508,15 @@
 	//
 	bool Sprite::collectCoin()
 	{
-		// Gets the current tile
-		ETileType tileType = getTileType(collisionOffsets[STAND]);
-
 		// Gets the current col and row
 		int col = (xPos + collisionOffsets[STAND].X) / T_SIZE;
 		int row = (yPos + (frameHeight + collisionOffsets[STAND].Y)) / T_SIZE;
 
+		bool coin = tileMap->isCoin(row, col);
+		bool laddercoin = tileMap->isLadderCoin(row, col);
+
 		// Reset COIN tile
-		if(tileType == COIN)
+		if(coin)
 		{
 			tileMap->setMapValue(col, row, DEFAULT_TILE);
 
@@ -506,7 +524,7 @@
 		}
 
 		// Reset LADDER_COIN tile
-		if(tileType == LADDER_COIN)
+		if(laddercoin)
 		{
 			tileMap->setMapValue(col, row, LADDER_TILE);
 

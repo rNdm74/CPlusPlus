@@ -93,7 +93,7 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle,
 			//
 			// Create the csv file reader
 			//
-			reader = gcnew FileReader(rGen);
+			reader = gcnew FileReader();
 			//
 			// Create tilemap
 			//
@@ -119,89 +119,106 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle,
 			//
 			// Create Player
 			//
-			playerList->add(Create(PLAYER));				
+			playerList->add(Create(STOP, PLAYER, PLAYER_X_MAG, PLAYER_Y_MAG, FRAME_DELAY));				
 			player = playerList->get(0);	// Gets the player from his list
 			player->setLives(lives);		// passes currents lives to player
 			//
 			// Create Aliens
 			//
 			for(int alien = ALIEN_ONE; alien <= ALIEN_FOUR; alien++)
-				alienList->add(Create(alien));
+				alienList->add(Create(BOUNCE, alien, ALIEN_X_MAG, ALIEN_Y_MAG, FRAME_DELAY));
 			//
 			// Create Flags
 			//
 			for(int flag = BLUE_FLAG; flag <= GREEN_FLAG; flag++)
-				flagList->add(Create(flag));	
+				flagList->add(Create(STOP, flag, FLAG_X_MAG, FLAG_Y_MAG, FLAG_FRAME_DELAY));	
 			//				
 			// 
 			//			
 		}
 
-Sprite^ GameManager::Create(int type)
+		Sprite^ GameManager::Create(EAction action, int type, int xMag, int yMag, int frameDelay)
 {
-	//
-	// 
-	//
-	if(type == PLAYER)
-	{
-		return gcnew Sprite
-		(
-			dbGraphics,
-			viewport,
-			reader,
-			tileMap,					
-			STOP,
-			rGen, 
-			PLAYER,
-			PLAYER_X_MAG, 
-			PLAYER_Y_MAG, 
-			FRAME_DELAY,
-			"Images/player.png",
-			tileMap->getBounds()
-		);
-	}
-	//
-	//
-	//
-	if(type == ALIEN_ONE || type == ALIEN_TWO || type == ALIEN_THREE || type == ALIEN_FOUR)
-	{
-		return gcnew Sprite
-		(
-			dbGraphics,
-			viewport,
-			reader,
-			tileMap,						
-			BOUNCE,
-			rGen,
-			type,
-			ALIEN_X_MAG,
-			ALIEN_Y_MAG,
-			FRAME_DELAY,
-			"Images/enemy" + type + ".png",
-			tileMap->getBounds()
-		);
-	}
-	//
-	//
-	//
-	if(type == BLUE_FLAG || type == ORANGE_FLAG || type == YELLOW_FLAG || type == GREEN_FLAG)
-	{
-		return gcnew Sprite
-		(
-			dbGraphics,						// 
-			viewport,
-			reader,
-			tileMap,						
-			STOP,						
-			rGen,
-			type,
-			FLAG_X_MAG,
-			FLAG_Y_MAG,
-			FLAG_FRAME_DELAY,
-			"Images/flag"+ type +".png",
-			tileMap->getBounds()						
-		);
-	}
+	return gcnew Sprite
+	(
+		dbGraphics,
+		viewport,
+		reader,
+		tileMap,					
+		action,
+		rGen, 
+		type,
+		xMag, 
+		yMag, 
+		frameDelay,
+		"Images/Sprites/" + type + ".png",
+		tileMap->getBounds()
+	);
+	////
+	//// 
+	////
+	//if(type == PLAYER)
+	//{
+	//	return gcnew Sprite
+	//	(
+	//		dbGraphics,
+	//		viewport,
+	//		reader,
+	//		tileMap,					
+	//		STOP,
+	//		rGen, 
+	//		type,
+	//		xMag, 
+	//		yMag, 
+	//		frameDelay,
+	//		"Images/Sprites/" + type + ".png",
+	//		tileMap->getBounds()
+	//	);
+	//}
+	////
+	////
+	////
+	//if(type == ALIEN_ONE || type == ALIEN_TWO || type == ALIEN_THREE || type == ALIEN_FOUR)
+	//{
+	//	return gcnew Sprite
+	//	(
+	//		dbGraphics,
+	//		viewport,
+	//		reader,
+	//		tileMap,						
+	//		BOUNCE,
+	//		rGen,
+	//		type,
+	//		ALIEN_X_MAG,
+	//		ALIEN_Y_MAG,
+	//		FRAME_DELAY,
+	//		"Images/enemy" + type + ".png",
+	//		tileMap->getBounds()
+	//	);
+	//}
+	////
+	////
+	////
+	//if(type == BLUE_FLAG || type == ORANGE_FLAG || type == YELLOW_FLAG || type == GREEN_FLAG)
+	//{
+	//	return gcnew Sprite
+	//	(
+	//		dbGraphics,						// 
+	//		viewport,
+	//		reader,
+	//		tileMap,						
+	//		STOP,						
+	//		rGen,
+	//		type,
+	//		FLAG_X_MAG,
+	//		FLAG_Y_MAG,
+	//		FLAG_FRAME_DELAY,
+	//		"Images/flag"+ type +".png",
+	//		tileMap->getBounds()						
+	//	);
+	//}
+
+	//return nullptr;
 }
 #pragma endregion
 
@@ -323,7 +340,7 @@ Sprite^ GameManager::Create(int type)
 			//
 			if(flagCount == N_FLAGS)									// All flags have been collected
 			{
-				alienList->setSpritesMagnitudes(11, 12);
+				alienList->setSpritesMagnitudes(NEW_ALIEN_X_MAG, NEW_ALIEN_Y_MAG);
 				flagList->setFlagCount(0);								// Reset Flags must have to pick up coins		
 				mManager->addCoinsToGame(tileMap);						// Makes coins visible					
 				tileMap->setMapValue(EXIT_COL, EXIT_ROW, EXIT_TILE);	// Shows exit post
@@ -352,7 +369,7 @@ Sprite^ GameManager::Create(int type)
 					initializeObjectsPositons();						// Positions sprites on screen
 
 					flagList->setFlag(0);								// Hud flags are not displayed
-					flagList->setFlagCount(0);							// 
+					flagList->setFlagCount(0);							// Tracks flags that are picked up
 					player->setCoins(0);								// Resets coins for next level
 
 					player->setLevelWin(false);							// Resets level win
@@ -371,11 +388,11 @@ Sprite^ GameManager::Create(int type)
 			//
 			if(level > N_LEVELS || lives == 0)						// All lives lost or max level reached
 			{
-				sManager->levelOver->PlaySync();						//Play level win sound here
+				sManager->levelOver->PlaySync();					//Play level win sound here
 
 				levelover = true;									// Game over is set
 
-				if(score >= highscore)								// If playerscore is greater write to file				
+				if(score >= highscore)								// If score is greater than highscore write to file				
 				{
 					fileWriter = gcnew StreamWriter(DATAFILE);		// Open file
 					fileWriter->Write(score.ToString());			// Write to score

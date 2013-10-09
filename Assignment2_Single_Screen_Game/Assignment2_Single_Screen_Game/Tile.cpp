@@ -23,6 +23,7 @@ Tile::Tile(Bitmap^ startTileBitmap, ETileType startTileType)
 
 		case LADDER_COIN:
 			climb = true;
+			ladderCoin = true;
 			break;
 
 		case COIN:

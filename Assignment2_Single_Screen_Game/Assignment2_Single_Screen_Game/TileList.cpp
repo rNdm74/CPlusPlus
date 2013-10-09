@@ -23,7 +23,7 @@ TileList::TileList()
 
 		for(int i = 0; i < tileBitmaps->Length; i++)
 		{
-			String^ file = "Images/" + i + ".png";
+			String^ file = "Images/Tiles/" + i + ".png";
 			tileBitmaps[i] = gcnew Bitmap(file);
 			tileBitmaps[i]->MakeTransparent(Color::White);
 		}

@@ -50,6 +50,7 @@ ref class TileMap
 		bool isClimbable(int row, int col)			{ return tiles->isClimbable(tileMap[row, col]); }
 		bool isWalkable(int row, int col)			{ return tiles->isWalkable(tileMap[row, col]); }
 		bool isCoin(int row, int col)				{ return tiles->isCoin(tileMap[row, col]); }
+		bool isLadderCoin(int row, int col)			{ return tiles->isLadderCoin(tileMap[row, col]); }
 		bool isExit(int row, int col)				{ return tiles->isExit(tileMap[row, col]); }
 
 		ETileType getTileType(int row, int col)		{ return tiles->getTileType(tileMap[row, col]); }		

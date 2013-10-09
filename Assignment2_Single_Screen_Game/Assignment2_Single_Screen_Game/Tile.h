@@ -26,6 +26,7 @@ private:
 	bool solid;
 	bool climb;
 	bool walkable;
+	bool ladderCoin;
 	bool coin;
 	bool exit;
 	
@@ -39,6 +40,7 @@ public:
 	bool isClimbable()		{ return climb; }
 	bool isWalkable()		{ return walkable; }
 	bool isCoin()			{ return coin; }
+	bool isLadderCoin()		{ return ladderCoin; }
 	bool isExit()			{ return exit; }
 
 	Bitmap^ getTileBitmap() { return tileBitmap; }

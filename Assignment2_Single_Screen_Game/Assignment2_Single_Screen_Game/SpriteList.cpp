@@ -145,7 +145,7 @@ void SpriteList::pickupItem(Sprite^ otherSprite, SoundManager^ sManager)
 		{			
 			sManager->collectFlag->Play();									// play collect flag sound here
 
-			String^ name = spriteWalker->getFilename()->Substring(11,2);	// Gets the item number from filename
+			String^ name = spriteWalker->getFilename()->Substring(15,2);	// Gets the item number from filename
 
 			flag = int::Parse(name);										// Sets flag that is picked up
 
@@ -173,8 +173,8 @@ void SpriteList::collectCoin(SoundManager^ sManager)
 		{			
 			sManager->collectCoin->Play();				// Collect coin sound here
 
-			spriteWalker->setAction(COLLECT_COIN);
-			spriteWalker->executeBoundsAction();	
+			spriteWalker->setAction(COLLECT_COIN);		// Coin can be added to player
+			spriteWalker->executeBoundsAction();		// Executes the action
 		}
 
 		// Move to next node
@@ -190,10 +190,10 @@ void SpriteList::checkCollisions(Sprite^ otherSprite, SoundManager^ sManager)
 	{
 		if(otherSprite->isAlive() == false)
 		{			
-			otherSprite->hurt(sManager);
+			otherSprite->hurt(sManager);				// Runs the hurt effect
 		}
 
-		if(spriteWalker->collided(otherSprite))	
+		if(spriteWalker->collided(otherSprite))			// 
 		{			
 			otherSprite->setAction(DIE);
 			otherSprite->executeBoundsAction();

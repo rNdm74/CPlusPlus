@@ -17,8 +17,10 @@
 //
 #define PLAYER_X_MAG			10
 #define PLAYER_Y_MAG			11
-#define ALIEN_X_MAG				8
+#define ALIEN_X_MAG				7
 #define ALIEN_Y_MAG				8
+#define NEW_ALIEN_X_MAG			11
+#define NEW_ALIEN_Y_MAG			12
 #define FLAG_X_MAG				0
 #define FLAG_Y_MAG				0
 //
@@ -64,6 +66,8 @@
 //
 #define OFFSET					100
 #define PERCENTAGE				3
+#define GAME_OVER				5
+#define FULL_HEARTS				3
 //
 //
 //
@@ -78,6 +82,8 @@
 #define DATAFILE				"data.dat"
 #define BACKGROUND				"Images/playscreen.png"
 #define THE_END					"THE END"
+#define MAINSCREEN				"Images/mainscreen.png"
+#define HOW_TO_PLAY				"Images/howtoplay.png"
 //
 //
 //

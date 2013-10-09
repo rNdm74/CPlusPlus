@@ -20,14 +20,7 @@ using namespace System::Drawing;
 
 ref class FileReader
 	{
-	private:
-		StreamReader^ reader;
-
-		array<String^>^ items;
-
-		array<int,3>^ map3D;
-		array<int,2>^ map2D;
-
+	private:				
 		Random^ rGen;
 
 	private:
@@ -35,7 +28,7 @@ ref class FileReader
 		array<int,3>^ getMap(String^ filename, int dim0, int dim1, int dim2);
 
 	public:
-		FileReader(Random^ startRGen);
+		FileReader();
 
 		array<int,3>^ getSpriteSheetData(int startObjectNumber);
 		
