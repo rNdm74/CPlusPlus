@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Assignment3_Final_Game", "Assignment3_Final_Game\Assignment3_Final_Game.vcproj", "{17CA9B8F-33C4-4F32-8BC9-6B123D85E87A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{17CA9B8F-33C4-4F32-8BC9-6B123D85E87A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{17CA9B8F-33C4-4F32-8BC9-6B123D85E87A}.Debug|Win32.Build.0 = Debug|Win32
+		{17CA9B8F-33C4-4F32-8BC9-6B123D85E87A}.Release|Win32.ActiveCfg = Release|Win32
+		{17CA9B8F-33C4-4F32-8BC9-6B123D85E87A}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

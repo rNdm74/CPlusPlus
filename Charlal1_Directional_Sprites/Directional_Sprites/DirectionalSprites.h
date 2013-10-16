@@ -250,7 +250,6 @@ namespace Directional_Sprites {
 						 if(e->KeyCode==Keys::Up ||e->KeyCode==Keys::Down || e->KeyCode==Keys::Left || e->KeyCode==Keys::Right)
 							 knight->setWalking(true);
 
-
 						 if(e->KeyCode==Keys::Up)
 						 {
 							knight->setBearing(NORTH);
@@ -269,9 +268,7 @@ namespace Directional_Sprites {
 						 if(e->KeyCode==Keys::Left)
 						 {
 							 knight->setBearing(WEST);
-						 }
-
-						 
+						 }						 
 					 }
 
 		private: System::Void DirectionalSprites_KeyUp(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {

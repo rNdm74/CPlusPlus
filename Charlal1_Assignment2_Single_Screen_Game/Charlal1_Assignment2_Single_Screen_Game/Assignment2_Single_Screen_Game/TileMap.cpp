@@ -1,0 +1,59 @@
+#include "StdAfx.h"
+#include "TileMap.h"
+
+TileMap::TileMap(Graphics^ panelCanvas,  array<int, 2>^ startTileMap)
+	{
+		canvas = panelCanvas;
+
+		rGen = gcnew Random();
+
+		tiles = gcnew TileList();
+
+		tileMap = startTileMap;	
+	}
+
+void TileMap::generateTileMap()
+	{
+		//
+		// Generate map of random tiles // REDUNDANT
+		//
+	}
+
+void TileMap::drawTileMap()
+	{
+		//
+		// Draw tile bitmap to canvas //(REDUNDANT HANDLED BY THE VIEWPORT)
+		//
+		for(int col = 0; col < N_COLS; col++)
+		{
+			for(int row = 0; row < N_ROWS; row++)
+			{
+				Bitmap^ tileImage = tiles->getTileBitmap(tileMap[row, col]);
+
+				int x = (row * T_SIZE);
+				int y = (col * T_SIZE);
+
+				canvas->DrawImage(tileImage, x, y); 
+
+				delete tileImage; // Clean up
+			}
+		}
+	}
+
+void TileMap::setMapValue(int col, int row, int tileValue)
+	{
+		//
+		// Return bitmap of a indexed tile
+		//
+		tileMap[row, col] = tileValue;
+	}
+
+int TileMap::getMapValue(int col, int row)
+	{
+		//
+		// Return bitmap of a indexed tile
+		// the row and col are reversed because of the way
+		// the tile map is read into the game
+		//	
+		return tileMap[row, col]; 
+	}
