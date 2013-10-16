@@ -11,7 +11,7 @@ array<int,3>^ FileReader::getSpriteSheetData(int startObjectNumber)
 	// Gets the 3 Dimension array that holds 
 	// frame data for the sprite used the the game
 	//
-	return getMap("player.map", 6, 11, 4);
+	return getMap("player.map", 7, 11, 4);
 }
 
 

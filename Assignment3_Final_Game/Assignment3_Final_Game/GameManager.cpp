@@ -121,7 +121,7 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 			player->setXPos(clientRectangle.Width / HALF);
 			player->setYPos(534);
 
-			player->setState(EAST);			
+			player->setState(STAND);			
 			//
 			// Create NPC
 			//
@@ -144,13 +144,42 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 		/// </summary>
 		void GameManager::keyDown(Keys code)
 		{
+			if(code==Keys::Up)
+				player->setState(NORTH); // Move player up	
 			 
+			if(code==Keys::Down)
+				player->setState(SOUTH); // Move player down	
+			 
+			if(code==Keys::Right)
+			{
+				player->setState(EAST);  // Move player right
+			}
+			 
+			if(code==Keys::Left)
+			{
+				player->setState(WEST);  // Move player left
+			}
+
+			if(code==Keys::Space)
+			{
+				player->setJumping(true);
+				player->setState(JUMP);
+
+				double radiansAngle = 280 * 0.01745;
+
+				int velocityX = Math::Cos(radiansAngle) * 20;
+				int velocityY = Math::Sin(radiansAngle) * 20;
+
+				player->setVelocityX(velocityX);
+				player->setVelocityY(velocityY);
+			}
 		}
 
 		void GameManager::keyUp(Keys code)
 		{
-			
+			player->setState(STAND);     // Make player stand			
 		}
+
 #pragma endregion
 
 

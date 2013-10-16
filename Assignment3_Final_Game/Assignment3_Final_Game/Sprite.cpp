@@ -50,6 +50,7 @@
 			spriteDirection[WEST] = Point(-1,0);
 			spriteDirection[STAND] = Point(0,0);
 			spriteDirection[HURT] = Point(0,0);
+			spriteDirection[JUMP] = Point(0,0);
 			//
 			// Collision offsets
 			//
@@ -58,8 +59,9 @@
 			collisionOffsets[EAST] =  Point(EAST_X, EAST_Y);						
 			collisionOffsets[SOUTH] = Point(SOUTH_X, SOUTH_Y);						
 			collisionOffsets[WEST] =  Point(WEST_X, WEST_Y);						
-			collisionOffsets[STAND] = Point(CENTER_X, CENTER_Y);					
-			collisionOffsets[HURT] =  Point(CENTER_X, CENTER_Y);					
+			collisionOffsets[STAND] = Point(SOUTH_X, SOUTH_Y);					
+			collisionOffsets[HURT] =  Point(CENTER_X, CENTER_Y);
+			collisionOffsets[JUMP] =  Point(CENTER_X, CENTER_Y);
 			//
 			// Picks a random frame to be drawn this creates a random
 			// look of all the sprites used in the game and that all 
@@ -81,6 +83,9 @@
 				spriteSheetData[state, currentFrame, WIDTH],				// WIDTH
 				spriteSheetData[state, currentFrame, HEIGHT]				// HEIGHT
 			);
+
+			gravity = 1;
+			jumping = true;
 		}
 
 #pragma endregion
@@ -160,6 +165,7 @@
 	//
 	void Sprite::move(int viewportWorldX, int viewportWorldY)
 	{
+		
 		//
 		// If sprite can walk the xPosition and yPosition is incremented
 		// the a set magnitude, a direction is then applied to the magnitude 1, -1
@@ -170,22 +176,36 @@
 		//
 		// Set sprite walking 
 		//
-		walking = (tileMap->isWalkable(row, col)  || 
-				   tileMap->isCoin(row, col)	  || 
-				   tileMap->isClimbable(row, col) ||
-				   tileMap->getTileType(row, col) == EXIT);		
+		walking = (tileMap->isWalkable(row, col));		
 		//
 		// If sprite is walking move then clamp to column  || row
 		//
 		if(walking)
 		{
 			// Move sprite
-			yPos += yMag * spriteDirection[state].Y;
-			xPos += xMag * spriteDirection[state].X; 
+			if(jumping) 
+			{
+				if(velocityY > 5) velocityY = 5;
 
-			// Clamp sprite to col and row
-			clamp(col, row);
+				yPos += velocityY;// * spriteDirection[state].Y;
+				xPos += velocityX;
+
+				// Implement gravity
+				velocityY += gravity;
+			}
+			else
+			{
+				xPos += xMag * spriteDirection[state].X;
+			}
 		}
+		else
+		{
+			
+			jumping = false;			
+		}
+
+		
+
 		//
 		//	Executes the set action for a sprite on a bounds collsion
 		//	the bounds collision is primarily the form window rectangle

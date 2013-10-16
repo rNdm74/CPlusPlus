@@ -80,7 +80,7 @@ ref class GameManager
 //
 //
 //
-		int getXPos() { return xPos; }
+		int getXPos() { return player->getVelocityY(); }
 
 #pragma endregion
 

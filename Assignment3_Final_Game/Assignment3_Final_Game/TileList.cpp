@@ -11,8 +11,8 @@ TileList::TileList()
 		//===================================================================
 		tiles = gcnew array<Tile^>
 		{
-			gcnew Tile(air),
-			gcnew Tile(ground)
+			gcnew Tile(air, true),
+			gcnew Tile(ground, false)
 		};
 	}
 

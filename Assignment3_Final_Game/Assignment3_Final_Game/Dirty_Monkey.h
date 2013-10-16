@@ -63,27 +63,29 @@ namespace Assignment3_Final_Game {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-		this->components = (gcnew System::ComponentModel::Container());
-		this->clock = (gcnew System::Windows::Forms::Timer(this->components));
-		this->SuspendLayout();
-		// 
-		// clock
-		// 
-		this->clock->Interval = 1;
-		this->clock->Tick += gcnew System::EventHandler(this, &Dirty_Monkey::clock_Tick);
-		// 
-		// Dirty_Monkey
-		// 
-		this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
-		this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-		this->BackColor = System::Drawing::Color::Black;
-		this->ClientSize = System::Drawing::Size(1008, 730);
-		this->Name = L"Dirty_Monkey";
-		this->Text = L"Dirty Monkey";
-		this->Load += gcnew System::EventHandler(this, &Dirty_Monkey::Dirty_Monkey_Load);
-		this->ResumeLayout(false);
+			this->components = (gcnew System::ComponentModel::Container());
+			this->clock = (gcnew System::Windows::Forms::Timer(this->components));
+			this->SuspendLayout();
+			// 
+			// clock
+			// 
+			this->clock->Interval = 1;
+			this->clock->Tick += gcnew System::EventHandler(this, &Dirty_Monkey::clock_Tick);
+			// 
+			// Dirty_Monkey
+			// 
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->BackColor = System::Drawing::Color::Black;
+			this->ClientSize = System::Drawing::Size(1008, 730);
+			this->Name = L"Dirty_Monkey";
+			this->Text = L"Dirty Monkey";
+			this->Load += gcnew System::EventHandler(this, &Dirty_Monkey::Dirty_Monkey_Load);
+			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &Dirty_Monkey::Dirty_Monkey_KeyUp);
+			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Dirty_Monkey::Dirty_Monkey_KeyDown);
+			this->ResumeLayout(false);
 
-			}
+		}
 #pragma endregion
 	private: System::Void clock_Tick(System::Object^  sender, System::EventArgs^  e) {
 				Text = gManager->getXPos().ToString();
@@ -94,6 +96,12 @@ namespace Assignment3_Final_Game {
 				gManager = gcnew GameManager(CreateGraphics(), ClientRectangle);
 				clock->Enabled = true;
 			}
-		};
+	private: System::Void Dirty_Monkey_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+				 gManager->keyDown(e->KeyCode);
+			 }
+	private: System::Void Dirty_Monkey_KeyUp(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+				 gManager->keyUp(e->KeyCode);
+			 }
+	};
 }
 

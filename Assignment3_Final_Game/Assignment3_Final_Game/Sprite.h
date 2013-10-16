@@ -33,6 +33,7 @@ ref class Sprite
 		bool gameover;
 		bool levelwin;
 		bool hurtSound;
+		bool jumping;
 
 		int lives;
 		int coins;
@@ -74,6 +75,10 @@ ref class Sprite
 
 		int xMag;
 		int yMag;
+
+		int velocityX;
+		int velocityY;
+		int gravity;
 
 		int objectNumber;
 
@@ -155,11 +160,14 @@ ref class Sprite
 		void setAlive(bool a)			{ alive = a; }
 		void setGameOver(bool g)		{ gameover = g; }
 		void setLevelWin(bool l)		{ levelwin = l; }
+		void setJumping(bool j)			{ jumping = j; }
 
 		void setXPos(int x)				{ xPos = x; }
 		void setYPos(int y)				{ yPos = y; }
 		void setXMag(int xM)			{ xMag = xM; }
 		void setYMag(int yM)			{ yMag = yM; }
+		void setVelocityX(int vX)		{ velocityX = vX; }
+		void setVelocityY(int vY)		{ velocityY = vY; }
 		
 		void setLives(int l)			{ lives = l; }
 		void setCoins(int c)			{ coins = c; }
@@ -177,6 +185,7 @@ ref class Sprite
 		int getHeight()					{ return frameHeight; }	
 		int getXPos()					{ return xPos; }
 		int getYPos()					{ return yPos; }
+		int getVelocityY()				{ return velocityY; }
 		
 		int getLives()					{ return lives; }
 		int getCoins()					{ return coins; }
@@ -184,7 +193,8 @@ ref class Sprite
 
 		bool isWalking()				{ return walking; }
 		bool isAlive()					{ return alive; }
-		bool isGameOver()				{ return gameover; }		
+		bool isGameOver()				{ return gameover; }
+					
 		bool isLevelWin();		
 
 #pragma endregion

@@ -24,7 +24,7 @@ private:
 
 
 public:
-	Tile(Bitmap^ startTileBitmap);
+	Tile(Bitmap^ startTileBitmap, bool startWalkable);
 
 	bool isSolid()			{ return solid; }
 	bool isClimbable()		{ return climb; }

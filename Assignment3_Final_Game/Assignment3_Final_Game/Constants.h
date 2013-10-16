@@ -13,8 +13,8 @@
 //
 //
 //
-#define PLAYER_X_MAG			1
-#define PLAYER_Y_MAG			1
+#define PLAYER_X_MAG			5
+#define PLAYER_Y_MAG			2
 #define ALIEN_X_MAG				7
 #define ALIEN_Y_MAG				8
 #define NEW_ALIEN_X_MAG			11
@@ -60,7 +60,7 @@
 #define V_ROWS 11		// Viewport Rows
 #define OFFSET 100
 
-#define MAX_DIRECTIONS 6
+#define MAX_DIRECTIONS 7
 #define HALF 2
 #define WANDER_PROB 25
 #define SPEED 1
@@ -95,7 +95,8 @@ public enum EState
 	SOUTH,
 	WEST,
 	STAND,
-	HURT
+	HURT,
+	JUMP
 };
 //
 // 

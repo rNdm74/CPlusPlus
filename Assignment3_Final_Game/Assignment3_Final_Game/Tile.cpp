@@ -1,8 +1,8 @@
 #include "StdAfx.h"
 #include "Tile.h"
 
-Tile::Tile(Bitmap^ startTileBitmap)
+Tile::Tile(Bitmap^ startTileBitmap, bool startWalkable)
 {
 	tileBitmap = startTileBitmap;
-	walkable = true;
+	walkable = startWalkable;
 }
