@@ -185,10 +185,11 @@
 			// Move sprite
 			if(jumping) 
 			{
-				if(velocityY > 5) velocityY = 5;
+				if(velocityY > 10) velocityY = 10;
 
-				yPos += velocityY;// * spriteDirection[state].Y;
+				yPos += velocityY;
 				xPos += velocityX;
+				xPos += xMag * spriteDirection[state].X;
 
 				// Implement gravity
 				velocityY += gravity;
@@ -200,11 +201,12 @@
 		}
 		else
 		{
-			
+			int rowPos = row * T_SIZE;
+
+			yPos = rowPos - frameHeight; 
+
 			jumping = false;			
 		}
-
-		
 
 		//
 		//	Executes the set action for a sprite on a bounds collsion

@@ -194,7 +194,7 @@ ref class Sprite
 		bool isWalking()				{ return walking; }
 		bool isAlive()					{ return alive; }
 		bool isGameOver()				{ return gameover; }
-					
+		bool isJumping()				{ return jumping; }			
 		bool isLevelWin();		
 
 #pragma endregion

@@ -144,6 +144,8 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 		/// </summary>
 		void GameManager::keyDown(Keys code)
 		{
+			double radiansAngle;
+
 			if(code==Keys::Up)
 				player->setState(NORTH); // Move player up	
 			 
@@ -152,31 +154,34 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 			 
 			if(code==Keys::Right)
 			{
+				radiansAngle = 300 * 0.01745;
 				player->setState(EAST);  // Move player right
 			}
 			 
 			if(code==Keys::Left)
 			{
+				radiansAngle = 200 * 0.01745;
 				player->setState(WEST);  // Move player left
 			}
 
-			if(code==Keys::Space)
+			if(code==Keys::Space && !player->isJumping())
 			{
 				player->setJumping(true);
 				player->setState(JUMP);
-
-				double radiansAngle = 280 * 0.01745;
+				
+				/*radiansAngle = 300 * 0.01745;
 
 				int velocityX = Math::Cos(radiansAngle) * 20;
-				int velocityY = Math::Sin(radiansAngle) * 20;
+				int velocityY = Math::Sin(radiansAngle) * 20;*/
 
-				player->setVelocityX(velocityX);
-				player->setVelocityY(velocityY);
+				player->setVelocityX(player->getvelocityX);
+				player->setVelocityY(-20);
 			}
 		}
 
 		void GameManager::keyUp(Keys code)
 		{
+
 			player->setState(STAND);     // Make player stand			
 		}
 
