@@ -185,7 +185,7 @@
 			// Move sprite
 			if(jumping) 
 			{
-				if(velocityY > 10) velocityY = 10;
+				if(velocityY > 20) velocityY = 20;
 
 				yPos += velocityY;
 				xPos += velocityX;

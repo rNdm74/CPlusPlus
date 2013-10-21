@@ -174,7 +174,7 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 				int velocityX = Math::Cos(radiansAngle) * 20;
 				int velocityY = Math::Sin(radiansAngle) * 20;*/
 
-				player->setVelocityX(player->getvelocityX);
+				//player->setVelocityX(player->getvelocityX);
 				player->setVelocityY(-20);
 			}
 		}
@@ -217,7 +217,8 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 			//
 			// Move Viewport
 			//
-			viewport->canViewportMove(viewportScroll, 0);
+			//viewport->canViewportMove(player->getXPos(), 0);
+			viewport->moveRelativeToPlayer(player->getXPos(), 0);
 			
 			//
 			// Updates Sprites Animation
