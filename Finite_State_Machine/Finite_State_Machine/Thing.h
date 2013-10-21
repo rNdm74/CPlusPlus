@@ -10,30 +10,35 @@
 ref class Thing
 	{
 	protected:
-
 		Point location;
 		Point direction;
-
-		int isAlive;
-		int angle;
-		int radius;		
 		
 		Graphics^ canvas;
 		Random^ rGen;
 
 		int speed;
-		int width, height;
+
+		int angle;
+		int radius;	
+		
 		int worldWidth, worldHeight;
 
 		Bitmap^ thingImage;
 
 	public:
 		Thing();
-		Thing(Graphics^ startCanvas, Random^ startRandom, int startWorldWidth, int startWorldHeight, String^ imageFileName);
+		Thing(Graphics^ startCanvas, Random^ startRandom, int startWorldWidth, int startWorldHeight, String^ imageFileName, int startRadius);
 
 		void Move();
 		void ChangeRandomDirection();
 		void Draw();
 		void PointMeAt(int newX, int newY);
-		double ComputeDistance(Thing^ otherGuy);	
+		double ComputeDistance(Thing^ otherGuy);
+
+		bool collided(Thing^ thing);						
+		
+		int getRadius()			{ return radius; }
+		Point getCenter()		{ return Point(location.X + (radius / 2), location.Y + (radius / 2)); }
+		Point getLocation()		{ return location; }				
+		Rectangle getBounds()	{ return Rectangle(location, Size(thingImage->Width, thingImage->Height)); }
 	};

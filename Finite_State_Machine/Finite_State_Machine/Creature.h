@@ -19,11 +19,16 @@ public Thing
 		int myFoodIndex;
 
 	public:
-		Creature(Graphics^ startCanvas, Random^ startRandom, int startWorldWidth, int startWorldHeight,String^ imageFileName);
+		Creature(Graphics^ startCanvas, Random^ startRandom, int startWorldWidth, int startWorldHeight,String^ imageFileName, int startRadius);
 
 		// FSM Methods
 		void UpdateState(array<Thing^>^ foodInWorld, array<Thing^>^ obstaclesInWorld);
 		void PerformAction();
+		
+		bool foundCookie(array<Thing^>^ foodInWorld);
+		bool hitGem(array<Thing^>^ obstaclesInWorld);
+		bool finishedEating(array<Thing^>^ foodInWorld);
+		bool finishedOrienting(array<Thing^>^ obstaclesInWorld);
 
 		int findNearIndex(array<Thing^>^ otherGuys);
 	};

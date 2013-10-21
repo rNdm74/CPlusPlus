@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Sprite.h"
+#define RANGE 100
 
 ref class SpriteList
 	{

@@ -144,7 +144,13 @@ void SpriteList::approach_avoid(Sprite^ target)
 
 	while(spriteWalker != nullptr)
 	{
-		if(target != spriteWalker)
+		Point spriteLocation = Point(spriteWalker->getXPos(), spriteWalker->getYPos());
+		Point targetLocation = Point(target->getXPos(), target->getYPos());
+
+		int xDelta = targetLocation.X - spriteLocation.X;
+		int yDelta = targetLocation.Y - spriteLocation.Y;
+
+		if(xDelta < RANGE && xDelta > -RANGE && yDelta < RANGE && yDelta > -RANGE)
 			spriteWalker->approach_avoid(target);
 
 		// Move to next node
