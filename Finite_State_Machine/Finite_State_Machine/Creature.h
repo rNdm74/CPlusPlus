@@ -27,7 +27,7 @@ public Thing
 		
 		bool foundCookie(array<Thing^>^ foodInWorld);
 		bool hitGem(array<Thing^>^ obstaclesInWorld);
-		bool finishedEating(array<Thing^>^ foodInWorld);
+		void finishedEating(array<Thing^>^ foodInWorld);
 		bool finishedOrienting(array<Thing^>^ obstaclesInWorld);
 
 		int findNearIndex(array<Thing^>^ otherGuys);

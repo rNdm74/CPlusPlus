@@ -8,43 +8,107 @@ Creature::Creature(Graphics^ startCanvas, Random^ startRandom, int startWorldWid
 
 void Creature::UpdateState(array<Thing^>^ foodInWorld, array<Thing^>^ obstaclesInWorld)
 	{
+		//
+		// Updates the state of the creature based on specific conditions.
+		//
+		// If the creature is WANDERING the creature will check if
+		// a cookie is found in the world, it will change its state to EATING
+		// And if a gem is hit its state will change to ORIENTING.
+		//
+		// If the Creature is EATING it will not change to WANDERING unless it has finished
+		// eating the cookie.
+		//
+		// If the creature is ORIENTING it will not start WANDERING until it has finished
+		// orienting itself from the obstacle.
+		//
 		switch(creatureState)
 		{
 			case WANDERING:
-				if(foundCookie(foodInWorld)) creatureState = EATING;
-				else if(hitGem(obstaclesInWorld)) creatureState = ORIENTING;
+				if(foundCookie(foodInWorld)) 
+				{
+					creatureState = EATING;
+				}
+				else if(hitGem(obstaclesInWorld)) 
+				{
+					creatureState = ORIENTING;
+				}
 				break;
 			case EATING:
-				if(finishedEating(foodInWorld)) creatureState = WANDERING;
+				if(eatingTicks > eatingTime)
+				{
+					finishedEating(foodInWorld);
+
+					creatureState = WANDERING;
+				}
 				break;
 			case ORIENTING:
-				if(finishedOrienting(obstaclesInWorld)) creatureState = WANDERING;
+				if(finishedOrienting(obstaclesInWorld)) 
+				{
+					creatureState = WANDERING;
+				}
+				break;
+		}
+	}
+
+void Creature::PerformAction()
+	{
+		switch(creatureState)
+		{
+			case WANDERING:
+				if(wanderingTicks > wanderingLimit)
+				{
+					wanderingTicks = 0;				// Resets ticks
+
+					ChangeRandomDirection();		// Change creatures direction
+				}
+				else
+				{
+					Move();							// Move creature
+
+					wanderingTicks++;				// Tracks wandering time
+				}
+				break;
+			case EATING:
+				eatingTicks++;						// Tracks eating time
+				break;
+			case ORIENTING:	
+				double radiansAngle = angle * 0.01745;			// Reverses creature
+				location.X -= Math::Cos(radiansAngle) * speed;
+				location.Y -= Math::Sin(radiansAngle) * speed;				
 				break;
 		}
 	}
 
 bool Creature::foundCookie(array<Thing^>^ foodInWorld)
 	{
-		bool hit = false;
+		//
+		// Cycles through the food in the world and records 
+		// and returns if the creature has found a cookie
+		//
+		bool found = false;
 
 		for(int object = 0; object < foodInWorld->Length; object++)
 		{
-			if(foodInWorld[object] != nullptr)
+			if(foodInWorld[object] != nullptr)		// There is food in the array
 			{
-				if(collided(foodInWorld[object]))
+				if(collided(foodInWorld[object]))   // Hit a cookie
 				{
-					myFoodIndex = object;
+					myFoodIndex = object;			// Records the object index
 					
-					hit = true;
+					found = true;					// found cookie
 				}
 			}	
 		}
 
-		return hit;
+		return found;
 	}
 
 bool Creature::hitGem(array<Thing^>^ obstaclesInWorld)
 	{
+		//
+		// Cycles through the obstacles in the world
+		// and checks if the creature has hit an obstacle 
+		//
 		bool hit = false;
 
 		for(int object = 0; object < obstaclesInWorld->Length; object++)
@@ -58,14 +122,11 @@ bool Creature::hitGem(array<Thing^>^ obstaclesInWorld)
 		return hit;
 	}
 
-bool Creature::finishedEating(array<Thing^>^ foodInWorld)
+void Creature::finishedEating(array<Thing^>^ foodInWorld)
 	{
 		//
 		// Will return true when the creature has finished eating cookie
 		//
-
-		bool finished = false;
-
 		if(eatingTicks > eatingTime)			// When finished eating
 		{
 			eatingTicks = 0;					// Reset eating ticks			
@@ -73,11 +134,7 @@ bool Creature::finishedEating(array<Thing^>^ foodInWorld)
 			radius += 2;						// Grow the creature after eating cookie	
 
 			foodInWorld[myFoodIndex] = nullptr; // Remove cookie from the array
-
-			finished = true;					// Finished eating cookie
 		}
-
-		return finished;
 	}
 
 bool Creature::finishedOrienting(array<Thing^>^ obstaclesInWorld)
@@ -97,7 +154,7 @@ bool Creature::finishedOrienting(array<Thing^>^ obstaclesInWorld)
 			}				
 		}
 
-		double distance = ComputeDistance(obstaclesInWorld[index]);
+		double distance = ComputeDistance(obstaclesInWorld[index]); // Works out distance between creature and obstacle
 		
 		if(distance > 50)
 		{
@@ -109,38 +166,9 @@ bool Creature::finishedOrienting(array<Thing^>^ obstaclesInWorld)
 		return false;										// Not finished orienting
 	}
 
-void Creature::PerformAction()
-	{
-		switch(creatureState)
-		{
-			case WANDERING:
-				if(wanderingTicks > wanderingLimit)
-				{
-					wanderingTicks = 0;
 
-					ChangeRandomDirection();					
-				}
-				else
-				{
-					Move();
-
-					wanderingTicks++;
-				}
-				break;
-			case EATING:
-				eatingTicks++;
-				break;
-			case ORIENTING:	
-				double radiansAngle = angle * 0.01745;
-				location.X -= Math::Cos(radiansAngle) * speed;
-				location.Y -= Math::Sin(radiansAngle) * speed;				
-				break;
-		}
-	}
 
 int Creature::findNearIndex(array<Thing^>^ otherGuys)
 	{
-		
-
 		return 0;
 	}
