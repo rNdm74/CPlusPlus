@@ -36,10 +36,8 @@ bool Creature::foundCookie(array<Thing^>^ foodInWorld)
 					myFoodIndex = object;
 					
 					hit = true;
-
-					break;
 				}
-			}										
+			}	
 		}
 
 		return hit;
@@ -50,13 +48,11 @@ bool Creature::hitGem(array<Thing^>^ obstaclesInWorld)
 		bool hit = false;
 
 		for(int object = 0; object < obstaclesInWorld->Length; object++)
-		{			
+		{
 			if(collided(obstaclesInWorld[object]))
 			{
 				hit = true;
-
-				break;
-			}				
+			}
 		}
 
 		return hit;
@@ -64,27 +60,36 @@ bool Creature::hitGem(array<Thing^>^ obstaclesInWorld)
 
 bool Creature::finishedEating(array<Thing^>^ foodInWorld)
 	{
-		if(eatingTicks > eatingTime)
+		//
+		// Will return true when the creature has finished eating cookie
+		//
+
+		bool finished = false;
+
+		if(eatingTicks > eatingTime)			// When finished eating
 		{
-			eatingTicks = 0;			
+			eatingTicks = 0;					// Reset eating ticks			
 
-			radius += 2;	
+			radius += 2;						// Grow the creature after eating cookie	
 
-			foodInWorld[myFoodIndex] = nullptr;
+			foodInWorld[myFoodIndex] = nullptr; // Remove cookie from the array
 
-			return true;
+			finished = true;					// Finished eating cookie
 		}
 
-		return false;
+		return finished;
 	}
 
 bool Creature::finishedOrienting(array<Thing^>^ obstaclesInWorld)
 	{
-
+		//
+		// When creature has moved away from the object 
+		// change his direction and return it is finished
+		//
 		int index;
 
 		for(int object = 0; object < obstaclesInWorld->Length; object++)
-		{			
+		{
 			if(collided(obstaclesInWorld[object]))
 			{				
 				index = object;
@@ -92,14 +97,16 @@ bool Creature::finishedOrienting(array<Thing^>^ obstaclesInWorld)
 			}				
 		}
 
-		if(ComputeDistance(obstaclesInWorld[index]) > 30)
-		{
-			ChangeRandomDirection();
-
-			return true;
-		}
+		double distance = ComputeDistance(obstaclesInWorld[index]);
 		
-		return false;
+		if(distance > 50)
+		{
+			ChangeRandomDirection();						// Chooses a new direction
+
+			return true;									// Creature finished orienting
+		}		
+		
+		return false;										// Not finished orienting
 	}
 
 void Creature::PerformAction()
@@ -132,6 +139,8 @@ void Creature::PerformAction()
 	}
 
 int Creature::findNearIndex(array<Thing^>^ otherGuys)
-	{		
+	{
+		
+
 		return 0;
 	}
