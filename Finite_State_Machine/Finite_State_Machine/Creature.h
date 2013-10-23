@@ -17,6 +17,7 @@ public Thing
 		int wanderingTicks;
 
 		int myFoodIndex;
+		int gemIndex;
 
 	public:
 		Creature(Graphics^ startCanvas, Random^ startRandom, int startWorldWidth, int startWorldHeight,String^ imageFileName, int startRadius);
@@ -28,7 +29,7 @@ public Thing
 		bool foundCookie(array<Thing^>^ foodInWorld);
 		bool hitGem(array<Thing^>^ obstaclesInWorld);
 		void finishedEating(array<Thing^>^ foodInWorld);
-		bool finishedOrienting(array<Thing^>^ obstaclesInWorld);
+		bool hasFinishedOrienting(array<Thing^>^ obstaclesInWorld);
 
 		int findNearIndex(array<Thing^>^ otherGuys);
 	};
