@@ -204,7 +204,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\spriteFrame.cpp"
+				RelativePath=".\Sprite.cpp"
 				>
 			</File>
 			<File
@@ -248,7 +248,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\spriteFrame.h"
+				RelativePath=".\Sprite.h"
 				>
 			</File>
 			<File
