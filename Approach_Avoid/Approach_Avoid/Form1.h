@@ -157,7 +157,7 @@ namespace Approach_Avoid {
 					);
 				}
 
-				//spriteList->add(blobbo);
+				spriteList->add(blobbo);
 			 }
 	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
 				//Draw background
@@ -167,9 +167,6 @@ namespace Approach_Avoid {
 
 				spriteList->update();
 				spriteList->draw();
-
-				blobbo->update();
-				blobbo->draw();
 								
 				canvas->DrawImage(dbBitmap, ClientRectangle);
 			 }

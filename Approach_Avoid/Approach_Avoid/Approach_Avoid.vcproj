@@ -204,22 +204,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Player.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Ship.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Sprite.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SpriteList.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -256,6 +240,10 @@
 				</File>
 			</File>
 			<File
+				RelativePath=".\Player.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Player.h"
 				>
 			</File>
@@ -264,11 +252,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Ship.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Ship.h"
 				>
 			</File>
 			<File
+				RelativePath=".\Sprite.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Sprite.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SpriteList.cpp"
 				>
 			</File>
 			<File
