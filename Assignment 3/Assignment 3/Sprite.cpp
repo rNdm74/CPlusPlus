@@ -1,0 +1,165 @@
+#include "StdAfx.h"
+#include "Sprite.h"
+
+Sprite::Sprite(Graphics^ startCanvas, String^ startFileName, array<Point>^ startSpriteState, int startX, int startY)
+{
+	 canvas		 = startCanvas;
+	 fileName	 = startFileName;
+	 xPos		 = startX;
+	 yPos		 = startY;
+	 spriteState = startSpriteState;
+
+	 currentFrame = 0;
+
+	 StreamReader^ reader = gcnew StreamReader(fileName + ".map");
+
+	 spriteSheetData = gcnew array<int,3>(spriteState->Length, 81, 4);	
+
+	 for(int dim0 = 0; dim0 < spriteSheetData->GetLength(0); dim0++) // Sprite state
+	 {
+	 	int end = spriteState[dim0].Y - spriteState[dim0].X;
+ 
+   		for(int dim1 = 0; dim1 < end; dim1++) // N Frames
+		{			
+			String^ line = reader->ReadLine();
+
+			if(line != nullptr)
+			{
+				array<String^>^ items = line->Split(',');
+
+				for(int dim2 = 0; dim2 < spriteSheetData->GetLength(2); dim2++) // X, Y, WIDTH, HEIGHT
+				{
+					spriteSheetData[dim0, dim1, dim2] = (int::Parse(items[dim2]));
+				}
+			}	
+
+			delete line;	// Clean up
+		}
+     }
+
+	 delete reader;
+
+	 scale = 1;
+
+	 spriteSheet = gcnew Bitmap(fileName + ".png");
+	 spriteSheet->MakeTransparent(spriteSheet->GetPixel(0,0));
+	 format = spriteSheet->PixelFormat;
+
+	 list = gcnew ArrayList();
+
+	 for(int i = 0; i < spriteSheetData->GetLength(0); i++)
+	 {
+		 ArrayList^ framesList = gcnew ArrayList();
+
+		 for(int j = 0; j < spriteSheetData->GetLength(1); j++)
+		 {
+			 if(spriteSheetData[i,j,0] != 0)
+			 {
+				 framesList->Add
+				 (
+					 gcnew array<int>
+					 {
+						 spriteSheetData[i,j,X],
+						 spriteSheetData[i,j,Y],
+						 spriteSheetData[i,j,WIDTH],
+						 spriteSheetData[i,j,HEIGHT]						 
+					 }
+				 );
+			 }
+		 }
+
+		 list->Add(framesList);
+	 }
+	 
+	 delete spriteSheetData;
+	 
+	 state = IDLE;
+}
+
+void Sprite::draw(int newXPos, int newYPos)
+{	 
+	 //
+	 // Draw sprites frame to the screen
+	 //	 
+	 Bitmap^ spriteBitmap = spriteSheet->Clone(spriteFrame, format);
+	 //
+	 // Flips image on the X axis based on direction
+	 //
+	 if(right == -1) spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);	
+	 //
+	 // Draws bitmap to the screen
+	 //
+
+	 xOFFSET = spriteFrame.Width;	 
+	 yOFFSET = spriteFrame.Height;
+
+	 if(fileName == "player") xOFFSET = 0;
+
+	 canvas->DrawImage(spriteBitmap, newXPos - xOFFSET, newYPos - yOFFSET);	
+	 canvas->DrawRectangle(gcnew Pen(Color::Black), getCollisionRectangle(newXPos, newYPos));
+	 
+	 delete spriteBitmap;
+}
+
+void Sprite::move(int direction)
+{
+	right = direction;
+
+	if(direction < 0 || direction > 0)
+	{
+		state = WALK;
+	}
+	else
+	{
+		if(attack == false)		
+		{
+			/*direction = 0;
+			state = IDLE;*/
+		}		
+	}
+
+	xPos += (3 * SPEED) * direction;
+}
+
+void Sprite::update()
+{
+	 //
+	 // Gets all frames for the current state
+	 //
+	 ArrayList^ stateFrames = safe_cast<ArrayList^>(list[state]);
+
+	 //
+	 // Sets action flag sprite will return to IDLE state when required
+	 //
+	 finishedAction = (currentFrame == stateFrames->Count - 1);
+
+	 //
+	 // Resets frame to zero when all frames have been updated
+	 //
+	 currentFrame %= stateFrames->Count - 1;
+
+	 //
+	 // Gets frame data for the current frame from the stateFrames list
+	 //
+	 array<int>^ frameData = safe_cast<array<int>^>(stateFrames[currentFrame]);
+	 
+	 //
+	 // Creates sprite frame rectangle
+	 //
+	 
+	 spriteFrame = Rectangle
+	 (		 
+		 frameData[X],						
+		 frameData[Y],					
+		 frameData[WIDTH],				
+		 frameData[HEIGHT]			
+	 );
+
+	 currentFrame++; // move to sprites next frame
+
+	 //
+	 // Clean up
+	 //
+	 delete stateFrames;
+	 delete frameData;
+}
