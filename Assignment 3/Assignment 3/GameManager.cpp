@@ -44,11 +44,11 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 		//
 		// Create game with objects
 		//
-		initializeGame();
+		InitializeGame();
 		//
 		// Create object positions on the screen
 		//
-		initializeObjectsPositons();
+		InitializeObjectsPositons();
 	}
 #pragma endregion
 
@@ -58,7 +58,7 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
 		/// </summary>
-		void GameManager::initializeObjectsPositons()
+		void GameManager::InitializeObjectsPositons()
 		{
 	
 		}
@@ -66,7 +66,7 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
 		/// </summary>
-		void GameManager::initializeGame()
+		void GameManager::InitializeGame()
 		{
 			//
 			// Clean up
@@ -93,8 +93,29 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 			//
 			viewport = gcnew Viewport(0, 0, V_COLS, V_ROWS, tileMap, dbGraphics);
 			//
-			// Create Background Image
+			// Create Hud Image
 			//
+			hud = Image::FromFile("hud.png");
+
+			healthImage = gcnew Bitmap(132, 132, PixelFormat::Format32bppArgb);
+			manaImage = gcnew Bitmap(132, 132, PixelFormat::Format32bppArgb);		
+
+			hGraphics = Graphics::FromImage(healthImage);
+			mGraphics = Graphics::FromImage(manaImage);
+
+			hGraphics->FillEllipse(gcnew SolidBrush(Color::FromArgb(200, 255, 0, 0)), Rectangle(0,0,132,132)); 
+			mGraphics->FillEllipse(gcnew SolidBrush(Color::FromArgb(200, 0, 0, 255)), Rectangle(0,0,132,132));
+
+			//mana = 100;
+			//health = 100;
+			
+			for(int x = 0; x < 132; x++)
+				for(int y = 0; y < 64; y++)
+					healthImage->SetPixel(x, y, Color::Transparent);
+
+			for(int x = 0; x < 132; x++)
+				for(int y = 0; y < mana; y++)
+					manaImage->SetPixel(x, y, Color::Transparent);
 		
 			//
 			// Create Spritelists
@@ -103,7 +124,7 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 			//
 			// Create Player
 			//
-			player = gcnew Sprite
+			player = gcnew Player
 			(
 				dbGraphics, 
 				"player", 
@@ -123,13 +144,13 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 					Point(473,499)		// Heal		 
 				 }, 
 				 250, 
-				 clientRectangle.Height - 100
+				 clientRectangle.Height - 200
 			);
 						
 			//
 			// Create NPC
 			//
-			cocoon = gcnew Sprite
+			cocoon = gcnew Enemy
 			(
 				dbGraphics, 
 				"cocoon", 
@@ -143,10 +164,10 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 					Point(216,249)		// Killed
 				}, 
 				(T_WIDTH * 4) - 100, 
-				clientRectangle.Height - 100
+				clientRectangle.Height - 200
 			);
 			
-			makhana = gcnew Sprite
+			makhana = gcnew Enemy
 			(
 				dbGraphics, 
 				"makhana", 
@@ -160,10 +181,10 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 					Point(260,303)		// Killed
 				}, 
 				(T_WIDTH * 5) - 100, 
-				clientRectangle.Height - 100
+				clientRectangle.Height - 200
 			);
 
-			floppit = gcnew Sprite
+			floppit = gcnew Enemy
 			(
 				dbGraphics, 
 				"floppit", 
@@ -177,10 +198,10 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 					Point(108,125)		// Killed
 				}, 
 				T_WIDTH - 100, 
-				clientRectangle.Height - 100
+				clientRectangle.Height - 200
 			);
 
-			fluppit = gcnew Sprite
+			fluppit = gcnew Enemy
 			(
 				dbGraphics, 
 				"fluppit", 
@@ -194,10 +215,10 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 					Point(108,125)		// Killed
 				},
 				(T_WIDTH * 2) - 100, 
-				clientRectangle.Height - 100
+				clientRectangle.Height - 200
 			);
 
-			peruna = gcnew Sprite
+			peruna = gcnew Enemy
 			(
 				dbGraphics, 
 				"peruna", 
@@ -211,7 +232,7 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 					Point(92,105)		// Killed
 				}, 
 				(T_WIDTH * 3) - 100, 
-				clientRectangle.Height - 100
+				clientRectangle.Height - 200
 			);
 		
 			//
@@ -233,8 +254,12 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 		/// <summary>
 		/// Takes the key code data and changes the players state.
 		/// </summary>
-		void GameManager::keyDown(Keys code)
+		void GameManager::KeyDown(Keys code)
 		{
+			if(code == Keys::NumPad8)
+				health += 20;
+			if(code == Keys::NumPad9)
+				mana += 20;
 			if(code == Keys::NumPad1)
 				viewportScroll = 0;
 			if(code == Keys::NumPad2)
@@ -247,15 +272,15 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 				viewportScroll = 4096 + 1024;
 		}
 
-		void GameManager::keyUp(Keys code)
+		void GameManager::KeyUp(Keys code)
 		{	
 		}
 
-		void GameManager::mouseDown(Point p)
+		void GameManager::MouseDown(Point p)
 		{
-			 movePoint = p;			 
+			 /*movePoint = p;			 
 			 direction = (viewport->getViewportWorldX() + movePoint.X > player->getXPos()) ? 1 : -1;
-			 player->setAttacking(false);
+			 player->setAttacking(false);*/
 		}
 
 #pragma endregion
@@ -267,7 +292,7 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 		/// updated checks are made to see what phase the
 		/// game is in for example if a game is won.
 		/// </summary>
-		void GameManager::update()
+		void GameManager::Update()
 		{
 			//
 			// Update hud information
@@ -289,34 +314,147 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 			//
 			// Move Sprites
 			//
-			if(!player->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(movePoint))
-			{
-				player->move(direction);					 
+			//bool canAttack = player->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(movePoint);
+			//bool isHome = player->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(Point(250, clientRectangle.Height - 250));
+
+			//if(canAttack == false)
+			//{
+			//	player->move(direction);					 
+			//}
+			//else
+			//{
+			//	direction = 0;
+
+			//	if(player->isAttacking() == false && isHome == false)
+			//	{					
+			//		player->setAttacking(true);
+			//		player->setState(LESSER_WAND);						
+			//	}				 
+			//}
+
+			//if(isHome)
+			//{
+			//	floppit->setState(IDLE);
+
+			//	player->setAttacking(false);
+			//	player->setState(IDLE);
+
+			//	direction = 0;
+			//}
+			////
+			////
+			////
+			//if(floppit->isAttacking() && floppit->isFinishedAction())
+			//{
+			//	floppit->setAttacking(false);
+			//	floppit->setState(IDLE);	 
+			//}
+			////
+			////
+			////
+			//if(player->isAttacking() && player->isFinishedAction())
+			//{
+			//	player->setAttacking(false);
+			//	player->setState(IDLE);
+
+			//	fluppit->setAttacking(true);
+			//	floppit->setState(HURT);
+
+			//	movePoint = Point(250, clientRectangle.Height - 250);
+			//	mouseDown(movePoint);
+
+			//}
+			if(player->enemyChooseAttack())
+			{				
+				floppit->setSelectedAbility(safe_cast<EState>(rGen->Next(2,4)));
+				floppit->setAttackStarted();
+				player->setChooseAttack(false);
 			}
-			else
+
+
+			/*if(player->isHit())
 			{
-				if(!player->isAttacking())
-				{
-					player->setState(IDLE);
-					direction = 0;
-				}					 
+
 			}
+
+			if(player->usedAbility())
+			{
+				battleTime = 0;
+				
+				
+			}*/
 			//
+			// Health Hud Information
 			//
+			//if(player->isHurt())
+			
+			
+				/*if(health >= 0)  health--;
+
+				
+				if(mana >= 0)  mana--;*/
+
+			health = player->getHealth();
+
+			if(health > 132) health = 132;
+
+			if(healthRegen > 15 && health >= 0)
+			{
+				hGraphics->FillEllipse(gcnew SolidBrush(Color::FromArgb(200, 255, 0, 0)), Rectangle(0,0,132,132));
+				
+				for(int x = 0; x < 132; x++)
+					for(int y = 0; y < health; y++)
+						healthImage->SetPixel(x, y, Color::Transparent);
+
+				//player->setHealth(-1);
+
+				healthRegen = 0;
+			}
+
 			//
-			if(player->isAttacking() && player->isFinishedAction())
-			 {
-				 player->setState(IDLE);
-			 }
+			// Mana Hud Information
+			//
+			//if(player->hasUsedAbility())
+			mana = player->getMana();	
+			if(mana > 132) mana = 132;
+
+			if(manaRegen > 15 && mana >= 0)
+			{
+				mGraphics->FillEllipse(gcnew SolidBrush(Color::FromArgb(200, 0, 0, 255)), Rectangle(0,0,132,132));
+
+				for(int x = 0; x < 132; x++)
+					for(int y = 0; y < mana; y++)
+						manaImage->SetPixel(x, y, Color::Transparent);	
+
+				player->setMana(-1);
+
+				manaRegen = 0;
+			}
+
+			if(player->isWaiting())
+			{
+				floppit->UpdateState(player);
+				floppit->PerformAction();
+			}
+			
+			if(floppit->isWaiting())
+			{
+				player->UpdateState(floppit);
+				player->PerformAction();
+			}
+
+			//spriteInPlay = () ? floppit : player;
+
+			
 			//
 			// Updates Sprites Animation
 			//
-			player->update();
-			floppit->update();
-			fluppit->update();
-			peruna->update();
-			cocoon->update();
-			makhana->update();
+			player->Update();
+			floppit->Update();
+			fluppit->Update();
+			peruna->Update();
+			cocoon->Update();
+			makhana->Update();
 			//
 			// Game Win
 			//
@@ -324,7 +462,8 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 			//
 			// Game Over
 			//
-			
+			healthRegen++;	
+			manaRegen++;
 			//
 			//
 			//			
@@ -336,9 +475,8 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 		/// Once all drawn to the canvas it is then 
 		/// drawn to the main form canvas.
 		/// </summary>		
-		void GameManager::draw()
-		{	
-			//viewportScroll += 512;
+		void GameManager::Draw()
+		{			
 			//
 			// Draw Background to Canvas 
 			//	
@@ -350,24 +488,22 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 			//
 			// Draw Sprites to Canvas
 			//			
-			player->draw(player->getXPos() - viewport->getViewportWorldX(), player->getYPos() - viewport->getViewportWorldY());	
-			floppit->draw(floppit->getXPos() - viewport->getViewportWorldX(), floppit->getYPos() - viewport->getViewportWorldY());
-			fluppit->draw(fluppit->getXPos() - viewport->getViewportWorldX(), fluppit->getYPos() - viewport->getViewportWorldY());
-			peruna->draw(peruna->getXPos() - viewport->getViewportWorldX(), peruna->getYPos() - viewport->getViewportWorldY());
-			cocoon->draw(cocoon->getXPos() - viewport->getViewportWorldX(), cocoon->getYPos() - viewport->getViewportWorldY());
-			makhana->draw(makhana->getXPos() - viewport->getViewportWorldX(), makhana->getYPos() - viewport->getViewportWorldY());
+			player->Draw(player->getXPos() - viewport->getViewportWorldX(), player->getYPos() - viewport->getViewportWorldY());	
+			floppit->Draw(floppit->getXPos() - viewport->getViewportWorldX(), floppit->getYPos() - viewport->getViewportWorldY());
+			fluppit->Draw(fluppit->getXPos() - viewport->getViewportWorldX(), fluppit->getYPos() - viewport->getViewportWorldY());
+			peruna->Draw(peruna->getXPos() - viewport->getViewportWorldX(), peruna->getYPos() - viewport->getViewportWorldY());
+			cocoon->Draw(cocoon->getXPos() - viewport->getViewportWorldX(), cocoon->getYPos() - viewport->getViewportWorldY());
+			makhana->Draw(makhana->getXPos() - viewport->getViewportWorldX(), makhana->getYPos() - viewport->getViewportWorldY());
 			//
 			// Draw mouse point
 			//
 			dbGraphics->DrawRectangle(gcnew Pen(Color::Pink), Rectangle(movePoint.X, movePoint.Y, 2,2));
-
-			dbGraphics->FillRectangle(Brushes::Red, Rectangle(51, 51, 79, 9));
-			dbGraphics->FillRectangle(Brushes::Blue, Rectangle(51, 61, 79, 9));
-			dbGraphics->DrawRectangle(gcnew Pen(Color::DimGray), Rectangle(49, 49, 82, 22));
-			dbGraphics->DrawRectangle(gcnew Pen(Color::WhiteSmoke), Rectangle(50, 50, 80, 20));
-
 			
-			
+			/*dbGraphics->DrawImageUnscaledAndClipped(healthImage, Rectangle(12, 12, 132, 132));
+			dbGraphics->DrawImageUnscaledAndClipped(manaImage, Rectangle(860, 12, 132,132));*/
+			dbGraphics->DrawImageUnscaledAndClipped(healthImage, Rectangle(358, 581, 132, 132));
+			dbGraphics->DrawImageUnscaledAndClipped(manaImage, Rectangle(516, 581, 132,132));
+			dbGraphics->DrawImage(hud, 0, 0, 1024, 768);
 
 			//
 			// Make Buffer Visible 
@@ -382,14 +518,21 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 		/// Checks the three main phases in the game
 		/// the contents of this method with the code editor.
 		/// </summary>
-		void GameManager::checkLevelPhase()
+		void GameManager::StartAttack()
+		{
+			player->setAttackStarted();
+		}
+		//
+		//
+		//
+		void GameManager::CheckLevelPhase()
 		{
 			
 		}
 		//
 		//
 		//	
-		void GameManager::checkLevelWin()
+		void GameManager::CheckLevelWin()
 		{
 			//
 			// Checks if a level has been completed, 
@@ -401,7 +544,7 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 		//
 		//
 		//		
-		void GameManager::checkLevelOver()
+		void GameManager::CheckLevelOver()
 		{
 			//
 			// Checks is the game is over, either all lives lost,

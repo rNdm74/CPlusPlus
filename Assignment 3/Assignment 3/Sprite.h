@@ -13,7 +13,7 @@
 
 ref class Sprite
 {
-private:
+protected:
 	String^ fileName;
 	String^ frameName;
 	
@@ -21,7 +21,7 @@ private:
 	int frameTime;
 	int resetFrame;
 
-	array<Point>^ spriteState;
+	array<Point>^ spriteSheetState;
 	array<int, 3>^ spriteSheetData;
 	ArrayList^ list;
 
@@ -32,7 +32,21 @@ private:
 	Bitmap^ spriteSheet;
 	PixelFormat format;
 
-	EPlayerAction state;
+	EState spriteState;
+	EAction spriteAction;
+	EState selectedAbility;
+	EDirection facingDirection;
+	EAbilityMelee meleeAbility;
+	//EAbilityMagic magicAbility;
+
+	int health;
+	int mana;
+
+	int attackTime;
+	int moveDistance;
+	int moveTicks;	
+	int attackTicks;
+	
 
 	int right;
 
@@ -44,9 +58,13 @@ private:
 
 	int scale;
 
-	bool attack;
+	bool hurt;
+	bool usedAbility;
 
-	bool finishedAction;
+	bool attackStarted;
+	bool attackFinished;
+	bool finishedAnimation;
+	bool waiting;
 
 public:
 	Sprite^ Next;
@@ -54,26 +72,44 @@ public:
 public:
 	Sprite(Graphics^ startCanvas, String^ startFileName, array<Point>^ startSpriteState, int startX, int startY);
 	
-	void move(int direction);	
-	void update();
-	void draw(int newXPos, int newYPos);
-	
-	int getXPos()						{ return xPos; }
-	int getYPos()						{ return yPos; }
-	
+	void Move();	
+	void Update();
+	virtual void Draw(int newXPos, int newYPos);
+
+	// FSM Methods
+	virtual void UpdateState(Sprite^ otherSprite);
+	virtual void PerformAction();
+
+	virtual void UpdateAbility();
+	virtual void PerformAbility(Sprite^ otherSprite);
+	virtual void ExecuteAbility(Sprite^ otherSprite);
+
+	bool AttackStarted(Sprite^ otherSprite);
+	bool IsAttackFinished(Sprite^ otherSprite);
+	bool ReturnedHome(Sprite^ otherSprite);
+
+	// GETS	
+	int  getXPos()							{ return xPos; }
+	int  getYPos()							{ return yPos; }
+	int  getHealth()						{ return health; }
+	int  getMana()							{ return mana; }
+	bool isWaiting()						{ return waiting; }
+	bool isAttackStarted()					{ return attackStarted; }
+	bool isAttackFinihed()					{ return attackFinished; }
+	bool isFinishedAnimation()				{ return finishedAnimation; }
+	bool isHurt()							{ return hurt; }
+	bool hasUsedAbility()					{ return usedAbility; }
+
 	Rectangle getCollisionRectangle(int vx, int vy)	{ return Rectangle((xPos - xOFFSET) - vx, (yPos - yOFFSET)-vy, spriteFrame.Width, spriteFrame.Height); }
 
-	bool isFinishedAction()				{ return finishedAction; }
-	bool isAttacking()					{ return attack; }
-
-	void setAttacking(bool a)			{ attack = a; }
-	
+	// SETS
 	void setXPos(int x)					{ xPos = x;}
 	void setYPos(int y)					{ yPos = y;}
-
+	void setHealth(int h)				{ health += h; }
+	void setMana(int m)					{ mana += m; }
 	void setCurrentFrame(int c)			{ currentFrame = c; }
-	void setState(EPlayerAction s)		{ state = s; }
-
-	void setCanvas(Graphics^ c)			{ canvas = c; }
-
+	void setState(EState s)				{ spriteState = s; }
+	void setSelectedAbility(EState s)	{ selectedAbility = s; }
+	void setAttackStarted()				{ spriteAction = ATTACKING; meleeAbility = WALK_FORWARD; }
+	void setHurt(bool h)				{ hurt = h; }
 };

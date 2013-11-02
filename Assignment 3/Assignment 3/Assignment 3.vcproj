@@ -204,11 +204,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Enemy.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\FileReader.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\GameManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Player.cpp"
 				>
 			</File>
 			<File
@@ -276,7 +284,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Enemy.h"
+				>
+			</File>
+			<File
 				RelativePath=".\GameManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Player.h"
 				>
 			</File>
 			<File
@@ -323,6 +339,14 @@
 			</File>
 			<File
 				RelativePath=".\app.rc"
+				>
+			</File>
+			<File
+				RelativePath=".\my-mouse-pointer.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\Pit-Tux-Crystal-Bw-Loupe.ico"
 				>
 			</File>
 		</Filter>

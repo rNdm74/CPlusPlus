@@ -67,34 +67,64 @@
 
 #define SPEED 2
 
-enum EPlayerAction{
-		IDLE,
-		HURT,
-		BOSS_HURT,
-		LESSER_ICE,
-		GREATER_ICE,
-		WALK,
-		BASIC_ATTACK,
-		DODGE,
-		ELECTRIC_STORM,
-		HEAVY_ATTACK,
-		WHIRLWIND_ATTACK,
-		HEAL
-	};
-
-//public enum ESprite
-//{
-//	PLAYER		= 1,
-//	ALIEN_ONE	= 2,
-//	ALIEN_TWO	= 3,
-//	ALIEN_THREE	= 4,
-//	ALIEN_FOUR	= 5,
-//	BLUE_FLAG	= 10,
-//	ORANGE_FLAG	= 11,
-//	YELLOW_FLAG	= 12,
-//	GREEN_FLAG	= 13
-//};
-
+//
+// 
+//
+public enum EDirection
+{	
+	LEFT						=	   -1,
+	RIGHT						=		1
+};
+//
+//
+//
+public enum EAction
+{
+	WAITING						=		0,
+	HOME						=		1,
+	ATTACKING					=		2,
+	FINISHED_ATTACKING			=		3
+};
+//
+//
+//
+public enum EAbilityMelee
+{
+	WALK_FORWARD,
+	MELEE_ATTACK,
+	WALK_BACKWARD,
+	MELEE_FINISHED,
+	MAGIC_ATTACK,
+	MAGIC_FINISHED
+};
+//
+//
+//
+public enum EAbilityMagic
+{
+	
+};
+//
+//
+//
+enum EState
+{
+	IDLE,
+	HURT,
+	BOSS_HURT,
+	LESSER_ICE,
+	GREATER_ICE,
+	WALK,
+	LESSER_WAND,
+	DODGE,
+	ELECTRIC_STORM,
+	GREATER_WAND,
+	WHIRLWIND,
+	HEAL
+};
+//
+//
+//
 public enum EFrame
 {
 	X,
@@ -102,40 +132,3 @@ public enum EFrame
 	WIDTH,
 	HEIGHT
 };
-//
-// 
-//
-//public enum EState
-//{
-//	NORTH,
-//	EAST,
-//	SOUTH,
-//	WEST,
-//	STAND,
-//	HURT,
-//	JUMP
-//};
-//
-// 
-//
-//public enum EAction
-//{
-//	BOUNCE,
-//	WRAP,
-//	DIE,
-//	STOP, 
-//	WALK,
-//	COLLECT_COIN
-//};
-//
-//
-//
-//public enum ETileType
-//{
-//	SOLID,
-//	LADDER,
-//	WALKABLE,
-//	EXIT,
-//	LADDER_COIN,
-//	COIN
-//};

@@ -2,6 +2,8 @@
 
 #include "Constants.h"
 #include "Sprite.h"
+#include "Player.h"
+#include "Enemy.h"
 #include "SpriteList.h"
 #include "TileMap.h"
 #include "Viewport.h"
@@ -34,7 +36,13 @@ ref class GameManager
 		Graphics^ dbGraphics;
 		Bitmap^ dbBitmap;
 
-		Image^ background;
+		Image^ hud;
+		Bitmap^ healthImage;
+		Bitmap^ manaImage;
+		Graphics^ hGraphics;
+		Graphics^ mGraphics;
+		int health;
+		int mana;
 		
 		TileMap^ tileMap;
 
@@ -43,12 +51,17 @@ ref class GameManager
 		StreamReader^ fileReader;
 		StreamWriter^ fileWriter;
 
-		Sprite^ player;
-		Sprite^ cocoon;
-		Sprite^ makhana;
-		Sprite^ floppit;
-		Sprite^ fluppit;
-		Sprite^ peruna;
+		Player^ player;
+		Enemy^ cocoon;
+		Enemy^ makhana;
+		Enemy^ floppit;
+		Enemy^ fluppit;
+		Enemy^ peruna;
+
+		Sprite^ spriteInPlay;
+
+		long healthRegen;
+		long manaRegen;
 
 		int xPos;
 		int yPos;
@@ -69,19 +82,21 @@ ref class GameManager
 
 #pragma region Methods
 
-		void keyDown(Keys code);
-		void keyUp(Keys code);
-		void mouseDown(Point p);
+		void KeyDown(Keys code);
+		void KeyUp(Keys code);
+		void MouseDown(Point p);
 		
-		void update();
-		void draw();
+		void Update();
+		void Draw();
 
-		void checkLevelPhase();
-		void checkLevelWin();
-		void checkLevelOver();		
+		void StartAttack();
 
-		void initializeGame();
-		void initializeObjectsPositons();	
+		void CheckLevelPhase();
+		void CheckLevelWin();
+		void CheckLevelOver();		
+
+		void InitializeGame();
+		void InitializeObjectsPositons();	
 
 #pragma endregion
 
@@ -89,7 +104,9 @@ ref class GameManager
 //
 //
 //
-//		int getXPos() { return player->getVelocityY(); }
+		void setPlayerAbility(EState s)		{ player->setSelectedAbility(s); }
+
+		bool containsMouseLocation(Point p)	{ return floppit->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }
 
 #pragma endregion
 

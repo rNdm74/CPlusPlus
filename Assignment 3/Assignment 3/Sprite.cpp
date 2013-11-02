@@ -3,21 +3,25 @@
 
 Sprite::Sprite(Graphics^ startCanvas, String^ startFileName, array<Point>^ startSpriteState, int startX, int startY)
 {
-	 canvas		 = startCanvas;
-	 fileName	 = startFileName;
-	 xPos		 = startX;
-	 yPos		 = startY;
-	 spriteState = startSpriteState;
+	 canvas				= startCanvas;
+	 fileName			= startFileName;
+	 xPos				= startX;
+	 yPos				= startY;
+	 spriteSheetState	= startSpriteState;
 
 	 currentFrame = 0;
 
+	 
+	 spriteAction = WAITING;
+	 
+
 	 StreamReader^ reader = gcnew StreamReader(fileName + ".map");
 
-	 spriteSheetData = gcnew array<int,3>(spriteState->Length, 81, 4);	
+	 spriteSheetData = gcnew array<int,3>(spriteSheetState->Length, 81, 4);	
 
 	 for(int dim0 = 0; dim0 < spriteSheetData->GetLength(0); dim0++) // Sprite state
 	 {
-	 	int end = spriteState[dim0].Y - spriteState[dim0].X;
+	 	int end = spriteSheetState[dim0].Y - spriteSheetState[dim0].X;
  
    		for(int dim1 = 0; dim1 < end; dim1++) // N Frames
 		{			
@@ -73,65 +77,54 @@ Sprite::Sprite(Graphics^ startCanvas, String^ startFileName, array<Point>^ start
 	 
 	 delete spriteSheetData;
 	 
-	 state = IDLE;
 }
 
-void Sprite::draw(int newXPos, int newYPos)
+void Sprite::Draw(int newXPos, int newYPos)
 {	 
-	 //
-	 // Draw sprites frame to the screen
-	 //	 
-	 Bitmap^ spriteBitmap = spriteSheet->Clone(spriteFrame, format);
-	 //
-	 // Flips image on the X axis based on direction
-	 //
-	 if(right == -1) spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);	
-	 //
-	 // Draws bitmap to the screen
-	 //
+	 ////
+	 //// Draw sprites frame to the screen
+	 ////	 
+	 //Bitmap^ spriteBitmap = spriteSheet->Clone(spriteFrame, format);
+	 ////
+	 //// Flips image on the X axis based on direction
+	 ////
+	 //if(facingDirection == LEFT) spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);	
+	 ////
+	 //// Draws bitmap to the screen
+	 ////
 
-	 xOFFSET = spriteFrame.Width;	 
-	 yOFFSET = spriteFrame.Height;
+	 //xOFFSET = spriteFrame.Width;	 
+	 //yOFFSET = spriteFrame.Height;
 
-	 if(fileName == "player") xOFFSET = 0;
+	 //if(fileName == "player") xOFFSET = 0;
 
-	 canvas->DrawImage(spriteBitmap, newXPos - xOFFSET, newYPos - yOFFSET);	
-	 canvas->DrawRectangle(gcnew Pen(Color::Black), getCollisionRectangle(newXPos, newYPos));
-	 
-	 delete spriteBitmap;
+	 //canvas->DrawImage(spriteBitmap, newXPos - xOFFSET, newYPos - yOFFSET);	
+	 //canvas->DrawRectangle(gcnew Pen(Color::Black), getCollisionRectangle(newXPos, newYPos));
+	 //
+	 //delete spriteBitmap;
 }
 
-void Sprite::move(int direction)
+void Sprite::Move()
 {
-	right = direction;
-
-	if(direction < 0 || direction > 0)
-	{
-		state = WALK;
-	}
-	else
-	{
-		if(attack == false)		
-		{
-			/*direction = 0;
-			state = IDLE;*/
-		}		
-	}
-
-	xPos += (3 * SPEED) * direction;
+	xPos += (3 * SPEED) * facingDirection;		
 }
 
-void Sprite::update()
+void Sprite::Update()
 {
+	 /*if(health > 132) health = 132;
+	 if(health >= 0)  health--;
+
+	 if(mana > 132) mana = 132;
+	 if(mana >= 0)  mana--;*/
 	 //
 	 // Gets all frames for the current state
 	 //
-	 ArrayList^ stateFrames = safe_cast<ArrayList^>(list[state]);
+	 ArrayList^ stateFrames = safe_cast<ArrayList^>(list[spriteState]);
 
 	 //
 	 // Sets action flag sprite will return to IDLE state when required
 	 //
-	 finishedAction = (currentFrame == stateFrames->Count - 1);
+	 finishedAnimation = (currentFrame == stateFrames->Count - 1);
 
 	 //
 	 // Resets frame to zero when all frames have been updated
@@ -162,4 +155,26 @@ void Sprite::update()
 	 //
 	 delete stateFrames;
 	 delete frameData;
+}
+
+// FSM Methods
+void Sprite::UpdateState(Sprite^ otherSprite){}
+void Sprite::PerformAction(){}
+void Sprite::UpdateAbility(){}
+void Sprite::PerformAbility(Sprite^ otherSprite){}
+void Sprite::ExecuteAbility(Sprite^ otherSprite){}
+
+bool Sprite::AttackStarted(Sprite^ otherSprite)
+{
+	return false;
+}
+
+bool Sprite::IsAttackFinished(Sprite^ otherSprite)
+{	
+	return false;
+}
+
+bool Sprite::ReturnedHome(Sprite^ otherSprite)
+{	
+	return false;
 }
