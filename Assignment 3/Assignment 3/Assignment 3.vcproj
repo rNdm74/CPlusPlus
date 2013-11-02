@@ -216,6 +216,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Hud.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Player.cpp"
 				>
 			</File>
@@ -289,6 +293,10 @@
 			</File>
 			<File
 				RelativePath=".\GameManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Hud.h"
 				>
 			</File>
 			<File

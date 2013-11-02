@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Hud.h"
 #include "Constants.h"
 #include "Sprite.h"
 #include "Player.h"
@@ -28,6 +29,7 @@ ref class GameManager
 
 	private:
 		Viewport^ viewport;
+		Hud^ hud;
 		Rectangle clientRectangle;
 
 		FileReader^ reader;
@@ -36,11 +38,6 @@ ref class GameManager
 		Graphics^ dbGraphics;
 		Bitmap^ dbBitmap;
 
-		Image^ hud;
-		Bitmap^ healthImage;
-		Bitmap^ manaImage;
-		Graphics^ hGraphics;
-		Graphics^ mGraphics;
 		int health;
 		int mana;
 		
@@ -60,8 +57,7 @@ ref class GameManager
 
 		Sprite^ spriteInPlay;
 
-		long healthRegen;
-		long manaRegen;
+		
 
 		int xPos;
 		int yPos;
@@ -106,7 +102,9 @@ ref class GameManager
 //
 		void setPlayerAbility(EState s)		{ player->setSelectedAbility(s); }
 
-		bool containsMouseLocation(Point p)	{ return floppit->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }
+		bool clickedOnEnemy(Point p)	{ return floppit->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }
+		
+		bool clickedOnPlayer(Point p)	{ return player->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }
 
 #pragma endregion
 

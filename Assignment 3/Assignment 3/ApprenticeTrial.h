@@ -56,41 +56,9 @@ namespace Assignment3 {
 	private: System::Windows::Forms::PictureBox^  electric_storm;
 	private: System::Windows::Forms::PictureBox^  heal;
 	private: System::Windows::Forms::ToolTip^  ability_info;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	private: System::Windows::Forms::PictureBox^  pictureBox1;
+	private: System::Windows::Forms::PictureBox^  pictureBox2;
+	private: System::Windows::Forms::PictureBox^  pictureBox3;
 
 	private: System::ComponentModel::IContainer^  components;
 
@@ -119,6 +87,9 @@ namespace Assignment3 {
 			this->electric_storm = (gcnew System::Windows::Forms::PictureBox());
 			this->heal = (gcnew System::Windows::Forms::PictureBox());
 			this->ability_info = (gcnew System::Windows::Forms::ToolTip(this->components));
+			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->lesser_wand))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->greater_wand))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->whirlwind))->BeginInit();
@@ -126,6 +97,9 @@ namespace Assignment3 {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->greater_ice))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->electric_storm))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->heal))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox1))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox2))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox3))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// clock
@@ -231,8 +205,9 @@ namespace Assignment3 {
 			// 
 			// heal
 			// 
-			this->heal->BackColor = System::Drawing::Color::Transparent;
-			this->heal->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->heal->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(206)), static_cast<System::Int32>(static_cast<System::Byte>(141)), 
+				static_cast<System::Int32>(static_cast<System::Byte>(0)));
+			this->heal->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
 			this->heal->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"heal.Image")));
 			this->heal->Location = System::Drawing::Point(233, 677);
 			this->heal->Name = L"heal";
@@ -244,6 +219,54 @@ namespace Assignment3 {
 			this->ability_info->SetToolTip(this->heal, L"Health Potion\r\n\r\n50 Restore Health");
 			this->heal->Click += gcnew System::EventHandler(this, &ApprenticeTrial::ability_Click);
 			// 
+			// pictureBox1
+			// 
+			this->pictureBox1->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(206)), static_cast<System::Int32>(static_cast<System::Byte>(141)), 
+				static_cast<System::Int32>(static_cast<System::Byte>(0)));
+			this->pictureBox1->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
+			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox1.Image")));
+			this->pictureBox1->Location = System::Drawing::Point(187, 677);
+			this->pictureBox1->Name = L"pictureBox1";
+			this->pictureBox1->Size = System::Drawing::Size(40, 40);
+			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox1->TabIndex = 14;
+			this->pictureBox1->TabStop = false;
+			this->pictureBox1->Tag = L"11";
+			this->ability_info->SetToolTip(this->pictureBox1, L"Health Potion\r\n\r\n50 Restore Health");
+			this->pictureBox1->Click += gcnew System::EventHandler(this, &ApprenticeTrial::ability_Click);
+			// 
+			// pictureBox2
+			// 
+			this->pictureBox2->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(206)), static_cast<System::Int32>(static_cast<System::Byte>(141)), 
+				static_cast<System::Int32>(static_cast<System::Byte>(0)));
+			this->pictureBox2->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
+			this->pictureBox2->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox2.Image")));
+			this->pictureBox2->Location = System::Drawing::Point(141, 677);
+			this->pictureBox2->Name = L"pictureBox2";
+			this->pictureBox2->Size = System::Drawing::Size(40, 40);
+			this->pictureBox2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox2->TabIndex = 15;
+			this->pictureBox2->TabStop = false;
+			this->pictureBox2->Tag = L"11";
+			this->ability_info->SetToolTip(this->pictureBox2, L"Health Potion\r\n\r\n50 Restore Health");
+			this->pictureBox2->Click += gcnew System::EventHandler(this, &ApprenticeTrial::ability_Click);
+			// 
+			// pictureBox3
+			// 
+			this->pictureBox3->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(206)), static_cast<System::Int32>(static_cast<System::Byte>(141)), 
+				static_cast<System::Int32>(static_cast<System::Byte>(0)));
+			this->pictureBox3->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
+			this->pictureBox3->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox3.Image")));
+			this->pictureBox3->Location = System::Drawing::Point(95, 677);
+			this->pictureBox3->Name = L"pictureBox3";
+			this->pictureBox3->Size = System::Drawing::Size(40, 40);
+			this->pictureBox3->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox3->TabIndex = 16;
+			this->pictureBox3->TabStop = false;
+			this->pictureBox3->Tag = L"11";
+			this->ability_info->SetToolTip(this->pictureBox3, L"Health Potion\r\n\r\n50 Restore Health");
+			this->pictureBox3->Click += gcnew System::EventHandler(this, &ApprenticeTrial::ability_Click);
+			// 
 			// ApprenticeTrial
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -252,6 +275,9 @@ namespace Assignment3 {
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"$this.BackgroundImage")));
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
 			this->ClientSize = System::Drawing::Size(1008, 729);
+			this->Controls->Add(this->pictureBox3);
+			this->Controls->Add(this->pictureBox2);
+			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->heal);
 			this->Controls->Add(this->electric_storm);
 			this->Controls->Add(this->greater_ice);
@@ -275,6 +301,9 @@ namespace Assignment3 {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->greater_ice))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->electric_storm))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->heal))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox1))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox2))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox3))->EndInit();
 			this->ResumeLayout(false);
 
 		}
@@ -305,13 +334,15 @@ namespace Assignment3 {
 	private: System::Void ability_Click(System::Object^  sender, System::EventArgs^  e) {
 				 PictureBox^ ability = safe_cast<PictureBox^>(sender);
 
-				 selectedAbility = safe_cast<EState>(int::Parse(ability->Tag->ToString()));
+				 selectedAbility = safe_cast<EState>(int::Parse(ability->Tag->ToString()));				 
 
 				 Bitmap^ bmp = safe_cast<Bitmap^>(ability->Image);
 
 				 IntPtr ptr = bmp->GetHicon();
 					 
 				 Cursor = gcnew System::Windows::Forms::Cursor(ptr);
+
+				 if(selectedAbility == HEAL) ability->Image = Image::FromFile("clear.png");
 			 }			 
 	private: System::Void ApprenticeTrial_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 				 Point location = e->Location;
@@ -321,12 +352,19 @@ namespace Assignment3 {
 				 switch ( e->Button )
 				 {
 					case ::MouseButtons::Left:
-						if(gManager->containsMouseLocation(location))
+						if(gManager->clickedOnEnemy(location) && selectedAbility != HEAL)
 						{
 							gManager->setPlayerAbility(selectedAbility);
 							gManager->StartAttack();
 							Cursor = Cursors::Arrow;							
-						}						
+						}	
+						else if(gManager->clickedOnPlayer(location) && selectedAbility == HEAL)
+						{
+							gManager->setPlayerAbility(selectedAbility);
+							gManager->StartAttack();
+							Cursor = Cursors::Arrow;
+
+						}
 					   break;
 
 					case ::MouseButtons::Right:

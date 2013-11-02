@@ -110,12 +110,7 @@ void Sprite::Move()
 }
 
 void Sprite::Update()
-{
-	 /*if(health > 132) health = 132;
-	 if(health >= 0)  health--;
-
-	 if(mana > 132) mana = 132;
-	 if(mana >= 0)  mana--;*/
+{	 
 	 //
 	 // Gets all frames for the current state
 	 //

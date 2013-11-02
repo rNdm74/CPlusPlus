@@ -14,10 +14,8 @@ public:
 	virtual void PerformAction() override;
 	virtual void ExecuteAbility(Sprite^ otherSprite) override;
 
-	void UpdateMeleeAbility();
-	void PerformMeleeAbility(Sprite^ otherSprite);
-	void UpdateMagicAbility();
-	void PerformMagicAbility(Sprite^ otherSprite);
+	virtual void UpdateAbility() override;
+	virtual void PerformAbility(Sprite^ otherSprite) override;
 
 	
 };

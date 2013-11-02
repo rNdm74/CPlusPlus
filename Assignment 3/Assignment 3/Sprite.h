@@ -36,8 +36,7 @@ protected:
 	EAction spriteAction;
 	EState selectedAbility;
 	EDirection facingDirection;
-	EAbilityMelee meleeAbility;
-	//EAbilityMagic magicAbility;
+	EAbility spriteAbility;
 
 	int health;
 	int mana;
@@ -110,6 +109,6 @@ public:
 	void setCurrentFrame(int c)			{ currentFrame = c; }
 	void setState(EState s)				{ spriteState = s; }
 	void setSelectedAbility(EState s)	{ selectedAbility = s; }
-	void setAttackStarted()				{ spriteAction = ATTACKING; meleeAbility = WALK_FORWARD; }
+	void setAttackStarted()				{ spriteAction = ATTACKING; spriteAbility = WALK_FORWARD; }
 	void setHurt(bool h)				{ hurt = h; }
 };

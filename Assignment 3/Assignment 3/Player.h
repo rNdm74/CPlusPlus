@@ -17,10 +17,9 @@ public:
 
 	virtual void ExecuteAbility(Sprite^ otherSprite) override;
 
-	void UpdateMeleeAbility();
-	void PerformMeleeAbility(Sprite^ otherSprite);
-	void UpdateMagicAbility();
-	void PerformMagicAbility(Sprite^ otherSprite);	
+	virtual void UpdateAbility() override;
+	virtual void PerformAbility(Sprite^ otherSprite) override;
+		
 
 	bool enemyChooseAttack()	{ return enemyTurn; }
 	void setChooseAttack(bool b){ enemyTurn = b; }

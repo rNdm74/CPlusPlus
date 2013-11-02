@@ -15,6 +15,9 @@ void Enemy::Draw(int newXPos, int newYPos)
 	 //	 
 	 Bitmap^ spriteBitmap = spriteSheet->Clone(spriteFrame, format);
 	 //
+	 //
+	 //
+	 //
 	 // Flips image on the X axis based on direction
 	 //
 	 if(facingDirection == RIGHT) spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);	
@@ -26,7 +29,7 @@ void Enemy::Draw(int newXPos, int newYPos)
 	 yOFFSET = spriteFrame.Height;
 	 
 	 canvas->DrawImage(spriteBitmap, newXPos - xOFFSET, newYPos - yOFFSET);	
-	 canvas->DrawRectangle(gcnew Pen(Color::Black), getCollisionRectangle(newXPos, newYPos));
+	 //canvas->DrawRectangle(gcnew Pen(Color::Black), getCollisionRectangle(newXPos, newYPos));
 	 
 	 delete spriteBitmap;
 }
@@ -63,41 +66,41 @@ void Enemy::PerformAction()
 		}		
 	}
 
-void Enemy::UpdateMeleeAbility()
+void Enemy::UpdateAbility()
 {
-	switch(meleeAbility)
+	switch(spriteAbility)
 	{
 		case WALK_FORWARD:
 			if(moveTicks > moveDistance)
 			{
-				meleeAbility = MELEE_ATTACK;
+				spriteAbility = ATTACK;
 			}
 			break;
-		case MELEE_ATTACK:
+		case ATTACK:
 			if(attackFinished)
 			{
-				meleeAbility = WALK_BACKWARD;				
+				spriteAbility = WALK_BACKWARD;				
 			}			
 			break;
 		case WALK_BACKWARD:
 			if(moveTicks > moveDistance)
 			{
-				meleeAbility = MELEE_FINISHED;
+				spriteAbility = FINISHED;
 			}
 			break;	
 	}
 }
 
-void Enemy::PerformMeleeAbility(Sprite^ otherSprite)
+void Enemy::PerformAbility(Sprite^ otherSprite)
 {
-	switch(meleeAbility)
+	switch(spriteAbility)
 	{
 		case WALK_FORWARD:
 			facingDirection = LEFT;
 			Move();
 			moveTicks++;
 			break;
-		case MELEE_ATTACK:			
+		case ATTACK:			
 			moveTicks = 0;
 			
 			spriteState = selectedAbility;
@@ -122,7 +125,7 @@ void Enemy::PerformMeleeAbility(Sprite^ otherSprite)
 			Move();
 			moveTicks++;
 			break;
-		case MELEE_FINISHED:
+		case FINISHED:
 			moveTicks = 0;
 			spriteState = IDLE;
 			facingDirection = LEFT;
@@ -132,36 +135,8 @@ void Enemy::PerformMeleeAbility(Sprite^ otherSprite)
 	}
 }
 
-void Enemy::UpdateMagicAbility()
-{
-	switch(meleeAbility)
-	{
-		case MAGIC_ATTACK:
-			break;
-		case MAGIC_FINISHED:			
-			break;
-	}
-}
-
-void Enemy::PerformMagicAbility(Sprite^ otherSprite)
-{
-	switch(meleeAbility)
-	{
-		case MAGIC_ATTACK:
-			break;
-		case MAGIC_FINISHED:		
-			break;
-	}
-}
-
 void Enemy::ExecuteAbility(Sprite^ otherSprite)
 {
-	//move forward
-	//attack
-	//move backward
-	//return true
-	
-
 	switch(selectedAbility)
 	{
 		case IDLE:
@@ -170,48 +145,28 @@ void Enemy::ExecuteAbility(Sprite^ otherSprite)
 			break;
 		case BOSS_HURT:
 			moveDistance = 70;
-			UpdateMeleeAbility();
-			PerformMeleeAbility(otherSprite);
 			break;
 		case LESSER_ICE:
-			moveDistance = 70;
-			UpdateMeleeAbility();
-			PerformMeleeAbility(otherSprite);
+			moveDistance = 70;			
 			break;
 		case GREATER_ICE:
 			break;
 		case WALK:
 			break;
 		case LESSER_WAND:
-			//UpdateMeleeAbility();
-			//PerformMeleeAbility(otherSprite);
-			//
-			////move to enemy position		:: WALK
-			////attack enemy					:: SELECTED_ABILITY
-			////move back to start position	:: WALK
-			////face enemy
 			break;
 		case DODGE:
 			break;
 		case ELECTRIC_STORM:
 			break;
 		case GREATER_WAND:
-			//UpdateMeleeAbility();
-			//PerformMeleeAbility(otherSprite);
-			////move to enemy position		:: WALK
-			////attack enemy					:: SELECTED_ABILITY
-			////move back to start position	:: WALK
-			////face enemy
 			break;
 		case WHIRLWIND:
-			//UpdateMeleeAbility();
-			//PerformMeleeAbility(otherSprite);
-			////move to enemy position		:: WALK
-			////attack enemy					:: SELECTED_ABILITY
-			////move back to start position	:: WALK
-			////face enemy
 			break;
 		case HEAL:
 			break;
 	}
+
+	UpdateAbility();
+	PerformAbility(otherSprite);
 }

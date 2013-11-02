@@ -14,6 +14,10 @@ void Player::Draw(int newXPos, int newYPos)
 	 //	 
 	 Bitmap^ spriteBitmap = spriteSheet->Clone(spriteFrame, format);
 	 //
+	 //
+	 //
+	 
+	 //
 	 // Flips image on the X axis based on direction
 	 //
 	 xOFFSET = 0;	 
@@ -68,42 +72,44 @@ void Player::PerformAction()
 		}		
 	}
 
-void Player::UpdateMeleeAbility()
+void Player::UpdateAbility()
 {
-	switch(meleeAbility)
+	switch(spriteAbility)
 	{
 		case WALK_FORWARD:
 			if(moveTicks > moveDistance)
 			{
-				meleeAbility = MELEE_ATTACK;				
+				spriteAbility = ATTACK;				
+			}
+			else if(selectedAbility == HEAL)
+			{
+				spriteAbility = HEALTH_POTION;
 			}
 			break;
-		case MELEE_ATTACK:
+		case ATTACK:
 			if(attackFinished)
 			{				
-				meleeAbility = WALK_BACKWARD;				
+				spriteAbility = WALK_BACKWARD;				
 			}			
 			break;
 		case WALK_BACKWARD:
 			if(moveTicks > moveDistance)
 			{
-				meleeAbility = MELEE_FINISHED;
+				spriteAbility = FINISHED;
 			}
 			break;
-		case MAGIC_ATTACK:
+		case HEALTH_POTION:
 			if(attackFinished)
 			{
-				meleeAbility = MELEE_FINISHED;				
+				spriteAbility = FINISHED;				
 			}
-			break;
-		case MAGIC_FINISHED:			
 			break;
 	}
 }
 
-void Player::PerformMeleeAbility(Sprite^ otherSprite)
+void Player::PerformAbility(Sprite^ otherSprite)
 {
-	switch(meleeAbility)
+	switch(spriteAbility)
 	{
 		case WALK_FORWARD:
 			spriteState = WALK;
@@ -111,7 +117,7 @@ void Player::PerformMeleeAbility(Sprite^ otherSprite)
 			Move();
 			moveTicks++;
 			break;
-		case MELEE_ATTACK:			
+		case ATTACK:			
 			moveTicks = 0;
 			
 			spriteState = selectedAbility;
@@ -120,14 +126,17 @@ void Player::PerformMeleeAbility(Sprite^ otherSprite)
 			{
 				usedAbility = true;
 				setMana(5 * safe_cast<int>(selectedAbility));
-				otherSprite->setState(HURT);				
+				otherSprite->setState(HURT);
+				otherSprite->setHurt(true);
+				otherSprite->setHealth(10 * safe_cast<int>(selectedAbility));				
 			}	
 			attackTicks++;
 
 			attackFinished = finishedAnimation;
 			break;
-		case WALK_BACKWARD:	
+		case WALK_BACKWARD:				
 			usedAbility = false;
+			otherSprite->setHurt(false);
 			otherSprite->setState(IDLE);
 			attackTicks = 0;
 			spriteState = WALK;
@@ -135,7 +144,7 @@ void Player::PerformMeleeAbility(Sprite^ otherSprite)
 			Move();
 			moveTicks++;
 			break;
-		case MELEE_FINISHED:
+		case FINISHED:
 			moveTicks = 0;
 			spriteState = IDLE;
 			facingDirection = RIGHT;
@@ -143,44 +152,13 @@ void Player::PerformMeleeAbility(Sprite^ otherSprite)
 			waiting = true;
 			enemyTurn = true;
 			break;
-		case MAGIC_ATTACK:
+		case HEALTH_POTION:
+			setHealth(-20);
+			if(health < 0) health = 0;
 			spriteState = selectedAbility;
-
-			if(attackTicks > attackTime)
-			{
-				otherSprite->setState(HURT);				
-			}	
-
-			attackTicks++;
-
 			attackFinished = finishedAnimation;
 			break;
-		case MAGIC_FINISHED:	
-			otherSprite->setState(IDLE);
-			attackTicks = 0;
-			spriteState = IDLE;
-			spriteAction = WAITING;
-			waiting = true;
-			enemyTurn = true;
-			break;
 	}
-}
-
-void Player::UpdateMagicAbility()
-{
-	/*switch(magicAbility)
-	{
-		
-	}*/
-}
-
-void Player::PerformMagicAbility(Sprite^ otherSprite)
-{
-	/*switch(magicAbility)
-	{
-		
-		
-	}*/
 }
 
 void Player::ExecuteAbility(Sprite^ otherSprite)
@@ -213,10 +191,11 @@ void Player::ExecuteAbility(Sprite^ otherSprite)
 			break;
 		case HEAL:
 			moveDistance = 0;
+			
 			break;
 
 	}
 
-	UpdateMeleeAbility();
-	PerformMeleeAbility(otherSprite);
+	UpdateAbility();
+	PerformAbility(otherSprite);
 }

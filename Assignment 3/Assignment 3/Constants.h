@@ -88,22 +88,18 @@ public enum EAction
 //
 //
 //
-public enum EAbilityMelee
+public enum EAbility
 {
 	WALK_FORWARD,
-	MELEE_ATTACK,
+	ATTACK,
 	WALK_BACKWARD,
-	MELEE_FINISHED,
-	MAGIC_ATTACK,
-	MAGIC_FINISHED
+	FINISHED,
+	HEALTH_POTION
 };
 //
 //
 //
-public enum EAbilityMagic
-{
-	
-};
+
 //
 //
 //
