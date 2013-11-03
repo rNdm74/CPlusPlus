@@ -59,6 +59,11 @@ namespace Assignment3 {
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::PictureBox^  pictureBox2;
 	private: System::Windows::Forms::PictureBox^  pictureBox3;
+	private: System::Windows::Forms::PictureBox^  pictureBox4;
+	private: System::Windows::Forms::PictureBox^  pictureBox5;
+	private: System::Windows::Forms::PictureBox^  pictureBox6;
+	private: System::Windows::Forms::PictureBox^  pictureBox7;
+	private: System::Windows::Forms::PictureBox^  pictureBox8;
 
 	private: System::ComponentModel::IContainer^  components;
 
@@ -90,6 +95,11 @@ namespace Assignment3 {
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox4 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox5 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox6 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox7 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox8 = (gcnew System::Windows::Forms::PictureBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->lesser_wand))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->greater_wand))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->whirlwind))->BeginInit();
@@ -100,6 +110,11 @@ namespace Assignment3 {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox2))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox3))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox4))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox5))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox6))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox7))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox8))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// clock
@@ -132,6 +147,7 @@ namespace Assignment3 {
 			// 
 			this->greater_wand->BackColor = System::Drawing::Color::Transparent;
 			this->greater_wand->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->greater_wand->Enabled = false;
 			this->greater_wand->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"greater_wand.Image")));
 			this->greater_wand->Location = System::Drawing::Point(756, 677);
 			this->greater_wand->Name = L"greater_wand";
@@ -147,6 +163,7 @@ namespace Assignment3 {
 			// 
 			this->whirlwind->BackColor = System::Drawing::Color::Transparent;
 			this->whirlwind->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->whirlwind->Enabled = false;
 			this->whirlwind->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"whirlwind.Image")));
 			this->whirlwind->Location = System::Drawing::Point(804, 677);
 			this->whirlwind->Name = L"whirlwind";
@@ -162,6 +179,7 @@ namespace Assignment3 {
 			// 
 			this->lesser_ice->BackColor = System::Drawing::Color::Transparent;
 			this->lesser_ice->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->lesser_ice->Enabled = false;
 			this->lesser_ice->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"lesser_ice.Image")));
 			this->lesser_ice->Location = System::Drawing::Point(851, 677);
 			this->lesser_ice->Name = L"lesser_ice";
@@ -177,6 +195,7 @@ namespace Assignment3 {
 			// 
 			this->greater_ice->BackColor = System::Drawing::Color::Transparent;
 			this->greater_ice->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->greater_ice->Enabled = false;
 			this->greater_ice->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"greater_ice.Image")));
 			this->greater_ice->Location = System::Drawing::Point(899, 677);
 			this->greater_ice->Name = L"greater_ice";
@@ -267,6 +286,61 @@ namespace Assignment3 {
 			this->ability_info->SetToolTip(this->pictureBox3, L"Health Potion\r\n\r\n50 Restore Health");
 			this->pictureBox3->Click += gcnew System::EventHandler(this, &ApprenticeTrial::ability_Click);
 			// 
+			// pictureBox4
+			// 
+			this->pictureBox4->BackColor = System::Drawing::Color::Transparent;
+			this->pictureBox4->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox4.Image")));
+			this->pictureBox4->Location = System::Drawing::Point(559, 13);
+			this->pictureBox4->Name = L"pictureBox4";
+			this->pictureBox4->Size = System::Drawing::Size(30, 38);
+			this->pictureBox4->SizeMode = System::Windows::Forms::PictureBoxSizeMode::AutoSize;
+			this->pictureBox4->TabIndex = 17;
+			this->pictureBox4->TabStop = false;
+			// 
+			// pictureBox5
+			// 
+			this->pictureBox5->BackColor = System::Drawing::Color::Transparent;
+			this->pictureBox5->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox5.Image")));
+			this->pictureBox5->Location = System::Drawing::Point(595, 13);
+			this->pictureBox5->Name = L"pictureBox5";
+			this->pictureBox5->Size = System::Drawing::Size(30, 38);
+			this->pictureBox5->SizeMode = System::Windows::Forms::PictureBoxSizeMode::AutoSize;
+			this->pictureBox5->TabIndex = 18;
+			this->pictureBox5->TabStop = false;
+			// 
+			// pictureBox6
+			// 
+			this->pictureBox6->BackColor = System::Drawing::Color::Transparent;
+			this->pictureBox6->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox6.Image")));
+			this->pictureBox6->Location = System::Drawing::Point(631, 12);
+			this->pictureBox6->Name = L"pictureBox6";
+			this->pictureBox6->Size = System::Drawing::Size(30, 38);
+			this->pictureBox6->SizeMode = System::Windows::Forms::PictureBoxSizeMode::AutoSize;
+			this->pictureBox6->TabIndex = 19;
+			this->pictureBox6->TabStop = false;
+			// 
+			// pictureBox7
+			// 
+			this->pictureBox7->BackColor = System::Drawing::Color::Transparent;
+			this->pictureBox7->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox7.Image")));
+			this->pictureBox7->Location = System::Drawing::Point(667, 13);
+			this->pictureBox7->Name = L"pictureBox7";
+			this->pictureBox7->Size = System::Drawing::Size(30, 38);
+			this->pictureBox7->SizeMode = System::Windows::Forms::PictureBoxSizeMode::AutoSize;
+			this->pictureBox7->TabIndex = 20;
+			this->pictureBox7->TabStop = false;
+			// 
+			// pictureBox8
+			// 
+			this->pictureBox8->BackColor = System::Drawing::Color::Transparent;
+			this->pictureBox8->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox8.Image")));
+			this->pictureBox8->Location = System::Drawing::Point(703, 13);
+			this->pictureBox8->Name = L"pictureBox8";
+			this->pictureBox8->Size = System::Drawing::Size(30, 38);
+			this->pictureBox8->SizeMode = System::Windows::Forms::PictureBoxSizeMode::AutoSize;
+			this->pictureBox8->TabIndex = 21;
+			this->pictureBox8->TabStop = false;
+			// 
 			// ApprenticeTrial
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -275,6 +349,11 @@ namespace Assignment3 {
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"$this.BackgroundImage")));
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
 			this->ClientSize = System::Drawing::Size(1008, 729);
+			this->Controls->Add(this->pictureBox8);
+			this->Controls->Add(this->pictureBox7);
+			this->Controls->Add(this->pictureBox6);
+			this->Controls->Add(this->pictureBox5);
+			this->Controls->Add(this->pictureBox4);
 			this->Controls->Add(this->pictureBox3);
 			this->Controls->Add(this->pictureBox2);
 			this->Controls->Add(this->pictureBox1);
@@ -304,7 +383,13 @@ namespace Assignment3 {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox2))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox3))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox4))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox5))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox6))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox7))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox8))->EndInit();
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
@@ -346,8 +431,6 @@ namespace Assignment3 {
 			 }			 
 	private: System::Void ApprenticeTrial_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 				 Point location = e->Location;
-
-				 //Text = 
 				 
 				 switch ( e->Button )
 				 {

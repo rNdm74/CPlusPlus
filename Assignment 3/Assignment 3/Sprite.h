@@ -45,7 +45,12 @@ protected:
 	int moveDistance;
 	int moveTicks;	
 	int attackTicks;
-	
+	int healTicks;
+
+	static int nextBattleDistance = 170;
+	static int healed = 50;
+
+	int battle;	
 
 	int right;
 
@@ -59,6 +64,14 @@ protected:
 
 	bool hurt;
 	bool usedAbility;
+
+	bool alive;
+
+	bool turnOver;
+	bool attacking;
+	bool roundWon;
+	bool roundLose;
+	bool attackIsOver;
 
 	bool attackStarted;
 	bool attackFinished;
@@ -77,27 +90,26 @@ public:
 
 	// FSM Methods
 	virtual void UpdateState(Sprite^ otherSprite);
-	virtual void PerformAction();
+	virtual void PerformAction(Sprite^ otherSprite);
 
 	virtual void UpdateAbility();
 	virtual void PerformAbility(Sprite^ otherSprite);
-	virtual void ExecuteAbility(Sprite^ otherSprite);
+	virtual void ExecuteAbility();
 
-	bool AttackStarted(Sprite^ otherSprite);
-	bool IsAttackFinished(Sprite^ otherSprite);
-	bool ReturnedHome(Sprite^ otherSprite);
 
 	// GETS	
 	int  getXPos()							{ return xPos; }
 	int  getYPos()							{ return yPos; }
 	int  getHealth()						{ return health; }
 	int  getMana()							{ return mana; }
+	int  getBattle()						{ return battle; }
 	bool isWaiting()						{ return waiting; }
 	bool isAttackStarted()					{ return attackStarted; }
 	bool isAttackFinihed()					{ return attackFinished; }
 	bool isFinishedAnimation()				{ return finishedAnimation; }
 	bool isHurt()							{ return hurt; }
 	bool hasUsedAbility()					{ return usedAbility; }
+	bool isAlive()							{ return alive; }
 
 	Rectangle getCollisionRectangle(int vx, int vy)	{ return Rectangle((xPos - xOFFSET) - vx, (yPos - yOFFSET)-vy, spriteFrame.Width, spriteFrame.Height); }
 
@@ -109,6 +121,8 @@ public:
 	void setCurrentFrame(int c)			{ currentFrame = c; }
 	void setState(EState s)				{ spriteState = s; }
 	void setSelectedAbility(EState s)	{ selectedAbility = s; }
-	void setAttackStarted()				{ spriteAction = ATTACKING; spriteAbility = WALK_FORWARD; }
+	void setAttackStarted()				{ attacking = true; }
 	void setHurt(bool h)				{ hurt = h; }
+	void setAlive(bool a)				{ alive = a; }
+	void setWaiting(bool w)				{ waiting = w; }
 };

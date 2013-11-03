@@ -221,6 +221,16 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 			//
 			// Create Items
 			//
+			enemyInPlay = floppit;
+
+			enemies = gcnew array<Enemy^>
+			{
+				floppit,
+				fluppit,
+				peruna,
+				cocoon,
+				makhana
+			};
 					
 			//				
 			// 
@@ -229,6 +239,14 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 			//
 			//
 			//
+			battles = gcnew array<int>
+			{
+				0,
+				1024 + 512,
+				2048 + 512,
+				3072 + 512,
+				4096 + 1024
+			};
 		}
 #pragma endregion
 
@@ -277,71 +295,72 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 		/// </summary>
 		void GameManager::Update()
 		{
+			enemyInPlay = enemies[player->getBattle()];
 			//
 			// Update hud information
 			//
-			hud->Update(player, floppit);
+			hud->Update(player, enemyInPlay);
+
+			//
+			// Updates Sprites Animation
+			//
+			
+			
 									
 			//
-			// Alien AI
-			//	
-			
-			//
-			// Collision Checks
-			//
-			
-			//
-			// Move Viewport
-			//			
-			viewport->moveRelativeToPlayer(viewportScroll, 0);
-			
-			//
-			// Move Sprites
+			// AI
 			//
 
 			//
 			// enemy chooses attack 
 			//
-			if(player->enemyChooseAttack())
-			{				
-				floppit->setSelectedAbility(safe_cast<EState>(rGen->Next(2,5)));
-				floppit->setAttackStarted();
-				player->setChooseAttack(false);
-			}			
+			
 
 			//
-			//
 			// Turn system
+			// 
+			player->Update();
+			enemyInPlay->Update();
+			
+
 			if(player->isWaiting())
 			{
-				floppit->UpdateState(player);
-				floppit->PerformAction();
+				if(player->enemyChooseAttack() && enemyInPlay->isAlive())
+				{				
+					enemyInPlay->setSelectedAbility(safe_cast<EState>(rGen->Next(2,5)));
+					enemyInPlay->setAttackStarted();
+					player->setChooseAttack(false);
+				}
+
+				enemyInPlay->UpdateState(player);
+				enemyInPlay->PerformAction(player);
 			}			
-			
-			if(floppit->isWaiting())
-			{
-				player->UpdateState(floppit);
-				player->PerformAction();
+
+			if(enemyInPlay->isWaiting())
+			{							
+				player->UpdateState(enemyInPlay);	
+				player->PerformAction(enemyInPlay);
 			}
+
 			
+
 			//
-			// Updates Sprites Animation
-			//
-			player->Update();
-			floppit->Update();
-			fluppit->Update();
-			peruna->Update();
-			cocoon->Update();
-			makhana->Update();
+			// Move Viewport
+			//	
+			viewport->moveRelativeToPlayer(battles[player->getBattle()], 0);
+			
+			
+
 			//
 			// Game Win
 			//
+			
 							
 			//
 			// Game Over
 			//
 
-			
+						
 			//
 			//
 			//			
@@ -364,17 +383,13 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 			// Draw Sprites to Canvas
 			//			
 			player->Draw(player->getXPos() - viewport->getViewportWorldX(), player->getYPos() - viewport->getViewportWorldY());	
-			floppit->Draw(floppit->getXPos() - viewport->getViewportWorldX(), floppit->getYPos() - viewport->getViewportWorldY());
-			fluppit->Draw(fluppit->getXPos() - viewport->getViewportWorldX(), fluppit->getYPos() - viewport->getViewportWorldY());
-			peruna->Draw(peruna->getXPos() - viewport->getViewportWorldX(), peruna->getYPos() - viewport->getViewportWorldY());
-			cocoon->Draw(cocoon->getXPos() - viewport->getViewportWorldX(), cocoon->getYPos() - viewport->getViewportWorldY());
-			makhana->Draw(makhana->getXPos() - viewport->getViewportWorldX(), makhana->getYPos() - viewport->getViewportWorldY());
+			enemyInPlay->Draw(enemyInPlay->getXPos() - viewport->getViewportWorldX(), enemyInPlay->getYPos() - viewport->getViewportWorldY());
 			
 			//
 			// Draw HUD
 			//
 			hud->Draw();
-			
+			enemyInPlay->DrawHud(990, 150);			
 
 			//
 			// Make Buffer Visible 

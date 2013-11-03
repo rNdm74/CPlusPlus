@@ -13,61 +13,96 @@ void Player::Draw(int newXPos, int newYPos)
 	 // Draw sprites frame to the screen
 	 //	 
 	 Bitmap^ spriteBitmap = spriteSheet->Clone(spriteFrame, format);
-	 //
-	 //
-	 //
-	 
+	 	 
 	 //
 	 // Flips image on the X axis based on direction
+	 //
+	 if(facingDirection == LEFT) spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);
+	 
+	 //
+	 //
 	 //
 	 xOFFSET = 0;	 
 	 yOFFSET = spriteFrame.Height;
 
-	 if(facingDirection == LEFT) 
-	 {
-		 spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);
-	 }	
 	 //
 	 // Draws bitmap to the screen
 	 //
-	 canvas->DrawImage(spriteBitmap, newXPos - xOFFSET, newYPos - yOFFSET);	
-	 //canvas->DrawRectangle(gcnew Pen(Color::Black), getCollisionRectangle(newXPos, newYPos));
+	 canvas->DrawImage(spriteBitmap, newXPos - xOFFSET, newYPos - yOFFSET);
 	 
 	 delete spriteBitmap;
 }
 
 void Player::UpdateState(Sprite^ otherSprite)
-	{	
-		
-
-		switch(spriteAction)
-		{
-			case WAITING:
-				enemyTurn = false;
-				break;
-			case HOME:
-				break;
-			case ATTACKING:
-				waiting = false;
-				ExecuteAbility(otherSprite);
-				break;
-			case FINISHED_ATTACKING:
-				break;			
-		}		
-	}
-
-void Player::PerformAction()
 	{
 		switch(spriteAction)
 		{
 			case WAITING:
-				
+				if(attacking && otherSprite->isAlive())
+				{
+					spriteAbility = START_ABILITY;
+					spriteAction = USE_ABILITY;
+				}				
 				break;
-			case HOME:
+			case WIN:
+				if(moveTicks > nextBattleDistance)
+				{
+					battle++;
+					otherSprite->setState(HURT);
+					otherSprite->setAlive(true);
+					health = 0;
+					selectedAbility = IDLE;
+					spriteState = IDLE;					
+					spriteAction = WAITING;					
+				}
 				break;
-			case ATTACKING:				
+			case LOSE:
 				break;
-			case FINISHED_ATTACKING:
+			case USE_ABILITY:
+				if(waiting)
+				{
+					spriteAction = WAITING;
+				}	
+				else if(otherSprite->isAlive() == false)
+				{
+					spriteAction = WIN;
+				}
+				break;		
+		}		
+	}
+
+void Player::PerformAction(Sprite^ otherSprite)
+	{
+		switch(spriteAction)
+		{
+			case WAITING:				
+				moveTicks = 0;
+				turnOver = false;
+				break;
+
+			case WIN:
+				spriteState = WALK;
+
+				Move();
+
+				if(xPos > 250 + (1024 * (battle + 1)))
+				{
+					xPos = 250 + (1024 * (battle + 1));					
+				}
+				otherSprite->setXPos(0);
+				otherSprite->setYPos(0);	
+
+				moveTicks++;
+				break;
+
+			case LOSE:				
+				break;
+
+			case USE_ABILITY:					
+				ExecuteAbility();
+				UpdateAbility();
+
+				PerformAbility(otherSprite);
 				break;			
 		}		
 	}
@@ -76,31 +111,41 @@ void Player::UpdateAbility()
 {
 	switch(spriteAbility)
 	{
+		case START_ABILITY:
+			if(selectedAbility == HEAL)
+			{
+				spriteAbility = HEALTH_POTION;
+			}
+			else
+			{
+				spriteAbility = WALK_FORWARD;
+			}
+			break;
+
 		case WALK_FORWARD:
 			if(moveTicks > moveDistance)
 			{
 				spriteAbility = ATTACK;				
-			}
-			else if(selectedAbility == HEAL)
-			{
-				spriteAbility = HEALTH_POTION;
-			}
+			}			
 			break;
+
 		case ATTACK:
 			if(attackFinished)
 			{				
 				spriteAbility = WALK_BACKWARD;				
 			}			
 			break;
+
 		case WALK_BACKWARD:
 			if(moveTicks > moveDistance)
 			{
 				spriteAbility = FINISHED;
 			}
 			break;
+
 		case HEALTH_POTION:
-			if(attackFinished)
-			{
+			if(healTicks > healed)
+			{				
 				spriteAbility = FINISHED;				
 			}
 			break;
@@ -110,13 +155,15 @@ void Player::UpdateAbility()
 void Player::PerformAbility(Sprite^ otherSprite)
 {
 	switch(spriteAbility)
-	{
+	{		
 		case WALK_FORWARD:
+			waiting = false;
 			spriteState = WALK;
 			facingDirection = RIGHT;
 			Move();
 			moveTicks++;
 			break;
+
 		case ATTACK:			
 			moveTicks = 0;
 			
@@ -125,43 +172,66 @@ void Player::PerformAbility(Sprite^ otherSprite)
 			if(attackTicks > attackTime && usedAbility == false)
 			{
 				usedAbility = true;
+
 				setMana(5 * safe_cast<int>(selectedAbility));
 				otherSprite->setState(HURT);
 				otherSprite->setHurt(true);
 				otherSprite->setHealth(10 * safe_cast<int>(selectedAbility));				
+
+				if(otherSprite->getHealth() >= 131) otherSprite->setAlive(false);
 			}	
+
 			attackTicks++;
 
 			attackFinished = finishedAnimation;
 			break;
-		case WALK_BACKWARD:				
-			usedAbility = false;
+
+		case WALK_BACKWARD:	
 			otherSprite->setHurt(false);
 			otherSprite->setState(IDLE);
-			attackTicks = 0;
-			spriteState = WALK;
-			facingDirection = LEFT;
+
+			usedAbility			= false;			
+			
+			attackTicks			= 0;
+
+			spriteState			= WALK;
+			facingDirection		= LEFT;
+
 			Move();
+
 			moveTicks++;
 			break;
+
 		case FINISHED:
-			moveTicks = 0;
-			spriteState = IDLE;
-			facingDirection = RIGHT;
-			spriteAction = WAITING;
-			waiting = true;
-			enemyTurn = true;
+			otherSprite->setWaiting(false);
+
+			moveTicks			= 0;
+			healTicks			= 0;
+
+			spriteState			= IDLE;
+			selectedAbility		= IDLE;
+			facingDirection		= RIGHT;
+			spriteAction		= WAITING;	
+
+			attacking			= false;
+			waiting				= true;
+			turnOver			= true;
 			break;
+
 		case HEALTH_POTION:
-			setHealth(-20);
+			health--;
+
 			if(health < 0) health = 0;
-			spriteState = selectedAbility;
-			attackFinished = finishedAnimation;
+
+			spriteState			= selectedAbility;
+			attackFinished		= finishedAnimation;
+
+			healTicks++;
 			break;
 	}
 }
 
-void Player::ExecuteAbility(Sprite^ otherSprite)
+void Player::ExecuteAbility()
 {
 	switch(selectedAbility)
 	{
@@ -190,12 +260,7 @@ void Player::ExecuteAbility(Sprite^ otherSprite)
 			moveDistance = 60;
 			break;
 		case HEAL:
-			moveDistance = 0;
-			
+			moveDistance = 0;			
 			break;
-
-	}
-
-	UpdateAbility();
-	PerformAbility(otherSprite);
+	}	
 }

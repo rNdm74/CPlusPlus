@@ -81,15 +81,17 @@ public enum EDirection
 public enum EAction
 {
 	WAITING						=		0,
-	HOME						=		1,
-	ATTACKING					=		2,
-	FINISHED_ATTACKING			=		3
+	WIN							=		1,
+	LOSE						=		2,
+	USE_ABILITY					=		3,
+	FINISHED_ABILITY			=		4
 };
 //
 //
 //
 public enum EAbility
 {
+	START_ABILITY,
 	WALK_FORWARD,
 	ATTACK,
 	WALK_BACKWARD,

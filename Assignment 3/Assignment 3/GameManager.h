@@ -55,9 +55,11 @@ ref class GameManager
 		Enemy^ fluppit;
 		Enemy^ peruna;
 
-		Sprite^ spriteInPlay;
+		Enemy^ enemyInPlay;
 
 		
+		array<int>^ battles;
+		array<Enemy^>^ enemies;
 
 		int xPos;
 		int yPos;
@@ -100,9 +102,12 @@ ref class GameManager
 //
 //
 //
-		void setPlayerAbility(EState s)		{ player->setSelectedAbility(s); }
+		bool playerHasWon()				{ return (enemyInPlay->getHealth() >= 131); }
+		bool playerHasLost()			{ return (player->getHealth() >= 131); }
 
-		bool clickedOnEnemy(Point p)	{ return floppit->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }
+		void setPlayerAbility(EState s)	{ player->setSelectedAbility(s); }
+
+		bool clickedOnEnemy(Point p)	{ return enemyInPlay->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }
 		
 		bool clickedOnPlayer(Point p)	{ return player->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }
 

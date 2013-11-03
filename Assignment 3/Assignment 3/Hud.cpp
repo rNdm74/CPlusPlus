@@ -116,8 +116,11 @@ void Hud::Update(Player^ player, Enemy^ enemy)
 void Hud::Draw()
 {
 	//875,15
-	dbGraphics->DrawImageUnscaledAndClipped(enemyHealthImage, Rectangle(860, 15, 132, 132));
+	
+
+	dbGraphics->DrawImageUnscaledAndClipped(enemyHealthImage, Rectangle(862, 15, 132, 132));	
 	dbGraphics->DrawImageUnscaledAndClipped(playerHealthImage, Rectangle(358, 581, 132, 132));
 	dbGraphics->DrawImageUnscaledAndClipped(playerManaImage, Rectangle(516, 581, 132,132));
+	
 	dbGraphics->DrawImage(hud, 0, 0, 1024, 768);
 }

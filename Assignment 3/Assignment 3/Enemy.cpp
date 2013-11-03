@@ -14,22 +14,48 @@ void Enemy::Draw(int newXPos, int newYPos)
 	 // Draw sprites frame to the screen
 	 //	 
 	 Bitmap^ spriteBitmap = spriteSheet->Clone(spriteFrame, format);
-	 //
-	 //
-	 //
+	 
 	 //
 	 // Flips image on the X axis based on direction
 	 //
 	 if(facingDirection == RIGHT) spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);	
+	 
 	 //
-	 // Draws bitmap to the screen
+	 // Get frame offsets
 	 //
-
 	 xOFFSET = spriteFrame.Width;	 
 	 yOFFSET = spriteFrame.Height;
 	 
+	 //
+	 // Draws bitmap to the screen
+	 //
 	 canvas->DrawImage(spriteBitmap, newXPos - xOFFSET, newYPos - yOFFSET);	
-	 //canvas->DrawRectangle(gcnew Pen(Color::Black), getCollisionRectangle(newXPos, newYPos));
+	 
+	 delete spriteBitmap;
+}
+
+void Enemy::DrawHud(int newXPos, int newYPos)
+{	 
+	 //
+	 // Draw sprites frame to the screen
+	 //	 
+	 Bitmap^ spriteBitmap = spriteSheet->Clone(spriteFrame, format);
+	 
+	 //
+	 // Flips image on the X axis based on direction
+	 //
+	 if(facingDirection == RIGHT) spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);	
+	 
+	 //
+	 // Get frame offsets
+	 //	 
+	 xOFFSET = spriteFrame.Width;	 
+	 yOFFSET = spriteFrame.Height;
+	 
+	 //
+	 // Draws bitmap to the screen
+	 //
+	 canvas->DrawImage(spriteBitmap, newXPos + (xOFFSET / 2) - xOFFSET, newYPos + (yOFFSET / 2) - yOFFSET, xOFFSET / 2.5, yOFFSET / 2.5);
 	 
 	 delete spriteBitmap;
 }
@@ -39,30 +65,49 @@ void Enemy::UpdateState(Sprite^ otherSprite)
 		switch(spriteAction)
 		{
 			case WAITING:
+				if(attacking)
+				{
+					spriteAbility = START_ABILITY;
+					spriteAction = USE_ABILITY;
+				}
+				else if(otherSprite->getHealth() >= 131)
+				{
+					spriteAction = WIN;
+				}
+				else if(health >= 131)
+				{
+					spriteAction = LOSE;
+				}
 				break;
-			case HOME:
+			case WIN:
 				break;
-			case ATTACKING:
-				waiting = false;
-				ExecuteAbility(otherSprite);
+			case LOSE:
 				break;
-			case FINISHED_ATTACKING:
-				break;			
+			case USE_ABILITY:
+				if(waiting)
+				{
+					spriteAction = WAITING;
+				}				
+				break;		
 		}		
 	}
 
-void Enemy::PerformAction()
+void Enemy::PerformAction(Sprite^ otherSprite)
 	{
 		switch(spriteAction)
 		{
 			case WAITING:
 				break;
-			case HOME:
+			case WIN:
 				break;
-			case ATTACKING:				
+			case LOSE:
+				spriteState = HURT;
 				break;
-			case FINISHED_ATTACKING:
-				break;			
+			case USE_ABILITY:	
+				ExecuteAbility();
+				UpdateAbility();
+				PerformAbility(otherSprite);
+				break;		
 		}		
 	}
 
@@ -70,6 +115,12 @@ void Enemy::UpdateAbility()
 {
 	switch(spriteAbility)
 	{
+		case START_ABILITY:
+			if(attacking)
+			{
+				spriteAbility = WALK_FORWARD;
+			}
+			break;
 		case WALK_FORWARD:
 			if(moveTicks > moveDistance)
 			{
@@ -95,7 +146,10 @@ void Enemy::PerformAbility(Sprite^ otherSprite)
 {
 	switch(spriteAbility)
 	{
+		case START_ABILITY:			
+			break;
 		case WALK_FORWARD:
+			waiting = false;
 			facingDirection = LEFT;
 			Move();
 			moveTicks++;
@@ -126,16 +180,18 @@ void Enemy::PerformAbility(Sprite^ otherSprite)
 			moveTicks++;
 			break;
 		case FINISHED:
+			otherSprite->setWaiting(false);
 			moveTicks = 0;
 			spriteState = IDLE;
 			facingDirection = LEFT;
 			spriteAction = WAITING;
 			waiting = true;
+			attacking = false;
 			break;
 	}
 }
 
-void Enemy::ExecuteAbility(Sprite^ otherSprite)
+void Enemy::ExecuteAbility()
 {
 	switch(selectedAbility)
 	{
@@ -165,8 +221,5 @@ void Enemy::ExecuteAbility(Sprite^ otherSprite)
 			break;
 		case HEAL:
 			break;
-	}
-
-	UpdateAbility();
-	PerformAbility(otherSprite);
+	}	
 }

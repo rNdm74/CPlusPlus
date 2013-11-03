@@ -10,6 +10,7 @@ Sprite::Sprite(Graphics^ startCanvas, String^ startFileName, array<Point>^ start
 	 spriteSheetState	= startSpriteState;
 
 	 currentFrame = 0;
+	 alive = true;
 
 	 
 	 spriteAction = WAITING;
@@ -79,30 +80,7 @@ Sprite::Sprite(Graphics^ startCanvas, String^ startFileName, array<Point>^ start
 	 
 }
 
-void Sprite::Draw(int newXPos, int newYPos)
-{	 
-	 ////
-	 //// Draw sprites frame to the screen
-	 ////	 
-	 //Bitmap^ spriteBitmap = spriteSheet->Clone(spriteFrame, format);
-	 ////
-	 //// Flips image on the X axis based on direction
-	 ////
-	 //if(facingDirection == LEFT) spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);	
-	 ////
-	 //// Draws bitmap to the screen
-	 ////
-
-	 //xOFFSET = spriteFrame.Width;	 
-	 //yOFFSET = spriteFrame.Height;
-
-	 //if(fileName == "player") xOFFSET = 0;
-
-	 //canvas->DrawImage(spriteBitmap, newXPos - xOFFSET, newYPos - yOFFSET);	
-	 //canvas->DrawRectangle(gcnew Pen(Color::Black), getCollisionRectangle(newXPos, newYPos));
-	 //
-	 //delete spriteBitmap;
-}
+void Sprite::Draw(int newXPos, int newYPos){}
 
 void Sprite::Move()
 {
@@ -143,7 +121,16 @@ void Sprite::Update()
 		 frameData[HEIGHT]			
 	 );
 
-	 currentFrame++; // move to sprites next frame
+	 if(alive)
+	 {
+		 currentFrame++; // move to sprites next frame		 
+	 }
+	 else
+	 {
+		 
+		 currentFrame = stateFrames->Count - 1;
+	 }
+	  
 
 	 //
 	 // Clean up
@@ -154,22 +141,7 @@ void Sprite::Update()
 
 // FSM Methods
 void Sprite::UpdateState(Sprite^ otherSprite){}
-void Sprite::PerformAction(){}
+void Sprite::PerformAction(Sprite^ otherSprite){}
 void Sprite::UpdateAbility(){}
 void Sprite::PerformAbility(Sprite^ otherSprite){}
-void Sprite::ExecuteAbility(Sprite^ otherSprite){}
-
-bool Sprite::AttackStarted(Sprite^ otherSprite)
-{
-	return false;
-}
-
-bool Sprite::IsAttackFinished(Sprite^ otherSprite)
-{	
-	return false;
-}
-
-bool Sprite::ReturnedHome(Sprite^ otherSprite)
-{	
-	return false;
-}
+void Sprite::ExecuteAbility(){}
