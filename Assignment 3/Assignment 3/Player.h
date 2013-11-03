@@ -5,6 +5,7 @@ ref class Player :
 public Sprite
 {
 private:
+	bool nextBattle;
 	
 
 public:

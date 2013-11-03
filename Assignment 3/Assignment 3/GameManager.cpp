@@ -300,66 +300,37 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 			// Update hud information
 			//
 			hud->Update(player, enemyInPlay);
-
-			//
-			// Updates Sprites Animation
-			//
-			
-			
-									
+					
 			//
 			// AI
-			//
-
-			//
-			// enemy chooses attack 
-			//
-			
-
-			//
-			// Turn system
-			// 
+			//	
 			player->Update();
-			enemyInPlay->Update();
-			
+			player->UpdateState(enemyInPlay);	
+			player->PerformAction(enemyInPlay);
 
-			if(player->isWaiting())
-			{
-				if(player->enemyChooseAttack() && enemyInPlay->isAlive())
-				{				
-					enemyInPlay->setSelectedAbility(safe_cast<EState>(rGen->Next(2,5)));
-					enemyInPlay->setAttackStarted();
-					player->setChooseAttack(false);
-				}
-
-				enemyInPlay->UpdateState(player);
-				enemyInPlay->PerformAction(player);
-			}			
-
-			if(enemyInPlay->isWaiting())
-			{							
-				player->UpdateState(enemyInPlay);	
-				player->PerformAction(enemyInPlay);
+			if(player->enemyChooseAttack() && enemyInPlay->isAlive())
+			{				
+				enemyInPlay->setSelectedAbility(safe_cast<EState>(rGen->Next(2,5)));
+				enemyInPlay->setAttackStarted();
+				player->setChooseAttack(false);
 			}
 
-			
+			enemyInPlay->Update();
+			enemyInPlay->UpdateState(player);
+			enemyInPlay->PerformAction(player);					
 
 			//
 			// Move Viewport
 			//	
 			viewport->moveRelativeToPlayer(battles[player->getBattle()], 0);
 			
-			
-
 			//
 			// Game Win
 			//
-			
-							
+										
 			//
 			// Game Over
 			//
-
 						
 			//
 			//
@@ -389,7 +360,7 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 			// Draw HUD
 			//
 			hud->Draw();
-			enemyInPlay->DrawHud(990, 150);			
+			//enemyInPlay->DrawHud(990, 150);			
 
 			//
 			// Make Buffer Visible 

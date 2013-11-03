@@ -169,12 +169,12 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 				player->setJumping(true);
 				player->setState(JUMP);
 				
-				/*radiansAngle = 300 * 0.01745;
+				radiansAngle = 300 * 0.01745;
 
 				int velocityX = Math::Cos(radiansAngle) * 20;
-				int velocityY = Math::Sin(radiansAngle) * 20;*/
+				int velocityY = Math::Sin(radiansAngle) * 20;
 
-				//player->setVelocityX(player->getvelocityX);
+				//player->setVelocityX(player->getVelocityX);
 				player->setVelocityY(-20);
 			}
 		}

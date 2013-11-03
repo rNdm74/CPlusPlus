@@ -121,16 +121,7 @@ void Sprite::Update()
 		 frameData[HEIGHT]			
 	 );
 
-	 if(alive)
-	 {
-		 currentFrame++; // move to sprites next frame		 
-	 }
-	 else
-	 {
-		 
-		 currentFrame = stateFrames->Count - 1;
-	 }
-	  
+	 currentFrame++; // move to sprites next frame	  
 
 	 //
 	 // Clean up

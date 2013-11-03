@@ -4,6 +4,10 @@
 Enemy::Enemy(Graphics^ startCanvas, String^ startFileName, array<Point>^ startSpriteState, int startX, int startY)
 	  :Sprite(startCanvas, startFileName, startSpriteState, startX, startY)
 {
+	radiansAngle = 300 * 0.01745;			// Reverses creature
+	xVel = Math::Cos(radiansAngle) * 20;
+	yVel = Math::Sin(radiansAngle) * 30;
+
 	facingDirection = LEFT;
 	waiting = true;
 }
@@ -69,11 +73,7 @@ void Enemy::UpdateState(Sprite^ otherSprite)
 				{
 					spriteAbility = START_ABILITY;
 					spriteAction = USE_ABILITY;
-				}
-				else if(otherSprite->getHealth() >= 131)
-				{
-					spriteAction = WIN;
-				}
+				}				
 				else if(health >= 131)
 				{
 					spriteAction = LOSE;
@@ -82,6 +82,13 @@ void Enemy::UpdateState(Sprite^ otherSprite)
 			case WIN:
 				break;
 			case LOSE:
+				if(loseTicks > loseTime)
+				{
+					alive = false;
+					loseTicks = 0;
+					spriteAction = WAITING;
+					otherSprite->setWaiting(true);
+				}
 				break;
 			case USE_ABILITY:
 				if(waiting)
@@ -102,6 +109,14 @@ void Enemy::PerformAction(Sprite^ otherSprite)
 				break;
 			case LOSE:
 				spriteState = HURT;
+				facingDirection = RIGHT;
+								
+				xPos += xVel;
+				yPos += yVel;
+
+				yVel += 2;
+
+				loseTicks++;
 				break;
 			case USE_ABILITY:	
 				ExecuteAbility();

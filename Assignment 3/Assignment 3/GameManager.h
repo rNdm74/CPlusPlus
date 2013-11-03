@@ -102,14 +102,22 @@ ref class GameManager
 //
 //
 //
-		bool playerHasWon()				{ return (enemyInPlay->getHealth() >= 131); }
-		bool playerHasLost()			{ return (player->getHealth() >= 131); }
+		bool playerHasWon()							{ return (enemyInPlay->getHealth() >= 131); }
+		bool playerHasLost()						{ return (player->getHealth() >= 131); }
 
-		void setPlayerAbility(EState s)	{ player->setSelectedAbility(s); }
-
-		bool clickedOnEnemy(Point p)	{ return enemyInPlay->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }
+		bool canUseAbility(EState selectedAbility)	
+		{
+			int availableMana = 132 - player->getMana();
+			int abilityCost = 5 * safe_cast<int>(selectedAbility);
 		
-		bool clickedOnPlayer(Point p)	{ return player->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }
+			return (abilityCost < availableMana);
+		}
+
+		void setPlayerAbility(EState s)				{ player->setSelectedAbility(s); }
+
+		bool clickedOnEnemy(Point p)				{ return enemyInPlay->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }
+		
+		bool clickedOnPlayer(Point p)				{ return player->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }
 
 #pragma endregion
 

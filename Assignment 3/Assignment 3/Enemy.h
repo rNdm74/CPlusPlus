@@ -4,6 +4,9 @@
 ref class Enemy :
 public Sprite
 {
+private:
+	double radiansAngle;
+
 public:
 	Enemy(Graphics^ startCanvas, String^ startFileName, array<Point>^ startSpriteState, int startX, int startY);
 

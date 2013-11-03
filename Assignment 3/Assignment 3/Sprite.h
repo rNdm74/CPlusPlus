@@ -46,9 +46,12 @@ protected:
 	int moveTicks;	
 	int attackTicks;
 	int healTicks;
+	int loseTicks;
+
 
 	static int nextBattleDistance = 170;
 	static int healed = 50;
+	static int loseTime = 10;
 
 	int battle;	
 
@@ -56,6 +59,10 @@ protected:
 
 	int xPos;
 	int yPos;
+
+	int xVel;
+	int yVel;
+
 
 	int xOFFSET;	 
 	int yOFFSET;
@@ -114,15 +121,15 @@ public:
 	Rectangle getCollisionRectangle(int vx, int vy)	{ return Rectangle((xPos - xOFFSET) - vx, (yPos - yOFFSET)-vy, spriteFrame.Width, spriteFrame.Height); }
 
 	// SETS
-	void setXPos(int x)					{ xPos = x;}
-	void setYPos(int y)					{ yPos = y;}
-	void setHealth(int h)				{ health += h; }
-	void setMana(int m)					{ mana += m; }
-	void setCurrentFrame(int c)			{ currentFrame = c; }
-	void setState(EState s)				{ spriteState = s; }
-	void setSelectedAbility(EState s)	{ selectedAbility = s; }
-	void setAttackStarted()				{ attacking = true; }
-	void setHurt(bool h)				{ hurt = h; }
-	void setAlive(bool a)				{ alive = a; }
-	void setWaiting(bool w)				{ waiting = w; }
+	void setXPos(int x)						{ xPos = x;}
+	void setYPos(int y)						{ yPos = y;}
+	void setHealth(int h)					{ health += h; }
+	void setMana(int m)						{ mana += m; }
+	void setCurrentFrame(int c)				{ currentFrame = c; }
+	void setState(EState s)					{ spriteState = s; }
+	void setSelectedAbility(EState s)		{ selectedAbility = s; }
+	void setAttackStarted()					{ attacking = true; }
+	void setHurt(bool h)					{ hurt = h; }
+	void setAlive(bool a)					{ alive = a; }
+	void setWaiting(bool w)					{ waiting = w; }
 };

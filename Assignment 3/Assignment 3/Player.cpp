@@ -42,14 +42,16 @@ void Player::UpdateState(Sprite^ otherSprite)
 				{
 					spriteAbility = START_ABILITY;
 					spriteAction = USE_ABILITY;
-				}				
+				}
+				else if(otherSprite->isAlive() == false)
+				{
+					spriteAction = WIN;
+				}
 				break;
 			case WIN:
 				if(moveTicks > nextBattleDistance)
 				{
-					battle++;
-					otherSprite->setState(HURT);
-					otherSprite->setAlive(true);
+					nextBattle = false;
 					health = 0;
 					selectedAbility = IDLE;
 					spriteState = IDLE;					
@@ -85,12 +87,16 @@ void Player::PerformAction(Sprite^ otherSprite)
 
 				Move();
 
+				if(xPos > 1025 * (battle + 1) && nextBattle == false)
+				{
+					nextBattle = true;
+					battle++;
+				}
+
 				if(xPos > 250 + (1024 * (battle + 1)))
 				{
 					xPos = 250 + (1024 * (battle + 1));					
 				}
-				otherSprite->setXPos(0);
-				otherSprite->setYPos(0);	
 
 				moveTicks++;
 				break;
@@ -174,11 +180,10 @@ void Player::PerformAbility(Sprite^ otherSprite)
 				usedAbility = true;
 
 				setMana(5 * safe_cast<int>(selectedAbility));
+
 				otherSprite->setState(HURT);
 				otherSprite->setHurt(true);
-				otherSprite->setHealth(10 * safe_cast<int>(selectedAbility));				
-
-				if(otherSprite->getHealth() >= 131) otherSprite->setAlive(false);
+				otherSprite->setHealth(5 * safe_cast<int>(selectedAbility));
 			}	
 
 			attackTicks++;

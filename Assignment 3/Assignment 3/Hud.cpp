@@ -70,7 +70,7 @@ void Hud::UpdateHealth(Enemy^ enemy)
 			for(int y = 0; y < enemyHealth; y++)
 				enemyHealthImage->SetPixel(x, y, Color::Transparent);
 
-		enemy->setHealth(-1);
+		//enemy->setHealth(-1);
 
 		enemyRegen = 0;
 	}
@@ -85,7 +85,7 @@ void Hud::UpdateMana(Player^ player)
 
 	if(mana > 132) mana = 132;
 
-	if(manaRegen > 15 && mana >= 0)
+	if(manaRegen > 25 && mana >= 0)
 	{
 		playerManaCanvas->FillEllipse(Brushes::DarkBlue, Rectangle(0,0,132,132));
 
