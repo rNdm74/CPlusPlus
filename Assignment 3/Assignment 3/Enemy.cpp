@@ -5,10 +5,12 @@ Enemy::Enemy(Graphics^ startCanvas, String^ startFileName, Point startLocation, 
 	  :Sprite(startCanvas, startFileName, startLocation, startFrameList)
 {
 	radiansAngle = 300 * 0.01745;			// Reverses creature
+
 	xVel = Math::Cos(radiansAngle) * 20;
 	yVel = Math::Sin(radiansAngle) * 30;
 
 	facingDirection = LEFT;
+
 	waiting = true;
 }
 
@@ -38,31 +40,7 @@ void Enemy::Draw(int newXPos, int newYPos)
 	 delete spriteBitmap;
 }
 
-void Enemy::DrawHud(int newXPos, int newYPos)
-{	 
-	 ////
-	 //// Draw sprites frame to the screen
-	 ////	 
-	 //Bitmap^ spriteBitmap = spriteSheet->Clone(spriteFrame, PixelFormat::Format32bppArgb);
-	 //
-	 ////
-	 //// Flips image on the X axis based on direction
-	 ////
-	 //if(facingDirection == RIGHT) spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);	
-	 //
-	 ////
-	 //// Get frame offsets
-	 ////	 
-	 //xOFFSET = spriteFrame.Width;	 
-	 //yOFFSET = spriteFrame.Height;
-	 //
-	 ////
-	 //// Draws bitmap to the screen
-	 ////
-	 //canvas->DrawImage(spriteBitmap, newXPos + (xOFFSET / 2) - xOFFSET, newYPos + (yOFFSET / 2) - yOFFSET, xOFFSET / 2.5, yOFFSET / 2.5);
-	 //
-	 //delete spriteBitmap;
-}
+
 
 void Enemy::UpdateState(Sprite^ otherSprite)
 	{		
@@ -77,8 +55,7 @@ void Enemy::UpdateState(Sprite^ otherSprite)
 				else if(health >= 131)
 				{
 					spriteAction = LOSE;
-				}
-				
+				}				
 				break;
 
 			case WIN:
@@ -92,6 +69,7 @@ void Enemy::UpdateState(Sprite^ otherSprite)
 					spriteAction = WAITING;
 				}
 				break;
+
 			case USE_ABILITY:
 				if(waiting)
 				{
@@ -107,17 +85,16 @@ void Enemy::PerformAction(Sprite^ otherSprite)
 		{
 			case WAITING:
 				break;
+
 			case WIN:
 				break;
+
 			case LOSE:
 				spriteState = HURT;
-				facingDirection = RIGHT;
-								
+				facingDirection = RIGHT;								
 				xPos += xVel;
 				yPos += yVel;
-
-				yVel += 2;
-
+				yVel += GRAVITY;
 				loseTicks++;
 				break;
 			case USE_ABILITY:	
@@ -180,7 +157,7 @@ void Enemy::PerformAbility(Sprite^ otherSprite)
 			{
 				otherSprite->setState(HURT);
 				otherSprite->setHurt(true);
-				otherSprite->setHealth(25 * safe_cast<int>(selectedAbility));
+				otherSprite->setHealth(healthCost);
 			}		
 
 			attackTicks++;
@@ -217,14 +194,17 @@ void Enemy::ExecuteAbility()
 			case BOSS_HURT:					// Desecrate
 				attackTime = 8;
 				moveDistance = 70;
+				healthCost = 40;
 				break;
 			case LESSER_ICE:				// Tentishock
 				attackTime = 8;
-				moveDistance = 70;			
+				moveDistance = 70;	
+				healthCost = 50;
 				break;
 			case GREATER_ICE:				// Oil Spill
 				attackTime = 8;
 				moveDistance = 70;
+				healthCost = 60;
 				break;		
 		}
 	}
@@ -235,14 +215,17 @@ void Enemy::ExecuteAbility()
 			case BOSS_HURT:					// Desecrate
 				attackTime = 10;
 				moveDistance = 0;
+				healthCost = 40;
 				break;
 			case LESSER_ICE:				// Tentishock
 				attackTime = 10;
-				moveDistance = 0;			
+				moveDistance = 0;
+				healthCost = 50;
 				break;
 			case GREATER_ICE:				// Oil Spill
 				attackTime = 10;
 				moveDistance = 0;
+				healthCost = 60;
 				break;		
 		}
 	}		

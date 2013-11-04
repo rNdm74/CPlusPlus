@@ -9,11 +9,6 @@ using namespace System::Windows::Forms;
 using namespace System::Data;
 using namespace System::Drawing;
 
-//#define N_COLS 60	// X Tiles
-//#define N_ROWS 30 	// Y tiles
-//#define N_TILES 3	// Tiles array size
-//#define T_SIZE 32	// Tile bitmap size
-
 ref class TileMap
 	{
 	private:
@@ -22,14 +17,6 @@ ref class TileMap
 		TileList^ tiles;
 
 		Graphics^ canvas;
-
-		Random^ rGen;
-
-		int xPos;
-		int yPos;
-
-		int xDirection;
-		int yDirection;
 
 	public:
 		TileMap(Graphics^ panelCanvas, array<int, 2>^ startTileMap);

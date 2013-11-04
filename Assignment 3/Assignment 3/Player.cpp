@@ -4,12 +4,17 @@
 Player::Player(Graphics^ startCanvas, String^ startFileName, Point startLocation, ArrayList^ startFrameList)
 	   :Sprite(startCanvas, startFileName, startLocation, startFrameList)
 {
-	radiansAngle = 220 * 0.01745;			// Reverses creature
+	// Angle player flys when killed
+	radiansAngle = 220 * 0.01745;
+
+	// Sets angle and power
 	xVel = Math::Cos(radiansAngle) * 30;
 	yVel = Math::Sin(radiansAngle) * 40;
 
+	// Sets the facing direction of the player
 	facingDirection = RIGHT;
 
+	// Points that player will clamp to when moving between battles
 	battleStartPoints = gcnew array<int>
 	{
 		1024 + 250,
@@ -51,9 +56,10 @@ void Player::UpdateState(Sprite^ otherSprite)
 		{
 			case WAITING:
 				if(attacking && otherSprite->isAlive())
-				{
+				{					
 					spriteAbility = START_ABILITY;
 					spriteAction = USE_ABILITY;
+					ExecuteAbility();
 				}
 				else if(health >= 131)
 				{
@@ -66,7 +72,7 @@ void Player::UpdateState(Sprite^ otherSprite)
 				{
 					spriteAction = GAMEOVER;					
 				}
-				else if(battle > 0 && xPos > battleStartPoints[battleScreen])
+				else if(battleSelection > 0 && xPos > battleStartPoints[battleScreen])
 				{
 					battleScreen++;
 					nextBattle = false;
@@ -100,8 +106,7 @@ void Player::UpdateState(Sprite^ otherSprite)
 
 			case HOME:
 				if(moveTicks > moveDistance)
-				{
-					
+				{					
 					moveTicks = 0;
 					spriteAction = WIN;
 				}
@@ -111,7 +116,6 @@ void Player::UpdateState(Sprite^ otherSprite)
 				{
 					gameover = true;
 				}
-
 				spriteState = DODGE;				
 				break;
 		}		
@@ -129,33 +133,26 @@ void Player::PerformAction(Sprite^ otherSprite)
 			case WIN:
 				spriteState	= WALK;
 				facingDirection	= RIGHT;
-
 				Move();
-
-				if(xPos > 1025 * (battle + 1) && nextBattle == false)
+				if(xPos > 1025 * (battleSelection + 1) && nextBattle == false)
 				{
 					nextBattle = true;
-					battle++;
-				}				
-
+					battleSelection++;
+				}
 				moveTicks++;
 				break;
 
 			case LOSE:
 				spriteState = HURT;
-				facingDirection = RIGHT;
-								
+				facingDirection = RIGHT;								
 				xPos += xVel;
 				yPos += yVel;
-
-				yVel += 2;
-
+				yVel += GRAVITY;
 				loseTicks++;
 				break;
 
 			case USE_ABILITY:					
-				ExecuteAbility();
-
+				
 				UpdateAbility();
 				PerformAbility(otherSprite);
 				break;	
@@ -163,9 +160,7 @@ void Player::PerformAction(Sprite^ otherSprite)
 			case HOME:				
 				facingDirection	= LEFT;
 				spriteState	= WALK;
-
 				Move();
-
 				moveTicks++;
 				break;
 
@@ -234,53 +229,43 @@ void Player::PerformAbility(Sprite^ otherSprite)
 			break;
 
 		case ATTACK:			
-			moveTicks = 0;
-			
+			moveTicks = 0;			
 			spriteState = selectedAbility;
 
 			if(attackTicks > attackTime && usedAbility == false)
 			{
 				usedAbility = true;
 
-				setMana(5 * safe_cast<int>(selectedAbility));
+				setMana(manaCost);
 
 				otherSprite->setState(HURT);
 				otherSprite->setHurt(true);
-				otherSprite->setHealth(15 * safe_cast<int>(selectedAbility));
+				otherSprite->setHealth(healthCost);
 			}	
 
-			attackTicks++;
-
 			attackFinished = finishedAnimation;
+			attackTicks++;			
 			break;
 
 		case WALK_BACKWARD:	
 			otherSprite->setHurt(false);
 			otherSprite->setState(IDLE);
-
-			usedAbility	= false;			
-			
+			usedAbility	= false;
 			attackTicks	= 0;
-
 			spriteState	= WALK;
 			facingDirection	= LEFT;
-
 			Move();
-
 			moveTicks++;
 			break;
 
 		case FINISHED:
 			otherSprite->setWaiting(false);
-
 			moveTicks = 0;
 			healTicks = 0;
-
 			spriteState	= IDLE;
 			selectedAbility	= IDLE;
 			facingDirection	= RIGHT;
 			spriteAction = WAITING;	
-
 			attacking = false;
 			waiting	= true;
 			turnOver = true;
@@ -290,19 +275,15 @@ void Player::PerformAbility(Sprite^ otherSprite)
 			if(potion == "health")
 			{
 				health--;
-
 				if(health < 0) health = 0;
 			}
 			else
 			{
 				mana--;
-
 				if(mana < 0) mana = 0;
 			}
-
 			spriteState	= selectedAbility;
-			attackFinished = finishedAnimation;	
-
+			attackFinished = finishedAnimation;
 			healTicks++;
 			break;
 	}
@@ -315,26 +296,38 @@ void Player::ExecuteAbility()
 		case LESSER_ICE:
 			attackTime = 30;
 			moveDistance = 10;
+			healthCost = 40 - battleSelection;
+			manaCost = 40;
 			break;
 		case GREATER_ICE:
 			attackTime = 18;
 			moveDistance = 10;
+			healthCost = 50;
+			manaCost = 50;
 			break;
 		case LESSER_WAND:
 			attackTime = 8;
 			moveDistance = 60;
+			healthCost = 10;
+			manaCost = 10;
 			break;
 		case ELECTRIC_STORM:
 			attackTime = 18;
 			moveDistance = 10;
+			healthCost = 60;
+			manaCost = 60;
 			break;
 		case GREATER_WAND:
 			attackTime = 8;
 			moveDistance = 60;
+			healthCost = 20;
+			manaCost = 20;
 			break;
 		case WHIRLWIND:
 			attackTime = 8;
 			moveDistance = 60;
+			healthCost = 30;
+			manaCost = 40;
 			break;
 		case HEAL:
 			moveDistance = 0;			

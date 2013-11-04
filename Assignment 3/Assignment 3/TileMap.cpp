@@ -5,8 +5,6 @@ TileMap::TileMap(Graphics^ panelCanvas,  array<int, 2>^ startTileMap)
 	{
 		canvas = panelCanvas;
 
-		rGen = gcnew Random();
-
 		tiles = gcnew TileList();
 
 		tileMap = startTileMap;	

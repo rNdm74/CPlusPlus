@@ -232,10 +232,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SpriteList.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -296,6 +292,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\FileReader.h"
+				>
+			</File>
+			<File
 				RelativePath=".\FrameManager.h"
 				>
 			</File>
@@ -317,10 +317,6 @@
 			</File>
 			<File
 				RelativePath=".\Sprite.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SpriteList.h"
 				>
 			</File>
 			<File
@@ -355,14 +351,6 @@
 			</File>
 			<File
 				RelativePath=".\app.rc"
-				>
-			</File>
-			<File
-				RelativePath=".\my-mouse-pointer.cur"
-				>
-			</File>
-			<File
-				RelativePath=".\Pit-Tux-Crystal-Bw-Loupe.ico"
 				>
 			</File>
 		</Filter>

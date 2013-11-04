@@ -6,155 +6,33 @@
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
 		/// </summary>
-GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle, Player^ startPlayer, array<Enemy^>^ startEnemies)
+GameManager::GameManager(Graphics^ startCanvas, Player^ startPlayer, array<Enemy^>^ startEnemies)
 	{
 		//
-		// Create canvas from form
 		//
-		//formCanvas = startCanvas;
 		//
-		// Client viewable screen bounds
-		//
-		clientRectangle = startClientRectangle;
-
 		player = startPlayer;
 
-		enemies = startEnemies;
-
 		//
 		//
 		//
-		//fManager = startFrameManager;
-
+		enemies = startEnemies;				
 		
-		//
-		// Create graphics size of the screen
-		//
-		//dbBitmap = gcnew Bitmap(clientRectangle.Width, clientRectangle.Height);		 
 		//
 		// Grab its Graphics
 		//
 		dbGraphics = startCanvas;	
+
 		//
 		// Create random
 		//
 		rGen = gcnew Random();
 		
 		//
-		// Start level
-		//
-		viewportScroll = 0;	
-
-		//
-		//
-		//
-		/*int startY = clientRectangle.Height - 200;
-
-		startLocations = gcnew array<Point>
-		{
-			Point(250,				   startY),
-			Point((T_WIDTH)		- 100, startY),
-			Point((T_WIDTH * 2) - 100, startY),
-			Point((T_WIDTH * 3) - 100, startY),
-			Point((T_WIDTH * 4) - 100, startY),
-			Point((T_WIDTH * 5) - 100, startY),
-		};*/
-
-		//
-		//
-		//
-
-		//
-		// Create object
-		//
-		//InitializeGameCharacters();
-
-		//
 		// Create game with objects
 		//
 		InitializeGame();
 	}
-#pragma endregion
-
-
-#pragma region Initialize Game Characters
-				
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		void GameManager::InitializeGameCharacters()
-		{
-			////
-			//// Create Player
-			////
-			//player = gcnew Player
-			//(
-			//	dbGraphics, 
-			//	"player", 				
-			//	startLocations[PLAYER],
-			//	fManager->getPlayerList()
-			//);
-			//			
-			///// <summary>
-			///// Required method for Designer support - do not modify
-			///// the contents of this method with the code editor.
-			///// </summary>
-			//cocoon = gcnew Enemy
-			//(
-			//	dbGraphics, 
-			//	"cocoon", 				
-			//	startLocations[COCOON],
-			//	fManager->getCocoonList()
-			//);
-			////
-			////
-			////			
-			//makhana = gcnew Enemy
-			//(
-			//	dbGraphics, 
-			//	"makhana", 				
-			//	startLocations[MAKHANA],
-			//	fManager->getMakhanaList()
-			//);
-			////
-			////
-			////
-			//floppit = gcnew Enemy
-			//(
-			//	dbGraphics, 
-			//	"floppit", 				 
-			//	startLocations[FLOPPIT],
-			//	fManager->getFloppitList()
-			//);
-			////
-			////
-			////
-			//fluppit = gcnew Enemy
-			//(
-			//	dbGraphics, 
-			//	"fluppit", 				
-			//	startLocations[FLUPPIT],
-			//	fManager->getFluppitList()
-			//);
-			////
-			////
-			////			
-			//peruna = gcnew Enemy
-			//(
-			//	dbGraphics, 
-			//	"peruna",
-			//	startLocations[PERUNA],
-			//	fManager->getPerunaList()
-			//);
-
-			//fManager->GarbageCollect();
-			//fManager = nullptr;
-			//delete fManager;
-
-			//GC::GetTotalMemory(true);
-			//GC::Collect(0);
-		}
 #pragma endregion
 
 #pragma region Initialize Game
@@ -191,15 +69,7 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle,
 			//
 			// Create enemies
 			//
-			/*enemies = gcnew array<Enemy^>
-			{
-				floppit,
-				fluppit,
-				peruna,
-				cocoon,
-				makhana
-			};*/
-			
+						
 			//
 			//
 			//
@@ -220,36 +90,6 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle,
 #pragma endregion
 
 
-
-
-
-
-
-#pragma region Keyboard Input
-		/// <summary>
-		/// Takes the key code data and changes the players state.
-		/// </summary>
-		void GameManager::KeyDown(Keys code)
-		{			
-		}
-		//
-		//
-		//
-		void GameManager::KeyUp(Keys code)
-		{	
-		}
-		//
-		//
-		//
-		void GameManager::MouseDown(Point p)
-		{
-		}		
-		//
-		//
-		//
-#pragma endregion
-
-
 #pragma region Game Update and Draw
 		/// <summary>
 		/// Updates all game components after all components are
@@ -258,7 +98,7 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle,
 		/// </summary>
 		void GameManager::Update()
 		{	
-			enemyInPlay = enemies[player->getBattle()];
+			enemyInPlay = enemies[player->getBattleSelection()];
 			//
 			// Update hud information
 			//
@@ -271,6 +111,8 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle,
 			player->UpdateState(enemyInPlay);	
 			player->PerformAction(enemyInPlay);
 
+			
+
 			if(player->enemyChooseAttack() && enemyInPlay->isAlive())
 			{				
 				enemyInPlay->setSelectedAbility(safe_cast<EState>(rGen->Next(2,5)));
@@ -280,12 +122,12 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle,
 
 			enemyInPlay->Update();
 			enemyInPlay->UpdateState(player);
-			enemyInPlay->PerformAction(player);					
+			enemyInPlay->PerformAction(player);
 
 			//
 			// Move Viewport
 			//	
-			viewport->moveRelativeToPlayer(battles[player->getBattle()], 0);			
+			viewport->moveRelativeToPlayer(battles[player->getBattleSelection()], 0);			
 		}
 		/// <summary>
 		/// Draws all game components to an off screen canvas.
@@ -311,15 +153,6 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle,
 			// Draw HUD
 			//
 			hud->Draw();
-			//enemyInPlay->DrawHud(990, 150);	
-
-			/*dbGraphics->FillRectangle(Brushes::Black, 250 + (1024 * 0), clientRectangle.Height - 200, 2 ,2);  
-			dbGraphics->FillRectangle(Brushes::Black, 250 + (1024 * 1), clientRectangle.Height - 200, 2 ,2);  
-			dbGraphics->FillRectangle(Brushes::Black, 250 + (1024 * 2), clientRectangle.Height - 200, 2 ,2);  
-			dbGraphics->FillRectangle(Brushes::Black, 250 + (1024 * 3), clientRectangle.Height - 200, 2 ,2);  
-			dbGraphics->FillRectangle(Brushes::Black, 250 + (1024 * 4), clientRectangle.Height - 200, 2 ,2);*/  
-
-			
 		}
 #pragma endregion
 
@@ -336,37 +169,12 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle,
 		//
 		//
 		//
-		void GameManager::ResetGame()
+		bool GameManager::CanUseAbility(EState selectedAbility)	
 		{
-			/*player->setLocation(startLocations[PLAYER]);
-			floppit->setLocation(startLocations[FLOPPIT]);
-			fluppit->setLocation(startLocations[FLUPPIT]);
-			peruna->setLocation(startLocations[PERUNA]);
-			cocoon->setLocation(startLocations[COCOON]);
-			makhana->setLocation(startLocations[MAKHANA]);*/			
-		}
-		//
-		//
-		//	
-		void GameManager::CheckLevelWin()
-		{
-			//
-			// Checks if a level has been completed, 
-			// if it is completed and not at the max level 
-			// a new game is initialized, the
-			// flag value, flag count and coins collected are reset
-			//			
-		}
-		//
-		//
-		//		
-		void GameManager::CheckLevelOver()
-		{
-			//
-			// Checks is the game is over, either all lives lost,
-			// or max level has been reached.
-			// A check is done to save the high score to and external file.
-			//			
+			int availableMana = 132 - player->getMana();
+			int abilityCost = 5 * safe_cast<int>(selectedAbility);
+		
+			return (abilityCost < availableMana);
 		}
 		//
 		//

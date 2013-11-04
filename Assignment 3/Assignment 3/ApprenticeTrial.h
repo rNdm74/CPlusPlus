@@ -63,7 +63,8 @@ namespace Assignment3 {
 	private: GameManager^ gManager;
 	private: FrameManager^ fManager;
 	private: System::Windows::Forms::Timer^  draw;
-	private: System::Windows::Forms::Timer^  update;
+	private: System::Windows::Forms::Timer^  load;
+
 
 
 	private: System::Windows::Forms::PictureBox^  lesser_wand;
@@ -87,14 +88,22 @@ namespace Assignment3 {
 
 
 	private: System::Windows::Forms::PictureBox^  mana_potion3;
-	private: System::Windows::Forms::Button^  button1;
+	private: System::Windows::Forms::Button^  play;
+	private: System::Windows::Forms::Panel^  start_screen;
 
-	private: System::Windows::Forms::Panel^  panel1;
-	private: System::Windows::Forms::Label^  label1;
-	private: System::Windows::Forms::ProgressBar^  progressBar1;
-	private: System::Windows::Forms::RichTextBox^  richTextBox1;
-	private: System::Windows::Forms::Label^  label2;
-	private: System::Windows::Forms::PictureBox^  pictureBox1;
+
+
+	private: System::Windows::Forms::Label^  loading_events;
+	private: System::Windows::Forms::ProgressBar^  loading_bar;
+	private: System::Windows::Forms::RichTextBox^  story;
+	private: System::Windows::Forms::Label^  title;
+	private: System::Windows::Forms::PictureBox^  apprentice;
+
+
+
+
+
+
 	private: System::Windows::Forms::Label^  label3;
 
 
@@ -117,7 +126,7 @@ namespace Assignment3 {
 			this->components = (gcnew System::ComponentModel::Container());
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(ApprenticeTrial::typeid));
 			this->draw = (gcnew System::Windows::Forms::Timer(this->components));
-			this->update = (gcnew System::Windows::Forms::Timer(this->components));
+			this->load = (gcnew System::Windows::Forms::Timer(this->components));
 			this->lesser_wand = (gcnew System::Windows::Forms::PictureBox());
 			this->greater_wand = (gcnew System::Windows::Forms::PictureBox());
 			this->whirlwind = (gcnew System::Windows::Forms::PictureBox());
@@ -130,13 +139,13 @@ namespace Assignment3 {
 			this->mana_potion1 = (gcnew System::Windows::Forms::PictureBox());
 			this->mana_potion2 = (gcnew System::Windows::Forms::PictureBox());
 			this->mana_potion3 = (gcnew System::Windows::Forms::PictureBox());
-			this->button1 = (gcnew System::Windows::Forms::Button());
-			this->panel1 = (gcnew System::Windows::Forms::Panel());
-			this->label2 = (gcnew System::Windows::Forms::Label());
-			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->progressBar1 = (gcnew System::Windows::Forms::ProgressBar());
-			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
-			this->richTextBox1 = (gcnew System::Windows::Forms::RichTextBox());
+			this->play = (gcnew System::Windows::Forms::Button());
+			this->start_screen = (gcnew System::Windows::Forms::Panel());
+			this->title = (gcnew System::Windows::Forms::Label());
+			this->loading_events = (gcnew System::Windows::Forms::Label());
+			this->loading_bar = (gcnew System::Windows::Forms::ProgressBar());
+			this->apprentice = (gcnew System::Windows::Forms::PictureBox());
+			this->story = (gcnew System::Windows::Forms::RichTextBox());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->lesser_wand))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->greater_wand))->BeginInit();
@@ -149,8 +158,8 @@ namespace Assignment3 {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mana_potion1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mana_potion2))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mana_potion3))->BeginInit();
-			this->panel1->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox1))->BeginInit();
+			this->start_screen->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->apprentice))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// draw
@@ -158,10 +167,10 @@ namespace Assignment3 {
 			this->draw->Interval = 1;
 			this->draw->Tick += gcnew System::EventHandler(this, &ApprenticeTrial::draw_Tick);
 			// 
-			// update
+			// load
 			// 
-			this->update->Interval = 1000;
-			this->update->Tick += gcnew System::EventHandler(this, &ApprenticeTrial::update_Tick);
+			this->load->Interval = 1000;
+			this->load->Tick += gcnew System::EventHandler(this, &ApprenticeTrial::update_Tick);
 			// 
 			// lesser_wand
 			// 
@@ -338,105 +347,106 @@ namespace Assignment3 {
 			this->ability_info->SetToolTip(this->mana_potion3, L"Health Potion\r\n\r\n50 Restore Health");
 			this->mana_potion3->Click += gcnew System::EventHandler(this, &ApprenticeTrial::ability_Click);
 			// 
-			// button1
+			// play
 			// 
-			this->button1->Font = (gcnew System::Drawing::Font(L"Tahoma", 24, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+			this->play->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+			this->play->Font = (gcnew System::Drawing::Font(L"Tahoma", 24, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->button1->Location = System::Drawing::Point(681, 611);
-			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(235, 60);
-			this->button1->TabIndex = 23;
-			this->button1->Text = L"PLAY";
-			this->button1->UseVisualStyleBackColor = true;
-			this->button1->Click += gcnew System::EventHandler(this, &ApprenticeTrial::button1_Click);
+			this->play->Location = System::Drawing::Point(501, 611);
+			this->play->Name = L"play";
+			this->play->Size = System::Drawing::Size(235, 60);
+			this->play->TabIndex = 23;
+			this->play->Text = L"PLAY";
+			this->play->UseVisualStyleBackColor = true;
+			this->play->Click += gcnew System::EventHandler(this, &ApprenticeTrial::play_Click);
 			// 
-			// panel1
+			// start_screen
 			// 
-			this->panel1->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"panel1.BackgroundImage")));
-			this->panel1->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
-			this->panel1->Controls->Add(this->label2);
-			this->panel1->Controls->Add(this->label1);
-			this->panel1->Controls->Add(this->button1);
-			this->panel1->Controls->Add(this->progressBar1);
-			this->panel1->Controls->Add(this->pictureBox1);
-			this->panel1->Controls->Add(this->richTextBox1);
-			this->panel1->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->panel1->Location = System::Drawing::Point(0, 0);
-			this->panel1->Name = L"panel1";
-			this->panel1->Size = System::Drawing::Size(1008, 729);
-			this->panel1->TabIndex = 25;
+			this->start_screen->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"start_screen.BackgroundImage")));
+			this->start_screen->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->start_screen->Controls->Add(this->title);
+			this->start_screen->Controls->Add(this->play);
+			this->start_screen->Controls->Add(this->loading_bar);
+			this->start_screen->Controls->Add(this->apprentice);
+			this->start_screen->Controls->Add(this->story);
+			this->start_screen->Controls->Add(this->loading_events);
+			this->start_screen->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->start_screen->Location = System::Drawing::Point(0, 0);
+			this->start_screen->Name = L"start_screen";
+			this->start_screen->Size = System::Drawing::Size(1008, 729);
+			this->start_screen->TabIndex = 25;
 			// 
-			// label2
+			// title
 			// 
-			this->label2->BackColor = System::Drawing::Color::Transparent;
-			this->label2->Font = (gcnew System::Drawing::Font(L"Tahoma", 36, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+			this->title->BackColor = System::Drawing::Color::Transparent;
+			this->title->Font = (gcnew System::Drawing::Font(L"Tahoma", 36, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0), true));
-			this->label2->ForeColor = System::Drawing::SystemColors::Info;
-			this->label2->Location = System::Drawing::Point(79, 45);
-			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(563, 72);
-			this->label2->TabIndex = 28;
-			this->label2->Text = L"The Apprentice\'s Trial";
-			this->label2->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
-			this->label2->UseCompatibleTextRendering = true;
+			this->title->ForeColor = System::Drawing::SystemColors::Info;
+			this->title->Location = System::Drawing::Point(214, 54);
+			this->title->Name = L"title";
+			this->title->Size = System::Drawing::Size(563, 72);
+			this->title->TabIndex = 28;
+			this->title->Text = L"The Apprentice\'s Trial";
+			this->title->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->title->UseCompatibleTextRendering = true;
 			// 
-			// label1
+			// loading_events
 			// 
-			this->label1->BackColor = System::Drawing::Color::Transparent;
-			this->label1->Font = (gcnew System::Drawing::Font(L"Tahoma", 36, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+			this->loading_events->BackColor = System::Drawing::Color::Transparent;
+			this->loading_events->Font = (gcnew System::Drawing::Font(L"Tahoma", 30, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0), true));
-			this->label1->ForeColor = System::Drawing::SystemColors::Info;
-			this->label1->Location = System::Drawing::Point(187, 565);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(488, 72);
-			this->label1->TabIndex = 26;
-			this->label1->Text = L"Loading";
-			this->label1->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
-			this->label1->UseCompatibleTextRendering = true;
-			this->label1->Visible = false;
+			this->loading_events->ForeColor = System::Drawing::SystemColors::Info;
+			this->loading_events->Location = System::Drawing::Point(610, 597);
+			this->loading_events->Name = L"loading_events";
+			this->loading_events->Size = System::Drawing::Size(386, 60);
+			this->loading_events->TabIndex = 26;
+			this->loading_events->Text = L"Loading";
+			this->loading_events->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->loading_events->UseCompatibleTextRendering = true;
+			this->loading_events->Visible = false;
 			// 
-			// progressBar1
+			// loading_bar
 			// 
-			this->progressBar1->Location = System::Drawing::Point(0, 640);
-			this->progressBar1->Maximum = 140;
-			this->progressBar1->Name = L"progressBar1";
-			this->progressBar1->Size = System::Drawing::Size(1008, 60);
-			this->progressBar1->Step = 1;
-			this->progressBar1->Style = System::Windows::Forms::ProgressBarStyle::Continuous;
-			this->progressBar1->TabIndex = 25;
-			this->progressBar1->Visible = false;
+			this->loading_bar->Location = System::Drawing::Point(0, 657);
+			this->loading_bar->Maximum = 140;
+			this->loading_bar->Name = L"loading_bar";
+			this->loading_bar->Size = System::Drawing::Size(1008, 60);
+			this->loading_bar->Step = 1;
+			this->loading_bar->Style = System::Windows::Forms::ProgressBarStyle::Continuous;
+			this->loading_bar->TabIndex = 25;
+			this->loading_bar->Visible = false;
 			// 
-			// pictureBox1
+			// apprentice
 			// 
-			this->pictureBox1->BackColor = System::Drawing::Color::Black;
-			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox1.Image")));
-			this->pictureBox1->Location = System::Drawing::Point(49, 504);
-			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(138, 185);
-			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::AutoSize;
-			this->pictureBox1->TabIndex = 29;
-			this->pictureBox1->TabStop = false;
+			this->apprentice->BackColor = System::Drawing::Color::Black;
+			this->apprentice->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"apprentice.Image")));
+			this->apprentice->Location = System::Drawing::Point(34, 466);
+			this->apprentice->Name = L"apprentice";
+			this->apprentice->Size = System::Drawing::Size(138, 185);
+			this->apprentice->SizeMode = System::Windows::Forms::PictureBoxSizeMode::AutoSize;
+			this->apprentice->TabIndex = 29;
+			this->apprentice->TabStop = false;
 			// 
-			// richTextBox1
+			// story
 			// 
-			this->richTextBox1->BackColor = System::Drawing::Color::Black;
-			this->richTextBox1->BorderStyle = System::Windows::Forms::BorderStyle::None;
-			this->richTextBox1->Cursor = System::Windows::Forms::Cursors::Arrow;
-			this->richTextBox1->DetectUrls = false;
-			this->richTextBox1->Font = (gcnew System::Drawing::Font(L"Tahoma", 16, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+			this->story->BackColor = System::Drawing::Color::Black;
+			this->story->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->story->Cursor = System::Windows::Forms::Cursors::Arrow;
+			this->story->DetectUrls = false;
+			this->story->Font = (gcnew System::Drawing::Font(L"Tahoma", 16, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0), true));
-			this->richTextBox1->ForeColor = System::Drawing::SystemColors::Info;
-			this->richTextBox1->ImeMode = System::Windows::Forms::ImeMode::Off;
-			this->richTextBox1->Location = System::Drawing::Point(95, 160);
-			this->richTextBox1->Margin = System::Windows::Forms::Padding(50);
-			this->richTextBox1->Name = L"richTextBox1";
-			this->richTextBox1->ReadOnly = true;
-			this->richTextBox1->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::None;
-			this->richTextBox1->ShortcutsEnabled = false;
-			this->richTextBox1->ShowSelectionMargin = true;
-			this->richTextBox1->Size = System::Drawing::Size(821, 345);
-			this->richTextBox1->TabIndex = 27;
-			this->richTextBox1->Text = resources->GetString(L"richTextBox1.Text");
+			this->story->ForeColor = System::Drawing::SystemColors::Info;
+			this->story->ImeMode = System::Windows::Forms::ImeMode::Off;
+			this->story->Location = System::Drawing::Point(197, 186);
+			this->story->Margin = System::Windows::Forms::Padding(50);
+			this->story->Name = L"story";
+			this->story->ReadOnly = true;
+			this->story->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::None;
+			this->story->ShortcutsEnabled = false;
+			this->story->ShowSelectionMargin = true;
+			this->story->Size = System::Drawing::Size(620, 405);
+			this->story->TabIndex = 27;
+			this->story->Text = resources->GetString(L"story.Text");
 			// 
 			// label3
 			// 
@@ -459,7 +469,7 @@ namespace Assignment3 {
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"$this.BackgroundImage")));
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
 			this->ClientSize = System::Drawing::Size(1008, 729);
-			this->Controls->Add(this->panel1);
+			this->Controls->Add(this->start_screen);
 			this->Controls->Add(this->mana_potion3);
 			this->Controls->Add(this->mana_potion2);
 			this->Controls->Add(this->mana_potion1);
@@ -480,7 +490,6 @@ namespace Assignment3 {
 			this->Text = L"The Apprentice\'s Trial";
 			this->Load += gcnew System::EventHandler(this, &ApprenticeTrial::ApprenticeTrial_Load);
 			this->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &ApprenticeTrial::ApprenticeTrial_MouseClick);
-			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &ApprenticeTrial::ApprenticeTrial_KeyDown);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->lesser_wand))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->greater_wand))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->whirlwind))->EndInit();
@@ -492,9 +501,9 @@ namespace Assignment3 {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mana_potion1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mana_potion2))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mana_potion3))->EndInit();
-			this->panel1->ResumeLayout(false);
-			this->panel1->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox1))->EndInit();
+			this->start_screen->ResumeLayout(false);
+			this->start_screen->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->apprentice))->EndInit();
 			this->ResumeLayout(false);
 
 		}
@@ -512,14 +521,10 @@ namespace Assignment3 {
 				 dbGraphics = Graphics::FromImage(dbBitmap);
 
 				 fManager = gcnew FrameManager();
+				 
 				 Focus();
-
-				 richTextBox1->SelectionStart = richTextBox1->Text->Length;
-				 richTextBox1->ScrollToCaret();
 			 }
-	private: System::Void ApprenticeTrial_MouseDown(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
-				 gManager->MouseDown(e->Location);
-			 }	
+		
 	private: System::Void draw_Tick(System::Object^  sender, System::EventArgs^  e) {
 				 if(gameHasLoaded)
 				 {
@@ -530,10 +535,10 @@ namespace Assignment3 {
 					 if(gManager->isGameOver())
 					 {
 						 draw->Enabled = false;
-						 label1->Visible = false;
-						 progressBar1->Visible = false;
-						 panel1->Visible = true;
-						 button1->Visible = true;
+						 loading_events->Visible = false;
+						 loading_bar->Visible = false;
+						 start_screen->Visible = true;
+						 play->Visible = true;
 					 }
 
 					 gManager->Update();
@@ -545,17 +550,19 @@ namespace Assignment3 {
 				 }
 				 else
 				 {
-					 progressBar1->Value = loading;
+					 loading_bar->Value = loading;
 					 loading++;
 				 }
 			 }
 	private: System::Void update_Tick(System::Object^  sender, System::EventArgs^  e) {
+				 
+
 				 int startY = ClientRectangle.Height - 200;
 
 				 array<Point>^ startLocations = gcnew array<Point>
 				 { 
-					 Point(250,			        startY),
-					 Point((T_WIDTH)	 - 100, startY),
+					 Point(250,startY),
+					 Point((T_WIDTH) - 100, startY),
 					 Point((T_WIDTH * 2) - 100, startY),
 					 Point((T_WIDTH * 3) - 100, startY),
 					 Point((T_WIDTH * 4) - 100, startY),
@@ -577,10 +584,10 @@ namespace Assignment3 {
 
 				draw->Enabled = false;
 
-				label1->Text = "Creating Player";
-				label1->Refresh();
+				loading_events->Text = "Creating Player";
+				loading_events->Refresh();
 				time += 20;
-				progressBar1->Value = time;
+				loading_bar->Value = time;
 							
 				/// <summary>
 				/// Required method for Designer support - do not modify
@@ -594,10 +601,10 @@ namespace Assignment3 {
 					fManager->getCocoonList()
 				);
 
-				label1->Text = "Creating Cocoon";
-				label1->Refresh();
+				loading_events->Text = "Creating Cocoon";
+				loading_events->Refresh();
 				time += 20;
-				progressBar1->Value = time;
+				loading_bar->Value = time;
 				//
 				//
 				//			
@@ -609,10 +616,10 @@ namespace Assignment3 {
 					fManager->getMakhanaList()
 				);
 
-				label1->Text = "Creating Makhana";
-				label1->Refresh();
+				loading_events->Text = "Creating Makhana";
+				loading_events->Refresh();
 				time += 20;
-				progressBar1->Value = time;
+				loading_bar->Value = time;
 				//
 				//
 				//
@@ -624,10 +631,10 @@ namespace Assignment3 {
 					fManager->getFloppitList()
 				);
 
-				label1->Text = "Creating Floppit";
-				label1->Refresh();
+				loading_events->Text = "Creating Floppit";
+				loading_events->Refresh();
 				time += 20;
-				progressBar1->Value = time;
+				loading_bar->Value = time;
 				//
 				//
 				//
@@ -639,10 +646,10 @@ namespace Assignment3 {
 					fManager->getFluppitList()
 				);
 
-				label1->Text = "Creating Fluppit";
-				label1->Refresh();
+				loading_events->Text = "Creating Fluppit";
+				loading_events->Refresh();
 				time += 20;
-				progressBar1->Value = time;
+				loading_bar->Value = time;
 				//
 				//
 				//			
@@ -654,36 +661,28 @@ namespace Assignment3 {
 					fManager->getPerunaList()
 				);
 
-				label1->Text = "Creating Peruna";
-				label1->Refresh();
+				loading_events->Text = "Creating Peruna";
+				loading_events->Refresh();
 				time += 20;
-				progressBar1->Value = time;
+				loading_bar->Value = time;
 
-				gManager = gcnew GameManager(dbGraphics, ClientRectangle, player, gcnew array<Enemy^>{floppit, fluppit, peruna, cocoon, makhana});
+				gManager = gcnew GameManager(dbGraphics, player, gcnew array<Enemy^>{floppit, fluppit, peruna, cocoon, makhana});
 
-				label1->Text = "Starting game";
-				label1->Refresh();
+				loading_events->Text = "Starting game";
+				loading_events->Refresh();
 				time = 0;
 				loading = 0;
-				progressBar1->Value = 0;
+				loading_bar->Value = loading_bar->Maximum;
+				loading_bar->Refresh();
 				
 
 				Threading::Thread::Sleep(1000);
 				gameHasLoaded = true;
-				panel1->Visible = false;
+				start_screen->Visible = false;
 				draw->Enabled = true;
-				update->Enabled = false;
-			 }
-	private: System::Void ApprenticeTrial_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
-				 gManager->KeyDown(e->KeyCode);
+				load->Enabled = false;
 			 }	
-	private: System::Void button_MouseEnter(System::Object^  sender, System::EventArgs^  e) {
-				 Button^ button = safe_cast<Button^>(sender);				 
-			 }
-	private: System::Void button_MouseLeave(System::Object^  sender, System::EventArgs^  e) {
-				 Button^ button = safe_cast<Button^>(sender);				 
-			 }
-
+	
 	private: System::Windows::Forms::Cursor^ ApprenticeTrial::getAbilityCursor(PictureBox^ ability) {
 				 // Gets the image from the picturebox 
 				 Bitmap^ bmp = safe_cast<Bitmap^>(ability->Image);
@@ -706,24 +705,22 @@ namespace Assignment3 {
 					 gManager->setPlayerPotion(ability->AccessibleDescription->ToString());					 
 				 }
 
-				 if(gManager->canUseAbility(playerAbility) || playerAbility == HEAL)
+				 if(gManager->CanUseAbility(playerAbility) || playerAbility == HEAL)
 				 {
 					 // Tracks ability clicked by player
 					 selectedAbility = playerAbility;
-
-					 //Text = ability->Tag->ToString();
 						 
 					 // Changes Cursor to clicked ability
 					 Cursor = getAbilityCursor(ability);
 				 }
 				 else
 				 {
-					 Text = "NOT ENOUGH MANA";
+					 //Text = "NOT ENOUGH MANA";
 				 }
 
 				 						
 				 //Removes potion from hud
-				 //if(selectedAbility == HEAL) ability->Image = Image::FromFile("clear.png");
+				 if(selectedAbility == HEAL) ability->Image = Image::FromFile("clear.png");
 			 }			 
 	private: System::Void ApprenticeTrial_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 				 Point location = e->Location;
@@ -733,7 +730,7 @@ namespace Assignment3 {
 					case ::MouseButtons::Left:
 						if(gManager->clickedOnEnemy(location) && selectedAbility != HEAL)
 						{
-							if(gManager->canUseAbility(selectedAbility))
+							if(gManager->CanUseAbility(selectedAbility))
 							{								
 								gManager->setPlayerAbility(selectedAbility);
 								gManager->StartAttack();
@@ -767,7 +764,10 @@ namespace Assignment3 {
 					   break;
 				 }
 			 }
-private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
+private: System::Void play_Click(System::Object^  sender, System::EventArgs^  e) {
+			 //
+			 // Clean up
+			 //
 			 player = nullptr;
 			 cocoon = nullptr;
 			 makhana = nullptr;
@@ -775,29 +775,21 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 			 fluppit = nullptr;
 			 peruna = nullptr;
 			 gManager = nullptr;
+
 			 delete gManager;
 			 GC::GetTotalMemory(true);
 			 GC::Collect(0);
+
 			 gameHasLoaded = false;
-			 update->Enabled = true;
+
+			 load->Enabled = true;
 			 draw->Enabled = true;
-			 label1->Visible = true;
-			 progressBar1->Visible = true;
-			 button1->Visible = false;
+
+			 loading_events->Visible = true;
+			 loading_bar->Visible = true;
+
+			 play->Visible = false;
 		 }
-private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
-			 draw->Enabled = false;
-
-			 gManager = nullptr;
-			 delete gManager;
-			 GC::GetTotalMemory(true);
-			 GC::Collect(0);
-
-			 gManager = gcnew GameManager(dbGraphics, ClientRectangle, player, gcnew array<Enemy^>{floppit, fluppit, peruna, cocoon, makhana});	
-			 panel1->Visible = false;
-			 draw->Enabled = true;
-		 }
-
 };
 }
 

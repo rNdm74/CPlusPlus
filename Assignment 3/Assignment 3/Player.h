@@ -1,5 +1,5 @@
 #pragma once
-#include "sprite.h"
+#include "Sprite.h"
 
 ref class Player :
 public Sprite
@@ -11,7 +11,7 @@ private:
 	int battleScreen;
 	array<int>^ battleStartPoints;
 	
-
+	
 public:
 	Player(Graphics^ startCanvas, String^ startFileName, Point startLocation, ArrayList^ startFrameList);
 

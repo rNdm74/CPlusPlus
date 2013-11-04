@@ -9,7 +9,6 @@ Viewport::Viewport(int startX, int startY, int startTilesWide, int startTilesHig
 	viewportTilesHigh = startTilesHigh;  // V_ROWS
 	backgroundMap = startBackgroundMap;
 	canvas = startCanvas;
-	move = true;
 }
 
 void Viewport::canViewportMove(int xMove, int yMove)
@@ -23,9 +22,7 @@ void Viewport::canViewportMove(int xMove, int yMove)
 		viewportWorldX = xMove;
 
 	if(yMove < boundsY && yMove > 0)
-		viewportWorldY = yMove;
-
-	
+		viewportWorldY = yMove;	
 }
 
 void Viewport::moveRelativeToPlayer(int playerWorldX, int playerWorldY)
@@ -88,7 +85,6 @@ void Viewport::viewportDraw()
 			int screenY = (row - startTileRow) * T_HEIGHT - offsetY;
 
 			canvas->DrawImageUnscaledAndClipped(tileBitmap, Rectangle(screenX, screenY, T_WIDTH, T_HEIGHT));
-			//canvas->DrawRectangle(gcnew Pen(Color::Black), screenX, screenY, T_SIZE, T_SIZE);
 		}
 	}
 }

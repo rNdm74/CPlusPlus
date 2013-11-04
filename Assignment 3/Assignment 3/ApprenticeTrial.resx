@@ -120,7 +120,7 @@
   <metadata name="draw.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <metadata name="update.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="load.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>96, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
@@ -1688,7 +1688,7 @@
         RK5CYII=
 </value>
   </data>
-  <data name="panel1.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="start_screen.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADUAAAAtCAYAAAAOYyOGAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
         MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABvSURBVGhD3cgxAQAwDASh+Df9
@@ -1696,7 +1696,7 @@
         1jHrmHXMOmYds45Zx6xj1jHrmHXMOmYds45Zx6xjtu0eBDrYo2d1GpUAAAAASUVORK5CYII=
 </value>
   </data>
-  <data name="pictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="apprentice.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAIoAAAC5CAYAAAD3aadnAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
         MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACxMAAAsTAQCanBgAAC+7SURBVHhe7Z35cx3Xdef9H8h2
@@ -1906,12 +1906,10 @@
         rfLj0s88cBxuBrK5LjK56/Kxj/1/LTpF87VsfT8AAAAASUVORK5CYII=
 </value>
   </data>
-  <data name="richTextBox1.Text" xml:space="preserve">
-    <value>You are young apprentice wizard who has been given a quest to prove that he is of age to become a fully-fledged wizard. 
+  <data name="story.Text" xml:space="preserve">
+    <value>You are young apprentice wizard who has been given a quest to prove that he is of age to become a fully-fledged wizard.  Your journey will be long and you must face a creature - the evil Makhana - a squid-like creature that is half machine and half brain. 
 
-Your journey will be long and you must face a creature - the evil Makhana - a squid-like creature that is half machine and half brain. 
-
-Makhana has plagued the people of your home village for many years. In order for you, the apprentice, to defeat him, you must first battle four of his minions: Cocoon, Peruna, Floppit and Fluppit. These minions are no small task. 
+Makhana has plagued the people of your home village for many years. In order for you, the apprentice, to defeat him, you must first battle four of his minions: Cocoon, Peruna, Floppit and Fluppit.
 
 Only then, can you finally come of age and be the wizard that you rightfully deserve.</value>
   </data>

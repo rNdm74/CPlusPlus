@@ -15,7 +15,7 @@ Sprite::Sprite(Graphics^ startCanvas, String^ startFileName, Point startLocation
 	 currentFrame = 0;
 	 alive = true;
 
-	 if(startFileName == "makhana") boss = true;
+	 boss = startFileName == BOSS;
 
 	 spriteAction = WAITING; 
 }
@@ -24,7 +24,7 @@ void Sprite::Draw(int newXPos, int newYPos){}
 
 void Sprite::Move()
 {
-	xPos += (3 * SPEED) * facingDirection;	
+	xPos += VELOCITY * facingDirection;	
 }
 
 void Sprite::Update()
@@ -66,11 +66,10 @@ void Sprite::Update()
 	 //
 	 // Clean up
 	 //
-	 stateFrames = nullptr;
-	 frameData = nullptr;
 	 delete stateFrames;
 	 delete frameData;
 }
+
 
 // FSM Methods
 void Sprite::UpdateState(Sprite^ otherSprite){}
@@ -78,3 +77,8 @@ void Sprite::PerformAction(Sprite^ otherSprite){}
 void Sprite::UpdateAbility(){}
 void Sprite::PerformAbility(Sprite^ otherSprite){}
 void Sprite::ExecuteAbility(){}
+
+Rectangle Sprite::getCollisionRectangle(int vx, int vy)
+{
+	return Rectangle((xPos - xOFFSET) - vx, (yPos - yOFFSET)-vy, spriteFrame.Width, spriteFrame.Height);
+}

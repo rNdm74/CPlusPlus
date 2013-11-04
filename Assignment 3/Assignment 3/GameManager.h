@@ -5,7 +5,6 @@
 #include "Sprite.h"
 #include "Player.h"
 #include "Enemy.h"
-#include "SpriteList.h"
 #include "TileMap.h"
 #include "Viewport.h"
 #include "FileReader.h"
@@ -29,105 +28,51 @@ ref class GameManager
 #pragma region Variables
 
 	private:
-		//FrameManager^ fManager;
+		Graphics^ dbGraphics;
 
-		Viewport^ viewport;
-		Hud^ hud;
-
-		Rectangle clientRectangle;
+		TileMap^ tileMap;
 
 		FileReader^ reader;
 
-		
-		Graphics^ dbGraphics;
-		//Bitmap^ dbBitmap;
+		Viewport^ viewport;
 
-		int health;
-		int mana;
-		
-		TileMap^ tileMap;
+		Hud^ hud;		
 
-		Random^ rGen;
-
-		//StreamReader^ fileReader;
-		//StreamWriter^ fileWriter;		
+		Random^ rGen;	
 
 		Player^ player;
-		/*Enemy^ cocoon;
-		Enemy^ makhana;
-		Enemy^ floppit;
-		Enemy^ fluppit;
-		Enemy^ peruna;*/
-
 		Enemy^ enemyInPlay;
 
-		//array<Point>^ startLocations;
-
-		
-		array<int>^ battles;
 		array<Enemy^>^ enemies;
-
-		int xPos;
-		int yPos;
-
-		int viewportScroll;
-
-		Point movePoint;
-		int direction;
+		array<int>^ battles;		
+		
+		int health;
+		int mana;
 
 #pragma endregion
-
-#pragma region Constructor
 
 	public:
-		GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle, Player^ startPlayer, array<Enemy^>^ startEnemies);
-
-#pragma endregion
-
-#pragma region Methods
-
-		void KeyDown(Keys code);
-		void KeyUp(Keys code);
-		void MouseDown(Point p);
-		
+		GameManager(Graphics^ startCanvas, Player^ startPlayer, array<Enemy^>^ startEnemies);
+	
 		void Update();
 		void Draw();
 
-		void StartAttack();
-
-		void ResetGame();
-
-		void CheckLevelWin();
-		void CheckLevelOver();		
-
+		void StartAttack();	
 		void InitializeGame();
-		void InitializeGameCharacters();	
-
-#pragma endregion
+		bool CanUseAbility(EState selectedAbility);	
 
 #pragma region Gets/Sets
-//
-//
-//
+
 		bool playerHasWon()							{ return (enemyInPlay->getHealth() >= 131); }
 		bool playerHasLost()						{ return (player->getHealth() >= 131); }
-
-		bool canUseAbility(EState selectedAbility)	
-		{
-			int availableMana = 132 - player->getMana();
-			int abilityCost = 5 * safe_cast<int>(selectedAbility);
 		
-			return (abilityCost < availableMana);
-		}
-
 		String^ getEnemyInPlayName()				{ return enemyInPlay->getFilename(); }
 
 		void setPlayerPotion(String^ potion)		{ player->setPotion(potion); }
 		void setPlayerAbility(EState s)				{ player->setSelectedAbility(s); }
 
 		bool isGameOver()							{ return player->isGameOver(); }
-		bool clickedOnEnemy(Point p)				{ return enemyInPlay->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }
-		
+		bool clickedOnEnemy(Point p)				{ return enemyInPlay->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }		
 		bool clickedOnPlayer(Point p)				{ return player->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }
 
 #pragma endregion

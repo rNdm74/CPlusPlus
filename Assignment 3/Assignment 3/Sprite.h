@@ -14,80 +14,50 @@
 ref class Sprite
 {
 protected:
-	Graphics^ canvas;
-
-	String^ fileName;
-	
-	
-	
-	ArrayList^ list;
-
-	Rectangle spriteFrame;
-
-	
-
-	Bitmap^ spriteSheet;
-
 	EState spriteState;
 	EAction spriteAction;
 	EState selectedAbility;
 	EDirection facingDirection;
 	EAbility spriteAbility;
 
+	Graphics^ canvas;
+	Bitmap^ spriteSheet;
+	Rectangle spriteFrame;
+
+	ArrayList^ list;	
+
+	String^ fileName;
 	String^ potion;
-
-
-	int currentFrame;
-	int frameTime;
-	int resetFrame;	
-
-	int health;
-	int mana;
-
-	int attackTime, attackTicks;
-	int moveDistance, moveTicks;
-
-	int healTicks;
-	int loseTicks;
-	int winTicks;
-	
-
 
 	static int nextBattleDistance = 150;
 	static int healTime = 50;
 	static int loseTime = 20;
-	static int winTime = 20;
+	static int winTime = 50;
 
-	int battle;	
-
+	int currentFrame, frameTime, resetFrame;
+	int health, mana;
+	int healthCost, manaCost;
+	int attackTime, attackTicks;
+	int moveDistance, moveTicks;
+	int healTicks, loseTicks, winTicks;
+	int battleSelection;
 	int xPos, yPos;
 	int xVel, yVel;
 	int xOFFSET, yOFFSET;
 
-	bool boss;
-	bool hurt;
-	bool usedAbility;
-
-	bool alive;
-
-	bool turnOver;
-	bool attacking;
+	bool alive, boss, hurt, usedAbility;
+	bool turnOver, attacking;
 	bool roundWon, roundLose;
-	bool attackIsOver;
-
-	bool attackStarted;
-	bool attackFinished;
+	bool waiting, attackIsOver;
+	bool attackStarted, attackFinished;
 	bool finishedAnimation;
-	bool waiting;
-
-public:
-	Sprite^ Next;
 
 public:
 	Sprite(Graphics^ startCanvas, String^ startFileName, Point startLocation, ArrayList^ startFrameList);
 	
 	void Move();	
 	void Update();
+
 	virtual void Draw(int newXPos, int newYPos);
 
 	// FSM Methods
@@ -97,15 +67,15 @@ public:
 	virtual void UpdateAbility();
 	virtual void PerformAbility(Sprite^ otherSprite);
 	virtual void ExecuteAbility();
-
+	
+	Rectangle getCollisionRectangle(int vx, int vy);
 
 	// GETS	
-
 	int  getXPos()							{ return xPos; }
 	int  getYPos()							{ return yPos; }
 	int  getHealth()						{ return health; }
 	int  getMana()							{ return mana; }
-	int  getBattle()						{ return battle; }
+	int  getBattleSelection()				{ return battleSelection; }
 	String^ getFilename()					{ return fileName; }
 	bool isBoss()							{ return boss; }
 	bool isWaiting()						{ return waiting; }
@@ -115,8 +85,6 @@ public:
 	bool isHurt()							{ return hurt; }
 	bool hasUsedAbility()					{ return usedAbility; }
 	bool isAlive()							{ return alive; }
-
-	Rectangle getCollisionRectangle(int vx, int vy)	{ return Rectangle((xPos - xOFFSET) - vx, (yPos - yOFFSET)-vy, spriteFrame.Width, spriteFrame.Height); }
 
 	// SETS
 	void setLocation(Point p)				{ xPos = p.X; yPos = p.Y; }

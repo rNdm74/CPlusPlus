@@ -13,10 +13,6 @@ private:
 	TileMap^ backgroundMap;
 	Graphics^ canvas;
 
-	bool move;
-	int directionX;
-	int directionY;
-
 public:
 	Viewport(int startX, int startY, int startTilesWide, int startTilesHigh, TileMap^ startBackgroundMap, Graphics^ startCanvas);
 
@@ -24,9 +20,8 @@ public:
 	void moveRelativeToPlayer(int playerWorldX, int playerWorldY);
 	void viewportDraw();
 
-	int getViewportWorldX()								{ return viewportWorldX; }
-	int getViewportWorldY()								{ return viewportWorldY; }
-	//ETileType getTileType(int tileX, int tileY)			{ return backgroundMap->getTileType(tileX, tileY); }
+	int getViewportWorldX()	{ return viewportWorldX; }
+	int getViewportWorldY()	{ return viewportWorldY; }
 
 	Rectangle getViewportBounds();
 };
