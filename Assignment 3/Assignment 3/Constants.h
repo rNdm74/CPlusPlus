@@ -68,6 +68,18 @@
 #define SPEED 2
 
 //
+//
+//
+public enum ECharacters
+{	
+	PLAYER,
+	FLOPPIT,
+	FLUPPIT,
+	PERUNA,
+	COCOON,
+	MAKHANA
+};
+//
 // 
 //
 public enum EDirection
@@ -84,7 +96,9 @@ public enum EAction
 	WIN							=		1,
 	LOSE						=		2,
 	USE_ABILITY					=		3,
-	FINISHED_ABILITY			=		4
+	FINISHED_ABILITY			=		4,
+	HOME						=		5,
+	GAMEOVER					=		6
 };
 //
 //

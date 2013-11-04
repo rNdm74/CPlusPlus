@@ -54,6 +54,7 @@ array<int,2>^ FileReader::getMap(String^ filename)
 
 	reader->Close();
 	
+	reader = nullptr;
 	delete reader;	// Clean up
 
 	return map2D;
@@ -98,6 +99,7 @@ array<int,3>^ FileReader::getMap(String^ filename, int dim0, int dim1, int dim2)
 
 	reader->Close();
 	
+	reader = nullptr;
 	delete reader;  // Clean up
 
 	return map3D;

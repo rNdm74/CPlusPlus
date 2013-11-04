@@ -8,7 +8,7 @@ private:
 	double radiansAngle;
 
 public:
-	Enemy(Graphics^ startCanvas, String^ startFileName, array<Point>^ startSpriteState, int startX, int startY);
+	Enemy(Graphics^ startCanvas, String^ startFileName, Point startLocation, ArrayList^ startFrameList);
 
 	virtual void Draw(int newXPos, int newYPos) override;
 	void DrawHud(int newXPos, int newYPos);

@@ -1,8 +1,8 @@
 #include "StdAfx.h"
 #include "Enemy.h"
 
-Enemy::Enemy(Graphics^ startCanvas, String^ startFileName, array<Point>^ startSpriteState, int startX, int startY)
-	  :Sprite(startCanvas, startFileName, startSpriteState, startX, startY)
+Enemy::Enemy(Graphics^ startCanvas, String^ startFileName, Point startLocation, ArrayList^ startFrameList)
+	  :Sprite(startCanvas, startFileName, startLocation, startFrameList)
 {
 	radiansAngle = 300 * 0.01745;			// Reverses creature
 	xVel = Math::Cos(radiansAngle) * 20;
@@ -17,7 +17,7 @@ void Enemy::Draw(int newXPos, int newYPos)
 	 //
 	 // Draw sprites frame to the screen
 	 //	 
-	 Bitmap^ spriteBitmap = spriteSheet->Clone(spriteFrame, format);
+	 Bitmap^ spriteBitmap = spriteSheet->Clone(spriteFrame, PixelFormat::Format32bppArgb);
 	 
 	 //
 	 // Flips image on the X axis based on direction
@@ -40,28 +40,28 @@ void Enemy::Draw(int newXPos, int newYPos)
 
 void Enemy::DrawHud(int newXPos, int newYPos)
 {	 
+	 ////
+	 //// Draw sprites frame to the screen
+	 ////	 
+	 //Bitmap^ spriteBitmap = spriteSheet->Clone(spriteFrame, PixelFormat::Format32bppArgb);
 	 //
-	 // Draw sprites frame to the screen
-	 //	 
-	 Bitmap^ spriteBitmap = spriteSheet->Clone(spriteFrame, format);
-	 
+	 ////
+	 //// Flips image on the X axis based on direction
+	 ////
+	 //if(facingDirection == RIGHT) spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);	
 	 //
-	 // Flips image on the X axis based on direction
+	 ////
+	 //// Get frame offsets
+	 ////	 
+	 //xOFFSET = spriteFrame.Width;	 
+	 //yOFFSET = spriteFrame.Height;
 	 //
-	 if(facingDirection == RIGHT) spriteBitmap->RotateFlip(RotateFlipType::RotateNoneFlipX);	
-	 
+	 ////
+	 //// Draws bitmap to the screen
+	 ////
+	 //canvas->DrawImage(spriteBitmap, newXPos + (xOFFSET / 2) - xOFFSET, newYPos + (yOFFSET / 2) - yOFFSET, xOFFSET / 2.5, yOFFSET / 2.5);
 	 //
-	 // Get frame offsets
-	 //	 
-	 xOFFSET = spriteFrame.Width;	 
-	 yOFFSET = spriteFrame.Height;
-	 
-	 //
-	 // Draws bitmap to the screen
-	 //
-	 canvas->DrawImage(spriteBitmap, newXPos + (xOFFSET / 2) - xOFFSET, newYPos + (yOFFSET / 2) - yOFFSET, xOFFSET / 2.5, yOFFSET / 2.5);
-	 
-	 delete spriteBitmap;
+	 //delete spriteBitmap;
 }
 
 void Enemy::UpdateState(Sprite^ otherSprite)
@@ -73,21 +73,23 @@ void Enemy::UpdateState(Sprite^ otherSprite)
 				{
 					spriteAbility = START_ABILITY;
 					spriteAction = USE_ABILITY;
-				}				
+				}
 				else if(health >= 131)
 				{
 					spriteAction = LOSE;
 				}
+				
 				break;
+
 			case WIN:
 				break;
+
 			case LOSE:
 				if(loseTicks > loseTime)
 				{
 					alive = false;
 					loseTicks = 0;
 					spriteAction = WAITING;
-					otherSprite->setWaiting(true);
 				}
 				break;
 			case USE_ABILITY:
@@ -178,7 +180,7 @@ void Enemy::PerformAbility(Sprite^ otherSprite)
 			{
 				otherSprite->setState(HURT);
 				otherSprite->setHurt(true);
-				otherSprite->setHealth(10 * safe_cast<int>(selectedAbility));
+				otherSprite->setHealth(25 * safe_cast<int>(selectedAbility));
 			}		
 
 			attackTicks++;
@@ -208,33 +210,40 @@ void Enemy::PerformAbility(Sprite^ otherSprite)
 
 void Enemy::ExecuteAbility()
 {
-	switch(selectedAbility)
+	if(fileName == "floppit" || fileName == "fluppit")
 	{
-		case IDLE:
-			break;
-		case HURT:
-			break;
-		case BOSS_HURT:
-			moveDistance = 70;
-			break;
-		case LESSER_ICE:
-			moveDistance = 70;			
-			break;
-		case GREATER_ICE:
-			break;
-		case WALK:
-			break;
-		case LESSER_WAND:
-			break;
-		case DODGE:
-			break;
-		case ELECTRIC_STORM:
-			break;
-		case GREATER_WAND:
-			break;
-		case WHIRLWIND:
-			break;
-		case HEAL:
-			break;
-	}	
+		switch(selectedAbility)
+		{
+			case BOSS_HURT:					// Desecrate
+				attackTime = 8;
+				moveDistance = 70;
+				break;
+			case LESSER_ICE:				// Tentishock
+				attackTime = 8;
+				moveDistance = 70;			
+				break;
+			case GREATER_ICE:				// Oil Spill
+				attackTime = 8;
+				moveDistance = 70;
+				break;		
+		}
+	}
+	else
+	{
+		switch(selectedAbility)
+		{
+			case BOSS_HURT:					// Desecrate
+				attackTime = 10;
+				moveDistance = 0;
+				break;
+			case LESSER_ICE:				// Tentishock
+				attackTime = 10;
+				moveDistance = 0;			
+				break;
+			case GREATER_ICE:				// Oil Spill
+				attackTime = 10;
+				moveDistance = 0;
+				break;		
+		}
+	}		
 }

@@ -5,11 +5,15 @@ ref class Player :
 public Sprite
 {
 private:
+	double radiansAngle;
 	bool nextBattle;
+	bool gameover;
+	int battleScreen;
+	array<int>^ battleStartPoints;
 	
 
 public:
-	Player(Graphics^ startCanvas, String^ startFileName, array<Point>^ startSpriteState, int startX, int startY);
+	Player(Graphics^ startCanvas, String^ startFileName, Point startLocation, ArrayList^ startFrameList);
 
 	virtual void Draw(int newXPos, int newYPos) override;
 
@@ -23,6 +27,7 @@ public:
 	virtual void PerformAbility(Sprite^ otherSprite) override;
 		
 
+	bool isGameOver()				{ return gameover; } 
 	bool enemyChooseAttack()		{ return turnOver; }
 	void setChooseAttack(bool t)	{ turnOver = t; }
 };

@@ -14,23 +14,19 @@
 ref class Sprite
 {
 protected:
-	String^ fileName;
-	String^ frameName;
-	
-	int currentFrame;
-	int frameTime;
-	int resetFrame;
+	Graphics^ canvas;
 
-	array<Point>^ spriteSheetState;
-	array<int, 3>^ spriteSheetData;
+	String^ fileName;
+	
+	
+	
 	ArrayList^ list;
 
 	Rectangle spriteFrame;
 
-	Graphics^ canvas;
+	
 
 	Bitmap^ spriteSheet;
-	PixelFormat format;
 
 	EState spriteState;
 	EAction spriteAction;
@@ -38,37 +34,37 @@ protected:
 	EDirection facingDirection;
 	EAbility spriteAbility;
 
+	String^ potion;
+
+
+	int currentFrame;
+	int frameTime;
+	int resetFrame;	
+
 	int health;
 	int mana;
 
-	int attackTime;
-	int moveDistance;
-	int moveTicks;	
-	int attackTicks;
+	int attackTime, attackTicks;
+	int moveDistance, moveTicks;
+
 	int healTicks;
 	int loseTicks;
+	int winTicks;
+	
 
 
-	static int nextBattleDistance = 170;
-	static int healed = 50;
-	static int loseTime = 10;
+	static int nextBattleDistance = 150;
+	static int healTime = 50;
+	static int loseTime = 20;
+	static int winTime = 20;
 
 	int battle;	
 
-	int right;
+	int xPos, yPos;
+	int xVel, yVel;
+	int xOFFSET, yOFFSET;
 
-	int xPos;
-	int yPos;
-
-	int xVel;
-	int yVel;
-
-
-	int xOFFSET;	 
-	int yOFFSET;
-
-	int scale;
-
+	bool boss;
 	bool hurt;
 	bool usedAbility;
 
@@ -76,8 +72,7 @@ protected:
 
 	bool turnOver;
 	bool attacking;
-	bool roundWon;
-	bool roundLose;
+	bool roundWon, roundLose;
 	bool attackIsOver;
 
 	bool attackStarted;
@@ -89,7 +84,7 @@ public:
 	Sprite^ Next;
 
 public:
-	Sprite(Graphics^ startCanvas, String^ startFileName, array<Point>^ startSpriteState, int startX, int startY);
+	Sprite(Graphics^ startCanvas, String^ startFileName, Point startLocation, ArrayList^ startFrameList);
 	
 	void Move();	
 	void Update();
@@ -105,11 +100,14 @@ public:
 
 
 	// GETS	
+
 	int  getXPos()							{ return xPos; }
 	int  getYPos()							{ return yPos; }
 	int  getHealth()						{ return health; }
 	int  getMana()							{ return mana; }
 	int  getBattle()						{ return battle; }
+	String^ getFilename()					{ return fileName; }
+	bool isBoss()							{ return boss; }
 	bool isWaiting()						{ return waiting; }
 	bool isAttackStarted()					{ return attackStarted; }
 	bool isAttackFinihed()					{ return attackFinished; }
@@ -121,15 +119,18 @@ public:
 	Rectangle getCollisionRectangle(int vx, int vy)	{ return Rectangle((xPos - xOFFSET) - vx, (yPos - yOFFSET)-vy, spriteFrame.Width, spriteFrame.Height); }
 
 	// SETS
+	void setLocation(Point p)				{ xPos = p.X; yPos = p.Y; }
 	void setXPos(int x)						{ xPos = x;}
 	void setYPos(int y)						{ yPos = y;}
 	void setHealth(int h)					{ health += h; }
 	void setMana(int m)						{ mana += m; }
+	void setPotion(String^ p)				{ potion = p; }
 	void setCurrentFrame(int c)				{ currentFrame = c; }
 	void setState(EState s)					{ spriteState = s; }
 	void setSelectedAbility(EState s)		{ selectedAbility = s; }
 	void setAttackStarted()					{ attacking = true; }
 	void setHurt(bool h)					{ hurt = h; }
+	void setBoss(bool b)					{ boss = b; }
 	void setAlive(bool a)					{ alive = a; }
 	void setWaiting(bool w)					{ waiting = w; }
 };

@@ -1,10 +1,22 @@
 #include "StdAfx.h"
 #include "Player.h"
 
-Player::Player(Graphics^ startCanvas, String^ startFileName, array<Point>^ startSpriteState, int startX, int startY)
-	   :Sprite(startCanvas, startFileName, startSpriteState, startX, startY)
+Player::Player(Graphics^ startCanvas, String^ startFileName, Point startLocation, ArrayList^ startFrameList)
+	   :Sprite(startCanvas, startFileName, startLocation, startFrameList)
 {
-	facingDirection = RIGHT;	
+	radiansAngle = 220 * 0.01745;			// Reverses creature
+	xVel = Math::Cos(radiansAngle) * 30;
+	yVel = Math::Sin(radiansAngle) * 40;
+
+	facingDirection = RIGHT;
+
+	battleStartPoints = gcnew array<int>
+	{
+		1024 + 250,
+		2048 + 250,
+		3072 + 250,
+		4096 + 250
+	};
 }
 
 void Player::Draw(int newXPos, int newYPos)
@@ -12,7 +24,7 @@ void Player::Draw(int newXPos, int newYPos)
 	 //
 	 // Draw sprites frame to the screen
 	 //	 
-	 Bitmap^ spriteBitmap = spriteSheet->Clone(spriteFrame, format);
+	 Bitmap^ spriteBitmap = spriteSheet->Clone(spriteFrame, PixelFormat::Format32bppArgb);
 	 	 
 	 //
 	 // Flips image on the X axis based on direction
@@ -43,33 +55,65 @@ void Player::UpdateState(Sprite^ otherSprite)
 					spriteAbility = START_ABILITY;
 					spriteAction = USE_ABILITY;
 				}
-				else if(otherSprite->isAlive() == false)
+				else if(health >= 131)
 				{
-					spriteAction = WIN;
+					spriteAction = LOSE;
 				}
 				break;
+
 			case WIN:
-				if(moveTicks > nextBattleDistance)
+				if(otherSprite->isBoss() && otherSprite->isAlive() == false)
 				{
+					spriteAction = GAMEOVER;					
+				}
+				else if(battle > 0 && xPos > battleStartPoints[battleScreen])
+				{
+					battleScreen++;
 					nextBattle = false;
-					health = 0;
 					selectedAbility = IDLE;
 					spriteState = IDLE;					
 					spriteAction = WAITING;					
 				}
 				break;
+
 			case LOSE:
+				if(loseTicks > loseTime)
+				{
+					alive = false;
+					loseTicks = 0;
+					gameover = true;
+					spriteAction = WAITING;					
+				}
 				break;
+
 			case USE_ABILITY:
-				if(waiting)
+				if(otherSprite->isAlive() == false)
+				{
+					moveTicks = 0;
+					spriteAction = HOME;
+				}
+				else if(waiting)
 				{
 					spriteAction = WAITING;
-				}	
-				else if(otherSprite->isAlive() == false)
+				}				
+				break;
+
+			case HOME:
+				if(moveTicks > moveDistance)
 				{
+					
+					moveTicks = 0;
 					spriteAction = WIN;
 				}
-				break;		
+
+			case GAMEOVER:
+				if(winTicks > winTime)
+				{
+					gameover = true;
+				}
+
+				spriteState = DODGE;				
+				break;
 		}		
 	}
 
@@ -83,7 +127,8 @@ void Player::PerformAction(Sprite^ otherSprite)
 				break;
 
 			case WIN:
-				spriteState = WALK;
+				spriteState	= WALK;
+				facingDirection	= RIGHT;
 
 				Move();
 
@@ -91,25 +136,42 @@ void Player::PerformAction(Sprite^ otherSprite)
 				{
 					nextBattle = true;
 					battle++;
-				}
-
-				if(xPos > 250 + (1024 * (battle + 1)))
-				{
-					xPos = 250 + (1024 * (battle + 1));					
-				}
+				}				
 
 				moveTicks++;
 				break;
 
-			case LOSE:				
+			case LOSE:
+				spriteState = HURT;
+				facingDirection = RIGHT;
+								
+				xPos += xVel;
+				yPos += yVel;
+
+				yVel += 2;
+
+				loseTicks++;
 				break;
 
 			case USE_ABILITY:					
 				ExecuteAbility();
-				UpdateAbility();
 
+				UpdateAbility();
 				PerformAbility(otherSprite);
-				break;			
+				break;	
+
+			case HOME:				
+				facingDirection	= LEFT;
+				spriteState	= WALK;
+
+				Move();
+
+				moveTicks++;
+				break;
+
+			case GAMEOVER:
+				winTicks++;
+				break;
 		}		
 	}
 
@@ -150,8 +212,9 @@ void Player::UpdateAbility()
 			break;
 
 		case HEALTH_POTION:
-			if(healTicks > healed)
-			{				
+			if(healTicks > healTime)
+			{
+				potion = "";
 				spriteAbility = FINISHED;				
 			}
 			break;
@@ -183,7 +246,7 @@ void Player::PerformAbility(Sprite^ otherSprite)
 
 				otherSprite->setState(HURT);
 				otherSprite->setHurt(true);
-				otherSprite->setHealth(5 * safe_cast<int>(selectedAbility));
+				otherSprite->setHealth(15 * safe_cast<int>(selectedAbility));
 			}	
 
 			attackTicks++;
@@ -195,12 +258,12 @@ void Player::PerformAbility(Sprite^ otherSprite)
 			otherSprite->setHurt(false);
 			otherSprite->setState(IDLE);
 
-			usedAbility			= false;			
+			usedAbility	= false;			
 			
-			attackTicks			= 0;
+			attackTicks	= 0;
 
-			spriteState			= WALK;
-			facingDirection		= LEFT;
+			spriteState	= WALK;
+			facingDirection	= LEFT;
 
 			Move();
 
@@ -210,26 +273,35 @@ void Player::PerformAbility(Sprite^ otherSprite)
 		case FINISHED:
 			otherSprite->setWaiting(false);
 
-			moveTicks			= 0;
-			healTicks			= 0;
+			moveTicks = 0;
+			healTicks = 0;
 
-			spriteState			= IDLE;
-			selectedAbility		= IDLE;
-			facingDirection		= RIGHT;
-			spriteAction		= WAITING;	
+			spriteState	= IDLE;
+			selectedAbility	= IDLE;
+			facingDirection	= RIGHT;
+			spriteAction = WAITING;	
 
-			attacking			= false;
-			waiting				= true;
-			turnOver			= true;
+			attacking = false;
+			waiting	= true;
+			turnOver = true;
 			break;
 
 		case HEALTH_POTION:
-			health--;
+			if(potion == "health")
+			{
+				health--;
 
-			if(health < 0) health = 0;
+				if(health < 0) health = 0;
+			}
+			else
+			{
+				mana--;
 
-			spriteState			= selectedAbility;
-			attackFinished		= finishedAnimation;
+				if(mana < 0) mana = 0;
+			}
+
+			spriteState	= selectedAbility;
+			attackFinished = finishedAnimation;	
 
 			healTicks++;
 			break;

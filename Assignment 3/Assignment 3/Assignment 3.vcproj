@@ -212,6 +212,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\FrameManager.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\GameManager.cpp"
 				>
 			</File>
@@ -289,6 +293,10 @@
 			</File>
 			<File
 				RelativePath=".\Enemy.h"
+				>
+			</File>
+			<File
+				RelativePath=".\FrameManager.h"
 				>
 			</File>
 			<File

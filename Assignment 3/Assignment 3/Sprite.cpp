@@ -1,90 +1,30 @@
 #include "StdAfx.h"
 #include "Sprite.h"
 
-Sprite::Sprite(Graphics^ startCanvas, String^ startFileName, array<Point>^ startSpriteState, int startX, int startY)
+Sprite::Sprite(Graphics^ startCanvas, String^ startFileName, Point startLocation, ArrayList^ startFrameList)
 {
-	 canvas				= startCanvas;
-	 fileName			= startFileName;
-	 xPos				= startX;
-	 yPos				= startY;
-	 spriteSheetState	= startSpriteState;
+	 canvas	= startCanvas;
+	 fileName = startFileName;
+	 xPos = startLocation.X;
+	 yPos = startLocation.Y;
+	 list = startFrameList;
+
+	 spriteSheet = gcnew Bitmap(fileName + ".png");
+	 spriteSheet->MakeTransparent(spriteSheet->GetPixel(0,0));
 
 	 currentFrame = 0;
 	 alive = true;
 
-	 
-	 spriteAction = WAITING;
-	 
+	 if(startFileName == "makhana") boss = true;
 
-	 StreamReader^ reader = gcnew StreamReader(fileName + ".map");
-
-	 spriteSheetData = gcnew array<int,3>(spriteSheetState->Length, 81, 4);	
-
-	 for(int dim0 = 0; dim0 < spriteSheetData->GetLength(0); dim0++) // Sprite state
-	 {
-	 	int end = spriteSheetState[dim0].Y - spriteSheetState[dim0].X;
- 
-   		for(int dim1 = 0; dim1 < end; dim1++) // N Frames
-		{			
-			String^ line = reader->ReadLine();
-
-			if(line != nullptr)
-			{
-				array<String^>^ items = line->Split(',');
-
-				for(int dim2 = 0; dim2 < spriteSheetData->GetLength(2); dim2++) // X, Y, WIDTH, HEIGHT
-				{
-					spriteSheetData[dim0, dim1, dim2] = (int::Parse(items[dim2]));
-				}
-			}	
-
-			delete line;	// Clean up
-		}
-     }
-
-	 delete reader;
-
-	 scale = 1;
-
-	 spriteSheet = gcnew Bitmap(fileName + ".png");
-	 spriteSheet->MakeTransparent(spriteSheet->GetPixel(0,0));
-	 format = spriteSheet->PixelFormat;
-
-	 list = gcnew ArrayList();
-
-	 for(int i = 0; i < spriteSheetData->GetLength(0); i++)
-	 {
-		 ArrayList^ framesList = gcnew ArrayList();
-
-		 for(int j = 0; j < spriteSheetData->GetLength(1); j++)
-		 {
-			 if(spriteSheetData[i,j,0] != 0)
-			 {
-				 framesList->Add
-				 (
-					 gcnew array<int>
-					 {
-						 spriteSheetData[i,j,X],
-						 spriteSheetData[i,j,Y],
-						 spriteSheetData[i,j,WIDTH],
-						 spriteSheetData[i,j,HEIGHT]						 
-					 }
-				 );
-			 }
-		 }
-
-		 list->Add(framesList);
-	 }
-	 
-	 delete spriteSheetData;
-	 
+	 spriteAction = WAITING; 
 }
 
 void Sprite::Draw(int newXPos, int newYPos){}
 
 void Sprite::Move()
 {
-	xPos += (3 * SPEED) * facingDirection;		
+	xPos += (3 * SPEED) * facingDirection;	
 }
 
 void Sprite::Update()
@@ -126,6 +66,8 @@ void Sprite::Update()
 	 //
 	 // Clean up
 	 //
+	 stateFrames = nullptr;
+	 frameData = nullptr;
 	 delete stateFrames;
 	 delete frameData;
 }

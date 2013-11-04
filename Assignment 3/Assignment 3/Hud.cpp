@@ -49,6 +49,8 @@ void Hud::UpdateHealth(Player^ player)
 			for(int y = 0; y < playerHealth; y++)
 				playerHealthImage->SetPixel(x, y, Color::Transparent);
 
+		player->setHealth(-1);
+
 		healthRegen = 0;
 	}
 }
@@ -115,9 +117,6 @@ void Hud::Update(Player^ player, Enemy^ enemy)
 
 void Hud::Draw()
 {
-	//875,15
-	
-
 	dbGraphics->DrawImageUnscaledAndClipped(enemyHealthImage, Rectangle(862, 15, 132, 132));	
 	dbGraphics->DrawImageUnscaledAndClipped(playerHealthImage, Rectangle(358, 581, 132, 132));
 	dbGraphics->DrawImageUnscaledAndClipped(playerManaImage, Rectangle(516, 581, 132,132));

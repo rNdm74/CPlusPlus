@@ -9,6 +9,7 @@
 #include "TileMap.h"
 #include "Viewport.h"
 #include "FileReader.h"
+#include "FrameManager.h"
 
 using namespace System::Windows::Forms;
 
@@ -28,15 +29,18 @@ ref class GameManager
 #pragma region Variables
 
 	private:
+		//FrameManager^ fManager;
+
 		Viewport^ viewport;
 		Hud^ hud;
+
 		Rectangle clientRectangle;
 
 		FileReader^ reader;
 
-		Graphics^ formCanvas;
+		
 		Graphics^ dbGraphics;
-		Bitmap^ dbBitmap;
+		//Bitmap^ dbBitmap;
 
 		int health;
 		int mana;
@@ -45,17 +49,19 @@ ref class GameManager
 
 		Random^ rGen;
 
-		StreamReader^ fileReader;
-		StreamWriter^ fileWriter;
+		//StreamReader^ fileReader;
+		//StreamWriter^ fileWriter;		
 
 		Player^ player;
-		Enemy^ cocoon;
+		/*Enemy^ cocoon;
 		Enemy^ makhana;
 		Enemy^ floppit;
 		Enemy^ fluppit;
-		Enemy^ peruna;
+		Enemy^ peruna;*/
 
 		Enemy^ enemyInPlay;
+
+		//array<Point>^ startLocations;
 
 		
 		array<int>^ battles;
@@ -74,7 +80,7 @@ ref class GameManager
 #pragma region Constructor
 
 	public:
-		GameManager(Graphics^ startCanvas, Rectangle clientRectangle);
+		GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle, Player^ startPlayer, array<Enemy^>^ startEnemies);
 
 #pragma endregion
 
@@ -89,12 +95,13 @@ ref class GameManager
 
 		void StartAttack();
 
-		void CheckLevelPhase();
+		void ResetGame();
+
 		void CheckLevelWin();
 		void CheckLevelOver();		
 
 		void InitializeGame();
-		void InitializeObjectsPositons();	
+		void InitializeGameCharacters();	
 
 #pragma endregion
 
@@ -113,8 +120,12 @@ ref class GameManager
 			return (abilityCost < availableMana);
 		}
 
+		String^ getEnemyInPlayName()				{ return enemyInPlay->getFilename(); }
+
+		void setPlayerPotion(String^ potion)		{ player->setPotion(potion); }
 		void setPlayerAbility(EState s)				{ player->setSelectedAbility(s); }
 
+		bool isGameOver()							{ return player->isGameOver(); }
 		bool clickedOnEnemy(Point p)				{ return enemyInPlay->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }
 		
 		bool clickedOnPlayer(Point p)				{ return player->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }

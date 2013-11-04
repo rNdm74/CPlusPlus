@@ -6,62 +6,158 @@
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
 		/// </summary>
-GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
+GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle, Player^ startPlayer, array<Enemy^>^ startEnemies)
 	{
 		//
 		// Create canvas from form
 		//
-		formCanvas = startCanvas;
+		//formCanvas = startCanvas;
 		//
 		// Client viewable screen bounds
 		//
 		clientRectangle = startClientRectangle;
-		//
-		// Game sounds
-		//
 
+		player = startPlayer;
+
+		enemies = startEnemies;
+
+		//
+		//
+		//
+		//fManager = startFrameManager;
+
+		
 		//
 		// Create graphics size of the screen
 		//
-		dbBitmap = gcnew Bitmap(clientRectangle.Width, clientRectangle.Height);		 
+		//dbBitmap = gcnew Bitmap(clientRectangle.Width, clientRectangle.Height);		 
 		//
 		// Grab its Graphics
 		//
-		dbGraphics = Graphics::FromImage(dbBitmap);	
+		dbGraphics = startCanvas;	
 		//
 		// Create random
 		//
 		rGen = gcnew Random();
-		//
-		// Player lives
-		//
-
+		
 		//
 		// Start level
 		//
-		viewportScroll = 0;
+		viewportScroll = 0;	
+
+		//
+		//
+		//
+		/*int startY = clientRectangle.Height - 200;
+
+		startLocations = gcnew array<Point>
+		{
+			Point(250,				   startY),
+			Point((T_WIDTH)		- 100, startY),
+			Point((T_WIDTH * 2) - 100, startY),
+			Point((T_WIDTH * 3) - 100, startY),
+			Point((T_WIDTH * 4) - 100, startY),
+			Point((T_WIDTH * 5) - 100, startY),
+		};*/
+
+		//
+		//
+		//
+
+		//
+		// Create object
+		//
+		//InitializeGameCharacters();
 
 		//
 		// Create game with objects
 		//
 		InitializeGame();
-		//
-		// Create object positions on the screen
-		//
-		InitializeObjectsPositons();
 	}
 #pragma endregion
 
 
-#pragma region Game Initialization
+#pragma region Initialize Game Characters
+				
 		/// <summary>
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
 		/// </summary>
-		void GameManager::InitializeObjectsPositons()
+		void GameManager::InitializeGameCharacters()
 		{
-	
+			////
+			//// Create Player
+			////
+			//player = gcnew Player
+			//(
+			//	dbGraphics, 
+			//	"player", 				
+			//	startLocations[PLAYER],
+			//	fManager->getPlayerList()
+			//);
+			//			
+			///// <summary>
+			///// Required method for Designer support - do not modify
+			///// the contents of this method with the code editor.
+			///// </summary>
+			//cocoon = gcnew Enemy
+			//(
+			//	dbGraphics, 
+			//	"cocoon", 				
+			//	startLocations[COCOON],
+			//	fManager->getCocoonList()
+			//);
+			////
+			////
+			////			
+			//makhana = gcnew Enemy
+			//(
+			//	dbGraphics, 
+			//	"makhana", 				
+			//	startLocations[MAKHANA],
+			//	fManager->getMakhanaList()
+			//);
+			////
+			////
+			////
+			//floppit = gcnew Enemy
+			//(
+			//	dbGraphics, 
+			//	"floppit", 				 
+			//	startLocations[FLOPPIT],
+			//	fManager->getFloppitList()
+			//);
+			////
+			////
+			////
+			//fluppit = gcnew Enemy
+			//(
+			//	dbGraphics, 
+			//	"fluppit", 				
+			//	startLocations[FLUPPIT],
+			//	fManager->getFluppitList()
+			//);
+			////
+			////
+			////			
+			//peruna = gcnew Enemy
+			//(
+			//	dbGraphics, 
+			//	"peruna",
+			//	startLocations[PERUNA],
+			//	fManager->getPerunaList()
+			//);
+
+			//fManager->GarbageCollect();
+			//fManager = nullptr;
+			//delete fManager;
+
+			//GC::GetTotalMemory(true);
+			//GC::Collect(0);
 		}
+#pragma endregion
+
+#pragma region Initialize Game
 		/// <summary>
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
@@ -71,11 +167,7 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 			//
 			// Clean up
 			//
-					
-			//
-			// Get highscore from saved file
-			//
-
+			
 			//
 			// Create the csv file reader
 			//
@@ -85,10 +177,6 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 			// Create tilemap
 			//
 			tileMap = gcnew TileMap(dbGraphics, reader->getMap("tilemap.map"));
-
-			//
-			// Create objectmap
-			//
 
 			//
 			// Create viewport
@@ -101,141 +189,22 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 			hud = gcnew Hud(dbGraphics);
 					
 			//
-			// Create Spritelists
+			// Create enemies
 			//
-						
-			//
-			// Create Player
-			//
-			player = gcnew Player
-			(
-				dbGraphics, 
-				"player", 
-				gcnew array<Point>
-				{
-					Point(0,14),		// Idle
-					Point(15,29),		// Hurt
-					Point(30,110),		// Boss Hurt
-					Point(111,185),		// Lesser Ice
-					Point(186,242),		// Greater Ice
-					Point(243,260),		// Walk
-					Point(261,290),		// Basic Attack
-					Point(291,327),		// Dodge
-					Point(328,383),		// Electric Storm
-					Point(384,425),		// Heavy Attack
-					Point(426,472),		// Whirlwind Attack
-					Point(473,499)		// Heal		 
-				 }, 
-				 250, 
-				 clientRectangle.Height - 200
-			);
-						
-			//
-			// Create NPC
-			//
-			cocoon = gcnew Enemy
-			(
-				dbGraphics, 
-				"cocoon", 
-				gcnew array<Point>
-				{
-					Point(0,22),		// Idle
-					Point(23,71),		// Hurt
-					Point(72,104),		// Desecrate
-					Point(105,158),		// Tentishock
-					Point(159,215),		// Oil Spill
-					Point(216,249)		// Killed
-				}, 
-				(T_WIDTH * 4) - 100, 
-				clientRectangle.Height - 200
-			);
-			
-			makhana = gcnew Enemy
-			(
-				dbGraphics, 
-				"makhana", 
-				gcnew array<Point>
-				{
-					Point(0,22),		// Idle
-					Point(23,60),		// Hurt
-					Point(61,134),		// Desecrate
-					Point(135,188),		// Tentishock
-					Point(189,259),		// Oil Spill
-					Point(260,303)		// Killed
-				}, 
-				(T_WIDTH * 5) - 100, 
-				clientRectangle.Height - 200
-			);
-
-			floppit = gcnew Enemy
-			(
-				dbGraphics, 
-				"floppit", 
-				gcnew array<Point>
-				{
-					Point(0,7),			// Idle
-					Point(7,46),		// Hurt
-					Point(46,75),		// Desecrate
-					Point(75,97),		// Tentishock
-					Point(97,107),		// Oil Spill
-					Point(108,125)		// Killed
-				}, 
-				T_WIDTH - 100, 
-				clientRectangle.Height - 200
-			);
-
-			fluppit = gcnew Enemy
-			(
-				dbGraphics, 
-				"fluppit", 
-				gcnew array<Point>
-				{
-					Point(0,7),			// Idle
-					Point(7,46),		// Hurt
-					Point(46,75),		// Desecrate
-					Point(75,97),		// Tentishock
-					Point(97,107),		// Oil Spill
-					Point(108,125)		// Killed
-				},
-				(T_WIDTH * 2) - 100, 
-				clientRectangle.Height - 200
-			);
-
-			peruna = gcnew Enemy
-			(
-				dbGraphics, 
-				"peruna", 
-				gcnew array<Point>
-				{
-					Point(0,12),		// Idle
-					Point(13,22),		// Hurt
-					Point(23,47),		// Desecrate
-					Point(48,72),		// Tentishock
-					Point(73,91),		// Oil Spill
-					Point(92,105)		// Killed
-				}, 
-				(T_WIDTH * 3) - 100, 
-				clientRectangle.Height - 200
-			);
-		
-			//
-			// Create Items
-			//
-			enemyInPlay = floppit;
-
-			enemies = gcnew array<Enemy^>
+			/*enemies = gcnew array<Enemy^>
 			{
 				floppit,
 				fluppit,
 				peruna,
 				cocoon,
 				makhana
-			};
-					
-			//				
-			// 
-			//	
-			direction = 0;
+			};*/
+			
+			//
+			//
+			//
+			enemyInPlay = enemies[0];			
+			
 			//
 			//
 			//
@@ -251,39 +220,33 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 #pragma endregion
 
 
+
+
+
+
+
 #pragma region Keyboard Input
 		/// <summary>
 		/// Takes the key code data and changes the players state.
 		/// </summary>
 		void GameManager::KeyDown(Keys code)
-		{
-			if(code == Keys::NumPad8)
-				health += 20;
-			if(code == Keys::NumPad9)
-				mana += 20;
-			if(code == Keys::NumPad1)
-				viewportScroll = 0;
-			if(code == Keys::NumPad2)
-				viewportScroll = 1024 + 512;
-			if(code == Keys::NumPad3)
-				viewportScroll = 2048 + 512;
-			if(code == Keys::NumPad4)
-				viewportScroll = 3072 + 512;
-			if(code == Keys::NumPad5)
-				viewportScroll = 4096 + 1024;
+		{			
 		}
-
+		//
+		//
+		//
 		void GameManager::KeyUp(Keys code)
 		{	
 		}
-
+		//
+		//
+		//
 		void GameManager::MouseDown(Point p)
 		{
-			 /*movePoint = p;			 
-			 direction = (viewport->getViewportWorldX() + movePoint.X > player->getXPos()) ? 1 : -1;
-			 player->setAttacking(false);*/
-		}
-
+		}		
+		//
+		//
+		//
 #pragma endregion
 
 
@@ -294,7 +257,7 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 		/// game is in for example if a game is won.
 		/// </summary>
 		void GameManager::Update()
-		{
+		{	
 			enemyInPlay = enemies[player->getBattle()];
 			//
 			// Update hud information
@@ -322,19 +285,7 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 			//
 			// Move Viewport
 			//	
-			viewport->moveRelativeToPlayer(battles[player->getBattle()], 0);
-			
-			//
-			// Game Win
-			//
-										
-			//
-			// Game Over
-			//
-						
-			//
-			//
-			//			
+			viewport->moveRelativeToPlayer(battles[player->getBattle()], 0);			
 		}
 		/// <summary>
 		/// Draws all game components to an off screen canvas.
@@ -360,12 +311,15 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 			// Draw HUD
 			//
 			hud->Draw();
-			//enemyInPlay->DrawHud(990, 150);			
+			//enemyInPlay->DrawHud(990, 150);	
 
-			//
-			// Make Buffer Visible 
-			//
-			formCanvas->DrawImage(dbBitmap, clientRectangle);
+			/*dbGraphics->FillRectangle(Brushes::Black, 250 + (1024 * 0), clientRectangle.Height - 200, 2 ,2);  
+			dbGraphics->FillRectangle(Brushes::Black, 250 + (1024 * 1), clientRectangle.Height - 200, 2 ,2);  
+			dbGraphics->FillRectangle(Brushes::Black, 250 + (1024 * 2), clientRectangle.Height - 200, 2 ,2);  
+			dbGraphics->FillRectangle(Brushes::Black, 250 + (1024 * 3), clientRectangle.Height - 200, 2 ,2);  
+			dbGraphics->FillRectangle(Brushes::Black, 250 + (1024 * 4), clientRectangle.Height - 200, 2 ,2);*/  
+
+			
 		}
 #pragma endregion
 
@@ -382,9 +336,14 @@ GameManager::GameManager(Graphics^ startCanvas,  Rectangle startClientRectangle)
 		//
 		//
 		//
-		void GameManager::CheckLevelPhase()
+		void GameManager::ResetGame()
 		{
-			
+			/*player->setLocation(startLocations[PLAYER]);
+			floppit->setLocation(startLocations[FLOPPIT]);
+			fluppit->setLocation(startLocations[FLUPPIT]);
+			peruna->setLocation(startLocations[PERUNA]);
+			cocoon->setLocation(startLocations[COCOON]);
+			makhana->setLocation(startLocations[MAKHANA]);*/			
 		}
 		//
 		//
