@@ -54,6 +54,12 @@ void Player::UpdateState(Sprite^ otherSprite)
 	{
 		switch(spriteAction)
 		{
+			case NEW_BATTLE:
+				if(attacking)
+				{
+					spriteAction = WAITING;
+				}
+				break;
 			case WAITING:
 				if(attacking && otherSprite->isAlive())
 				{	
@@ -77,9 +83,9 @@ void Player::UpdateState(Sprite^ otherSprite)
 				{
 					battleScreen++;
 					nextBattle = false;
-					selectedAbility = IDLE;
-					spriteState = IDLE;					
-					spriteAction = WAITING;					
+					attacking = false;
+					spriteState = IDLE;
+					spriteAction = NEW_BATTLE;
 				}
 				break;
 
@@ -127,6 +133,8 @@ void Player::PerformAction(Sprite^ otherSprite)
 	{
 		switch(spriteAction)
 		{
+			case NEW_BATTLE:
+				break;
 			case WAITING:				
 				moveTicks = 0;
 				turnOver = false;
@@ -238,7 +246,8 @@ void Player::PerformAbility(Sprite^ otherSprite)
 			{
 				usedAbility = true;
 
-				setMana(manaCost);
+				mana += manaCost;
+				if(mana < 0) mana = 0;
 
 				otherSprite->setState(HURT);
 				otherSprite->setHurt(true);

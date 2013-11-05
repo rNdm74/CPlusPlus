@@ -69,6 +69,15 @@ GameManager::GameManager(Graphics^ startCanvas, Player^ startPlayer, array<Enemy
 			//
 			// Create enemies
 			//
+			clockBackground = Image::FromFile("Clock Base.png");
+			clockTick = Image::FromFile("Overlay Small.png");
+
+			nFrames = clockTick->Width / clockTick->Height;
+		
+			currentFrame = 0;
+
+			frameWidth = clockTick->Width / nFrames;
+			frameHeight = clockTick->Height;
 						
 			//
 			//
@@ -127,7 +136,31 @@ GameManager::GameManager(Graphics^ startCanvas, Player^ startPlayer, array<Enemy
 			//
 			// Move Viewport
 			//	
-			viewport->moveRelativeToPlayer(battles[player->getBattleSelection()], 0);			
+			viewport->moveRelativeToPlayer(battles[player->getBattleSelection()], 0);
+
+			//
+			//
+			//
+			if(currentFrame >= nFrames)
+			{
+				enemyInPlay->setWaiting(false);
+				//enemyInPlay->setChooseAttack(true);
+				player->setWaiting(true);
+				player->setChooseAttack(false);
+				
+				currentFrame = 0;
+			}
+
+			srcRectangle = Rectangle(currentFrame * frameWidth, 0, frameWidth, frameHeight);
+
+			if(enemyInPlay->isWaiting() && clockTime > turnTime)
+			{
+				clockTime = 0;
+				currentFrame++;
+			}
+
+			clockTime++;
+			
 		}
 		/// <summary>
 		/// Draws all game components to an off screen canvas.
@@ -153,6 +186,27 @@ GameManager::GameManager(Graphics^ startCanvas, Player^ startPlayer, array<Enemy
 			// Draw HUD
 			//
 			hud->Draw();
+
+			dbGraphics->DrawImage(clockBackground, 478, 4, 54, 54);
+			dbGraphics->DrawImage
+			(
+				clockTick, 
+				469, 
+				-4, 
+				Rectangle(0, 0, 54, 54), 
+				GraphicsUnit::Pixel
+			);
+
+			dbGraphics->DrawImage
+			(
+				clockTick, 
+				469, 
+				-4, 
+				srcRectangle, 
+				GraphicsUnit::Pixel
+			);
+			//dbGraphics->DrawImage(clockTick, 478, 4, 54, 54);
+
 		}
 #pragma endregion
 

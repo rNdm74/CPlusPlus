@@ -44,6 +44,7 @@ public enum EDirection
 //
 public enum EAction
 {
+	NEW_BATTLE,
 	WAITING,
 	WIN,
 	LOSE,

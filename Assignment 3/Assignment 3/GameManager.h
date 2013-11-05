@@ -48,6 +48,19 @@ ref class GameManager
 		
 		String^ whosTurntIsIt;
 
+		Rectangle srcRectangle;
+		Image^ clockBackground;
+		Image^ clockTick;
+		static int turnTime = 30;
+		int clockTime;
+		int currentFrame;
+		int nFrames;
+		int frameWidth;
+		int frameHeight;
+
+		int xPos;
+		int yPos;
+
 #pragma endregion
 
 	public:
@@ -64,6 +77,10 @@ ref class GameManager
 
 		bool playerHasWon()							{ return (enemyInPlay->getHealth() >= 131); }
 		bool playerHasLost()						{ return (player->getHealth() >= 131); }
+
+		String^ getPlayerHealth()					{ return (132 - player->getHealth()).ToString(); }
+		String^ getPlayerMana()						{ return (132 - player->getMana()).ToString(); }
+		String^ getEnemyHealth()					{ return (132 - enemyInPlay->getHealth()).ToString(); }
 
 		bool isPlayerTurn()							{ return enemyInPlay->isWaiting(); }
 		//bool isEnemyTurn()							{ return if(enemyInPlay->isWaiting()); }
