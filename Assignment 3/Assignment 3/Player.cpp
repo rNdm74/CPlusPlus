@@ -56,7 +56,8 @@ void Player::UpdateState(Sprite^ otherSprite)
 		{
 			case WAITING:
 				if(attacking && otherSprite->isAlive())
-				{					
+				{	
+					turn = true;
 					spriteAbility = START_ABILITY;
 					spriteAction = USE_ABILITY;
 					ExecuteAbility();
@@ -100,6 +101,7 @@ void Player::UpdateState(Sprite^ otherSprite)
 				}
 				else if(waiting)
 				{
+					turn = false;
 					spriteAction = WAITING;
 				}				
 				break;

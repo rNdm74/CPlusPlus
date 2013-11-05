@@ -45,6 +45,7 @@ protected:
 	int xVel, yVel;
 	int xOFFSET, yOFFSET;
 
+	bool turn;
 	bool alive, boss, hurt, usedAbility;
 	bool turnOver, attacking;
 	bool roundWon, roundLose;
@@ -85,8 +86,10 @@ public:
 	bool isHurt()							{ return hurt; }
 	bool hasUsedAbility()					{ return usedAbility; }
 	bool isAlive()							{ return alive; }
+	bool isTurn()							{ return turn; }
 
 	// SETS
+
 	void setLocation(Point p)				{ xPos = p.X; yPos = p.Y; }
 	void setXPos(int x)						{ xPos = x;}
 	void setYPos(int y)						{ yPos = y;}

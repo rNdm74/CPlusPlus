@@ -127,7 +127,7 @@
   <data name="lesser_wand.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
-        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACxEAAAsRAX9kX5EAAAlaSURBVHhe5Zl7chTXFca9Awcn
+        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACwwAAAsMAT9AIsgAAAlaSURBVHhe5Zl7chTXFca9Awcn
         eEZgXnLAOKkUpTjMxGVA0dtCEnpggYAQJHBInMSRU/kjFVMpluAlaAlagpbAEmYJWkKnf6fv17pz7h2J
         kQT/9Kn6ajRnum/f77xv64OiKBqNrLJJyCqbhKyyScgqm4SssknIKpuErLJJyCqbhKyyScgqm4S88j3L
         zM32uKHb2p7utF8foLU73W3v1bjZ+mlybORSuO1YknD1ClO+B4HsTLfdK1EMj9Z2WGZoSbh6hSnfoUx3
@@ -176,7 +176,7 @@
   <data name="greater_wand.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAEAAAABCCAYAAADnodDVAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
-        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACxEAAAsRAX9kX5EAABlZSURBVHhe1Vt5fFTluf4yWWef
+        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACwwAAAsMAT9AIsgAABlZSURBVHhe1Vt5fFTluf4yWWef
         ECAEVHYEipQlEFBACARBIIJAMpktG7K5gILiQmZJgCRA2GTfVFbBHTdAbW3d2mprrb1u7a+3/V29t3bV
         6rW219v3Ps935gzDGBCE4u0fz+/MnPNt7/O963dmlKcyenqEove5q6LinL/sE9fs+r+4/eHPPP7wb1yh
         2HxAOVsB7zuC9Rqpz9wcsyqqMrwrVI6/QV/Z3uyTVtao1Mym1jGjWeX4likb+tkD9bpPVsVyfb+1tunl
@@ -291,7 +291,7 @@
   <data name="whirlwind.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAEAAAABPCAYAAABbP8MLAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
-        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACxEAAAsRAX9kX5EAACGaSURBVHhe1Vx3fFZVmr6uM7O7
+        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACwwAAAsMAT9AIsgAACGaSURBVHhe1Vx3fFZVmr6uM7O7
         rjM7o9JsiLoWRlREERWVLkWKdJIQ0kj70nvvvXfSSaWlV1JICAkEYiD0QGihhh5EitS8+z7X3OzNx6W5
         s/Nz/3h+38397j3nvL2c80Ugov9LPMt4jvFXxos3btx4hfEWX7/H+IjxSS++YIxhjGVMYIxjTGZMZ0xj
         zGT8wJgjA/6ex8A7QxmYS2kNj4TizSfEvzD+xniD8THjcwYWjcUtZGgxdBgmDHOGJcOO4cRwZbg9Adx7
@@ -441,7 +441,7 @@
   <data name="lesser_ice.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
-        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACxEAAAsRAX9kX5EAABMISURBVHhe3VtpdJXVuf7u/XHX
+        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACwwAAAsMAT9AIsgAABMISURBVHhe3VtpdJXVuf7u/XHX
         Xat33S5rvRcZhCQMIQxi9bpsa0WtQx1QBhUV0YIKKlFEhsw5yckcQgghhEkQZBSwQgyEeRCpSoYz5gw5
         JyfzBKiotXhr63ufZ6fxUt3t6rb+gP541vl4z8B+n/0Oz7u/L5aI/EMYkRPQIiY7aN2Q78sdX+hpGpRQ
         N2NYSp01OttnjQTGZrisMZlua5Tda43K8lqj7R5lj8uqVza+KluWzxqd6VE2/mZ0fuO3oFuTCbRGE4zN
@@ -529,7 +529,7 @@
   <data name="greater_ice.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
-        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACxEAAAsRAX9kX5EAABQ1SURBVHhevVtpdFRlmq6ZH3Pm
+        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACwwAAAsMAT9AIsgAABQ1SURBVHhevVtpdFRlmq6ZH3Pm
         nJ4zfWzbGWQRkrCGRWwcj7YoLiitiGwqKqKCCipRRJbsW2UPIYSQhE0QlE3AFmIg7ItIq2SpNbWkKpV9
         A1TEtnHa1nee58tcO42fnjZc+fGcqrxV9d53X757YxERLYZk+LSISPdbbs72ZI7LddX3i66ePSi+2jIi
         3WMZBoxKcVhGpjotw61uy/A0t2WE1aXoOj5ET3hFptUoGl8VLc1jGZHqUjTyDM+u+wF0+hnQEolRqQ4t
@@ -622,7 +622,7 @@
   <data name="electric_storm.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAEAAAAAzCAYAAAAn3w6xAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
-        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACxEAAAsRAX9kX5EAABq8SURBVGhDzVl3fJRV1j4hlGWl
+        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACwwAAAsMAT9AIsgAABq8SURBVGhDzVl3fJRV1j4hlGWl
         SQsBUmbS69TMZDIzyUzKpBcg9A4C6to+y67YUEFZikAIISGUJJACJKGX0Ds2RCyIoqgoiosCfiIqKp7v
         OTeu35asHyC7v++P83vfue/Nfe95znOec+4b0mpNzRaSALOTNtQBs6nfQWG4h2l+GcdV5gbF4ZmdNFob
         aYIwHhyHceMva6i/k/laM57Fk7+Yxky9NUbqpTGQL0yuvQP05OcPCzBQN6zbXRNH/oEW8g0wtvfXxt2N
@@ -787,7 +787,7 @@
         XTesb3QPLh88M+QwdP6m681Lt7xuXbu94vbgcOjwnZHokdE77DtTd1PuvriXeW/h/sYH6AdFD6UeVjxS
         fNTws+7PbaOWo6fHXMf6Hwc/vj/OGn/2S8Yv7ycKnpCfVEyqTDZPmU2dmnafvvF05dOJZ+nPFmYKf5X+
         tfa5zvMffnP8rX82YnbiBf/Fp99LXsq/PPRq2aueuYC5R69TXy/MF72Rf3P4LeNt37vwd5MLWe+x7ys/
-        6H7o/ujz8cGn1E+f/gUDmPP8usTo0wAAAAlwSFlzAAALEQAACxEBf2RfkQAAIFJJREFUeF7lWwlYjmnb
+        6H7o/ujz8cGn1E+f/gUDmPP8usTo0wAAAAlwSFlzAAALDAAACwwBP0AiyAAAIFJJREFUeF7lWwlYjmnb
         fiLaS6WipFKRaBNFUqKEVkVlibJkyxKyJaK9lDbadyFCEe3KUomYUWTLMmEwCzPMNzPfzDHO/7of0/zv
         O+P3+v5v/uP/j+N3HOfxdr293ue+rvu6zuu87ueJA/D/GkJGTk7O34bs7Gzu4MGDPLKyshSDN28ZFh8f
         ZZuQEDEhPDxy8N69CaMCA9d4zvHymqatrWPo5+evfflym5Ktra3OnDleJrNnzzby9PQcGh4e3v/s2bPc
@@ -976,7 +976,7 @@
         XTesb3QPLh88M+QwdP6m681Lt7xuXbu94vbgcOjwnZHokdE77DtTd1PuvriXeW/h/sYH6AdFD6UeVjxS
         fNTws+7PbaOWo6fHXMf6Hwc/vj/OGn/2S8Yv7ycKnpCfVEyqTDZPmU2dmnafvvF05dOJZ+nPFmYKf5X+
         tfa5zvMffnP8rX82YnbiBf/Fp99LXsq/PPRq2aueuYC5R69TXy/MF72Rf3P4LeNt37vwd5MLWe+x7ys/
-        6H7o/ujz8cGn1E+f/gUDmPP8usTo0wAAAAlwSFlzAAALEQAACxEBf2RfkQAAIFJJREFUeF7lWwlYjmnb
+        6H7o/ujz8cGn1E+f/gUDmPP8usTo0wAAAAlwSFlzAAALDAAACwwBP0AiyAAAIFJJREFUeF7lWwlYjmnb
         fiLaS6WipFKRaBNFUqKEVkVlibJkyxKyJaK9lDbadyFCEe3KUomYUWTLMmEwCzPMNzPfzDHO/7of0/zv
         O+P3+v5v/uP/j+N3HOfxdr293ue+rvu6zuu87ueJA/D/GkJGTk7O34bs7Gzu4MGDPLKyshSDN28ZFh8f
         ZZuQEDEhPDxy8N69CaMCA9d4zvHymqatrWPo5+evfflym5Ktra3OnDleJrNnzzby9PQcGh4e3v/s2bPc
@@ -1165,7 +1165,7 @@
         XTesb3QPLh88M+QwdP6m681Lt7xuXbu94vbgcOjwnZHokdE77DtTd1PuvriXeW/h/sYH6AdFD6UeVjxS
         fNTws+7PbaOWo6fHXMf6Hwc/vj/OGn/2S8Yv7ycKnpCfVEyqTDZPmU2dmnafvvF05dOJZ+nPFmYKf5X+
         tfa5zvMffnP8rX82YnbiBf/Fp99LXsq/PPRq2aueuYC5R69TXy/MF72Rf3P4LeNt37vwd5MLWe+x7ys/
-        6H7o/ujz8cGn1E+f/gUDmPP8usTo0wAAAAlwSFlzAAALEwAACxMBAJqcGAAAIJJJREFUeF7lewdUVdfW
+        6H7o/ujz8cGn1E+f/gUDmPP8usTo0wAAAAlwSFlzAAALDAAACwwBP0AiyAAAIJJJREFUeF7lewdUVdfW
         9aGDIKCCHRQLIhFU7AUFbCiCghhQEKVJB+kdsSCIFEEBEUWqgBRRsGJDkSIoYCNYYo0lRo3mxZe8vGR+
         ax8ed9z4jJfkzxj/N8bHGHPcxeXec/ace+1V9tlwAP5PQ2Dk5OT8rdi3bx9XVlbGHT58mIvfsaOfr6/f
         2OzsDKNNmyM1IyKi+oWFhc9aY2dnraenN1lNTX1kSkpq//Lyij6T9CZp+vr66i1ctEgrauNGlbS0NO7y
@@ -1355,7 +1355,7 @@
         XTesb3QPLh88M+QwdP6m681Lt7xuXbu94vbgcOjwnZHokdE77DtTd1PuvriXeW/h/sYH6AdFD6UeVjxS
         fNTws+7PbaOWo6fHXMf6Hwc/vj/OGn/2S8Yv7ycKnpCfVEyqTDZPmU2dmnafvvF05dOJZ+nPFmYKf5X+
         tfa5zvMffnP8rX82YnbiBf/Fp99LXsq/PPRq2aueuYC5R69TXy/MF72Rf3P4LeNt37vwd5MLWe+x7ys/
-        6H7o/ujz8cGn1E+f/gUDmPP8usTo0wAAAAlwSFlzAAALEwAACxMBAJqcGAAAIJJJREFUeF7lewdUVdfW
+        6H7o/ujz8cGn1E+f/gUDmPP8usTo0wAAAAlwSFlzAAALDAAACwwBP0AiyAAAIJJJREFUeF7lewdUVdfW
         9aGDIKCCHRQLIhFU7AUFbCiCghhQEKVJB+kdsSCIFEEBEUWqgBRRsGJDkSIoYCNYYo0lRo3mxZe8vGR+
         ax8ed9z4jJfkzxj/N8bHGHPcxeXec/ace+1V9tlwAP5PQ2Dk5OT8rdi3bx9XVlbGHT58mIvfsaOfr6/f
         2OzsDKNNmyM1IyKi+oWFhc9aY2dnraenN1lNTX1kSkpq//Lyij6T9CZp+vr66i1ctEgrauNGlbS0NO7y
@@ -1545,7 +1545,7 @@
         XTesb3QPLh88M+QwdP6m681Lt7xuXbu94vbgcOjwnZHokdE77DtTd1PuvriXeW/h/sYH6AdFD6UeVjxS
         fNTws+7PbaOWo6fHXMf6Hwc/vj/OGn/2S8Yv7ycKnpCfVEyqTDZPmU2dmnafvvF05dOJZ+nPFmYKf5X+
         tfa5zvMffnP8rX82YnbiBf/Fp99LXsq/PPRq2aueuYC5R69TXy/MF72Rf3P4LeNt37vwd5MLWe+x7ys/
-        6H7o/ujz8cGn1E+f/gUDmPP8usTo0wAAAAlwSFlzAAALEwAACxMBAJqcGAAAIJJJREFUeF7lewdUVdfW
+        6H7o/ujz8cGn1E+f/gUDmPP8usTo0wAAAAlwSFlzAAALDAAACwwBP0AiyAAAIJJJREFUeF7lewdUVdfW
         9aGDIKCCHRQLIhFU7AUFbCiCghhQEKVJB+kdsSCIFEEBEUWqgBRRsGJDkSIoYCNYYo0lRo3mxZe8vGR+
         ax8ed9z4jJfkzxj/N8bHGHPcxeXec/ace+1V9tlwAP5PQ2Dk5OT8rdi3bx9XVlbGHT58mIvfsaOfr6/f
         2OzsDKNNmyM1IyKi+oWFhc9aY2dnraenN1lNTX1kSkpq//Lyij6T9CZp+vr66i1ctEgrauNGlbS0NO7y
@@ -1688,10 +1688,10 @@
         RK5CYII=
 </value>
   </data>
-  <data name="start_screen.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="load_screen.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADUAAAAtCAYAAAAOYyOGAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
-        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABvSURBVGhD3cgxAQAwDASh+Df9
+        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAADrwAAA68AZW8ckkAAABvSURBVGhD3cgxAQAwDASh+Df9
         NYCB68DCbfsOs45Zx6xj1jHrmHXMOmYds45Zx6xj1jHrmHXMOmYds45Zx6xj1jHrmHXMOmYds45Zx6xj
         1jHrmHXMOmYds45Zx6xj1jHrmHXMOmYds45Zx6xjtu0eBDrYo2d1GpUAAAAASUVORK5CYII=
 </value>
@@ -1699,7 +1699,7 @@
   <data name="apprentice.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAIoAAAC5CAYAAAD3aadnAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
-        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACxMAAAsTAQCanBgAAC+7SURBVHhe7Z35cx3Xdef9H8h2
+        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACwwAAAsMAT9AIsgAAC+7SURBVHhe7Z35cx3Xdef9H8h2
         ojWyKIILwAX7RmInCIAEwH0DCW7gLlEUF5GiLFIStduyLdNbLEeRBhPZceJt6Ck7dnk2ejLjOJOMw3jK
         GVcyVcEPU/PD5IfBL6mpmp/u3M959zTuu6/7vX4PC0GpT9W38Pp29+1+93z7bPf2w8fmU7qX/25vx9KP
         L3GbqYXzelfcP92z4v6brimTD7NYZU/2rHzghttMJZCjd+UDBnQv/53trjmTD7NYotwGbrOoNFd94j57
@@ -1907,7 +1907,7 @@
 </value>
   </data>
   <data name="story.Text" xml:space="preserve">
-    <value>You are young apprentice wizard who has been given a quest to prove that he is of age to become a fully-fledged wizard.  Your journey will be long and you must face a creature - the evil Makhana - a squid-like creature that is half machine and half brain. 
+    <value>You are a young apprentice wizard who has been given a quest to prove that he is of age to become a fully-fledged wizard.  Your journey will be long and you must face a creature - the evil Makhana - a squid-like creature that is half machine and half brain. 
 
 Makhana has plagued the people of your home village for many years. In order for you, the apprentice, to defeat him, you must first battle four of his minions: Cocoon, Peruna, Floppit and Fluppit.
 

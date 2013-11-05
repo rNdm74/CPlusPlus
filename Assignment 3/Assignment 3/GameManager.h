@@ -46,8 +46,7 @@ ref class GameManager
 		array<Enemy^>^ enemies;
 		array<int>^ battles;		
 		
-		int health;
-		int mana;
+		String^ whosTurntIsIt;
 
 #pragma endregion
 
@@ -65,7 +64,11 @@ ref class GameManager
 
 		bool playerHasWon()							{ return (enemyInPlay->getHealth() >= 131); }
 		bool playerHasLost()						{ return (player->getHealth() >= 131); }
+
+		bool isPlayerTurn()							{ return enemyInPlay->isWaiting(); }
+		//bool isEnemyTurn()							{ return if(enemyInPlay->isWaiting()); }
 		
+		int getAvailableMana()						{ return (132 - player->getMana()); }
 		String^ getEnemyInPlayName()				{ return enemyInPlay->getFilename(); }
 
 		void setPlayerPotion(String^ potion)		{ player->setPotion(potion); }

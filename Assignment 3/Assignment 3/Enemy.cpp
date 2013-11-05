@@ -49,6 +49,7 @@ void Enemy::UpdateState(Sprite^ otherSprite)
 			case WAITING:
 				if(attacking)
 				{
+					turn = true;
 					spriteAbility = START_ABILITY;
 					spriteAction = USE_ABILITY;
 				}
@@ -73,6 +74,7 @@ void Enemy::UpdateState(Sprite^ otherSprite)
 			case USE_ABILITY:
 				if(waiting)
 				{
+					turn = false;
 					spriteAction = WAITING;
 				}				
 				break;		
