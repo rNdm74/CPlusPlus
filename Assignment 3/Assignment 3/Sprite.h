@@ -97,6 +97,8 @@ public:
 	void setMana(int m)						{ mana += m; }
 	void setPotion(String^ p)				{ potion = p; }
 	void setCurrentFrame(int c)				{ currentFrame = c; }
+	void setAction(EAction action)			{ spriteAction = action; }
+	void setAbility(EAbility ability)		{ spriteAbility = ability; }
 	void setState(EState s)					{ spriteState = s; }
 	void setSelectedAbility(EState s)		{ selectedAbility = s; }
 	void setAttackStarted()					{ attacking = true; }
@@ -104,4 +106,5 @@ public:
 	void setBoss(bool b)					{ boss = b; }
 	void setAlive(bool a)					{ alive = a; }
 	void setWaiting(bool w)					{ waiting = w; }
+	void setTurnOver(bool t)				{ turnOver = t; }
 };

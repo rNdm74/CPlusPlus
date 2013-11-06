@@ -48,10 +48,11 @@ ref class GameManager
 		
 		String^ whosTurntIsIt;
 
-		Rectangle srcRectangle;
+		RectangleF srcRectangle;
 		Image^ clockBackground;
 		Image^ clockTick;
-		static int turnTime = 30;
+		Image^ clockOverlay;
+		static int turnTime = 1;
 		int clockTime;
 		int currentFrame;
 		int nFrames;
@@ -94,6 +95,8 @@ ref class GameManager
 		bool isGameOver()							{ return player->isGameOver(); }
 		bool clickedOnEnemy(Point p)				{ return enemyInPlay->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }		
 		bool clickedOnPlayer(Point p)				{ return player->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }
+
+		void showInventory(bool inventoryClicked)	{ if(inventoryClicked){ hud->showInventory();}else{hud->hideInventory();}}				
 
 #pragma endregion
 

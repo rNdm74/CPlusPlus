@@ -71,6 +71,7 @@ GameManager::GameManager(Graphics^ startCanvas, Player^ startPlayer, array<Enemy
 			//
 			clockBackground = Image::FromFile("Clock Base.png");
 			clockTick = Image::FromFile("Overlay Small.png");
+			clockOverlay = Image::FromFile("Watch Glossy Overlay.png");
 
 			nFrames = clockTick->Width / clockTick->Height;
 		
@@ -141,11 +142,16 @@ GameManager::GameManager(Graphics^ startCanvas, Player^ startPlayer, array<Enemy
 			//
 			//
 			//
-			if(currentFrame >= nFrames)
+			if(currentFrame >= nFrames && enemyInPlay->isWaiting())
 			{
 				enemyInPlay->setWaiting(false);
-				//enemyInPlay->setChooseAttack(true);
 				player->setWaiting(true);
+				player->setTurnOver(true);
+				//
+				player->setChooseAttack(false);
+
+				enemyInPlay->setSelectedAbility(safe_cast<EState>(rGen->Next(2,5)));
+				enemyInPlay->setAttackStarted();
 				player->setChooseAttack(false);
 				
 				currentFrame = 0;
@@ -187,25 +193,23 @@ GameManager::GameManager(Graphics^ startCanvas, Player^ startPlayer, array<Enemy
 			//
 			hud->Draw();
 
-			dbGraphics->DrawImage(clockBackground, 478, 4, 54, 54);
+			dbGraphics->DrawImage(clockBackground, 428, 4, 54, 54);
 			dbGraphics->DrawImage
 			(
 				clockTick, 
-				469, 
-				-4, 
-				Rectangle(0, 0, 54, 54), 
+				RectangleF(428,4,54,54),
+				RectangleF(0,0,128,128), 
 				GraphicsUnit::Pixel
 			);
 
 			dbGraphics->DrawImage
 			(
-				clockTick, 
-				469, 
-				-4, 
-				srcRectangle, 
+				clockTick,
+				RectangleF(428,4,54,54),
+				srcRectangle,				
 				GraphicsUnit::Pixel
 			);
-			//dbGraphics->DrawImage(clockTick, 478, 4, 54, 54);
+			//dbGraphics->DrawImage(clockOverlay, 478, 4, 54, 54);
 
 		}
 #pragma endregion

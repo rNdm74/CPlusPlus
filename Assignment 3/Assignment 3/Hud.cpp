@@ -6,6 +6,9 @@ Hud::Hud(Graphics^ startCanvas)
 	dbGraphics = startCanvas;
 
 	hud = Image::FromFile("hud.png");
+	inventory = Image::FromFile("inventory.png");
+	drawHud = hud;
+
 
 	playerHealthImage = gcnew Bitmap(132, 132, PixelFormat::Format32bppArgb);
 	playerManaImage = gcnew Bitmap(132, 132, PixelFormat::Format32bppArgb);	
@@ -117,9 +120,10 @@ void Hud::Update(Player^ player, Enemy^ enemy)
 
 void Hud::Draw()
 {
-	dbGraphics->DrawImageUnscaledAndClipped(enemyHealthImage, Rectangle(862, 15, 132, 132));	
-	dbGraphics->DrawImageUnscaledAndClipped(playerHealthImage, Rectangle(358, 581, 132, 132));
-	dbGraphics->DrawImageUnscaledAndClipped(playerManaImage, Rectangle(516, 581, 132,132));
+	dbGraphics->DrawImageUnscaledAndClipped(enemyHealthImage, Rectangle(862, 15, 132, 132));
+
+	dbGraphics->DrawImageUnscaledAndClipped(playerHealthImage, Rectangle(18, 581, 132, 132));
+	dbGraphics->DrawImageUnscaledAndClipped(playerManaImage, Rectangle(176, 581, 132,132));
 	
-	dbGraphics->DrawImage(hud, 0, 0, 1024, 768);
+	dbGraphics->DrawImage(drawHud, 0, 0, 1024, 768);
 }

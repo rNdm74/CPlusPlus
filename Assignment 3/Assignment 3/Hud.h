@@ -12,6 +12,9 @@ private:
 	Graphics^ dbGraphics;
 
 	Image^ hud;
+	Image^ inventory;
+
+	Image^ drawHud;
 
 	Bitmap^ playerHealthImage;
 	Bitmap^ playerManaImage;
@@ -38,5 +41,9 @@ public:
 
 	//GETS
 
+
 	//SETS
+	void showInventory() { drawHud = inventory; }
+	void hideInventory() { drawHud = hud; }
+
 };

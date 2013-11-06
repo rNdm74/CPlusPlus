@@ -161,8 +161,7 @@ void Player::PerformAction(Sprite^ otherSprite)
 				loseTicks++;
 				break;
 
-			case USE_ABILITY:					
-				
+			case USE_ABILITY:	
 				UpdateAbility();
 				PerformAbility(otherSprite);
 				break;	
