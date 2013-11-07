@@ -119,9 +119,7 @@ GameManager::GameManager(Graphics^ startCanvas, Player^ startPlayer, array<Enemy
 			//	
 			player->Update();
 			player->UpdateState(enemyInPlay);	
-			player->PerformAction(enemyInPlay);
-
-			
+			player->PerformAction(enemyInPlay);			
 
 			if(player->enemyChooseAttack() && enemyInPlay->isAlive())
 			{				
@@ -142,31 +140,31 @@ GameManager::GameManager(Graphics^ startCanvas, Player^ startPlayer, array<Enemy
 			//
 			//
 			//
-			if(currentFrame >= nFrames && enemyInPlay->isWaiting())
+			if(player->isWaiting() == false && player->isTurn() == false)
 			{
-				enemyInPlay->setWaiting(false);
-				player->setWaiting(true);
-				player->setTurnOver(true);
-				//
-				player->setChooseAttack(false);
+				if(currentFrame >= nFrames)
+				{
+					currentFrame = 0;
 
-				enemyInPlay->setSelectedAbility(safe_cast<EState>(rGen->Next(2,5)));
-				enemyInPlay->setAttackStarted();
-				player->setChooseAttack(false);
-				
-				currentFrame = 0;
+					player->setChooseAttack(false);
+					player->setWaiting(true);
+					player->setTurnOver(true);					
+
+					enemyInPlay->setWaiting(false);
+					enemyInPlay->setSelectedAbility(safe_cast<EState>(rGen->Next(2,5)));
+					enemyInPlay->setAttackStarted();	
+				}
+
+				srcRectangle = Rectangle(currentFrame * frameWidth, 0, frameWidth, frameHeight);
+
+				if(clockTime > turnTime)
+				{
+					clockTime = 0;
+					currentFrame++;
+				}
+
+				clockTime++;
 			}
-
-			srcRectangle = Rectangle(currentFrame * frameWidth, 0, frameWidth, frameHeight);
-
-			if(enemyInPlay->isWaiting() && clockTime > turnTime)
-			{
-				clockTime = 0;
-				currentFrame++;
-			}
-
-			clockTime++;
-			
 		}
 		/// <summary>
 		/// Draws all game components to an off screen canvas.

@@ -278,6 +278,7 @@ void Player::PerformAbility(Sprite^ otherSprite)
 			spriteAction = WAITING;	
 			attacking = false;
 			waiting	= true;
+			turn = false;
 			turnOver = true;
 			break;
 
