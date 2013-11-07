@@ -25,6 +25,8 @@ public:
 
 	virtual void UpdateAbility() override;
 	virtual void PerformAbility(Sprite^ otherSprite) override;
+
+	
 		
 
 	bool isGameOver()				{ return gameover; } 

@@ -157,10 +157,16 @@ void Enemy::PerformAbility(Sprite^ otherSprite)
 
 			if(attackTicks > attackTime && otherSprite->isHurt() == false)
 			{
+				usedAbility = true;
+				hit = true;
 				otherSprite->setState(HURT);
 				otherSprite->setHurt(true);
 				otherSprite->setHealth(healthCost);
-			}		
+			}	
+			else
+			{
+				hit = false;
+			}
 
 			attackTicks++;
 
@@ -169,6 +175,7 @@ void Enemy::PerformAbility(Sprite^ otherSprite)
 		case WALK_BACKWARD:	
 			otherSprite->setHurt(false);
 			otherSprite->setState(IDLE);
+			usedAbility	= false;
 			attackTicks = 0;
 			spriteState = IDLE;
 			facingDirection = RIGHT;

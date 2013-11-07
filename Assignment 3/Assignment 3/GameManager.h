@@ -76,25 +76,30 @@ ref class GameManager
 
 #pragma region Gets/Sets
 
-		//bool playerHasWon()							{ return (enemyInPlay->getHealth() >= 131); }
-		//bool playerHasLost()						{ return (player->getHealth() >= 131); }
-
 		String^ getPlayerHealth()					{ return (132 - player->getHealth()).ToString(); }
 		String^ getPlayerMana()						{ return (132 - player->getMana()).ToString(); }
 		String^ getEnemyHealth()					{ return (132 - enemyInPlay->getHealth()).ToString(); }
 
+		bool isPlayerHit()							{ return player->isHurt(); }
 		bool isPlayerTurn()							{ return player->isWaiting(); }
+		bool hasPlayerUsedAbility()					{ return player->hasUsedAbility(); }
+
+		bool isEnemyHit()							{ return enemyInPlay->isHurt(); }
 		bool isEnemyTurn()							{ return enemyInPlay->isWaiting(); }
+		bool hasEnemyUsedAbility()					{ return enemyInPlay->hasUsedAbility(); }
 		
 		int getAvailableMana()						{ return (132 - player->getMana()); }
 		String^ getEnemyInPlayName()				{ return enemyInPlay->getFilename(); }
+
+		void setPlayerHealthCost(int hc)		    { player->setHealthCost(hc); }
+		void setPlayerManaCost(int mc)				{ player->setManaCost(mc); }
 
 		void setPlayerPotion(String^ potion)		{ player->setPotion(potion); }
 		void setPlayerAbility(EState s)				{ player->setSelectedAbility(s); }
 
 		bool isGameOver()							{ return player->isGameOver(); }
-		bool clickedOnEnemy(Point p)				{ return enemyInPlay->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }		
-		bool clickedOnPlayer(Point p)				{ return player->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }
+		//bool clickedOnEnemy(Point p)				{ return enemyInPlay->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }		
+		//bool clickedOnPlayer(Point p)				{ return player->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }
 
 		void showInventory(bool inventoryClicked)	{ if(inventoryClicked){ hud->showInventory();}else{hud->hideInventory();}}				
 

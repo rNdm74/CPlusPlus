@@ -45,7 +45,7 @@ protected:
 	int xVel, yVel;
 	int xOFFSET, yOFFSET;
 
-	bool turn;
+	bool turn, hit;
 	bool alive, boss, hurt, usedAbility;
 	bool turnOver, attacking;
 	bool roundWon, roundLose;
@@ -87,6 +87,7 @@ public:
 	bool hasUsedAbility()					{ return usedAbility; }
 	bool isAlive()							{ return alive; }
 	bool isTurn()							{ return turn; }
+	bool isHit()							{ return hit; }
 
 	// SETS
 
@@ -95,6 +96,8 @@ public:
 	void setYPos(int y)						{ yPos = y;}
 	void setHealth(int h)					{ health += h; }
 	void setMana(int m)						{ mana += m; }
+	void setManaCost(int mc)				{ manaCost = mc; }
+	void setHealthCost(int hc)				{ healthCost = hc; }
 	void setPotion(String^ p)				{ potion = p; }
 	void setCurrentFrame(int c)				{ currentFrame = c; }
 	void setAction(EAction action)			{ spriteAction = action; }

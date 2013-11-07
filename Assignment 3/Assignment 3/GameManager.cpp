@@ -140,6 +140,8 @@ GameManager::GameManager(Graphics^ startCanvas, Player^ startPlayer, array<Enemy
 			//
 			//
 			//
+			srcRectangle = Rectangle(currentFrame * frameWidth, 0, frameWidth, frameHeight);
+
 			if(player->isWaiting() == false && player->isTurn() == false)
 			{
 				if(currentFrame >= nFrames)
@@ -155,7 +157,7 @@ GameManager::GameManager(Graphics^ startCanvas, Player^ startPlayer, array<Enemy
 					enemyInPlay->setAttackStarted();	
 				}
 
-				srcRectangle = Rectangle(currentFrame * frameWidth, 0, frameWidth, frameHeight);
+				
 
 				if(clockTime > turnTime)
 				{
@@ -207,8 +209,6 @@ GameManager::GameManager(Graphics^ startCanvas, Player^ startPlayer, array<Enemy
 				srcRectangle,				
 				GraphicsUnit::Pixel
 			);
-			//dbGraphics->DrawImage(clockOverlay, 478, 4, 54, 54);
-
 		}
 #pragma endregion
 
@@ -220,6 +220,7 @@ GameManager::GameManager(Graphics^ startCanvas, Player^ startPlayer, array<Enemy
 		/// </summary>
 		void GameManager::StartAttack()
 		{
+			currentFrame = 0;
 			player->setAttackStarted();
 		}
 		//

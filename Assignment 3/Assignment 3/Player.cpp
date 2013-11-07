@@ -243,6 +243,8 @@ void Player::PerformAbility(Sprite^ otherSprite)
 
 			if(attackTicks > attackTime && usedAbility == false)
 			{
+				hit = true;
+
 				usedAbility = true;
 
 				mana += manaCost;
@@ -251,7 +253,11 @@ void Player::PerformAbility(Sprite^ otherSprite)
 				otherSprite->setState(HURT);
 				otherSprite->setHurt(true);
 				otherSprite->setHealth(healthCost);
-			}	
+			}
+			else
+			{
+				hit = false;
+			}
 
 			attackFinished = finishedAnimation;
 			attackTicks++;			
@@ -307,38 +313,38 @@ void Player::ExecuteAbility()
 		case LESSER_ICE:
 			attackTime = 30;
 			moveDistance = 10;
-			healthCost = 40 - battleSelection;
-			manaCost = 40;
+			//healthCost = 40 - battleSelection;
+			//manaCost = 40;
 			break;
 		case GREATER_ICE:
 			attackTime = 18;
 			moveDistance = 10;
-			healthCost = 50;
-			manaCost = 50;
+			//healthCost = 50;
+			//manaCost = 50;
 			break;
 		case LESSER_WAND:
 			attackTime = 8;
 			moveDistance = 60;
-			healthCost = 10;
-			manaCost = 10;
+			//healthCost = 10;
+			//manaCost = 10;
 			break;
 		case ELECTRIC_STORM:
 			attackTime = 18;
 			moveDistance = 10;
-			healthCost = 60;
-			manaCost = 60;
+			//healthCost = 60;
+			//manaCost = 60;
 			break;
 		case GREATER_WAND:
 			attackTime = 8;
 			moveDistance = 60;
-			healthCost = 20;
-			manaCost = 20;
+			//healthCost = 20;
+			//manaCost = 20;
 			break;
 		case WHIRLWIND:
 			attackTime = 8;
 			moveDistance = 60;
-			healthCost = 30;
-			manaCost = 40;
+			//healthCost = 30;
+			//manaCost = 40;
 			break;
 		case HEAL:
 			moveDistance = 0;			
