@@ -142,6 +142,9 @@ GameManager::GameManager(Graphics^ startCanvas, Player^ startPlayer, array<Enemy
 			//
 			srcRectangle = Rectangle(currentFrame * frameWidth, 0, frameWidth, frameHeight);
 
+			//
+			//
+			//
 			if(player->isWaiting() == false && player->isTurn() == false)
 			{
 				if(currentFrame >= nFrames)
@@ -194,13 +197,14 @@ GameManager::GameManager(Graphics^ startCanvas, Player^ startPlayer, array<Enemy
 			hud->Draw();
 
 			dbGraphics->DrawImage(clockBackground, 428, 4, 54, 54);
-			dbGraphics->DrawImage
+
+			/*dbGraphics->DrawImage
 			(
 				clockTick, 
 				RectangleF(428,4,54,54),
 				RectangleF(0,0,128,128), 
 				GraphicsUnit::Pixel
-			);
+			);*/
 
 			dbGraphics->DrawImage
 			(

@@ -17,6 +17,7 @@ Sprite::Sprite(Graphics^ startCanvas, String^ startFileName, Point startLocation
 
 	 boss = startFileName == BOSS;
 
+	 waiting = true;
 	 spriteAction = WAITING; 
 }
 
