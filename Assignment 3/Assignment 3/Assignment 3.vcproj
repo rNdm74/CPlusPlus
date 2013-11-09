@@ -224,6 +224,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Item.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Player.cpp"
 				>
 			</File>
@@ -305,6 +309,10 @@
 			</File>
 			<File
 				RelativePath=".\Hud.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Item.h"
 				>
 			</File>
 			<File

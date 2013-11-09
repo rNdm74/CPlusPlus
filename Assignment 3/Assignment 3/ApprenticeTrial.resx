@@ -127,7 +127,7 @@
     <value>236, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="melee_buff_potion.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="poison_buff_potion.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABGdBTUEAALGOfPtRkwAAACBjSFJNAACH
         DwAAjA8AAP1SAACBQAAAfXkAAOmLAAA85QAAGcxzPIV3AAAKOWlDQ1BQaG90b3Nob3AgSUNDIHByb2Zp
@@ -2069,7 +2069,7 @@
   <data name="start_screen.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAABIoAAAMACAIAAADE/xuSAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
-        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACw4AAAsOAUC+4UEAAP+WSURBVHhe7P1XdBxJeu+L8mk/
+        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACwwAAAsMAT9AIsgAAP+WSURBVHhe7P1XdBxJeu+L8mk/
         7vejfV/OXku6kvZoNN0j6UoamZnuMRrTlk02Pejbss10Nw3oPQnvvTckQQOQICzhvbdVMAVvCIA9RyPN
         OfeetbXuvufs+8/6gGAwKiMqqyoLBNnR67fQYCEyMzIzMuL7RURGbbro6NFoNBqNRqN5Obig0Wg0LzJa
         zzQajUaj0bw8CIGORqPRvFhoPdNoNBqNRqPRaDSaDcGmS44eHuHPGo1Go9FoNBqNRqNZH7SeaTQajUaj
@@ -7191,7 +7191,7 @@
   <data name="pictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAIoAAAC5CAYAAAD3aadnAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
-        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACxMAAAsTAQCanBgAAC+7SURBVHhe7Z35cx3Xdef9H8h2
+        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACxAAAAsQAa0jvXUAAC+7SURBVHhe7Z35cx3Xdef9H8h2
         ojWyKIILwAX7RmInCIAEwH0DCW7gLlEUF5GiLFIStduyLdNbLEeRBhPZceJt6Ck7dnk2ejLjOJOMw3jK
         GVcyVcEPU/PD5IfBL6mpmp/u3M959zTuu6/7vX4PC0GpT9W38Pp29+1+93z7bPf2w8fmU7qX/25vx9KP
         L3GbqYXzelfcP92z4v6brimTD7NYZU/2rHzghttMJZCjd+UDBnQv/53trjmTD7NYotwGbrOoNFd94j57
@@ -7723,7 +7723,7 @@
         QmCC
 </value>
   </data>
-  <data name="magic_buff_potion.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="powerup_buff_potion.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABGdBTUEAALGOfPtRkwAAACBjSFJNAACH
         DwAAjA8AAP1SAACBQAAAfXkAAOmLAAA85QAAGcxzPIV3AAAKOWlDQ1BQaG90b3Nob3AgSUNDIHByb2Zp
