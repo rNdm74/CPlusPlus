@@ -98,8 +98,6 @@ ref class GameManager
 		void setPlayerAbility(EState s)				{ player->setSelectedAbility(s); }
 
 		bool isGameOver()							{ return player->isGameOver(); }
-		//bool clickedOnEnemy(Point p)				{ return enemyInPlay->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }		
-		//bool clickedOnPlayer(Point p)				{ return player->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY()).Contains(p); }
 
 		void showInventory(bool inventoryClicked)	{ if(inventoryClicked){ hud->showInventory();}else{hud->hideInventory();}}				
 
