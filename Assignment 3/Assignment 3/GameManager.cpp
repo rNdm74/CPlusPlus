@@ -24,6 +24,10 @@ GameManager::GameManager(Graphics^ startCanvas, Player^ startPlayer, array<Enemy
 		dbGraphics = startCanvas;	
 
 		//
+		//
+		//
+	
+		//
 		// Create random
 		//
 		rGen = gcnew Random();
@@ -83,7 +87,14 @@ GameManager::GameManager(Graphics^ startCanvas, Player^ startPlayer, array<Enemy
 			//
 			//
 			//
-			enemyInPlay = enemies[0];			
+			enemyInPlay = enemies[0];	
+
+			//
+			//
+			//
+			potions = gcnew ArrayList();
+			
+			
 			
 			//
 			//
@@ -109,6 +120,41 @@ GameManager::GameManager(Graphics^ startCanvas, Player^ startPlayer, array<Enemy
 		void GameManager::Update()
 		{	
 			enemyInPlay = enemies[player->getBattleSelection()];
+
+
+			Rectangle r = player->getCollisionRectangle(viewport->getViewportWorldX(), viewport->getViewportWorldY());
+
+			for(int potion = 0; potion < potions->Count; potion++)
+			{	
+				Item^ item = safe_cast<Item^>(potions[potion]);
+
+				if(item != nullptr)
+				{
+					Point p = item->getLocation();				
+
+					if(r.Contains(p))
+					{
+						item->setCollected(true);
+
+						String^ name = item->getName();
+
+						if(name == "health_potion")
+							heathPotions++;
+						if(name == "mana_potion")
+							manaPotions++;
+						if(name == "poison_potion")
+							poisonPotions++;
+						if(name == "powerup_potion")
+							powerupPotions++;
+
+						potions->Remove(potions[potion]);
+					}
+				}							
+			}
+
+			hud->setPoison(player->isPoisonUsed());
+			hud->setPowerup(player->isPowerupUsed());
+
 			//
 			// Update hud information
 			//
@@ -187,7 +233,19 @@ GameManager::GameManager(Graphics^ startCanvas, Player^ startPlayer, array<Enemy
 
 			//
 			// Draw Sprites to Canvas
-			//			
+			//	
+			
+
+			for(int potion = 0; potion < potions->Count; potion++)
+			{
+				if(safe_cast<Item^>(potions[potion]) != nullptr)
+				{
+					safe_cast<Item^>(potions[potion])->Move();
+					safe_cast<Item^>(potions[potion])->Draw();
+				}
+			}
+				
+
 			player->Draw(player->getXPos() - viewport->getViewportWorldX(), player->getYPos() - viewport->getViewportWorldY());	
 			enemyInPlay->Draw(enemyInPlay->getXPos() - viewport->getViewportWorldX(), enemyInPlay->getYPos() - viewport->getViewportWorldY());
 			
@@ -197,14 +255,6 @@ GameManager::GameManager(Graphics^ startCanvas, Player^ startPlayer, array<Enemy
 			hud->Draw();
 
 			dbGraphics->DrawImage(clockBackground, 428, 4, 54, 54);
-
-			/*dbGraphics->DrawImage
-			(
-				clockTick, 
-				RectangleF(428,4,54,54),
-				RectangleF(0,0,128,128), 
-				GraphicsUnit::Pixel
-			);*/
 
 			dbGraphics->DrawImage
 			(

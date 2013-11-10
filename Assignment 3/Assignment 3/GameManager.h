@@ -2,6 +2,7 @@
 
 #include "Hud.h"
 #include "Constants.h"
+#include "Item.h"
 #include "Sprite.h"
 #include "Player.h"
 #include "Enemy.h"
@@ -43,6 +44,8 @@ ref class GameManager
 		Player^ player;
 		Enemy^ enemyInPlay;
 
+		ArrayList^ potions;
+
 		array<Enemy^>^ enemies;
 		array<int>^ battles;		
 		
@@ -52,12 +55,18 @@ ref class GameManager
 		Image^ clockBackground;
 		Image^ clockTick;
 		Image^ clockOverlay;
-		static int turnTime = 1;
+		static int turnTime = 10;
+		int pickedItem;
 		int clockTime;
 		int currentFrame;
 		int nFrames;
 		int frameWidth;
 		int frameHeight;
+
+		int heathPotions;
+		int manaPotions;
+		int poisonPotions;
+		int powerupPotions;
 
 		int xPos;
 		int yPos;
@@ -76,9 +85,21 @@ ref class GameManager
 
 #pragma region Gets/Sets
 
+		int getHealthPotions()	{ return heathPotions; }
+		int getManaPotions()	{ return manaPotions; }
+		int getPoisonPotions()	{ return poisonPotions; }
+		int getPowerupPotions()	{ return powerupPotions; }
+
+		void setHealthPotions(int h)	{ heathPotions = h; }
+		void setManaPotions(int m)		{ manaPotions = m; }
+		void setPoisonPotions(int p)	{ poisonPotions = p; }
+		void setPowerupPotions(int p)	{ powerupPotions = p; }
+
+		void addPotion(Item^ item)	{ potions->Add(item); }
+
 		String^ getPlayerHealth()					{ return (132 - player->getHealth()).ToString(); }
 		String^ getPlayerMana()						{ return (132 - player->getMana()).ToString(); }
-		String^ getEnemyHealth()					{ return (132 - enemyInPlay->getHealth()).ToString(); }
+		int getEnemyHealth()						{ return (132 - enemyInPlay->getHealth()); }
 
 		bool isPlayerHit()							{ return player->isHurt(); }
 		bool isPlayerTurn()							{ return player->isWaiting(); }
@@ -87,6 +108,8 @@ ref class GameManager
 		bool isEnemyHit()							{ return enemyInPlay->isHurt(); }
 		bool isEnemyTurn()							{ return enemyInPlay->isWaiting(); }
 		bool hasEnemyUsedAbility()					{ return enemyInPlay->hasUsedAbility(); }
+		bool isEnemyDead()							{ return enemyInPlay->isAlive(); }
+		void setEnemyDead(bool d)					{ return enemyInPlay->setAlive(d); }
 		
 		int getAvailableMana()						{ return (132 - player->getMana()); }
 		String^ getEnemyInPlayName()				{ return enemyInPlay->getFilename(); }

@@ -134,6 +134,7 @@ void Player::PerformAction(Sprite^ otherSprite)
 		switch(spriteAction)
 		{
 			case NEW_BATTLE:
+				generatedWeapon = false;
 				break;
 			case WAITING:				
 				moveTicks = 0;
@@ -146,8 +147,10 @@ void Player::PerformAction(Sprite^ otherSprite)
 				Move();
 				if(xPos > 1025 * (battleSelection + 1) && nextBattle == false)
 				{
+					
 					nextBattle = true;
 					battleSelection++;
+					
 				}
 				moveTicks++;
 				break;
@@ -243,6 +246,8 @@ void Player::PerformAbility(Sprite^ otherSprite)
 
 			if(attackTicks > attackTime && usedAbility == false)
 			{
+				attackTicks = 0;
+
 				hit = true;
 
 				usedAbility = true;
@@ -294,10 +299,18 @@ void Player::PerformAbility(Sprite^ otherSprite)
 				health--;
 				if(health < 0) health = 0;
 			}
-			else
+			if(potion == "mana")
 			{
 				mana--;
 				if(mana < 0) mana = 0;
+			}
+			if(potion == "poison")
+			{
+				poison = true;
+			}
+			if(potion == "power")
+			{
+				powerup = true;
 			}
 			spriteState	= selectedAbility;
 			attackFinished = finishedAnimation;

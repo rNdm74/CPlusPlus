@@ -81,5 +81,5 @@ void Sprite::ExecuteAbility(){}
 
 Rectangle Sprite::getCollisionRectangle(int vx, int vy)
 {
-	return Rectangle((xPos - xOFFSET) - vx, (yPos - yOFFSET)-vy, spriteFrame.Width, spriteFrame.Height);
+	return Rectangle((xPos - xOFFSET) - vx, (yPos - yOFFSET)-vy + spriteFrame.Height*0.7, spriteFrame.Width, spriteFrame.Height*0.25);
 }

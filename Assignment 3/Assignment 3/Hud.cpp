@@ -46,19 +46,32 @@ void Hud::UpdateHealth(Player^ player)
 
 	if(healthRegen > 15 && playerHealth >= 0)
 	{
-		playerHealthCanvas->FillEllipse(Brushes::DarkRed, Rectangle(0,0,132,132));
+		if(powerupTick > powerupTime)
+		{
+			powerupTick = 0;
+			player->setPowerup(false);
+			powerup = false;
+		}
+
+		playerHealthCanvas->FillEllipse(((powerup) ? Brushes::DarkGoldenrod : Brushes::DarkRed), Rectangle(0,0,132,132));
 		
 		for(int x = 0; x < 132; x++)
 			for(int y = 0; y < playerHealth; y++)
 				playerHealthImage->SetPixel(x, y, Color::Transparent);
 
-		player->setHealth(-1);
+		if(powerup)
+		{
+			player->setMana(-1);
+			player->setHealth(-1);
+			powerupTick++;
+		}
+			
 
 		healthRegen = 0;
 	}
 }
 
-void Hud::UpdateHealth(Enemy^ enemy)
+void Hud::UpdateHealth(Player^ player, Enemy^ enemy)
 {
 	//
 	// Health Hud Information
@@ -69,13 +82,25 @@ void Hud::UpdateHealth(Enemy^ enemy)
 
 	if(enemyRegen > 15 && enemyHealth >= 0)
 	{
-		enemyHealthCanvas->FillEllipse(Brushes::DarkRed, Rectangle(0,0,132,132));
+		if(poisonTick > poisonTime && enemyHealth > 10)
+		{
+			poisonTick = 0;
+			player->setPoison(false);
+			poison = false;
+		}
+
+		enemyHealthCanvas->FillEllipse(((poison) ? Brushes::DarkGreen : Brushes::DarkRed), Rectangle(0,0,132,132));
 		
 		for(int x = 0; x < 132; x++)
 			for(int y = 0; y < enemyHealth; y++)
 				enemyHealthImage->SetPixel(x, y, Color::Transparent);
 
-		//enemy->setHealth(-1);
+		if(poison && enemyHealth > 10)
+		{
+			enemy->setHealth(1);
+			poisonTick++;
+		}
+		  
 
 		enemyRegen = 0;
 	}
@@ -92,14 +117,13 @@ void Hud::UpdateMana(Player^ player)
 
 	if(manaRegen > 25 && mana >= 0)
 	{
-		playerManaCanvas->FillEllipse(Brushes::DarkBlue, Rectangle(0,0,132,132));
+		playerManaCanvas->FillEllipse(((powerup) ? Brushes::DarkGoldenrod : Brushes::DarkBlue), Rectangle(0,0,132,132));
 
 		for(int x = 0; x < 132; x++)
 			for(int y = 0; y < mana; y++)
 				playerManaImage->SetPixel(x, y, Color::Transparent);	
 
-		player->setMana(-1);
-
+		
 		manaRegen = 0;
 	}
 }
@@ -107,8 +131,9 @@ void Hud::UpdateMana(Player^ player)
 void Hud::Update(Player^ player, Enemy^ enemy)
 {
 	UpdateHealth(player);
-	UpdateHealth(enemy);
 	UpdateMana(player);	
+	UpdateHealth(player, enemy);
+	
 
 	//
 	// Regeneration time

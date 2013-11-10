@@ -4,6 +4,8 @@
 Enemy::Enemy(Graphics^ startCanvas, String^ startFileName, Point startLocation, ArrayList^ startFrameList)
 	  :Sprite(startCanvas, startFileName, startLocation, startFrameList)
 {
+	rGen = gcnew Random();
+
 	radiansAngle = 300 * 0.01745;			// Reverses creature
 
 	xVel = Math::Cos(radiansAngle) * 20;
@@ -92,6 +94,7 @@ void Enemy::PerformAction(Sprite^ otherSprite)
 				break;
 
 			case LOSE:
+				usedAbility	= false;
 				spriteState = HURT;
 				facingDirection = RIGHT;								
 				xPos += xVel;
@@ -100,7 +103,7 @@ void Enemy::PerformAction(Sprite^ otherSprite)
 				loseTicks++;
 				break;
 			case USE_ABILITY:	
-				ExecuteAbility();
+				ExecuteAbility(otherSprite);
 				UpdateAbility();
 				PerformAbility(otherSprite);
 				break;		
@@ -194,8 +197,10 @@ void Enemy::PerformAbility(Sprite^ otherSprite)
 	}
 }
 
-void Enemy::ExecuteAbility()
+void Enemy::ExecuteAbility(Sprite^ otherSprite)
 {
+	int damageOffset = rGen->Next(10);
+
 	if(fileName == "floppit" || fileName == "fluppit")
 	{
 		switch(selectedAbility)
@@ -203,17 +208,17 @@ void Enemy::ExecuteAbility()
 			case BOSS_HURT:					// Desecrate
 				attackTime = 8;
 				moveDistance = 70;
-				healthCost = 40;
+				healthCost = 1;
 				break;
 			case LESSER_ICE:				// Tentishock
 				attackTime = 8;
 				moveDistance = 70;	
-				healthCost = 50;
+				healthCost = 2;
 				break;
 			case GREATER_ICE:				// Oil Spill
 				attackTime = 8;
 				moveDistance = 70;
-				healthCost = 60;
+				healthCost = 3;
 				break;		
 		}
 	}
@@ -224,18 +229,21 @@ void Enemy::ExecuteAbility()
 			case BOSS_HURT:					// Desecrate
 				attackTime = 10;
 				moveDistance = 0;
-				healthCost = 40;
+				healthCost = 1;
 				break;
 			case LESSER_ICE:				// Tentishock
 				attackTime = 10;
 				moveDistance = 0;
-				healthCost = 50;
+				healthCost = 2;
 				break;
 			case GREATER_ICE:				// Oil Spill
 				attackTime = 10;
 				moveDistance = 0;
-				healthCost = 60;
+				healthCost = 3;
 				break;		
 		}
-	}		
+	}
+
+	// Increases difficulty as the game progresses
+	healthCost *= damageOffset + otherSprite->getBattleSelection();
 }

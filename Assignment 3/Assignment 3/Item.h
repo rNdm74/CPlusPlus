@@ -18,10 +18,26 @@ private:
 	Graphics^ dbGraphics;
 
 	Point location;
+	double radiansAngle;
+	double xVel;
+	double yVel;
+
+	Rectangle destRectangle;
+	Rectangle srcRectangle;
 
 	bool collected;
 
 public:
 	Item(Graphics^ startCanvas, PictureBox^ startItem);
 	void Draw();
+	void Move();
+
+	void showInventoryItem()	{ item->Visible = true; }
+	String^ getName()			{ return item->Name; } 
+	bool isOffScreen()			{ return destRectangle.X < 0 || destRectangle.Y > 768; }
+	Point getLocation() { return Point(destRectangle.X, destRectangle.Y); }
+	int getWidth()				{ return item->Bounds.Width; }
+	bool canPickup(int x, int y){ return (x > location.X && x < location.X + item->Bounds.Width); }
+	bool isCollected()			{ return collected; }
+	void setCollected(bool c)	{ collected = c; }
 };

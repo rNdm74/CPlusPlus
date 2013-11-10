@@ -80,8 +80,7 @@ public:
 	String^ getFilename()					{ return fileName; }
 	bool isBoss()							{ return boss; }
 	bool isWaiting()						{ return waiting; }
-	bool isAttackStarted()					{ return attackStarted; }
-	bool isAttackFinihed()					{ return attackFinished; }
+	bool isAttacking()						{ return attacking; }
 	bool isFinishedAnimation()				{ return finishedAnimation; }
 	bool isHurt()							{ return hurt; }
 	bool hasUsedAbility()					{ return usedAbility; }
@@ -97,7 +96,7 @@ public:
 	void setHealth(int h)					{ health += h; }
 	void setMana(int m)						{ mana += m; }
 	void setManaCost(int mc)				{ manaCost = mc; }
-	void setHealthCost(int hc)				{ healthCost = hc; }
+	void setHealthCost(int hc)				{ healthCost = hc - (battleSelection * 1.25); }
 	void setPotion(String^ p)				{ potion = p; }
 	void setCurrentFrame(int c)				{ currentFrame = c; }
 	void setAction(EAction action)			{ spriteAction = action; }

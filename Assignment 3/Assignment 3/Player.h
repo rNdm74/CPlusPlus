@@ -6,10 +6,16 @@ public Sprite
 {
 private:
 	double radiansAngle;
+	bool generatedWeapon;
 	bool nextBattle;
 	bool gameover;
 	int battleScreen;
 	array<int>^ battleStartPoints;
+
+	bool poison;
+	bool powerup;
+
+	
 	
 	
 public:
@@ -25,10 +31,16 @@ public:
 
 	virtual void UpdateAbility() override;
 	virtual void PerformAbility(Sprite^ otherSprite) override;
-
 	
-		
+	bool isPoisonUsed()				{ return poison; }
+	void setPoison(bool p)			{ poison = p; }
+	bool isPowerupUsed()			{ return powerup; }
+	void setPowerup(bool p)			{ powerup = p; }
 
+	bool isGeneratedWeapon()		{ return generatedWeapon; }
+	void setGeneratedWeapon(bool w)	{ generatedWeapon = w; }
+
+	int getBattleScreen()			{ return battleScreen; }
 	bool isGameOver()				{ return gameover; } 
 	bool enemyChooseAttack()		{ return turnOver; }
 	void setChooseAttack(bool t)	{ turnOver = t; }
